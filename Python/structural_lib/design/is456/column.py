@@ -287,8 +287,9 @@ def check_column_member_detailing(
     Limitations
     -----------
     Ordinary tied rectangles. The mixed profile admits one Ø16 side contact
-    group in the twelve-bar cage. The braced slender profile uses continuous
-    bars. The eight-bar profile admits one opposing side-midpoint or C1/C2 group.
+    group in the twelve-bar cage. The braced slender profile admits continuous
+    bars and one opposing Ø20 side-midpoint compression lap with zero shear.
+    Short eight-bar members admit one opposing side-midpoint or C1/C2 group.
     Short braced continuous eight-bar members admit the declared shared-hoop
     interaction for simultaneous Vx and Vy.
 
@@ -348,8 +349,8 @@ def render_column_member_detailing_svg(
     -------
     str | None
         SVG showing the input identity, revisions and engineering status, or
-        ``None`` when the minimum shear steel check fails or a requested
-        simultaneous two-plane shear screen is held or fails.
+        ``None`` for a failed minimum shear steel check or for a held or failed
+        two-plane shear screen or slender compression lap.
 
     Raises
     ------
@@ -1748,7 +1749,10 @@ def load_slender_column_member_detailing(
 
     Limitations
     -----------
-    Ordinary tied rectangular cages with continuous bars and one principal shear plane per row.
+    Ordinary braced tied rectangles. The continuous profile admits one
+    principal shear plane per row. The compression-lap profile admits one
+    opposing Ø20 side-midpoint pair with zero shear and a compression interval
+    reference.
 
     Provenance
     ----------

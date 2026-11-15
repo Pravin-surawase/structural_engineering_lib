@@ -16,6 +16,7 @@ from structural_lib.core.result_contract import EngineeringStatus
 from structural_lib.services.contracts.column_member_detailing import (
     ColumnMemberDetailingInputV1,
     PositionedColumnMemberDetailingInputV1,
+    SlenderColumnMemberDetailingInputV1,
 )
 
 _SOURCE = "IS 456:2000 Cl. 26.1.1, 26.2.1.2, 26.2.2.4(b), 26.2.5 and 26.5.3"
@@ -122,7 +123,11 @@ def _lap_end_support_ok(
 
 
 def _gross_lap_stresses(
-    request: ColumnMemberDetailingInputV1 | PositionedColumnMemberDetailingInputV1,
+    request: (
+        ColumnMemberDetailingInputV1
+        | PositionedColumnMemberDetailingInputV1
+        | SlenderColumnMemberDetailingInputV1
+    ),
     start: float,
     end: float,
 ) -> list[float]:
@@ -172,7 +177,7 @@ def _split_pieces(
 
 
 def check_contact_splice(
-    request: ColumnMemberDetailingInputV1,
+    request: ColumnMemberDetailingInputV1 | SlenderColumnMemberDetailingInputV1,
     cage: FourCornerCage | None,
     transverse: list[dict[str, Any]],
     end_required_mm: float,
@@ -197,6 +202,22 @@ def check_contact_splice(
     hoop = steel.tie
     dia = steel.longitudinal_bar_diameter_mm
     path = f"laps.{lap.lap_id}.contact_assembly"
+    slender_lap = isinstance(request, SlenderColumnMemberDetailingInputV1)
+    if slender_lap and (
+        not g.braced
+        or steel.layout != "eight_bar"
+        or set(lap.bar_ids) != set(_PAIR)
+        or dia != 20
+        or any(row.vx_kn or row.vy_kn for row in request.actions)
+    ):
+        record(
+            "COLUMN.SLENDER_LAP_PROFILE",
+            _HOLD,
+            path,
+            "The slender lap profile admits the braced eight-bar cage with an opposing Ø20 midpoint pair and zero supplied shear.",
+            _SOURCE,
+        )
+        return None
     corner = set(lap.bar_ids) == set(_CORNERS)
     pair = _CORNERS if corner else _PAIR
     six_side = steel.layout == "six_bar_omit_y_face_midpoints" and not corner
@@ -478,14 +499,26 @@ def check_contact_splice(
     # Compression remains a declared interval basis. The supplied in-lap
     # rows must also stay strictly inside the gross-section elastic kern.
     stresses = _gross_lap_stresses(request, start, end)
-    if not assembly.compression_reference or not stresses or min(stresses) <= 0:
+    continuity = request.basis.lap_action_continuity_reference
+    compression_ok = (
+        bool(assembly.compression_reference)
+        and bool(stresses)
+        and min(stresses) > 0
+        and (not slender_lap or continuity is not None)
+    )
+    if slender_lap or not compression_ok:
         record(
             "COLUMN.LAP_COMPRESSION_BASIS",
-            _HOLD,
+            _PASS if compression_ok else _HOLD,
             path,
-            "Supply an interval compression reference and an in-lap action row inside the gross-section kern, with all supplied in-lap rows in compression.",
+            (
+                "Check interval compression evidence and require compressive gross-section stress for every supplied in-lap row."
+                if slender_lap
+                else "Supply an interval compression reference and an in-lap action row inside the gross-section kern, with all supplied in-lap rows in compression."
+            ),
             _SOURCE,
             minimum_gross_stress_nmm2=min(stresses, default=None),
+            **({"lap_action_continuity_reference": continuity} if slender_lap else {}),
         )
 
     pieces = _split_pieces(

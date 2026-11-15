@@ -107,7 +107,7 @@ def _cage(
     return bars, cage, tuple(asdict(path) for path in link_paths)
 
 
-def _strength(
+def _slender_section_strength(
     request: SlenderRectangularColumnInputV1,
     bars: tuple[PositionedColumnBar, ...],
     rows: dict[str, dict[str, Any]],
@@ -204,6 +204,15 @@ def check_slender_rectangular_member(
     request: SlenderRectangularColumnInputV1,
 ) -> _Result:
     """Check supplied actions and independent local restraint on the actual bars."""
+    return _check_slender_rectangular_member(request)
+
+
+def _check_slender_rectangular_member(
+    request: SlenderRectangularColumnInputV1,
+    *,
+    strength_station_ids: set[str] | None = None,
+) -> _Result:
+    """Bind the full action inventory and evaluate the applicable cage stations."""
     require_request_type(request, SlenderRectangularColumnInputV1)
     geometry, actions = request.geometry, request.actions
     checks: list[dict[str, Any]] = []
@@ -333,7 +342,18 @@ def check_slender_rectangular_member(
     )
     strength_status, strength = _HOLD, None
     if bars and restraint_status is not _FAIL and action_status is _PASS:
-        strength_status, strength = _strength(request, bars, rows, record)
+        strength_rows = (
+            rows
+            if strength_station_ids is None
+            else {
+                identifier: row
+                for identifier, row in rows.items()
+                if identifier in strength_station_ids
+            }
+        )
+        strength_status, strength = _slender_section_strength(
+            request, bars, strength_rows, record
+        )
 
     result = canonical_family_result(
         request,

@@ -1,0 +1,1709 @@
+{
+  "schema_version": "library-030-col07-slender-lap-reference/v1",
+  "frozen_production_base": "4f9af7321f6762c932ca14c6d4a9d337004d5f59",
+  "legacy_fixture_sha256": "3d2871c091b25e351de20045ec11ea6fd966eb5d3a575ac9ec293ddc0845ce55",
+  "sources": [
+    "BIS IS 456:2000 Cl. 26.2.1, 26.2.5.1, 26.3.2, 26.5.3 and 39.6\u201339.7. https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf",
+    "check_library_029_col04_reference.py supplies the independent fixed-load section integration. check_library_029_col07_splice_reference.py supplies the straight paired contact and link geometry precedent."
+  ],
+  "absolute_tolerances": {
+    "length_mm": 0.001,
+    "mass_kg": 0.001,
+    "stress_nmm2": 0.001,
+    "moment_knm": 0.01,
+    "section_ratio": 0.0001
+  },
+  "method": "Independent fixed-load P-M contour replay at each supplied station and every physical reinforcement phase affected by S1 transfer. Supplied second-order U1 actions/revision are fixed inputs, never regenerated. The declared 0.30-eccentricity action pair gives gross stress P/A-6|Mx|/(bD^2)-6|My|/(Db^2)>0 at every supplied station. Geometry and action scaling are specimen assumptions, not IS 456 text.",
+  "cases": {
+    "s1_pass": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-S1",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL04 fixed-P constant-EI worksheet, declared 0.30 eccentricity specimen",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "lap_action_continuity_reference": "Declared synthetic U1 compression throughout the lap interval. At fixed 500 kN and EI, 0.30 times the COL04 eccentricity record gives moment magnitudes bounded by MID on both axes."
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -15.885196706084951,
+            "my_knm": 9.981638275645926,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 2640,
+          "end_mm": 3360,
+          "max_tie_pitch_mm": 120,
+          "reference": "Fixed specimen midpoint compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "M_LEFT",
+              "M_RIGHT"
+            ],
+            "start_mm": 2640,
+            "end_mm": 3360,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 220,
+              "lap_link_id": "S1-LINK",
+              "hook_tail_mm": 64,
+              "fabrication_reference": "S1 paired-side contact link schedule",
+              "compression_reference": "Supplied U1 compression action continuity declaration across 2640--3360 mm"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "HOOP": 1220
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Supplied COL04 constant-EI second-order moments scaled by 0.30 at fixed P and EI for the smaller eccentricities",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -15.885196706084951,
+              "my_knm": 9.981638275645926
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "issue": null,
+        "svg_available": true,
+        "bbs_available": true,
+        "lap_required_mm": 709.2053571428572,
+        "lap_actual_mm": 720,
+        "end_development_required_mm": 805.9151785714287,
+        "simultaneous_lapped_bar_fraction": 0.25,
+        "contact_pair_basis": "two equal 20-mm side-midpoint bars only; 1.10 compression factor is not applied to other bars",
+        "lap_hoop_stations_mm": [
+          2700,
+          2820,
+          2940,
+          3060,
+          3180,
+          3300
+        ],
+        "lap_link_stations_mm": [
+          2712,
+          2832,
+          2952,
+          3072,
+          3192,
+          3312
+        ],
+        "end_support_distances_mm": [
+          48,
+          72,
+          48,
+          72
+        ],
+        "minimum_unrelated_clear_mm": 70.0,
+        "minimum_3d_clear_mm": 2,
+        "gross_kern_stress_nmm2": [
+          0.791666666666667,
+          0.5174106991317271,
+          0.791666666666667
+        ],
+        "return_fit": {
+          "bend_radius_centreline_mm": 16,
+          "return_angle_deg": 90,
+          "tail_mm": 64,
+          "tail_required_mm": 64,
+          "cover_clear_mm": 40,
+          "tail_gap_mm": 44,
+          "minimum_link_to_longitudinal_clear_mm": 2
+        },
+        "drawing": {
+          "view": "elevation and 300x400 section",
+          "lap_link": "S1-LINK at every listed X cross-tie level within the overlap",
+          "contact_offset_mm": 20
+        },
+        "svg_markers": {
+          "member_z_mm": [
+            0,
+            2640,
+            3360,
+            6000
+          ],
+          "side_pair_centres_mm": [
+            [
+              60,
+              200
+            ],
+            [
+              240,
+              200
+            ],
+            [
+              60,
+              220
+            ],
+            [
+              240,
+              220
+            ]
+          ],
+          "lap_link_stations_mm": [
+            2712,
+            2832,
+            2952,
+            3072,
+            3192,
+            3312
+          ]
+        },
+        "section_phase_checks": [
+          {
+            "station_id": "A",
+            "physical_phase": "LOWER_ONLY",
+            "puz_kn": 2103.98223686155,
+            "alpha_n": 1.0627409864652941,
+            "capacity_x_knm": 152.54080194279103,
+            "capacity_y_knm": 102.73794604190856,
+            "contour_ratio": 0.1602077922659602,
+            "direct_ratio": 0.15920664674399582,
+            "ratio": 0.1602077922659602
+          },
+          {
+            "station_id": "MID",
+            "physical_phase": "OVERLAP_LOWER",
+            "puz_kn": 2103.98223686155,
+            "alpha_n": 1.0627409864652941,
+            "capacity_x_knm": 152.54080194279103,
+            "capacity_y_knm": 102.73794604190856,
+            "contour_ratio": 0.17429390629916997,
+            "direct_ratio": 0.1723545385618583,
+            "ratio": 0.17429390629916997
+          },
+          {
+            "station_id": "MID",
+            "physical_phase": "OVERLAP_UPPER",
+            "puz_kn": 2103.98223686155,
+            "alpha_n": 1.0627409864652941,
+            "capacity_x_knm": 152.37051540588686,
+            "capacity_y_knm": 102.71709289005256,
+            "contour_ratio": 0.17441933852453478,
+            "direct_ratio": 0.17188057694864298,
+            "ratio": 0.17441933852453478
+          },
+          {
+            "station_id": "B",
+            "physical_phase": "UPPER_ONLY",
+            "puz_kn": 2103.98223686155,
+            "alpha_n": 1.0627409864652941,
+            "capacity_x_knm": 152.37051540588686,
+            "capacity_y_knm": 102.71709289005256,
+            "contour_ratio": 0.1603249933842691,
+            "direct_ratio": 0.15875725640047722,
+            "ratio": 0.1603249933842691
+          }
+        ],
+        "governing_section": {
+          "station_id": "MID",
+          "physical_phase": "OVERLAP_UPPER",
+          "puz_kn": 2103.98223686155,
+          "alpha_n": 1.0627409864652941,
+          "capacity_x_knm": 152.37051540588686,
+          "capacity_y_knm": 102.71709289005256,
+          "contour_ratio": 0.17441933852453478,
+          "direct_ratio": 0.17188057694864298,
+          "ratio": 0.17441933852453478
+        },
+        "cuts": {
+          "C1": [
+            1,
+            7700,
+            20
+          ],
+          "C2": [
+            1,
+            7700,
+            20
+          ],
+          "C3": [
+            1,
+            7700,
+            20
+          ],
+          "C4": [
+            1,
+            7700,
+            20
+          ],
+          "M_TOP": [
+            1,
+            7700,
+            20
+          ],
+          "M_BOTTOM": [
+            1,
+            7700,
+            20
+          ],
+          "M_LEFT-L": [
+            1,
+            4210,
+            20
+          ],
+          "M_RIGHT-L": [
+            1,
+            4210,
+            20
+          ],
+          "M_LEFT-U": [
+            1,
+            4210,
+            20
+          ],
+          "M_RIGHT-U": [
+            1,
+            4210,
+            20
+          ],
+          "HOOP": [
+            52,
+            1220,
+            8
+          ],
+          "XT": [
+            46,
+            408.5309649148734,
+            8
+          ],
+          "YT": [
+            52,
+            508.5309649148734,
+            8
+          ],
+          "S1-LINK": [
+            6,
+            448.5309649148734,
+            8
+          ]
+        },
+        "bbs_quantity": 166,
+        "bbs_total_mm": 174407.22035114683,
+        "bbs_mass_kg": 199.40983812062427
+      }
+    },
+    "short_lap": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-S1-short_lap",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL04 fixed-P constant-EI worksheet, declared 0.30 eccentricity specimen",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "lap_action_continuity_reference": "Declared synthetic U1 compression throughout the lap interval. At fixed 500 kN and EI, 0.30 times the COL04 eccentricity record gives moment magnitudes bounded by MID on both axes."
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -15.885196706084951,
+            "my_knm": 9.981638275645926,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 2640,
+          "end_mm": 3360,
+          "max_tie_pitch_mm": 120,
+          "reference": "Fixed specimen midpoint compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "M_LEFT",
+              "M_RIGHT"
+            ],
+            "start_mm": 2640,
+            "end_mm": 3300,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 220,
+              "lap_link_id": "S1-LINK",
+              "hook_tail_mm": 64,
+              "fabrication_reference": "S1 paired-side contact link schedule",
+              "compression_reference": "Supplied U1 compression action continuity declaration across 2640--3360 mm"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "HOOP": 1220
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Supplied COL04 constant-EI second-order moments scaled by 0.30 at fixed P and EI for the smaller eccentricities",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -15.885196706084951,
+              "my_knm": 9.981638275645926
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "issue": "COLUMN.LAP_LENGTH",
+        "svg_available": false,
+        "bbs_available": false,
+        "lap_actual_mm": 660,
+        "lap_required_mm": 709.2053571428572
+      }
+    },
+    "coincident_contact": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-S1-coincident_contact",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL04 fixed-P constant-EI worksheet, declared 0.30 eccentricity specimen",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "lap_action_continuity_reference": "Declared synthetic U1 compression throughout the lap interval. At fixed 500 kN and EI, 0.30 times the COL04 eccentricity record gives moment magnitudes bounded by MID on both axes."
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -15.885196706084951,
+            "my_knm": 9.981638275645926,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 2640,
+          "end_mm": 3360,
+          "max_tie_pitch_mm": 120,
+          "reference": "Fixed specimen midpoint compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "M_LEFT",
+              "M_RIGHT"
+            ],
+            "start_mm": 2640,
+            "end_mm": 3360,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 200,
+              "lap_link_id": "S1-LINK",
+              "hook_tail_mm": 64,
+              "fabrication_reference": "S1 paired-side contact link schedule",
+              "compression_reference": "Supplied U1 compression action continuity declaration across 2640--3360 mm"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "HOOP": 1220
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Supplied COL04 constant-EI second-order moments scaled by 0.30 at fixed P and EI for the smaller eccentricities",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -15.885196706084951,
+              "my_knm": 9.981638275645926
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "issue": "COLUMN.LAP_CONTACT_GEOMETRY",
+        "svg_available": false,
+        "bbs_available": false,
+        "actual_contact_centre_distance_mm": 0,
+        "required_contact_centre_distance_mm": 20
+      }
+    },
+    "missing_compression_evidence": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-S1-missing_compression_evidence",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL04 fixed-P constant-EI worksheet, declared 0.30 eccentricity specimen",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "lap_action_continuity_reference": "Declared synthetic U1 compression throughout the lap interval. At fixed 500 kN and EI, 0.30 times the COL04 eccentricity record gives moment magnitudes bounded by MID on both axes."
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -15.885196706084951,
+            "my_knm": 9.981638275645926,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 2640,
+          "end_mm": 3360,
+          "max_tie_pitch_mm": 120,
+          "reference": "Fixed specimen midpoint compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "M_LEFT",
+              "M_RIGHT"
+            ],
+            "start_mm": 2640,
+            "end_mm": 3360,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 220,
+              "lap_link_id": "S1-LINK",
+              "hook_tail_mm": 64,
+              "fabrication_reference": "S1 paired-side contact link schedule",
+              "compression_reference": null
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "HOOP": 1220
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Supplied COL04 constant-EI second-order moments scaled by 0.30 at fixed P and EI for the smaller eccentricities",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -15.885196706084951,
+              "my_knm": 9.981638275645926
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "COLUMN.LAP_COMPRESSION_BASIS",
+        "svg_available": false,
+        "bbs_available": false,
+        "minimum_supplied_lap_stress_nmm2": 0.5174106991317271
+      }
+    },
+    "outside_compression_kern": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-S1-outside_compression_kern",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL04 fixed-P constant-EI worksheet, declared 0.30 eccentricity specimen",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "lap_action_continuity_reference": "Declared synthetic U1 compression throughout the lap interval. At fixed 500 kN and EI, 0.30 times the COL04 eccentricity record gives moment magnitudes bounded by MID on both axes."
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -30,
+            "my_knm": 9.981638275645926,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 2640,
+          "end_mm": 3360,
+          "max_tie_pitch_mm": 120,
+          "reference": "Fixed specimen midpoint compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "M_LEFT",
+              "M_RIGHT"
+            ],
+            "start_mm": 2640,
+            "end_mm": 3360,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 220,
+              "lap_link_id": "S1-LINK",
+              "hook_tail_mm": 64,
+              "fabrication_reference": "S1 paired-side contact link schedule",
+              "compression_reference": "Supplied U1 compression action continuity declaration across 2640--3360 mm"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "HOOP": 1220
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Supplied COL04 constant-EI second-order moments scaled by 0.30 at fixed P and EI for the smaller eccentricities",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -30,
+              "my_knm": 9.981638275645926
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "COLUMN.LAP_COMPRESSION_BASIS",
+        "svg_available": false,
+        "bbs_available": false,
+        "minimum_supplied_lap_stress_nmm2": -1.246939712607654
+      }
+    },
+    "stale_analysis": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-S1-stale_analysis",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-00",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL04 fixed-P constant-EI worksheet, declared 0.30 eccentricity specimen",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "lap_action_continuity_reference": "Declared synthetic U1 compression throughout the lap interval. At fixed 500 kN and EI, 0.30 times the COL04 eccentricity record gives moment magnitudes bounded by MID on both axes."
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -15.885196706084951,
+            "my_knm": 9.981638275645926,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 2640,
+          "end_mm": 3360,
+          "max_tie_pitch_mm": 120,
+          "reference": "Fixed specimen midpoint compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "M_LEFT",
+              "M_RIGHT"
+            ],
+            "start_mm": 2640,
+            "end_mm": 3360,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 220,
+              "lap_link_id": "S1-LINK",
+              "hook_tail_mm": 64,
+              "fabrication_reference": "S1 paired-side contact link schedule",
+              "compression_reference": "Supplied U1 compression action continuity declaration across 2640--3360 mm"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "HOOP": 1220
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Supplied COL04 constant-EI second-order moments scaled by 0.30 at fixed P and EI for the smaller eccentricities",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -15.885196706084951,
+              "my_knm": 9.981638275645926
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "COLUMN.STALE_ANALYSIS",
+        "svg_available": false,
+        "bbs_available": false
+      }
+    },
+    "missing_matching_second_order": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-slender-S1-missing_matching_second_order",
+          "member_id": "COL04-C"
+        },
+        "geometry": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "unsupported_length_mm": 6000,
+          "end_condition": "HINGED_HINGED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 25,
+          "fy_nmm2": 415
+        },
+        "reinforcement": {
+          "longitudinal_bar_diameter_mm": 20,
+          "bar_center_offset_mm": 60,
+          "nominal_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_cover_mm": 40,
+          "project_required_bend_radius_mm": 12,
+          "detailing_basis_reference": "COL02 frozen ordinary tie section and reviewed project bend schedule",
+          "layout": "eight_bar",
+          "tie": {
+            "tie_id": "HOOP",
+            "closed": true,
+            "diameter_mm": 8,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 12,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "XT",
+              "restrained_bar_ids": [
+                "M_LEFT",
+                "M_RIGHT"
+              ],
+              "station_offset_mm": 12
+            },
+            {
+              "tie_id": "YT",
+              "restrained_bar_ids": [
+                "M_TOP",
+                "M_BOTTOM"
+              ],
+              "station_offset_mm": 24
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "model-01",
+          "current_analysis_revision": "model-01",
+          "detailing_revision": "D1",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL04 fixed-P constant-EI worksheet, declared 0.30 eccentricity specimen",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement",
+          "lap_action_continuity_reference": "Declared synthetic U1 compression throughout the lap interval. At fixed 500 kN and EI, 0.30 times the COL04 eccentricity record gives moment magnitudes bounded by MID on both axes."
+        },
+        "end_detail": {
+          "start_straight_mm": 850,
+          "end_straight_mm": 850,
+          "end_hoop_offset_mm": 60,
+          "max_end_hoop_offset_mm": 75,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 60,
+            "end_mm": 660,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD",
+            "start_mm": 660,
+            "end_mm": 5340,
+            "pitch_mm": 120
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 5340,
+            "end_mm": 5940,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "combination_id": "U1",
+            "check_station_mm": 0,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 3000.0,
+            "pu_kn": 500,
+            "mx_knm": -15.785196706084951,
+            "my_knm": 9.981638275645926,
+            "vx_kn": 0,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U1",
+            "check_station_mm": 6000,
+            "pu_kn": 500,
+            "mx_knm": -15.0,
+            "my_knm": 9.0,
+            "vx_kn": 0,
+            "vy_kn": 0
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 2640,
+          "end_mm": 3360,
+          "max_tie_pitch_mm": 120,
+          "reference": "Fixed specimen midpoint compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "M_LEFT",
+              "M_RIGHT"
+            ],
+            "start_mm": 2640,
+            "end_mm": 3360,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 220,
+              "lap_link_id": "S1-LINK",
+              "hook_tail_mm": 64,
+              "fabrication_reference": "S1 paired-side contact link schedule",
+              "compression_reference": "Supplied U1 compression action continuity declaration across 2640--3360 mm"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D1",
+          "reference": "COL07 independent specimen cut-length register",
+          "cut_lengths_mm": {
+            "HOOP": 1220
+          }
+        },
+        "schema_version": "column-slender-member-detailing-input/v1",
+        "restraint": {
+          "b_mm": 300,
+          "D_mm": 400,
+          "length_mm": 6000,
+          "braced": true,
+          "x": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          },
+          "y": {
+            "unsupported_length_mm": 6000,
+            "effective_length_mm": 6000,
+            "restraint_basis": "Synthetic braced fixture with the stated effective length"
+          }
+        },
+        "second_order": {
+          "basis": "supplied_second_order",
+          "combination_id": "U1",
+          "pu_kn": 500,
+          "member_deflection_basis": "Supplied COL04 constant-EI second-order moments scaled by 0.30 at fixed P and EI for the smaller eccentricities",
+          "required_station_ids": [
+            "A",
+            "MID",
+            "B"
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "station_mm": 0,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            },
+            {
+              "station_id": "MID",
+              "station_mm": 3000.0,
+              "mx_knm": -15.885196706084951,
+              "my_knm": 9.981638275645926
+            },
+            {
+              "station_id": "B",
+              "station_mm": 6000,
+              "mx_knm": -15.0,
+              "my_knm": 9.0
+            }
+          ]
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "COLUMN.SLENDER_DETAIL_ACTIONS_HELD",
+        "svg_available": false,
+        "bbs_available": false
+      }
+    }
+  }
+}
