@@ -1,0 +1,3116 @@
+{
+  "schema_version": "library-030-col07-mixed-splice-reference/v1",
+  "frozen_source_base": "99e93e4ba77169333c6779f24b2dd2af263c9cc9",
+  "base_fixture": "library-029-col07-mixed-member.json",
+  "base_fixture_sha256": "39c5e591ba33fdfdd4b922b12b28c5ea7de82d0363be8edee1dc42513d954601",
+  "sources": [
+    "IS 456:2000 Clauses 25.4, 26.2, 26.3.2, 26.4, 26.5.3, 38.1, 39 and 40 and Tables 19 and 20.",
+    "https://www.cracindia.in/admin/uploads/IS-456.pdf",
+    "COL03 independent strip quadrature and fixed-Pu demand ray. Evaluate both transferred bar layouts in the overlap.",
+    "COL07 mixed continuous hoop register and positioned link bends. X1 keeps its original 135 degree geometry outside the lap.",
+    "COL07 contact reference uses the 10% conservative two-bar contact allowance and an inner/outer link each within 4d of each end."
+  ],
+  "scope": "One ordinary braced short column with nominally straight equal-16 mm contact mates in the mixed 16/20 mm cage. Synthetic design rows and an explicitly declared U2 interval. No imported or seismic design claim.",
+  "absolute_tolerances": {
+    "geometry_and_cut_mm": 0.001,
+    "shear_kn": 0.001,
+    "section_capacity_knm": 0.12,
+    "utilization": 0.001,
+    "weight_kg": 0.001
+  },
+  "cases": {
+    "mixed_contact_splice": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 250
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1170,
+            "end_mm": 1810,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 216,
+              "lap_link_id": "LX",
+              "hook_tail_mm": 80,
+              "fabrication_reference": "D2 local LX return at the X1 seat",
+              "compression_reference": "A1 synthetic U2 compression interval in this fixture"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "PASS",
+        "checked_bbs_available": true,
+        "provided_lap_mm": 640,
+        "unadjusted_compression_development_mm": 579.9999999999999,
+        "required_contact_lap_mm": 637.9999999999999,
+        "length_margin_mm": 2.0000000000001137,
+        "maximum_lap_hoop_pitch_mm": 80,
+        "approved_pitch_limit_mm": 150,
+        "required_end_projection_by_diameter_mm": {
+          "16": 724.9999999999999,
+          "20": 906.2499999999999
+        },
+        "governing_end_projection_diameter_mm": 20,
+        "restraint_distances_outer_inner_inner_outer_mm": [
+          25,
+          55,
+          25,
+          55
+        ],
+        "maximum_restraint_distance_mm": 64,
+        "minimum_restraint_distance_mm": 5,
+        "transverse_stations_mm": {
+          "HOOP": [
+            100,
+            200,
+            300,
+            400,
+            500,
+            600,
+            700,
+            860,
+            1020,
+            1100,
+            1180,
+            1260,
+            1340,
+            1420,
+            1500,
+            1580,
+            1660,
+            1740,
+            1820,
+            1900,
+            1980,
+            2140,
+            2300,
+            2400,
+            2500,
+            2600,
+            2700,
+            2800,
+            2900
+          ],
+          "Y1": [
+            115,
+            215,
+            315,
+            415,
+            515,
+            615,
+            715,
+            875,
+            1035,
+            1115,
+            1195,
+            1275,
+            1355,
+            1435,
+            1515,
+            1595,
+            1675,
+            1755,
+            1835,
+            1915,
+            1995,
+            2155,
+            2315,
+            2415,
+            2515,
+            2615,
+            2715,
+            2815,
+            2915
+          ],
+          "Y2": [
+            130,
+            230,
+            330,
+            430,
+            530,
+            630,
+            730,
+            890,
+            1050,
+            1130,
+            1210,
+            1290,
+            1370,
+            1450,
+            1530,
+            1610,
+            1690,
+            1770,
+            1850,
+            1930,
+            2010,
+            2170,
+            2330,
+            2430,
+            2530,
+            2630,
+            2730,
+            2830,
+            2930
+          ],
+          "X1": [
+            145,
+            245,
+            345,
+            445,
+            545,
+            645,
+            745,
+            905,
+            1065,
+            1145,
+            1865,
+            1945,
+            2025,
+            2185,
+            2345,
+            2445,
+            2545,
+            2645,
+            2745,
+            2845,
+            2945
+          ],
+          "LX": [
+            1225,
+            1305,
+            1385,
+            1465,
+            1545,
+            1625,
+            1705,
+            1785
+          ]
+        },
+        "minimum_transverse_level_clear_mm": 5,
+        "minimum_end_face_link_cover_mm": 50,
+        "u2_interval_compression": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "mx_constant_knm": 12,
+          "my_at_ends_knm": [
+            16.0,
+            -32.0
+          ],
+          "minimum_gross_stress_nmm2": 0.9794918885827975
+        },
+        "geometry": {
+          "partner_centres_mm": {
+            "L1": [
+              60,
+              216
+            ],
+            "R1": [
+              390,
+              216
+            ]
+          },
+          "lower_centres_mm": {
+            "C1": [
+              62,
+              62
+            ],
+            "C2": [
+              388,
+              62
+            ],
+            "C3": [
+              388,
+              488
+            ],
+            "C4": [
+              62,
+              488
+            ],
+            "T1": [
+              155,
+              60
+            ],
+            "T2": [
+              295,
+              60
+            ],
+            "B1": [
+              155,
+              490
+            ],
+            "B2": [
+              295,
+              490
+            ],
+            "L1": [
+              60,
+              200
+            ],
+            "R1": [
+              390,
+              200
+            ],
+            "I1": [
+              180,
+              125
+            ],
+            "I2": [
+              270,
+              425
+            ]
+          },
+          "contact_separation_mm": 16,
+          "minimum_unrelated_clear_mm": 53.6419413859206,
+          "minimum_unrelated_clear_limit_mm": 25,
+          "governing_unrelated_pair": [
+            "B2",
+            "I2"
+          ],
+          "minimum_partner_to_unrelated_clear_mm": 134.60212481900777,
+          "governing_partner_clear_pair": [
+            "I1",
+            "L1-U"
+          ],
+          "overlap_steel_area_mm2": 3267.2563597333865,
+          "overlap_steel_ratio": 0.013201035796902572,
+          "overlap_steel_ratio_limit": 0.04,
+          "spliced_bar_fraction": 0.16666666666666666,
+          "max_side_face_bar_pitch_mm": 288,
+          "side_face_bar_pitch_limit_mm": 300,
+          "restrained_side_span_mm": 426,
+          "restrained_side_span_limit_mm": 480,
+          "lx_minimum_cover_mm": 40.0,
+          "lx_required_cover_mm": 40,
+          "lx_seat_clear_mm": 2.0,
+          "lx_unrelated_bar_lower_bound_mm": 47.0,
+          "x1_unrelated_bar_lower_bounds_mm": {
+            "lower": 8.966991411008934,
+            "upper": 24.966991411008934
+          },
+          "y_links_to_partner_lower_bound_mm": 67.0,
+          "lx_tail_to_tail_clear_mm": 160
+        },
+        "actions": {
+          "U1": {
+            "station_mm": 250,
+            "sections": {
+              "lower": {
+                "steel_area_mm2": 2865.1325000738925,
+                "puz_kn": 4376.995398776712,
+                "alpha_n": 1,
+                "axes": {
+                  "x_positive": {
+                    "normal_deg": 272.11388849238574,
+                    "xu_mm": 198.1169361175107,
+                    "p_kn": 800.0000000181647,
+                    "mx_knm": 377.72807264939274,
+                    "my_knm": 1.6270671039819717e-11,
+                    "capacity_knm": 377.72807264939274,
+                    "axial_residual_kn": 1.8164655557484366e-08,
+                    "transverse_residual_knm": 1.6270671039819717e-11
+                  },
+                  "x_negative": {
+                    "normal_deg": 92.79283998212486,
+                    "xu_mm": 226.003066500766,
+                    "p_kn": 800.0000000191683,
+                    "mx_knm": -405.477408899843,
+                    "my_knm": 1.2753065675497056e-11,
+                    "capacity_knm": 405.477408899843,
+                    "axial_residual_kn": 1.9168282960890792e-08,
+                    "transverse_residual_knm": -1.2753065675497056e-11
+                  },
+                  "y_positive": {
+                    "normal_deg": 178.46166747239477,
+                    "xu_mm": 184.59328037099436,
+                    "p_kn": 800.0000000244881,
+                    "mx_knm": 7.589161396026612e-11,
+                    "my_knm": 284.0914974622732,
+                    "capacity_knm": 284.0914974622732,
+                    "axial_residual_kn": 2.4488144845236093e-08,
+                    "transverse_residual_knm": -7.589161396026612e-11
+                  },
+                  "y_negative": {
+                    "normal_deg": 358.18475687205506,
+                    "xu_mm": 185.9399674287257,
+                    "p_kn": 800.0000000282579,
+                    "mx_knm": -7.368624210357667e-12,
+                    "my_knm": -283.75204312769597,
+                    "capacity_knm": 283.75204312769597,
+                    "axial_residual_kn": 2.825788669724716e-08,
+                    "transverse_residual_knm": -7.368624210357667e-12
+                  }
+                },
+                "demand": {
+                  "normal_deg": 317.5809613755991,
+                  "xu_mm": 318.3259452789257,
+                  "p_kn": 799.9999999931089,
+                  "mx_knm": 250.40817086186587,
+                  "my_knm": -150.24490251706612,
+                  "capacity_knm": 292.023599674321,
+                  "axial_residual_kn": -6.891127668495756e-09,
+                  "transverse_residual_knm": 4.5787373892380856e-11
+                },
+                "contour_ratio": 0.35714470264954695,
+                "direct_ratio": 0.29951099335883796,
+                "minimum_eccentricity_ratios": {
+                  "x": 0.05153619250517191,
+                  "y": 0.0592066221438256
+                },
+                "governing_ratio": 0.35714470264954695,
+                "strength_status": "PASS"
+              }
+            },
+            "governing_section": "lower",
+            "shear": {
+              "direction": "y",
+              "signed_demand_kn": 250,
+              "d_mm": 490,
+              "pitch_mm": 100,
+              "pitch_limit_mm": 367.5,
+              "credited_hoop_id": "HOOP",
+              "credited_legs": 2,
+              "vc_kn": 84.61409090909089,
+              "vus_kn": 277.89664675675573,
+              "crushing_kn": 771.75,
+              "capacity_kn": 362.5107376658466,
+              "utilization": 0.6896347446415334
+            }
+          },
+          "U2": {
+            "station_mm": 1500,
+            "sections": {
+              "lower": {
+                "steel_area_mm2": 2865.1325000738925,
+                "puz_kn": 4376.995398776712,
+                "alpha_n": 1,
+                "axes": {
+                  "x_positive": {
+                    "normal_deg": 272.11388849238574,
+                    "xu_mm": 198.1169361175107,
+                    "p_kn": 800.0000000181647,
+                    "mx_knm": 377.72807264939274,
+                    "my_knm": 1.6270671039819717e-11,
+                    "capacity_knm": 377.72807264939274,
+                    "axial_residual_kn": 1.8164655557484366e-08,
+                    "transverse_residual_knm": 1.6270671039819717e-11
+                  },
+                  "x_negative": {
+                    "normal_deg": 92.79283998212486,
+                    "xu_mm": 226.003066500766,
+                    "p_kn": 800.0000000191683,
+                    "mx_knm": -405.477408899843,
+                    "my_knm": 1.2753065675497056e-11,
+                    "capacity_knm": 405.477408899843,
+                    "axial_residual_kn": 1.9168282960890792e-08,
+                    "transverse_residual_knm": -1.2753065675497056e-11
+                  },
+                  "y_positive": {
+                    "normal_deg": 178.46166747239477,
+                    "xu_mm": 184.59328037099436,
+                    "p_kn": 800.0000000244881,
+                    "mx_knm": 7.589161396026612e-11,
+                    "my_knm": 284.0914974622732,
+                    "capacity_knm": 284.0914974622732,
+                    "axial_residual_kn": 2.4488144845236093e-08,
+                    "transverse_residual_knm": -7.589161396026612e-11
+                  },
+                  "y_negative": {
+                    "normal_deg": 358.18475687205506,
+                    "xu_mm": 185.9399674287257,
+                    "p_kn": 800.0000000282579,
+                    "mx_knm": -7.368624210357667e-12,
+                    "my_knm": -283.75204312769597,
+                    "capacity_knm": 283.75204312769597,
+                    "axial_residual_kn": 2.825788669724716e-08,
+                    "transverse_residual_knm": -7.368624210357667e-12
+                  }
+                },
+                "demand": {
+                  "normal_deg": 320.081280541417,
+                  "xu_mm": 316.4549157202258,
+                  "p_kn": 799.9999999591472,
+                  "mx_knm": 238.7149375546173,
+                  "my_knm": -159.14329170315114,
+                  "capacity_knm": 286.89964919082615,
+                  "axial_residual_kn": -4.085279670107411e-08,
+                  "transverse_residual_knm": -6.068034963391256e-11
+                },
+                "contour_ratio": 0.059962515383157305,
+                "direct_ratio": 0.050269162553988646,
+                "minimum_eccentricity_ratios": {
+                  "x": 0.05153619250517191,
+                  "y": 0.0592066221438256
+                },
+                "governing_ratio": 0.059962515383157305,
+                "strength_status": "PASS"
+              },
+              "upper": {
+                "steel_area_mm2": 2865.1325000738925,
+                "puz_kn": 4376.995398776712,
+                "alpha_n": 1,
+                "axes": {
+                  "x_positive": {
+                    "normal_deg": 272.15506802186434,
+                    "xu_mm": 201.40875024021568,
+                    "p_kn": 800.0000000158959,
+                    "mx_knm": 379.04942166644867,
+                    "my_knm": -1.8577557057142258e-11,
+                    "capacity_knm": 379.04942166644867,
+                    "axial_residual_kn": 1.5895921023911797e-08,
+                    "transverse_residual_knm": -1.8577557057142258e-11
+                  },
+                  "x_negative": {
+                    "normal_deg": 92.69731077361213,
+                    "xu_mm": 224.23133730112772,
+                    "p_kn": 799.9999999914206,
+                    "mx_knm": -401.9584459314137,
+                    "my_knm": -2.8392300009727477e-11,
+                    "capacity_knm": 401.9584459314137,
+                    "axial_residual_kn": -8.579377208661754e-09,
+                    "transverse_residual_knm": 2.8392300009727477e-11
+                  },
+                  "y_positive": {
+                    "normal_deg": 178.42976923538663,
+                    "xu_mm": 184.75168979617084,
+                    "p_kn": 799.9999999649903,
+                    "mx_knm": -8.692964911460877e-12,
+                    "my_knm": 284.0499429500441,
+                    "capacity_knm": 284.0499429500441,
+                    "axial_residual_kn": -3.5009747989533935e-08,
+                    "transverse_residual_knm": 8.692964911460877e-12
+                  },
+                  "y_negative": {
+                    "normal_deg": 358.21152027566853,
+                    "xu_mm": 185.8131031431388,
+                    "p_kn": 800.0000000021346,
+                    "mx_knm": -2.0871637389063835e-11,
+                    "my_knm": -283.7823826317892,
+                    "capacity_knm": 283.7823826317892,
+                    "axial_residual_kn": 2.1345840650610626e-09,
+                    "transverse_residual_knm": -2.0871637389063835e-11
+                  }
+                },
+                "demand": {
+                  "normal_deg": 320.0030801547836,
+                  "xu_mm": 317.3912084236256,
+                  "p_kn": 800.0000000331728,
+                  "mx_knm": 238.64294099375715,
+                  "my_knm": -159.09529399591503,
+                  "capacity_knm": 286.8131200935489,
+                  "axial_residual_kn": 3.317279606562806e-08,
+                  "transverse_residual_knm": -6.400568963726982e-11
+                },
+                "contour_ratio": 0.05984875628077943,
+                "direct_ratio": 0.05028432833599772,
+                "minimum_eccentricity_ratios": {
+                  "x": 0.05135653968573182,
+                  "y": 0.059200292295093555
+                },
+                "governing_ratio": 0.05984875628077943,
+                "strength_status": "PASS"
+              }
+            },
+            "governing_section": "lower",
+            "shear": {
+              "direction": "x",
+              "signed_demand_kn": -60,
+              "d_mm": 390,
+              "pitch_mm": 80,
+              "pitch_limit_mm": 292.5,
+              "credited_hoop_id": "HOOP",
+              "credited_legs": 2,
+              "vc_kn": 82.31166666666665,
+              "vus_kn": 276.47880672228246,
+              "crushing_kn": 750.75,
+              "capacity_kn": 358.7904733889491,
+              "utilization": 0.16722852040432137
+            }
+          },
+          "U3": {
+            "station_mm": 2750,
+            "sections": {
+              "upper": {
+                "steel_area_mm2": 2865.1325000738925,
+                "puz_kn": 4376.995398776712,
+                "alpha_n": 1,
+                "axes": {
+                  "x_positive": {
+                    "normal_deg": 272.15506802186434,
+                    "xu_mm": 201.40875024021568,
+                    "p_kn": 800.0000000158959,
+                    "mx_knm": 379.04942166644867,
+                    "my_knm": -1.8577557057142258e-11,
+                    "capacity_knm": 379.04942166644867,
+                    "axial_residual_kn": 1.5895921023911797e-08,
+                    "transverse_residual_knm": -1.8577557057142258e-11
+                  },
+                  "x_negative": {
+                    "normal_deg": 92.69731077361213,
+                    "xu_mm": 224.23133730112772,
+                    "p_kn": 799.9999999914206,
+                    "mx_knm": -401.9584459314137,
+                    "my_knm": -2.8392300009727477e-11,
+                    "capacity_knm": 401.9584459314137,
+                    "axial_residual_kn": -8.579377208661754e-09,
+                    "transverse_residual_knm": 2.8392300009727477e-11
+                  },
+                  "y_positive": {
+                    "normal_deg": 178.42976923538663,
+                    "xu_mm": 184.75168979617084,
+                    "p_kn": 799.9999999649903,
+                    "mx_knm": -8.692964911460877e-12,
+                    "my_knm": 284.0499429500441,
+                    "capacity_knm": 284.0499429500441,
+                    "axial_residual_kn": -3.5009747989533935e-08,
+                    "transverse_residual_knm": 8.692964911460877e-12
+                  },
+                  "y_negative": {
+                    "normal_deg": 358.21152027566853,
+                    "xu_mm": 185.8131031431388,
+                    "p_kn": 800.0000000021346,
+                    "mx_knm": -2.0871637389063835e-11,
+                    "my_knm": -283.7823826317892,
+                    "capacity_knm": 283.7823826317892,
+                    "axial_residual_kn": 2.1345840650610626e-09,
+                    "transverse_residual_knm": -2.0871637389063835e-11
+                  }
+                },
+                "demand": {
+                  "normal_deg": 138.46678316789627,
+                  "xu_mm": 324.45419914938685,
+                  "p_kn": 799.9999999528844,
+                  "mx_knm": -250.31335240905398,
+                  "my_knm": 154.03898609797298,
+                  "capacity_knm": 293.9128844272581,
+                  "axial_residual_kn": -4.7115577217482496e-08,
+                  "transverse_residual_knm": -7.975131666171364e-11
+                },
+                "contour_ratio": 0.3025285642041545,
+                "direct_ratio": 0.25967452145248826,
+                "minimum_eccentricity_ratios": {
+                  "x": 0.05135653968573182,
+                  "y": 0.059200292295093555
+                },
+                "governing_ratio": 0.3025285642041545,
+                "strength_status": "PASS"
+              }
+            },
+            "governing_section": "upper",
+            "shear": {
+              "direction": "y",
+              "signed_demand_kn": -200,
+              "d_mm": 490,
+              "pitch_mm": 100,
+              "pitch_limit_mm": 367.5,
+              "credited_hoop_id": "HOOP",
+              "credited_legs": 2,
+              "vc_kn": 84.61409090909089,
+              "vus_kn": 277.89664675675573,
+              "crushing_kn": 771.75,
+              "capacity_kn": 362.5107376658466,
+              "utilization": 0.5517077957132267
+            }
+          }
+        },
+        "governing_shear_row": "U1",
+        "governing_section_row": "U1",
+        "longitudinal_pieces": {
+          "C1": {
+            "parent_bar_id": "C1",
+            "diameter_mm": 20,
+            "centre_mm": [
+              62,
+              62
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "C2": {
+            "parent_bar_id": "C2",
+            "diameter_mm": 20,
+            "centre_mm": [
+              388,
+              62
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "C3": {
+            "parent_bar_id": "C3",
+            "diameter_mm": 20,
+            "centre_mm": [
+              388,
+              488
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "C4": {
+            "parent_bar_id": "C4",
+            "diameter_mm": 20,
+            "centre_mm": [
+              62,
+              488
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "T1": {
+            "parent_bar_id": "T1",
+            "diameter_mm": 16,
+            "centre_mm": [
+              155,
+              60
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "T2": {
+            "parent_bar_id": "T2",
+            "diameter_mm": 16,
+            "centre_mm": [
+              295,
+              60
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "B1": {
+            "parent_bar_id": "B1",
+            "diameter_mm": 16,
+            "centre_mm": [
+              155,
+              490
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "B2": {
+            "parent_bar_id": "B2",
+            "diameter_mm": 16,
+            "centre_mm": [
+              295,
+              490
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "L1-L": {
+            "parent_bar_id": "L1",
+            "diameter_mm": 16,
+            "centre_mm": [
+              60,
+              200
+            ],
+            "start_mm": -1000,
+            "end_mm": 1810,
+            "cut_mm": 2810
+          },
+          "L1-U": {
+            "parent_bar_id": "L1",
+            "diameter_mm": 16,
+            "centre_mm": [
+              60,
+              216
+            ],
+            "start_mm": 1170,
+            "end_mm": 4000,
+            "cut_mm": 2830
+          },
+          "R1-L": {
+            "parent_bar_id": "R1",
+            "diameter_mm": 16,
+            "centre_mm": [
+              390,
+              200
+            ],
+            "start_mm": -1000,
+            "end_mm": 1810,
+            "cut_mm": 2810
+          },
+          "R1-U": {
+            "parent_bar_id": "R1",
+            "diameter_mm": 16,
+            "centre_mm": [
+              390,
+              216
+            ],
+            "start_mm": 1170,
+            "end_mm": 4000,
+            "cut_mm": 2830
+          },
+          "I1": {
+            "parent_bar_id": "I1",
+            "diameter_mm": 16,
+            "centre_mm": [
+              180,
+              125
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          },
+          "I2": {
+            "parent_bar_id": "I2",
+            "diameter_mm": 16,
+            "centre_mm": [
+              270,
+              425
+            ],
+            "start_mm": -1000,
+            "end_mm": 4000,
+            "cut_mm": 5000
+          }
+        },
+        "cuts_qty_length_diameter": {
+          "C1": [
+            1,
+            5000,
+            20
+          ],
+          "C2": [
+            1,
+            5000,
+            20
+          ],
+          "C3": [
+            1,
+            5000,
+            20
+          ],
+          "C4": [
+            1,
+            5000,
+            20
+          ],
+          "T1": [
+            1,
+            5000,
+            16
+          ],
+          "T2": [
+            1,
+            5000,
+            16
+          ],
+          "B1": [
+            1,
+            5000,
+            16
+          ],
+          "B2": [
+            1,
+            5000,
+            16
+          ],
+          "L1-L": [
+            1,
+            2810,
+            16
+          ],
+          "L1-U": [
+            1,
+            2830,
+            16
+          ],
+          "R1-L": [
+            1,
+            2810,
+            16
+          ],
+          "R1-U": [
+            1,
+            2830,
+            16
+          ],
+          "I1": [
+            1,
+            5000,
+            16
+          ],
+          "I2": [
+            1,
+            5000,
+            16
+          ],
+          "HOOP": [
+            29,
+            1870,
+            10
+          ],
+          "Y1": [
+            29,
+            620.6858347057703,
+            10
+          ],
+          "Y2": [
+            29,
+            620.6858347057703,
+            10
+          ],
+          "X1": [
+            21,
+            520.6858347057703,
+            10
+          ],
+          "LX": [
+            8,
+            616.2477796076938,
+            10
+          ]
+        },
+        "bbs_quantity": 130,
+        "bbs_total_mm": 167374.1631786174,
+        "bbs_mass_kg": 179.8877572113546
+      }
+    },
+    "short_lap": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice-short_lap",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 250
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1165,
+            "end_mm": 1765,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 216,
+              "lap_link_id": "LX",
+              "hook_tail_mm": 80,
+              "fabrication_reference": "D2 local LX return at the X1 seat",
+              "compression_reference": "A1 synthetic U2 compression interval in this fixture"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "FAIL",
+        "governing_issue": "COLUMN.LAP_LENGTH",
+        "checked_bbs_available": false,
+        "provided_lap_mm": 600,
+        "required_contact_lap_mm": 637.9999999999999
+      }
+    },
+    "congested_partner": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice-congested_partner",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 87,
+              "y_from_top_mm": 245,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 250
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1170,
+            "end_mm": 1810,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 216,
+              "lap_link_id": "LX",
+              "hook_tail_mm": 80,
+              "fabrication_reference": "D2 local LX return at the X1 seat",
+              "compression_reference": "A1 synthetic U2 compression interval in this fixture"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "FAIL",
+        "governing_issue": "COLUMN.LAP_CLEAR_SPACING",
+        "checked_bbs_available": false,
+        "governing_pair": [
+          "I1",
+          "L1-U"
+        ],
+        "minimum_clear_mm": 23.6232255123179,
+        "required_clear_mm": 25
+      }
+    },
+    "missing_end_restraint": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice-missing_end_restraint",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 250
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1155,
+            "end_mm": 1795,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 216,
+              "lap_link_id": "LX",
+              "hook_tail_mm": 80,
+              "fabrication_reference": "D2 local LX return at the X1 seat",
+              "compression_reference": "A1 synthetic U2 compression interval in this fixture"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "FAIL",
+        "governing_issue": "COLUMN.LAP_END_RESTRAINT",
+        "checked_bbs_available": false,
+        "restraint_distances_mm": [
+          10,
+          70,
+          10,
+          70
+        ],
+        "maximum_mm": 64
+      }
+    },
+    "short_anchor": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice-short_anchor",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 800,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 250
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1170,
+            "end_mm": 1810,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 216,
+              "lap_link_id": "LX",
+              "hook_tail_mm": 80,
+              "fabrication_reference": "D2 local LX return at the X1 seat",
+              "compression_reference": "A1 synthetic U2 compression interval in this fixture"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "FAIL",
+        "governing_issue": "COLUMN.END_DEVELOPMENT",
+        "checked_bbs_available": false,
+        "provided_mm": 800,
+        "required_mm": 906.2499999999999,
+        "governing_diameter_mm": 20
+      }
+    },
+    "inadequate_shear": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice-inadequate_shear",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 400
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1170,
+            "end_mm": 1810,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 216,
+              "lap_link_id": "LX",
+              "hook_tail_mm": 80,
+              "fabrication_reference": "D2 local LX return at the X1 seat",
+              "compression_reference": "A1 synthetic U2 compression interval in this fixture"
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "FAIL",
+        "governing_issue": "COLUMN.SHEAR_CAPACITY",
+        "checked_bbs_available": false,
+        "direction": "y",
+        "signed_demand_kn": 400,
+        "d_mm": 490,
+        "pitch_mm": 100,
+        "pitch_limit_mm": 367.5,
+        "credited_hoop_id": "HOOP",
+        "credited_legs": 2,
+        "vc_kn": 84.61409090909089,
+        "vus_kn": 277.89664675675573,
+        "crushing_kn": 771.75,
+        "capacity_kn": 362.5107376658466,
+        "utilization": 1.1034155914264534
+      }
+    },
+    "numeric_only": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice-numeric_only",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 250
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1170,
+            "end_mm": 1810,
+            "stress_basis": "compression"
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "HOLD",
+        "governing_issue": "COLUMN.LAP_ASSEMBLY_REQUIRED",
+        "checked_bbs_available": false
+      }
+    },
+    "missing_compression_basis": {
+      "request": {
+        "identity": {
+          "family_id": "column",
+          "case_id": "COL07-mixed-contact-splice-missing_compression_basis",
+          "member_id": "COL03-C"
+        },
+        "geometry": {
+          "b_mm": 450,
+          "D_mm": 550,
+          "unsupported_length_mm": 3000,
+          "end_condition": "FIXED_FIXED",
+          "braced": true
+        },
+        "materials": {
+          "fck_nmm2": 30,
+          "fy_nmm2": 500
+        },
+        "reinforcement": {
+          "bars": [
+            {
+              "bar_id": "C1",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C2",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 62,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C3",
+              "x_from_left_mm": 388,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "C4",
+              "x_from_left_mm": 62,
+              "y_from_top_mm": 488,
+              "diameter_mm": 20,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "T2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 60,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B1",
+              "x_from_left_mm": 155,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "B2",
+              "x_from_left_mm": 295,
+              "y_from_top_mm": 490,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "L1",
+              "x_from_left_mm": 60,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "R1",
+              "x_from_left_mm": 390,
+              "y_from_top_mm": 200,
+              "diameter_mm": 16,
+              "row": "outer"
+            },
+            {
+              "bar_id": "I1",
+              "x_from_left_mm": 180,
+              "y_from_top_mm": 125,
+              "diameter_mm": 16,
+              "row": "inner"
+            },
+            {
+              "bar_id": "I2",
+              "x_from_left_mm": 270,
+              "y_from_top_mm": 425,
+              "diameter_mm": 16,
+              "row": "inner"
+            }
+          ],
+          "nominal_cover_mm": 40,
+          "project_required_cover_mm": 40,
+          "aggregate_size_mm": 20,
+          "project_required_bend_radius_mm": 16,
+          "project_required_cross_tie_bend_radius_mm": 10,
+          "detailing_basis_reference": "COL03 ordinary tie section and local bend schedule",
+          "tie": {
+            "tie_id": "HOOP",
+            "diameter_mm": 10,
+            "spacing_mm": 150,
+            "internal_bend_radius_mm": 16,
+            "closed": true,
+            "hook_angle_deg": 135,
+            "hook_tail_mm": 60
+          },
+          "cross_ties": [
+            {
+              "tie_id": "Y1",
+              "restrained_bar_ids": [
+                "T1",
+                "B1"
+              ],
+              "station_offset_mm": 15,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "negative"
+            },
+            {
+              "tie_id": "Y2",
+              "restrained_bar_ids": [
+                "T2",
+                "B2"
+              ],
+              "station_offset_mm": 30,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            },
+            {
+              "tie_id": "X1",
+              "restrained_bar_ids": [
+                "L1",
+                "R1"
+              ],
+              "station_offset_mm": 45,
+              "diameter_mm": 10,
+              "internal_bend_radius_mm": 10,
+              "hook_angle_deg": 135,
+              "hook_tail_mm": 60,
+              "hook_side": "positive"
+            }
+          ]
+        },
+        "basis": {
+          "analysis_revision": "A1",
+          "current_analysis_revision": "A1",
+          "detailing_revision": "D2",
+          "nonseismic_reference": "Ordinary braced specimen; no ductile detailing",
+          "action_source_reference": "COL07 mixed-splice synthetic station worksheet and U2 interval in this fixture",
+          "end_development_reference": "Straight projections into checked adjoining concrete",
+          "placement_reference": "COL07 specimen end and tie placement"
+        },
+        "end_detail": {
+          "start_straight_mm": 1000,
+          "end_straight_mm": 1000,
+          "end_hoop_offset_mm": 100,
+          "max_end_hoop_offset_mm": 110,
+          "end_face_clearance_mm": 25
+        },
+        "tie_fy_nmm2": 415,
+        "tie_zones": [
+          {
+            "zone_id": "LOW",
+            "start_mm": 100,
+            "end_mm": 700,
+            "pitch_mm": 100
+          },
+          {
+            "zone_id": "FIELD_LOW",
+            "start_mm": 700,
+            "end_mm": 1020,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "SPLICE",
+            "start_mm": 1020,
+            "end_mm": 1980,
+            "pitch_mm": 80
+          },
+          {
+            "zone_id": "FIELD_HIGH",
+            "start_mm": 1980,
+            "end_mm": 2300,
+            "pitch_mm": 160
+          },
+          {
+            "zone_id": "HIGH",
+            "start_mm": 2300,
+            "end_mm": 2900,
+            "pitch_mm": 100
+          }
+        ],
+        "actions": [
+          {
+            "pu_kn": 800,
+            "mx_knm": 75,
+            "my_knm": -45,
+            "check_station_mm": 250,
+            "combination_id": "U1",
+            "vx_kn": 0,
+            "vy_kn": 250
+          },
+          {
+            "pu_kn": 800,
+            "mx_knm": 12,
+            "my_knm": -8,
+            "check_station_mm": 1500,
+            "combination_id": "U2",
+            "vx_kn": -60,
+            "vy_kn": 0
+          },
+          {
+            "combination_id": "U3",
+            "check_station_mm": 2750,
+            "pu_kn": 800,
+            "mx_knm": -65,
+            "my_knm": 40,
+            "vx_kn": 0,
+            "vy_kn": -200
+          }
+        ],
+        "approved_lap_zone": {
+          "start_mm": 1100,
+          "end_mm": 1900,
+          "max_tie_pitch_mm": 150,
+          "reference": "COL07 project-approved low stress compression splice window"
+        },
+        "laps": [
+          {
+            "lap_id": "S1",
+            "bar_ids": [
+              "L1",
+              "R1"
+            ],
+            "start_mm": 1170,
+            "end_mm": 1810,
+            "stress_basis": "compression",
+            "contact_assembly": {
+              "partner_y_mm": 216,
+              "lap_link_id": "LX",
+              "hook_tail_mm": 80,
+              "fabrication_reference": "D2 local LX return at the X1 seat",
+              "compression_reference": null
+            }
+          }
+        ],
+        "transverse_cut_schedule": {
+          "detailing_revision": "D2",
+          "reference": "COL07 mixed closed hoop fabrication register",
+          "cut_lengths_mm": {
+            "HOOP": 1870
+          }
+        },
+        "schema_version": "column-positioned-member-detailing-input/v1"
+      },
+      "expected": {
+        "status": "HOLD",
+        "governing_issue": "COLUMN.LAP_COMPRESSION_BASIS",
+        "checked_bbs_available": false
+      }
+    }
+  }
+}
