@@ -2034,3 +2034,28 @@ qualified Python tree and the archive hashes.
   record the release gates in [PR #1087](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1087).
 
 TestPyPI verifies the exact archives before the production tag and upload.
+
+
+## v0.29.2 published and verified
+
+**2026-11-15 (Asia/Kolkata).** The annotated tag targets `ce833894d3acb981551780f2876c42255665efc8`.
+The two retained archives were built at `1d297e2dcde8cf29ae3ec1d4288e940cb521ef17` and
+preserve Python tree `b79b71451e4f623f7c7075bc22e9240da8b5b19b`.
+[PyPI 0.29.2](https://pypi.org/project/structural-lib-is456/0.29.2/) · [GitHub Release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.29.2)
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.29.2-py3-none-any.whl` | `0020714c9f69ce3d7d33b896b04de1d57c07ba63b766c47691f45a070d32bd7a` | 1407773 |
+| `structural_lib_is456-0.29.2.tar.gz` | `cfd41e3d6a6b8817ccc18f35c24940b2e2987cd061515a60088e98ae7c31bbd3` | 1193894 |
+
+All 20 installed profiles and 29 exact-wheel acceptance cases passed.
+Both archives passed 762 beam and column tests, 13 slab
+and footing cases, and the retained Coding Lab replays.
+[TestPyPI](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43722691414) · [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43722883710)
+
+All six public archive downloads match the qualified hashes. A fresh
+PyPI installation imports 0.29.2 from its isolated environment.
+The verification receipt SHA-256 is `69b4dece3916e923c1ee0b40b272417acea75cf41a98daab982c6b12bc821203`.
+[Public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.2/public-install-verification.json) · [Artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.2/artifact-manifest.json)
+
+The patch integrates the Coding Lab repairs in [PR #1086](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1086).
