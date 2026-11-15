@@ -62,8 +62,10 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const [loadCalcMagnitude, setLoadCalcMagnitude] = useState(20); // kN/m or kN
   const [loadCalcSupport, setLoadCalcSupport] = useState<'simply_supported' | 'cantilever'>('simply_supported');
   const [loadCalcPositionMm, setLoadCalcPositionMm] = useState(length / 2);
-  const [submittedLoadRequest, setSubmittedLoadRequest] = useState<LoadAnalysisRequest | null>(null);
-  const [loadAnalysisResult, setLoadAnalysisResult] = useState<LoadAnalysisResponse | null>(null);
+  const [loadCalculation, setLoadCalculation] = useState<{
+    request: LoadAnalysisRequest;
+    result: LoadAnalysisResponse;
+  } | null>(null);
   const latestLoadRequest = useRef(0);
 
   const exportParams = {
@@ -106,7 +108,9 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
     stirrupDiameterMm: inputs.stirrup_dia_mm ?? 8,
     mainBarDiameterMm: inputs.main_bar_dia_mm ?? 20,
   });
+  const submittedLoadRequest = loadCalculation?.request;
   const submittedLoad = submittedLoadRequest?.loads[0];
+  const loadAnalysisResult = loadCalculation?.result;
   const loadResultMatchesCurrentInputs = Boolean(
     submittedLoadRequest
       && submittedLoad
@@ -323,10 +327,11 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                       latestLoadRequest.current = requestNumber;
                       // Bind a result to the exact inputs submitted. An older network
                       // response must never become transferable after a later request.
-                      setSubmittedLoadRequest(request);
                       loadAnalysis.mutate(request, {
                         onSuccess: (result) => {
-                          if (latestLoadRequest.current === requestNumber) setLoadAnalysisResult(result);
+                          if (latestLoadRequest.current === requestNumber) {
+                            setLoadCalculation({ request, result });
+                          }
                         },
                       });
                     }}
@@ -351,6 +356,11 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                     </button>
                   )}
                 </div>
+                {loadAnalysis.error && (
+                  <p className="col-span-2 text-[10px] text-rose-300" role="alert">
+                    Load calculation failed. Check the current inputs and try again.
+                  </p>
+                )}
                 {cannotTransferLoadResult && (
                   <p className="col-span-2 text-[10px] leading-4 text-amber-300/80" role="status">
                     Transfer held. The diagram includes {minimumLoadMoment.toFixed(1)} kN·m of hogging. Quick Beam cannot preserve its tension face or station.

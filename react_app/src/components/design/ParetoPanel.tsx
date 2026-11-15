@@ -21,11 +21,15 @@ interface ParetoPanelProps {
 
 export function ParetoPanel({ spanMm, muKnm, vuKn, effectiveDepthOffsetMm }: ParetoPanelProps) {
   const [expanded, setExpanded] = useState(false);
-  const [submittedRequest, setSubmittedRequest] = useState<ParetoRequest | null>(null);
-  const [paretoResult, setParetoResult] = useState<ParetoResponse | null>(null);
+  const [comparison, setComparison] = useState<{
+    request: ParetoRequest;
+    result: ParetoResponse;
+  } | null>(null);
   const latestRequest = useRef(0);
   const { mutate, isPending, error } = useParetoDesign();
   const { setInputs } = useDesignStore();
+  const submittedRequest = comparison?.request;
+  const paretoResult = comparison?.result;
   const resultMatchesCurrentInputs = Boolean(
     submittedRequest
       && submittedRequest.span_mm === spanMm
@@ -46,10 +50,9 @@ export function ParetoPanel({ spanMm, muKnm, vuKn, effectiveDepthOffsetMm }: Par
     };
     const requestNumber = latestRequest.current + 1;
     latestRequest.current = requestNumber;
-    setSubmittedRequest(request);
     mutate(request, {
       onSuccess: (result) => {
-        if (latestRequest.current === requestNumber) setParetoResult(result);
+        if (latestRequest.current === requestNumber) setComparison({ request, result });
       },
     });
   };
@@ -97,6 +100,9 @@ export function ParetoPanel({ spanMm, muKnm, vuKn, effectiveDepthOffsetMm }: Par
     return (
       <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-3">
         <p className="text-xs text-red-400">Optimization failed: {error.message}</p>
+        <button type="button" onClick={handleFindAlternatives} className="mt-2 text-xs font-medium text-violet-300 hover:text-violet-200">
+          Retry comparison
+        </button>
       </div>
     );
   }

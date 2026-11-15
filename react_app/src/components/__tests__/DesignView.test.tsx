@@ -25,6 +25,7 @@ const mockLoadAnalysis = vi.hoisted(() => ({
     sfd_kn: number[];
   },
   isPending: false,
+  error: null as Error | null,
 }));
 
 const mockActions = vi.hoisted(() => ({
@@ -120,6 +121,7 @@ describe('DesignView', () => {
     mockDesignInputs.include_serviceability = false;
     mockLength = 4000;
     mockLoadAnalysis.data = null;
+    mockLoadAnalysis.error = null;
     mockLoadAnalysis.mutate.mockReset();
     mockLoadAnalysis.mutate.mockImplementation((_request: unknown, options?: { onSuccess?: (data: NonNullable<typeof mockLoadAnalysis.data>) => void }) => {
       if (mockLoadAnalysis.data) options?.onSuccess?.(mockLoadAnalysis.data);
@@ -268,5 +270,30 @@ describe('DesignView', () => {
     rerender(React.createElement(DesignView));
     expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
     expect(screen.getByText(/inputs changed after this diagram/i)).toBeInTheDocument();
+  });
+
+  it('keeps the previous diagram stale when recalculation fails', () => {
+    mockLoadAnalysis.data = {
+      max_bm_knm: 40,
+      min_bm_knm: 0,
+      max_sf_kn: 40,
+      min_sf_kn: -40,
+      bmd_knm: [0, 40, 0],
+      sfd_kn: [40, 0, -40],
+    };
+    const { rerender } = render(React.createElement(DesignView));
+    fireEvent.click(screen.getByLabelText('Load Calculator'));
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+    expect(screen.getByRole('button', { name: /use values/i })).toBeEnabled();
+
+    fireEvent.change(screen.getByLabelText('w in kN/m'), { target: { value: '40' } });
+    mockLoadAnalysis.mutate.mockImplementationOnce(() => {
+      mockLoadAnalysis.error = new Error('Request failed');
+    });
+    fireEvent.click(screen.getByRole('button', { name: /compute/i }));
+    rerender(React.createElement(DesignView));
+    expect(screen.getByText(/load calculation failed/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
+    expect(mockActions.updateInputs).not.toHaveBeenCalled();
   });
 });
