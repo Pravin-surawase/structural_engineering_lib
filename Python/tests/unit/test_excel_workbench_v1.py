@@ -609,3 +609,49 @@ def test_cli_requires_preview_hash_and_matches_python_result(tmp_path) -> None:
     cli_result = json.loads(result_path.read_text(encoding="utf-8"))
     python_result = run_excel_workbook_v1(_run_request(preview_request.rows))
     assert cli_result == python_result.model_dump(mode="json")
+
+
+def test_calculation_error_is_blocked_and_visible_beside_a_valid_workbook_row():
+    bad = list(_explicit_row())
+    bad[HEADERS.index("Effective d (mm)")] = 501
+    result = run_excel_workbook_v1(_run_request((_derived_row(), tuple(bad))))
+    valid, failed = result.row_ledger
+    assert result.counts.model_dump() == {
+        "source_rows": 2,
+        "accepted_rows": 1,
+        "blocked_rows": 1,
+        "excluded_rows": 0,
+    }
+    assert valid.result is not None and valid.passport is not None
+    assert failed.disposition == "BLOCKED"
+    assert failed.normalized_input is not None
+    assert failed.result is failed.passport is None
+    assert failed.result_envelope["intake_status"] == "VALID"
+    assert failed.result_envelope["calculation_status"] == "ERROR"
+    assert failed.result_envelope["engineering_status"] == "HOLD"
+    markdown = render_excel_review_bundle_markdown_v1(result)
+    assert "- Calculation errors among blocked rows: 1" in markdown
+
+
+@pytest.mark.parametrize(
+    ("header", "field"),
+    [("Row ID", "row_id"), ("Beam ID", "beam_id"), ("Case ID", "case_id")],
+)
+def test_overlong_identifier_blocks_only_its_workbook_row(header, field):
+    row = list(_explicit_row())
+    index = HEADERS.index(header)
+    row[index] = " " + "X" * 128 + " "
+    valid_and_boundary = run_excel_workbook_v1(
+        _run_request((_derived_row(), tuple(row)))
+    )
+    assert valid_and_boundary.counts.accepted_rows == 2
+
+    row[index] = " " + "X" * 129 + " "
+    result = run_excel_workbook_v1(_run_request((_derived_row(), tuple(row))))
+    valid, blocked = result.row_ledger
+    assert valid.passport is not None and blocked.passport is None
+    assert blocked.disposition == "BLOCKED" and blocked.raw_values[index] == row[index]
+    assert any(
+        issue.code == "E_EXCEL_IDENTIFIER_TOO_LONG" and issue.path.endswith(f".{field}")
+        for issue in blocked.issues
+    )

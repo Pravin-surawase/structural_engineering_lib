@@ -210,6 +210,8 @@ def _review_state(dossier: CalculationDossierV1) -> str:
     active = _active_attestations(dossier.attestations)
     if any(item.decision == "REJECTED" for item in active):
         return "REVIEWED_REJECTED"
+    if any(item.decision == "ACCEPTED_WITH_HOLDS" for item in active):
+        return "REVIEW_READY"
     approvers = {
         item.identity.identity_id for item in active if item.role == "APPROVED"
     }
@@ -434,7 +436,9 @@ def verify_signed_calculation_dossier_v1(
     status: Literal["SIGNATURE_INVALID", "STALE_SUPERSEDED", "SIGNATURE_PENDING"] = (
         "SIGNATURE_INVALID"
         if invalid
-        else "STALE_SUPERSEDED" if stale else "SIGNATURE_PENDING"
+        else "STALE_SUPERSEDED"
+        if stale
+        else "SIGNATURE_PENDING"
     )
     return DossierVerificationResultV1(
         status=status,

@@ -44,6 +44,7 @@ EXCEL_WORKBOOK_TEMPLATE_ID: Final[
 ] = "structural-lib-rectangular-beam-workbench"
 EXCEL_WORKBOOK_TEMPLATE_VERSION: Final[Literal["1.0"]] = "1.0"
 _ID_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+EXCEL_IDENTIFIER_MAX_LENGTH = 128
 _SHA256_PATTERN = r"^[0-9a-f]{64}$"
 
 ExcelCellValueV1 = str | int | float | bool | None
@@ -186,9 +187,9 @@ class ExcelCalculationPassportV1(_FrozenModel):
     schema_version: Literal["excel-calculation-passport/v1"] = (
         "excel-calculation-passport/v1"
     )
-    row_id: str = Field(min_length=1, max_length=128)
-    beam_id: str = Field(min_length=1, max_length=128)
-    case_id: str = Field(min_length=1, max_length=128)
+    row_id: str = Field(min_length=1, max_length=EXCEL_IDENTIFIER_MAX_LENGTH)
+    beam_id: str = Field(min_length=1, max_length=EXCEL_IDENTIFIER_MAX_LENGTH)
+    case_id: str = Field(min_length=1, max_length=EXCEL_IDENTIFIER_MAX_LENGTH)
     raw_row_hash: str = Field(pattern=_SHA256_PATTERN)
     normalized_input_hash: str = Field(pattern=_SHA256_PATTERN)
     calculation_identity: str = Field(pattern=_SHA256_PATTERN)
@@ -204,8 +205,8 @@ class ExcelRowLedgerEntryV1(_FrozenModel):
     source_row_number: int = Field(ge=2)
     raw_values: tuple[ExcelCellValueV1, ...]
     raw_row_hash: str = Field(pattern=_SHA256_PATTERN)
-    row_id: str | None = Field(default=None, max_length=128)
-    beam_id: str | None = Field(default=None, max_length=128)
+    row_id: str | None = Field(default=None, max_length=EXCEL_IDENTIFIER_MAX_LENGTH)
+    beam_id: str | None = Field(default=None, max_length=EXCEL_IDENTIFIER_MAX_LENGTH)
     disposition: ExcelRowDispositionV1
     issues: tuple[ExcelRowIssueV1, ...] = ()
     normalized_input: dict[str, Any] | None = None
