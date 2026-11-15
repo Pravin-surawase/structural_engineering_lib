@@ -18,9 +18,9 @@ vi.mock('lucide-react', () => ({
 }));
 
 // Mock design store
-const mockSetInputs = vi.fn();
+const mockApplyParetoProposal = vi.fn();
 vi.mock('../../store/designStore', () => ({
-  useDesignStore: vi.fn(() => ({ setInputs: mockSetInputs })),
+  useDesignStore: vi.fn(() => ({ applyParetoProposal: mockApplyParetoProposal })),
 }));
 
 // Mock useParetoDesign hook — controls per test
@@ -38,7 +38,7 @@ vi.mock('../../hooks/useParetoDesign', () => ({
 
 beforeEach(() => {
   mockMutate.mockClear();
-  mockSetInputs.mockClear();
+  mockApplyParetoProposal.mockClear();
   mockHookReturn = {
     mutate: mockMutate,
     data: null,
@@ -144,7 +144,7 @@ describe('ParetoPanel', () => {
     expect(screen.getByText('0.42s')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /alternative design/i }));
     fireEvent.click(screen.getByRole('button', { name: 'Apply dimensions' }));
-    expect(mockSetInputs).toHaveBeenCalledWith({
+    expect(mockApplyParetoProposal).toHaveBeenCalledWith({
       width: 300,
       depth: 500,
       effective_depth: 460,

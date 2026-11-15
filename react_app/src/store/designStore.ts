@@ -7,9 +7,24 @@ import { create } from 'zustand';
 import type { BeamDesignRequest, BeamDesignResponse } from '../api/client';
 import type { ResultLifecycle } from '../workspace/types';
 
+type EffectiveDepthSource = 'pareto_proposal' | 'explicit' | null;
+
+const EFFECTIVE_DEPTH_BASIS_KEYS = [
+  'depth',
+  'clear_cover',
+  'stirrup_dia_mm',
+  'main_bar_dia_mm',
+] as const satisfies readonly (keyof BeamDesignRequest)[];
+
 export interface DesignState {
   // Input parameters
   inputs: BeamDesignRequest;
+  /**
+   * Pareto alternatives carry an optimizer-selected depth.  It is a proposal,
+   * not a manual effective-depth override, so a later manual basis edit must
+   * return the request to the API's derived-depth contract.
+   */
+  effectiveDepthSource: EffectiveDepthSource;
   length: number; // mm - for 3D visualization
 
   // Result from API
@@ -27,6 +42,7 @@ export interface DesignState {
 
   // Actions
   setInputs: (inputs: Partial<BeamDesignRequest>) => void;
+  applyParetoProposal: (inputs: Partial<BeamDesignRequest> & { effective_depth: number }) => void;
   setLength: (length: number) => void;
   setResult: (result: BeamDesignResponse | null, inputRevision?: number) => boolean;
   setLoading: (loading: boolean, inputRevision?: number) => boolean;
@@ -54,8 +70,29 @@ const DEFAULT_INPUTS: BeamDesignRequest = {
 
 const DEFAULT_LENGTH = 4000; // mm
 
+function revisedInputState(
+  state: DesignState,
+  inputs: BeamDesignRequest,
+  effectiveDepthSource: EffectiveDepthSource,
+): Pick<DesignState, 'inputs' | 'effectiveDepthSource' | 'inputRevision' | 'resultLifecycle' | 'isLoading' | 'error'> {
+  return {
+    inputs,
+    effectiveDepthSource,
+    inputRevision: state.inputRevision + 1,
+    resultLifecycle: state.result ? 'stale' : 'not_evaluated',
+    isLoading: false,
+    error: null,
+  };
+}
+
+function withoutEffectiveDepth(inputs: BeamDesignRequest): BeamDesignRequest {
+  const { effective_depth: _effectiveDepth, ...derivedInputs } = inputs;
+  return derivedInputs;
+}
+
 export const useDesignStore = create<DesignState>((set) => ({
   inputs: DEFAULT_INPUTS,
+  effectiveDepthSource: null,
   length: DEFAULT_LENGTH,
   result: null,
   inputRevision: 1,
@@ -69,17 +106,49 @@ export const useDesignStore = create<DesignState>((set) => ({
 
   setInputs: (inputs) =>
     set((state) => {
-      const changed = Object.entries(inputs).some(
+      const suppliesEffectiveDepth = Object.prototype.hasOwnProperty.call(inputs, 'effective_depth');
+      const geometryChanged = EFFECTIVE_DEPTH_BASIS_KEYS.some(
+        (key) => Object.prototype.hasOwnProperty.call(inputs, key)
+          && state.inputs[key as keyof BeamDesignRequest] !== inputs[key as keyof BeamDesignRequest],
+      );
+      const clearParetoDepth = state.effectiveDepthSource === 'pareto_proposal'
+        && !suppliesEffectiveDepth
+        && geometryChanged;
+      const nextInputs = clearParetoDepth
+        ? { ...inputs, effective_depth: undefined }
+        : inputs;
+      const inputsChanged = Object.entries(nextInputs).some(
         ([key, value]) => state.inputs[key as keyof BeamDesignRequest] !== value,
       );
-      if (!changed) return state;
-      return {
-        inputs: { ...state.inputs, ...inputs },
-        inputRevision: state.inputRevision + 1,
-        resultLifecycle: state.result ? 'stale' : 'not_evaluated',
-        isLoading: false,
-        error: null,
-      };
+      const effectiveDepthSource: EffectiveDepthSource = suppliesEffectiveDepth
+        ? (inputs.effective_depth === undefined ? null : 'explicit')
+        : (clearParetoDepth ? null : state.effectiveDepthSource);
+      if (!inputsChanged) {
+        return effectiveDepthSource === state.effectiveDepthSource
+          ? state
+          : { effectiveDepthSource };
+      }
+      const mergedInputs = { ...state.inputs, ...nextInputs };
+      // Omit rather than assign `undefined` so consumers that inspect the
+      // in-memory request see the same derived-depth contract sent on HTTP.
+      return revisedInputState(
+        state,
+        clearParetoDepth ? withoutEffectiveDepth(mergedInputs) : mergedInputs,
+        effectiveDepthSource,
+      );
+    }),
+
+  applyParetoProposal: (inputs) =>
+    set((state) => {
+      const inputsChanged = Object.entries(inputs).some(
+        ([key, value]) => state.inputs[key as keyof BeamDesignRequest] !== value,
+      );
+      if (!inputsChanged) {
+        return state.effectiveDepthSource === 'pareto_proposal'
+          ? state
+          : { effectiveDepthSource: 'pareto_proposal' };
+      }
+      return revisedInputState(state, { ...state.inputs, ...inputs }, 'pareto_proposal');
     }),
 
   setLength: (length) =>
@@ -149,6 +218,7 @@ export const useDesignStore = create<DesignState>((set) => ({
   reset: () =>
     set((state) => ({
       inputs: DEFAULT_INPUTS,
+      effectiveDepthSource: null,
       length: DEFAULT_LENGTH,
       result: null,
       inputRevision: state.inputRevision + 1,

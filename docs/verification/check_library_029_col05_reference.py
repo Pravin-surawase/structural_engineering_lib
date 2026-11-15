@@ -183,13 +183,19 @@ def concrete_circle_resultants(radius, xu, fck):
 def _capacity_model(
     diameter, fck, fy, pu, count, bar_diameter, ring, first_angle, samples
 ):
-    radius = diameter / 2
-    area = math.pi * bar_diameter**2 / 4
     angles = [
         math.radians(first_angle) + 2 * math.pi * index / count
         for index in range(count)
     ]
-    bars = [(ring * math.cos(theta), ring * math.sin(theta)) for theta in angles]
+    bars = tuple((ring * math.cos(theta), ring * math.sin(theta)) for theta in angles)
+    return positioned_capacity_model(diameter, fck, fy, pu, bar_diameter, bars, samples)
+
+
+@cache
+def positioned_capacity_model(diameter, fck, fy, pu, bar_diameter, bars, samples):
+    """Return signed capacities for exact bar centres relative to the centroid."""
+    radius = diameter / 2
+    area = math.pi * bar_diameter**2 / 4
 
     @cache
     def plane(normal):
