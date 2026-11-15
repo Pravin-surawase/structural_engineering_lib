@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import importlib
 import json
+from copy import deepcopy
 from io import StringIO
 from pathlib import Path
 from xml.etree import ElementTree
@@ -212,6 +213,62 @@ def test_two_plane_shear_reference_and_checked_outputs(name):
         for line in svg.iter()
         if line.attrib.get("data-bar-id") == "H"
     ] == physical["hoop_stations_mm"]
+
+
+@pytest.mark.parametrize("pitch,status", [(120, "PASS"), (140, "FAIL")])
+@pytest.mark.parametrize("two_plane", [False, True])
+def test_actual_shear_zone_requires_minimum_hoop_steel(pitch, status, two_plane):
+    request = deepcopy(
+        _TWO_PLANE_CASES["two_plane_pass"]["request"]
+        if two_plane
+        else _CASES["six_bar_omit_x_face_midpoints"]["request"]
+    )
+    request["tie_fy_nmm2"] = 250
+    request["tie_zones"][1]["pitch_mm"] = pitch
+    request["actions"] = [
+        {
+            "combination_id": "U1",
+            "check_station_mm": 1500,
+            "pu_kn": 500,
+            "mx_knm": 30,
+            "my_knm": 21,
+            "vx_kn": -40 if two_plane else -70,
+            "vy_kn": 30 if two_plane else 0,
+        }
+    ]
+    result = column.check_column_member_detailing(
+        column.load_column_member_detailing(request)
+    )
+    calculation = result.calculation
+    assert result.engineering_status.value == status
+    shear = calculation["governing_shear"]["shear"]
+    plane_x = shear["planes"][0] if two_plane else shear
+    assert plane_x["direction"] == "x"
+    assert plane_x["pitch_mm"] == pitch
+    assert plane_x["utilization"] < 1
+    assert plane_x["minimum_shear_reinforcement_pitch_limit_mm"] == pytest.approx(
+        136.65928043
+    )
+    assert plane_x["geometric_pitch_limit_mm"] == 180
+    if two_plane:
+        assert shear["planes"][1]["link_spacing_pass"]
+        assert (shear["interaction_utilization"] is not None) == (status == "PASS")
+    report = column.render_column_member_detailing_html(result)
+    assert "136.659 mm" in report
+    assert (column.render_column_member_detailing_svg(result) is not None) == (
+        status == "PASS"
+    )
+    assert (column.render_column_member_bbs_csv(result) is not None) == (
+        status == "PASS"
+    )
+    if status == "FAIL":
+        assert shear["governing_check"] == "COLUMN.SHEAR_MINIMUM_REINFORCEMENT"
+        assert "COLUMN.SHEAR_MINIMUM_REINFORCEMENT" in {
+            issue.code for issue in result.issues
+        }
+        assert "<svg" not in report
+        if two_plane:
+            assert "Interaction withheld because a link pitch check failed" in report
 
 
 def test_member_detailing_capability_resolves():

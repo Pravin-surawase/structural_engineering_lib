@@ -34,6 +34,16 @@ def _request(specimen_name: str, route_name: str, scenario: str = "baseline"):
 
 
 def _assert_governors(calculation, expected: dict[str, object]) -> None:
+    expected = {
+        **expected,
+        **{
+            check_id.replace(".torsion_area_per_layer", ".torsion_bar_diameter"): min(
+                calculation.rows
+            )
+            for check_id, row_id in expected.items()
+            if check_id.endswith(".torsion_area_per_layer") and row_id is not None
+        },
+    }
     assert calculation.governing_ids == expected
     assert set(calculation.governing_rows) == set(expected)
     for check_id, row_id in expected.items():
@@ -65,7 +75,22 @@ def _assert_row(
         abs=TOLERANCES["actions_knm_per_m_or_kn_per_m"],
         rel=0,
     )
-    assert set(row.checks) == set(expected["checks"])
+    added_corner_checks = {
+        check_id.replace(".torsion_area_per_layer", ".torsion_bar_diameter")
+        for check_id, frozen in expected["checks"].items()
+        if check_id.endswith(".torsion_area_per_layer")
+        and frozen["status"] != "NOT_APPLICABLE"
+    }
+    assert set(row.checks) == set(expected["checks"]) | added_corner_checks
+    for check_id in added_corner_checks:
+        actual = row.checks[check_id]
+        b04 = FIXTURE["specimens"]["B04"]
+        assert actual.demand == b04["reinforcement_inputs"]["torsion_bar_diameter_mm"]
+        assert (
+            actual.limit
+            == b04["geometry_material_and_support_inputs"]["thickness_mm"] / 8
+        )
+        assert _value(actual.status) == "PASS"
     for check_id, frozen in expected["checks"].items():
         actual = row.checks[check_id]
         if service_held and check_id == "reviewed_span_depth":
@@ -88,6 +113,26 @@ def _assert_row(
     assert _value(row.reviewed_service) == (
         "HOLD" if service_held else expected["reviewed_service_status"]
     )
+
+
+@pytest.mark.parametrize("route_name", ("external", "builtin"))
+def test_b04_action_sets_report_oversized_corner_bars_separately(route_name):
+    payload = request_payload(FIXTURE, "B04", route_name, "baseline")
+    payload["reinforcement"]["torsion_bar_diameter_mm"] = 25
+    result = slab.check_action_set(slab.load_action_set(payload))
+    assert _value(result.engineering_status) == "FAIL"
+    for row in result.calculation.rows.values():
+        for corner in ("x_min_y_min", "x_min_y_max", "x_max_y_min"):
+            diameter = row.checks[f"{corner}.torsion_bar_diameter"]
+            assert diameter.demand == 25
+            assert diameter.limit == 20
+            assert diameter.utilization == 1.25
+            assert _value(diameter.status) == "FAIL"
+            assert (
+                _value(row.checks[f"{corner}.torsion_area_per_layer"].status) == "PASS"
+            )
+        assert "x_max_y_max.torsion_bar_diameter" not in row.checks
+    assert result.calculation.governing_ids["x_min_y_min.torsion_bar_diameter"] == "A"
 
 
 def _assert_row_provenance(specimen_name: str, route_name: str, row) -> None:

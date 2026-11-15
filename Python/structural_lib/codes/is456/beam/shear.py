@@ -67,11 +67,19 @@ def shear_reinforcement_component_kn(
     return design_force_kn * (d_mm / spacing_mm) * (math.sin(alpha) + math.cos(alpha))
 
 
+def _minimum_vertical_stirrup_pitch_mm(
+    b_mm: float, asv_mm2: float, fy_nmm2: float
+) -> float:
+    return 0.87 * min(fy_nmm2, 415.0) * asv_mm2 / (0.4 * b_mm)
+
+
 def _exact_vertical_stirrup_limit_mm(
     b_mm: float, d_mm: float, asv_mm2: float, fy_nmm2: float, required_vus_kn: float
 ) -> float:
     steel = 0.87 * min(fy_nmm2, 415.0) * asv_mm2
-    limit = min(0.75 * d_mm, 300.0, steel / (0.4 * b_mm))
+    limit = min(
+        0.75 * d_mm, 300.0, _minimum_vertical_stirrup_pitch_mm(b_mm, asv_mm2, fy_nmm2)
+    )
     if required_vus_kn > 0:
         limit = min(limit, steel * d_mm / (1000.0 * required_vus_kn))
     return limit

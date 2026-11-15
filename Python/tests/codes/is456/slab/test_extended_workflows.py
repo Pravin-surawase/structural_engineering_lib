@@ -228,6 +228,29 @@ def test_b04_two_way_moments_strips_shear_and_corner_torsion() -> None:
     assert not any("built-in coefficient" in item.lower() for item in panel.held_scope)
 
 
+@pytest.mark.parametrize("diameter,adequate", [(8, True), (20, True), (25, False)])
+def test_two_way_corner_bar_diameter_is_independent_of_torsion_area(diameter, adequate):
+    panel = _two_way_b04(
+        torsion_bar_diameter_mm=diameter,
+        x_positive_bar_spacing_mm=150,
+        x_negative_bar_spacing_mm=150,
+        y_negative_bar_diameter_mm=12,
+        y_negative_bar_spacing_mm=150,
+        y_positive_bar_diameter_mm=12,
+        y_positive_bar_spacing_mm=150,
+    ).panel
+    assert panel.provided_reinforcement_is_adequate is adequate
+    for corner in panel.corner_torsion:
+        if corner.torsion_class is CornerTorsionClass.NONE:
+            assert corner.diameter_passed is None
+            assert corner.is_adequate
+        else:
+            assert corner.bar_diameter_mm == diameter
+            assert corner.maximum_diameter_mm == 20
+            assert corner.area_passed is True
+            assert corner.diameter_passed is adequate
+
+
 def test_two_way_topology_and_coefficient_case_must_match() -> None:
     with pytest.raises(SlabContractError, match="must match"):
         _two_way_b04(support_topology_kind="four_edges_continuous")

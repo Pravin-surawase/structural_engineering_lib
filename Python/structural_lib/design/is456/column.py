@@ -348,8 +348,8 @@ def render_column_member_detailing_svg(
     -------
     str | None
         SVG showing the input identity, revisions and engineering status, or
-        ``None`` when a requested simultaneous two-plane shear screen is not
-        an engineering PASS and checked drawing issue is withheld.
+        ``None`` when the minimum shear steel check fails or a requested
+        simultaneous two-plane shear screen is held or fails.
 
     Raises
     ------
@@ -363,8 +363,8 @@ def render_column_member_detailing_svg(
     Limitations
     -----------
     The section cuts show the checked contact links. The closed hoop uses a supplied fabrication basis.
-    A failed or held requested two-plane shared-hoop screen withholds only its
-    checked drawing; legacy single-plane diagnostic SVG behaviour is unchanged.
+    Drawing availability follows the checked member disposition for the
+    applicable shear gate.
 
     Provenance
     ----------

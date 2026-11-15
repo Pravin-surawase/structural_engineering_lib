@@ -72,6 +72,11 @@ class SlabReinforcementRegionResult:
         return self.area_passed and self.diameter_passed and self.spacing_passed
 
 
+def _maximum_slab_bar_diameter_mm(overall_depth_mm: float) -> float:
+    """IS 456 Cl. 26.5.2.2 for all provided slab reinforcement."""
+    return overall_depth_mm / 8.0
+
+
 def check_slab_reinforcement_region(
     *,
     region_id: str,
@@ -90,7 +95,7 @@ def check_slab_reinforcement_region(
         overall_depth_mm=overall_depth_mm, fy_n_per_mm2=fy_n_per_mm2
     )
     required = max(required_for_moment_mm2_per_m, minimum)
-    maximum_diameter = overall_depth_mm / 8.0
+    maximum_diameter = _maximum_slab_bar_diameter_mm(overall_depth_mm)
     maximum_spacing = min(
         5.0 * effective_depth_mm if distribution_only else 3.0 * effective_depth_mm,
         300.0,

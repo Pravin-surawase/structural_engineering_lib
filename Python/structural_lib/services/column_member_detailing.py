@@ -8,7 +8,7 @@ from itertools import pairwise
 from math import fsum, isclose, pi
 from typing import Any, Literal, TypeVar
 
-from structural_lib.codes.is456.beam.shear import _exact_vertical_stirrup_limit_mm
+from structural_lib.codes.is456.beam.shear import _minimum_vertical_stirrup_pitch_mm
 from structural_lib.codes.is456.column.member_detailing import (
     ordinary_column_shear,
     straight_column_bond_lengths,
@@ -84,6 +84,7 @@ _SHEAR = "IS 456:2000 Cl. 40.1–40.4 and Tables 19–20"
 _TWO_PLANE_BASIS = "bounded shared-transverse-reinforcement allocation v1"
 _TWO_PLANE_CHECK = "COLUMN.TWO_PLANE_SHARED_REINFORCEMENT"
 _TWO_PLANE_SOURCE = "Declared COL07 shared closed-hoop allocation"
+MINIMUM_SHEAR_LINK_CHECK = "COLUMN.SHEAR_MINIMUM_REINFORCEMENT"
 
 
 _Cage = TypeVar("_Cage", RectangularColumnCageV1, PositionedColumnCageV1)
@@ -486,31 +487,48 @@ def _check_rectangular_shear(
         if plane is None:
             return None
         planes.append(plane)
-    utilization = fsum(plane["utilization"] for plane in planes)
-    status = _PASS if utilization <= 1 else _FAIL
-    record(
-        _TWO_PLANE_CHECK,
-        status,
-        path,
-        "Sum the two demand-to-capacity ratios for the same closed hoop at this station.",
-        _TWO_PLANE_SOURCE,
-        interaction_basis=_TWO_PLANE_BASIS,
-        utilization=utilization,
-        limit=1.0,
-    )
+    interaction = None
+    if all(plane["link_spacing_pass"] for plane in planes):
+        interaction = fsum(plane["utilization"] for plane in planes)
+        record(
+            _TWO_PLANE_CHECK,
+            _PASS if interaction <= 1 else _FAIL,
+            path,
+            "Sum the two demand-to-capacity ratios for the same closed hoop at this station.",
+            _TWO_PLANE_SOURCE,
+            interaction_basis=_TWO_PLANE_BASIS,
+            utilization=interaction,
+            limit=1.0,
+        )
     failed_plane = max(
         (plane for plane in planes if plane["status"] == _FAIL.value),
-        key=lambda plane: plane["utilization"],
+        key=lambda plane: (
+            not plane["link_spacing_pass"],
+            (
+                plane["utilization"]
+                if plane["link_spacing_pass"]
+                else plane["pitch_mm"] / plane["pitch_limit_mm"]
+            ),
+        ),
         default=None,
+    )
+    status = (
+        _FAIL
+        if failed_plane is not None or (interaction is not None and interaction > 1)
+        else _PASS
     )
     return {
         "direction": "xy",
         "planes": planes,
-        "status": _FAIL.value if failed_plane is not None else status.value,
+        "status": status.value,
         "interaction_basis": _TWO_PLANE_BASIS,
-        "interaction_utilization": utilization,
+        "interaction_utilization": interaction,
         "interaction_limit": 1.0,
-        "utilization": utilization,
+        "utilization": (
+            interaction
+            if interaction is not None
+            else max(plane["utilization"] for plane in planes)
+        ),
         "governing_check": (
             failed_plane["governing_check"]
             if failed_plane is not None
@@ -621,30 +639,36 @@ def _check_shear_plane(
         pitch_mm=zone.pitch_mm,
     )
     hoop_area = pi * tie.diameter_mm**2 / 2
-    pitch_limit = (
-        _exact_vertical_stirrup_limit_mm(
-            width, shear.d_mm, hoop_area, request.tie_fy_nmm2, 0
-        )
-        if shared_hoop
-        else 0.75 * shear.d_mm
+    geometric_limit = min(0.75 * shear.d_mm, 300.0)
+    minimum_steel_limit = (
+        _minimum_vertical_stirrup_pitch_mm(width, hoop_area, request.tie_fy_nmm2)
+        if demand
+        else None
     )
-    spacing_ok = zone.pitch_mm <= pitch_limit
-    if shared_hoop or not spacing_ok:
+    geometry_ok = zone.pitch_mm <= geometric_limit
+    minimum_steel_ok = (
+        minimum_steel_limit is None or zone.pitch_mm <= minimum_steel_limit
+    )
+    spacing_ok = geometry_ok and minimum_steel_ok
+    if demand or not geometry_ok:
         record(
             "COLUMN.SHEAR_LINK_SPACING",
-            _PASS if spacing_ok else _FAIL,
+            _PASS if geometry_ok else _FAIL,
             path,
-            (
-                "Check the hoop pitch against the vertical reinforcement limits in this plane."
-                if shared_hoop
-                else "The spacing exceeds the 0.75d limit of the admitted vertical shear transfer model."
-            ),
-            "IS 456:2000 Cl. 26.5.1.5–6" if shared_hoop else _SHEAR,
-            **(
-                {"actual_mm": zone.pitch_mm, "limit_mm": pitch_limit}
-                if shared_hoop
-                else {}
-            ),
+            "Check the hoop pitch against the geometric vertical reinforcement limit in this plane.",
+            "IS 456:2000 Cl. 26.5.1.5",
+            actual_mm=zone.pitch_mm,
+            limit_mm=geometric_limit,
+        )
+    if minimum_steel_limit is not None:
+        record(
+            MINIMUM_SHEAR_LINK_CHECK,
+            _PASS if minimum_steel_ok else _FAIL,
+            path,
+            f"Hoop pitch {zone.pitch_mm:g} mm against {minimum_steel_limit:.3f} mm permitted by minimum shear reinforcement.",
+            "IS 456:2000 Cl. 26.5.1.6",
+            actual_mm=zone.pitch_mm,
+            limit_mm=minimum_steel_limit,
         )
     if abs(demand) > shear.crushing_kn:
         code = "COLUMN.SHEAR_CRUSHING"
@@ -680,11 +704,27 @@ def _check_shear_plane(
                 "concrete_crushing_stress_nmm2": shear.crushing_kn
                 * 1000
                 / (width * shear.d_mm),
-                "pitch_limit_mm": pitch_limit,
-                "link_spacing_pass": spacing_ok,
-                "governing_check": code if spacing_ok else "COLUMN.SHEAR_LINK_SPACING",
             }
             if shared_hoop
+            else {}
+        ),
+        **(
+            {
+                "pitch_limit_mm": min(geometric_limit, minimum_steel_limit),
+                "geometric_pitch_limit_mm": geometric_limit,
+                "minimum_shear_reinforcement_pitch_limit_mm": minimum_steel_limit,
+                "link_spacing_pass": spacing_ok,
+                "governing_check": (
+                    code
+                    if spacing_ok
+                    else (
+                        MINIMUM_SHEAR_LINK_CHECK
+                        if minimum_steel_limit < geometric_limit
+                        else "COLUMN.SHEAR_LINK_SPACING"
+                    )
+                ),
+            }
+            if minimum_steel_limit is not None
             else {}
         ),
     }
@@ -1153,7 +1193,12 @@ def check_column_member_detailing(request: DetailingRequest) -> Result:
         action.vx_kn and action.vy_kn for action in request.actions
     )
     governing = max(
-        shear_rows, key=lambda row: row["shear"]["utilization"], default=None
+        shear_rows,
+        key=lambda row: (
+            row["shear"]["status"] == _FAIL.value,
+            row["shear"]["utilization"],
+        ),
+        default=None,
     )
     governing_section = (
         max(

@@ -2,6 +2,7 @@
 
 import csv
 import json
+from copy import deepcopy
 from io import StringIO
 from pathlib import Path
 from xml.etree import ElementTree
@@ -59,3 +60,45 @@ def test_circular_detailing_quantities_and_artifacts(name):
     assert all(
         float(row["cut_length_mm"]) == expected["longitudinal_cut_mm"] for row in main
     )
+
+
+@pytest.mark.parametrize(
+    "name,limit,status",
+    [
+        ("tied", 70, "PASS"),
+        ("tied", 75, "FAIL"),
+        ("spiral", 55, "PASS"),
+        ("spiral", 56, "FAIL"),
+    ],
+)
+def test_circular_end_faces_obey_stricter_detail_clearance(name, limit, status):
+    request = deepcopy(CASES[name]["request"])
+    if name == "tied":
+        request["placement"].update(first_station_mm=75, last_station_mm=2925)
+        request["end_detail"]["max_end_hoop_offset_mm"] = 90
+        start_actual = end_actual = 70
+    else:
+        request["placement"]["end_anchor_pitch_mm"] = 20
+        start_actual, end_actual = 62.5, 55
+    request["end_detail"]["end_face_clearance_mm"] = limit
+    result = column.check_circular_column_detailing(
+        column.load_circular_column_detailing(request)
+    )
+    assert result.engineering_status.value == status
+    report = column.render_circular_detailing_html(result)
+    assert "end_detail.end_face_clearance_mm" in report
+    assert f"{start_actual:g} mm at the start" in report
+    assert f"{end_actual:g} mm at the end" in report
+    assert (column.render_circular_detailing_svg(result) is not None) == (
+        status == "PASS"
+    )
+    assert (column.render_circular_detailing_bbs_csv(result) is not None) == (
+        status == "PASS"
+    )
+    if status == "FAIL":
+        assert result.calculation["transverse"] is None
+        assert any(
+            issue.code == "COLUMN.CIRCULAR_END_PLACEMENT"
+            and issue.path == "end_detail.end_face_clearance_mm"
+            for issue in result.issues
+        )

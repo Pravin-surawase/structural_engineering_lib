@@ -16,6 +16,7 @@ from structural_lib.codes.is456.slab.detailing import (
     DISTRIBUTION_SPACING_SOURCE_REF,
     ProvidedSlabBars,
     SlabReinforcementRegionResult,
+    _maximum_slab_bar_diameter_mm,
     check_slab_reinforcement_region,
 )
 from structural_lib.codes.is456.slab.models import (
@@ -142,6 +143,11 @@ class TwoWayCornerTorsionResult:
     required_each_of_four_layers_mm2_per_m: float
     provided_each_layer_mm2_per_m: float
     is_adequate: bool
+    area_passed: bool | None = None
+    diameter_passed: bool | None = None
+    bar_diameter_mm: float | None = None
+    maximum_diameter_mm: float | None = None
+    diameter_source_ref: str | None = None
 
 
 @dataclass(frozen=True)
@@ -327,6 +333,10 @@ def design_two_way_slab_panel(
         x_positive.ast_required_mm2_per_m, y_positive.ast_required_mm2_per_m
     )
     torsion_zone = design_input.geometry.x_effective_span_mm / 5.0
+    bars = design_input.torsion_bars_each_layer
+    maximum_torsion_diameter = _maximum_slab_bar_diameter_mm(
+        design_input.geometry.thickness_mm
+    )
     corner_results = []
     factor_by_class = {
         CornerTorsionClass.FULL: 0.75,
@@ -336,20 +346,25 @@ def design_two_way_slab_panel(
     }
     for corner in SlabCorner:
         torsion_class = design_input.support_topology.corner_torsion_class(corner)
-        required = factor_by_class[torsion_class] * max_positive_ast
+        factor = factor_by_class[torsion_class]
+        required = factor * max_positive_ast
+        area_passed = bars.area_mm2_per_m >= required if factor else None
+        diameter_passed = (
+            bars.diameter_mm <= maximum_torsion_diameter if factor else None
+        )
         corner_results.append(
             TwoWayCornerTorsionResult(
                 corner=corner,
                 torsion_class=torsion_class,
                 zone_extent_from_each_edge_mm=torsion_zone,
                 required_each_of_four_layers_mm2_per_m=required,
-                provided_each_layer_mm2_per_m=(
-                    design_input.torsion_bars_each_layer.area_mm2_per_m
-                ),
-                is_adequate=(
-                    required == 0.0
-                    or design_input.torsion_bars_each_layer.area_mm2_per_m >= required
-                ),
+                provided_each_layer_mm2_per_m=bars.area_mm2_per_m,
+                is_adequate=area_passed is not False and diameter_passed is not False,
+                area_passed=area_passed,
+                diameter_passed=diameter_passed,
+                bar_diameter_mm=bars.diameter_mm if factor else None,
+                maximum_diameter_mm=maximum_torsion_diameter if factor else None,
+                diameter_source_ref="IS 456:2000 Cl. 26.5.2.2" if factor else None,
             )
         )
     shear = check_solid_slab_one_way_shear(

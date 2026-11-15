@@ -553,8 +553,17 @@ def _two_way_row(
         checks[f"{corner.corner.value}.torsion_area_per_layer"] = (
             SlabActionCheckV1(demand, limit, None, "NOT_APPLICABLE")
             if demand == 0
-            else _ratio(demand, limit, corner.is_adequate)
+            else _ratio(demand, limit, corner.area_passed is True)
         )
+        if (
+            corner.bar_diameter_mm is not None
+            and corner.maximum_diameter_mm is not None
+        ):
+            checks[f"{corner.corner.value}.torsion_bar_diameter"] = _ratio(
+                corner.bar_diameter_mm,
+                corner.maximum_diameter_mm,
+                corner.diameter_passed is True,
+            )
     checks["support_shear"] = _shear_check(panel.shear)
     depth = min(g.d_x_mm, g.d_y_mm)
     service = _reviewed_service(

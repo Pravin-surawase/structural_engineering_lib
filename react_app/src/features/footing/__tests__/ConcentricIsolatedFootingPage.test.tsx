@@ -17,6 +17,79 @@ beforeEach(() => { client.design.mockReset(); client.design.mockResolvedValue(PA
 describe('ConcentricIsolatedFootingPage', () => {
   it('requires approvals, omits detailing, and renders the C1 evidence', async () => { render(<ConcentricIsolatedFootingPage />); expect(screen.getByRole('button', { name: 'Run footing design' })).toBeDisabled(); approve(); fireEvent.click(screen.getByRole('button', { name: 'Run footing design' })); await screen.findByText(/2,000 × 2,000 mm/); const payload = client.design.mock.calls[0][0]; expect(payload.allowable_soil_pressure_is_externally_approved).toBe(true); expect(payload.effective_supporting_area_is_approved).toBe(true); expect(payload).not.toHaveProperty('nominal_cover_mm'); expect(screen.getAllByText(/13-T12 @ 160 mm/)).toHaveLength(2); expect(screen.getByText(/Report\/export closeout is not enabled in D1/)).toBeInTheDocument(); });
   it('sends the editable complete detailing group only when enabled', async () => { render(<ConcentricIsolatedFootingPage />); approve(); fireEvent.click(screen.getByLabelText('Include complete detailing')); await waitFor(() => expect(screen.getByLabelText('Cover exposure basis approved')).toBeInTheDocument()); fireEvent.click(screen.getByLabelText('Cover exposure basis approved')); fireEvent.click(screen.getByRole('button', { name: 'Run footing design' })); await waitFor(() => expect(client.design).toHaveBeenCalled()); const payload = client.design.mock.calls[0][0]; expect(payload).toMatchObject({ nominal_cover_mm: 50, cover_exposure_basis_is_approved: true, permitted_bottom_bar_diameters_mm: [12, 16, 20, 25, 32] }); });
+  it('invalidates only the approval for evidence inputs that change', async () => {
+    render(<ConcentricIsolatedFootingPage />);
+    approve();
+    const soilApproval = screen.getByLabelText('Soil pressure externally approved');
+    const a1Approval = screen.getByLabelText('A1 area externally approved');
+    fireEvent.change(screen.getByLabelText('Case ID'), {
+      target: { value: 'UNCHANGED-EVIDENCE' },
+    });
+    expect(soilApproval).toBeChecked();
+    expect(a1Approval).toBeChecked();
+    fireEvent.change(screen.getByLabelText('Allowable-pressure source reference'), {
+      target: { value: 'GEO-REPORT-002' },
+    });
+    expect(soilApproval).not.toBeChecked();
+    expect(a1Approval).toBeChecked();
+    fireEvent.click(soilApproval);
+    fireEvent.change(screen.getByLabelText('Effective supporting area A1 in mm²'), {
+      target: { value: '650000' },
+    });
+    expect(soilApproval).toBeChecked();
+    expect(a1Approval).not.toBeChecked();
+    fireEvent.click(a1Approval);
+    fireEvent.click(screen.getByLabelText('Include complete detailing'));
+    const coverApproval = await screen.findByLabelText('Cover exposure basis approved');
+    fireEvent.click(coverApproval);
+    fireEvent.change(screen.getByLabelText('Permitted bottom-bar diameters in mm'), {
+      target: { value: '20' },
+    });
+    expect(coverApproval).toBeChecked();
+    fireEvent.change(screen.getByLabelText('Nominal cover in mm'), {
+      target: { value: '20' },
+    });
+    expect(coverApproval).not.toBeChecked();
+    expect(screen.getByRole('button', { name: 'Run footing design' })).toBeDisabled();
+  });
+
+  it('labels retained HOLD details as review candidates with anchorage shortfall', async () => {
+    const issue = 'BOTTOM_BAR_STRAIGHT_ANCHORAGE_INSUFFICIENT';
+    const anchorage = {
+      development_length_mm: 806,
+      development_length_unrounded_mm: 805.915,
+      straight_anchorage_available_each_end_mm: 740,
+      end_anchorage: {
+        required_development_length_mm: 805.915,
+        total_available_development_length_mm: 740,
+        shortfall_mm: 65.915,
+      },
+    };
+    const heldDetail = {
+      ...PASS.detailing!,
+      status: 'HOLD' as const,
+      reasons: [issue],
+      lower: { ...PASS.detailing!.lower!, ...anchorage },
+      upper: { ...PASS.detailing!.upper!, ...anchorage },
+    };
+    client.design.mockResolvedValue({
+      ...PASS,
+      status: 'HOLD',
+      detailing_status: 'HOLD',
+      detailing: heldDetail,
+      hold_reasons: [issue],
+    });
+    render(<ConcentricIsolatedFootingPage />);
+    approve();
+    fireEvent.click(screen.getByLabelText('Include complete detailing'));
+    fireEvent.click(await screen.findByLabelText('Cover exposure basis approved'));
+    fireEvent.click(screen.getByRole('button', { name: 'Run footing design' }));
+    expect(await screen.findByText('Review detailing candidates')).toBeInTheDocument();
+    expect(screen.queryByText('Buildable detailing schedule')).not.toBeInTheDocument();
+    expect(screen.getByText(/Candidate status: HOLD/)).toHaveTextContent(issue);
+    expect(screen.getAllByText('805.92 / 740 mm')).toHaveLength(2);
+    expect(screen.getAllByText('65.92 mm')).toHaveLength(2);
+  });
   it('keeps a returned detailing HOLD blocked', async () => { client.design.mockResolvedValue({ ...PASS, status: 'HOLD', detailing_status: 'HOLD', detailing: null, detailing_hold_reason: 'DETAILING_INPUTS_REQUIRED', hold_reasons: ['DETAILING_INPUTS_REQUIRED'] }); render(<ConcentricIsolatedFootingPage />); approve(); fireEvent.click(screen.getByRole('button', { name: 'Run footing design' })); expect((await screen.findAllByRole('alert'))[0]).toHaveTextContent('DETAILING_INPUTS_REQUIRED'); });
   it('marks retained evidence stale and ignores a late response', async () => { render(<ConcentricIsolatedFootingPage />); approve(); fireEvent.click(screen.getByRole('button', { name: 'Run footing design' })); await screen.findByText(/2,000 × 2,000 mm/); let resolve: (value: ConcentricIsolatedFootingResponse) => void = () => undefined; client.design.mockImplementationOnce(() => new Promise((done) => { resolve = done; })); fireEvent.click(screen.getByRole('button', { name: 'Recalculate' })); fireEvent.change(screen.getByLabelText('Case ID'), { target: { value: 'CHANGED' } }); resolve(PASS); await waitFor(() => expect(screen.getAllByText('Stale result')).toHaveLength(2)); });
   it('fails closed for a transport error', async () => { client.design.mockRejectedValueOnce(new Error('Network unavailable')); render(<ConcentricIsolatedFootingPage />); approve(); fireEvent.click(screen.getByRole('button', { name: 'Run footing design' })); expect(await screen.findByRole('alert')).toHaveTextContent('Network unavailable'); });

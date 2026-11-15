@@ -82,6 +82,13 @@ function EvidenceCard({
 }
 
 function DirectionSchedule({ detail }: { detail: FootingDirectionDetail }) {
+  const requiredAnchorage = detail.end_anchorage?.required_development_length_mm
+    ?? detail.development_length_unrounded_mm;
+  const availableAnchorage = detail.end_anchorage?.total_available_development_length_mm
+    ?? detail.straight_anchorage_available_each_end_mm;
+  const anchorageShortfall = detail.end_anchorage?.shortfall_mm
+    ?? Math.max(0, requiredAnchorage - availableAnchorage);
+
   return (
     <article className="rounded-xl border border-white/8 bg-zinc-950/55 p-3">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -112,11 +119,17 @@ function DirectionSchedule({ detail }: { detail: FootingDirectionDetail }) {
           </dd>
         </div>
         <div>
-          <dt className="text-zinc-500">Development / available end</dt>
+          <dt className="text-zinc-500">Required / available anchorage</dt>
           <dd className="mt-1 text-zinc-100">
-            {formatNumber(detail.development_length_mm, 1)} / {formatNumber(detail.straight_anchorage_available_each_end_mm, 1)} mm
+            {formatNumber(requiredAnchorage, 2)} / {formatNumber(availableAnchorage, 2)} mm
           </dd>
         </div>
+        {anchorageShortfall > 0 ? (
+          <div>
+            <dt className="text-zinc-500">Anchorage shortfall</dt>
+            <dd className="mt-1 text-rose-200">{formatNumber(anchorageShortfall, 2)} mm</dd>
+          </div>
+        ) : null}
       </dl>
       <div className="mt-3 overflow-x-auto">
         <table className="min-w-full text-left text-[11px]">
@@ -153,6 +166,16 @@ function DirectionSchedule({ detail }: { detail: FootingDirectionDetail }) {
 
 export function FootingResults({ result, lifecycle }: FootingResultsProps) {
   const isStale = lifecycle === 'stale';
+  const buildable = lifecycle === 'current'
+    && result.status === 'PASS'
+    && result.detailing_status === 'PASS'
+    && result.detailing?.status === 'PASS';
+  const detailingBlockers = [...new Set([
+    ...result.failed_checks,
+    ...result.hold_reasons,
+    result.detailing_hold_reason,
+    ...(result.detailing?.reasons ?? []),
+  ].filter((reason): reason is string => Boolean(reason)))];
   const flexureStatus = result.flexure
     ? (result.flexure.is_safe ? 'PASS' : 'FAIL')
     : 'NOT_EVALUATED';
@@ -344,7 +367,14 @@ export function FootingResults({ result, lifecycle }: FootingResultsProps) {
 
       {result.detailing ? (
         <section className="space-y-2">
-          <h3 className="text-sm font-semibold text-white">Buildable detailing schedule</h3>
+          <h3 className="text-sm font-semibold text-white">
+            {buildable ? 'Buildable detailing schedule' : 'Review detailing candidates'}
+          </h3>
+          {!buildable ? (
+            <p className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-xs text-amber-100">
+              Candidate status: {result.status}. Detailing: {result.detailing_status}. Blocking check: {detailingBlockers.join(', ') || 'Qualified review required.'}
+            </p>
+          ) : null}
           {result.detailing.lower ? <DirectionSchedule detail={result.detailing.lower} /> : null}
           {result.detailing.upper ? <DirectionSchedule detail={result.detailing.upper} /> : null}
           <article className="rounded-xl border border-white/8 bg-zinc-950/55 p-3 text-xs text-zinc-300">
