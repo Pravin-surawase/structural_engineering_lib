@@ -404,3 +404,174 @@ def test_flanged_detailing_requires_explicit_torsion_on_concurrent_rows():
     del payload["member"]["actions"][0]["tu_knm"]
     with pytest.raises(beam.InputContractError):
         beam.load_continuous_detailing(payload)
+
+
+LAYERED_CUTOFF_CASES = json.loads(
+    (
+        Path(__file__).resolve().parents[3]
+        / "docs/verification/library-030-beam05-layered-cutoff.json"
+    ).read_text(encoding="utf-8")
+)["cases"]
+
+
+@pytest.mark.parametrize("name", LAYERED_CUTOFF_CASES)
+def test_layered_bottom_cutoff_replays_checked_artifacts(name):
+    case = LAYERED_CUTOFF_CASES[name]
+    expected = case["expected"]
+    request = beam.load_continuous_detailing(case["request"])
+    result = beam.check_continuous_detailing(request)
+    assert result.engineering_status == expected["status"]
+    report = beam.render_continuous_detailing_html(result, current=request)
+    drawing = beam.render_continuous_detailing_svg(result, current=request)
+    schedule = beam.render_continuous_detailing_bbs_csv(result, current=request)
+
+    if expected["status"] != "PASS":
+        assert drawing is schedule is result.calculation["bbs"] is None
+        assert "BBS held" in report
+    if expected["status"] == "HOLD":
+        assert {issue.code for issue in result.issues} == {
+            "BEAM_ACTION_MISSING" if name == "missing_action" else "BEAM_ANALYSIS_STALE"
+        }
+        return
+
+    cutoff = result.calculation["cutoff"]
+    assert cutoff["continuing_bar_ids"] == expected["continuing_bar_ids"]
+    assert cutoff["continuing_bottom_mm2"] == pytest.approx(
+        expected["continuing_bottom_mm2"]
+    )
+    assert cutoff["actual_extension_mm"] == pytest.approx(
+        expected["available_extension_mm"]
+    )
+    assert cutoff["required_extension_mm"] == pytest.approx(
+        expected["required_extension_mm"]
+    )
+    assert cutoff["termination_shear_limit_kn"] == pytest.approx(
+        expected["termination_limit_kn"]
+    )
+    assert cutoff["reduced_moment_knm"] == pytest.approx(
+        expected["reduced_moment_knm"], rel=2e-5
+    )
+    assert cutoff["reduced_shear_kn"] == pytest.approx(expected["reduced_shear_kn"])
+    assert {
+        row["row_id"]: row["passes_two_thirds"] for row in cutoff["termination_rows"]
+    } == {
+        "U1:CUT-END": True,
+        "U2:CUT-END": True,
+    }
+    (development,) = cutoff["anchorage"]["outputs"]["checks"]
+    assert development["required_development_length_mm"] == pytest.approx(
+        expected["development_mm"]
+    )
+    assert (
+        "Bottom bar cutoff" in report
+        and f"{expected['development_mm']:.3f} mm" in report
+    )
+
+    rows = {row["action"]["row_id"]: row for row in cutoff["reduced_section_rows"]}
+    assert rows.keys() == expected["reduced_rows"].keys()
+    for row_id, reference in expected["reduced_rows"].items():
+        row = rows[row_id]
+        assert row["section_status"] == "PASS"
+        assert row["flexure_utilization"] == pytest.approx(
+            reference["flexure_utilization"], rel=2e-5
+        )
+        assert row["shear_utilization"] == pytest.approx(reference["shear_utilization"])
+        if "positive_anchor_mm" in reference:
+            checks = row["positive_support_anchorage"]["outputs"]["checks"]
+            assert {check["bar_id"] for check in checks} == {
+                bar.bar_id
+                for bar in request.member.bars
+                if bar.face == "bottom" and bar.bar_id != request.cutoff.bar_id
+            }
+            for check in checks:
+                assert check["available_for_criterion_mm"] == pytest.approx(
+                    reference["positive_anchor_mm"], rel=2e-5
+                )
+    if name == "short_development":
+        assert development["deficit_mm"] == pytest.approx(100)
+        assert {issue.code for issue in result.issues} == {"BEAM.CUTOFF_EXTENSION_FAIL"}
+        return
+
+    assert drawing is not None and schedule is not None
+    assert "Continuing cage from the theoretical cutoff" in report
+    assert drawing in report
+    assert request.member.analysis_revision in report
+    assert request.member.reinforcement_revision in report
+    assert f"<th>U2:AF</th><td>{request.cutoff.bar_id}</td>" in report
+    assert f"<th>U2:CF</th><td>{request.cutoff.bar_id}</td>" not in report
+    assert result.calculation["arrangement"]["outputs"]["passed"]
+    assert result.calculation["link_check"]["outputs"]["placement_pass"]
+    strength = result.calculation["strength"]
+    assert (
+        strength["flexural_sections"]["bottom"]["effective_inputs"]["flange_width_mm"][
+            "value"
+        ]
+        == expected["effective_flange_width_mm"]
+    )
+
+    root = ElementTree.fromstring(drawing)
+    full, reduced = root.findall("{*}svg[@data-view='section']")
+    assert float(full.attrib["data-station-mm"]) == cutoff["theoretical_station_mm"]
+    assert float(reduced.attrib["data-station-mm"]) == cutoff["termination_station_mm"]
+    for panel, ids in (
+        (full, {bar.bar_id for bar in request.member.bars}),
+        (reduced, set(expected["continuing_bar_ids"])),
+    ):
+        assert (
+            float(panel.attrib["viewBox"].split()[2]) - 70
+            == expected["physical_width_mm"]
+        )
+        assert panel.find("{*}rect[@data-outline='web-link']") is not None
+        flange = case["request"]["member"].get("flange")
+        if flange:
+            assert panel.find("{*}path").attrib["d"].split()[:4] == [
+                f"M{-flange['left_overhang_mm']:g}",
+                "0",
+                f"H{request.member.width_mm + flange['right_overhang_mm']:g}",
+                f"V{flange['thickness_mm']:g}",
+            ]
+        points = {
+            point.attrib["data-bar-id"]: point for point in panel.findall("{*}circle")
+        }
+        assert points.keys() == ids
+        for bar in request.member.bars:
+            if bar.bar_id in points:
+                point = points[bar.bar_id]
+                assert int(point.attrib["data-layer"]) == bar.layer
+                assert float(point.attrib["cx"]) == pytest.approx(
+                    bar.x_from_left_mm, abs=0.001
+                )
+                assert float(point.attrib["cy"]) == bar.y_from_top_mm
+    line = root.find(f".//{{*}}line[@data-bar-id='{request.cutoff.bar_id}']")
+    assert float(line.attrib["x2"]) == cutoff["termination_station_mm"]
+    assert len(root.findall(".//{*}line[@stroke='#64748b']")) == expected["link_count"]
+
+    table = list(csv.DictReader(StringIO(schedule)))
+    (link,) = (row for row in table if row["role"] == "transverse_link")
+    assert int(link["quantity"]) == expected["link_count"]
+    assert float(link["cut_mm"]) == pytest.approx(expected["link_cut_mm"], abs=1e-8)
+    assert {
+        row["bar_mark"]: int(row["quantity"]) for row in table if row != link
+    } == expected["marks"]
+    for row in table:
+        if row != link:
+            key = "cut_mm" if row["bar_mark"].endswith("-cutoff") else "full_cut_mm"
+            assert float(row["cut_mm"]) == expected[key]
+    assert sum(float(row["mass_kg"]) for row in table) == pytest.approx(
+        expected["mass_kg"], abs=1e-8
+    )
+    input_hash = result.envelope.result_identity.input_hash
+    path_id = result.calculation["paths"]["result_id"]
+    assert input_hash in drawing and path_id in drawing
+    assert all(
+        row["input_hash"] == input_hash and row["path_result_id"] == path_id
+        for row in table
+    )
+    changed = deepcopy(case["request"])
+    changed["member"]["current_analysis_revision"] += "-EDITED"
+    current = beam.load_continuous_detailing(changed)
+    assert beam.render_continuous_detailing_svg(result, current=current) is None
+    assert beam.render_continuous_detailing_bbs_csv(result, current=current) is None
+    assert "HOLD · stale result" in beam.render_continuous_detailing_html(
+        result, current=current
+    )

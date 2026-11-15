@@ -98,7 +98,7 @@ and `cutoff` give HOLD. Each failing or held result still writes
 This profile assumes uninterrupted bars, uniform ordinary web links and
 a prismatic section up to 750 mm deep. Supply zero torsion only where
 the source analysis establishes that the scope is appropriate. Flange
-slab steel, joint reinforcement, cutoffs and laps in this cage, varying
+slab steel, joint reinforcement, laps in this cage, varying
 sections, serviceability and fabrication approval need their own checks.
 
 ## Check one bottom bar cutoff
@@ -129,7 +129,42 @@ theoretical cutoff onward, including affected support anchors. The example
 includes a 100 mm development deficit, a termination shear failure and
 missing ULS rows. Each withholds the drawing and schedule. Full action
 coverage between supplied stations, points of inflection, other cutoff
-directions need separate evidence.
+and other cutoff directions need separate evidence.
+
+## Check a cutoff in a layered rectangular, T or L beam
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-layered-cutoff.json \
+  --case rect_multilayer --output-dir output/beam05-layered-cutoff
+```
+
+Use the same cutoff fields with the layered member schema. Curtail one
+straight outer-layer bottom bar in the first clear span. Keep at least two
+outer-layer bottom bars and the remaining layers continuous. Declare zero
+torsion and supply the concurrent rows at both cutoff stations in every ULS
+combination.
+
+In the rectangular case, `B1-3` ends at 3500 mm, giving 1000 mm of straight
+extension against 906.250 mm of required development. The continuing
+bottom bars provide 1570.796 mm² across both layers. The maximum supplied
+termination shear is 64 kN and the reduced section permits 113.881 kN
+under the two-thirds check. The shortened bar has a 3960 mm BBS cut. The
+seven other longitudinal bars have 8920 mm cuts, and the 41 uniform Ø8
+links retain their 1698.171 mm cut length.
+
+The report carries the action and reinforcement revisions and signed
+checks for the continuing cage. The drawing shows the elevation and
+sections before and immediately after the end of the bar. The SVG and
+BBS carry the same input and path identities. The `short_development`
+control fails with a 100 mm deficit. `missing_action` and `stale_action`
+hold. All three withhold the drawing and BBS.
+
+The independent references also cover `t_multilayer`, `l_multilayer`
+and `l_multilayer_reflected`. The T and reflected L cases use the
+published flange geometries with multilayer web cages. For these cases,
+the flange contributes to sagging resistance and shear uses the web.
+[Independent cutoff replay](../../verification/check_library_030_beam05_cutoff_reference.py)
 
 ## Edit a checked bar and recheck the schedule
 
