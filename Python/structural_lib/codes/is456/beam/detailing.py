@@ -1280,6 +1280,9 @@ def select_bar_arrangement(
         - Returns a deterministic fallback (2-12mm) for invalid inputs.
         - Tries preferred diameter first, then larger standard diameters.
         - Uses max_layers to satisfy spacing before increasing bar size.
+        - Checks horizontal spacing in the fullest layer when it has a bar
+          pair. If no arrangement meets the spacing check, returns the last
+          checked arrangement for the caller to validate.
     """
     if ast_required <= 0:
         return BarArrangement(
@@ -1323,6 +1326,10 @@ def select_bar_arrangement(
 
         for layers in range(1, max_layers + 1):
             bars_per_layer = math.ceil(count / layers)
+            if bars_per_layer < 2:
+                # A single bar has no horizontal spacing to check, and this
+                # selector has no vertical clearance check for that layout.
+                break
             spacing = calculate_bar_spacing(b, cover, stirrup_dia, dia, bars_per_layer)
             is_valid, _ = check_min_spacing(spacing, dia)
 
