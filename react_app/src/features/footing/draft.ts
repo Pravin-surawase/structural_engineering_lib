@@ -89,12 +89,39 @@ const POSITIVE_NUMBER_FIELDS = [
   'available_dowel_development_length_into_column_mm',
 ] as const;
 
+const SOIL_APPROVAL_FIELDS = new Set<keyof FootingDraft>([
+  'allowable_soil_pressure_kPa',
+  'allowable_soil_pressure_source_reference',
+  'allowable_soil_pressure_origin',
+]);
+
+const A1_APPROVAL_FIELDS = new Set<keyof FootingDraft>([
+  'effective_supporting_area_A1_mm2',
+  'effective_supporting_area_basis',
+  'effective_supporting_area_origin',
+]);
+
+const COVER_APPROVAL_FIELDS = new Set<keyof FootingDraft>([
+  'nominal_cover_mm',
+  'cover_exposure_basis',
+]);
+
 export function updateFootingDraft(
   draft: FootingDraft,
   key: keyof FootingDraft,
   value: FootingDraft[keyof FootingDraft],
 ): FootingDraft {
   const next = { ...draft, [key]: value } as FootingDraft;
+
+  if (SOIL_APPROVAL_FIELDS.has(key) && value !== draft[key]) {
+    next.soil_pressure_approved = false;
+  }
+  if (A1_APPROVAL_FIELDS.has(key) && value !== draft[key]) {
+    next.a1_basis_approved = false;
+  }
+  if (COVER_APPROVAL_FIELDS.has(key) && value !== draft[key]) {
+    next.cover_exposure_basis_is_approved = false;
+  }
 
   if (
     key === 'column_L_mm'

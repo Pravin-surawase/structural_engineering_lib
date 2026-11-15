@@ -157,6 +157,11 @@ export interface FootingDirectionDetail {
   development_length_mm: number;
   development_length_unrounded_mm: number;
   straight_anchorage_available_each_end_mm: number;
+  end_anchorage?: {
+    required_development_length_mm: number;
+    total_available_development_length_mm: number;
+    shortfall_mm: number;
+  };
   straight_bar_length_mm: number;
   zones: FootingReinforcementZone[];
 }
