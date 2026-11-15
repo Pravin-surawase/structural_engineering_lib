@@ -77,7 +77,8 @@ def component(request: dict, action: dict, direction: str) -> dict:
     vc = tc * axial_factor * web * d / 1000
     asv = 2 * math.pi * tie["diameter_mm"] ** 2 / 4
     vus = 0.87 * fy * asv * d / (1000 * pitch)
-    crushing = 3.5 * web * d / 1000  # M25 Table 20.
+    tc_max = 3.1  # M25 Table 20.
+    crushing = tc_max * web * d / 1000
     capacity = min(vc + vus, crushing)
     pitch_limit = min(0.75 * d, 300, 0.87 * fy * asv / (0.4 * web))
     return {
@@ -96,6 +97,7 @@ def component(request: dict, action: dict, direction: str) -> dict:
         "effective_hoop_area_mm2": asv,
         "axial_factor": axial_factor,
         "table_19_tc_nmm2": tc,
+        "table_20_tc_max_nmm2": tc_max,
         "vc_kn": vc,
         "vus_kn": vus,
         "crushing_kn": crushing,

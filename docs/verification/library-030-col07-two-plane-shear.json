@@ -166,9 +166,10 @@
             "effective_hoop_area_mm2": 100.53096491487338,
             "axial_factor": 1.5,
             "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
             "vc_kn": 41.75999999999999,
             "vus_kn": 87.11209171803608,
-            "crushing_kn": 336.0,
+            "crushing_kn": 297.6,
             "capacity_kn": 128.87209171803607,
             "utilization": 0.38798159736086857
           },
@@ -188,9 +189,10 @@
             "effective_hoop_area_mm2": 100.53096491487338,
             "axial_factor": 1.5,
             "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
             "vc_kn": 44.36999999999999,
             "vus_kn": 123.40879660055113,
-            "crushing_kn": 357.0,
+            "crushing_kn": 316.2,
             "capacity_kn": 167.77879660055112,
             "utilization": 0.35761372244699313
           }
@@ -383,9 +385,10 @@
             "effective_hoop_area_mm2": 100.53096491487338,
             "axial_factor": 1.5,
             "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
             "vc_kn": 41.75999999999999,
             "vus_kn": 87.11209171803608,
-            "crushing_kn": 336.0,
+            "crushing_kn": 297.6,
             "capacity_kn": 128.87209171803607,
             "utilization": 0.543174236305216
           },
@@ -405,9 +408,10 @@
             "effective_hoop_area_mm2": 100.53096491487338,
             "axial_factor": 1.5,
             "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
             "vc_kn": 44.36999999999999,
             "vus_kn": 123.40879660055113,
-            "crushing_kn": 357.0,
+            "crushing_kn": 316.2,
             "capacity_kn": 167.77879660055112,
             "utilization": 0.5364205836704897
           }
@@ -600,9 +604,10 @@
             "effective_hoop_area_mm2": 100.53096491487338,
             "axial_factor": 1.5,
             "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
             "vc_kn": 41.75999999999999,
             "vus_kn": 87.11209171803608,
-            "crushing_kn": 336.0,
+            "crushing_kn": 297.6,
             "capacity_kn": 128.87209171803607,
             "utilization": 1.086348472610432
           },
@@ -622,9 +627,10 @@
             "effective_hoop_area_mm2": 100.53096491487338,
             "axial_factor": 1.5,
             "table_19_tc_nmm2": 0.29,
+            "table_20_tc_max_nmm2": 3.1,
             "vc_kn": 44.36999999999999,
             "vus_kn": 123.40879660055113,
-            "crushing_kn": 357.0,
+            "crushing_kn": 316.2,
             "capacity_kn": 167.77879660055112,
             "utilization": 0.17880686122349657
           }
