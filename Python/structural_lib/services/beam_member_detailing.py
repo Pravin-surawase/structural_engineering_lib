@@ -113,6 +113,23 @@ from structural_lib.services.beam_link_zones import (
     resolve_beam_link_zones,
     zone_transition_actions_issue,
 )
+from structural_lib.services.beam_physical_flange_geometry import (
+    BeamPhysicalFlangeDetailV1,
+    flange_issue,
+    resolve_physical_flange_geometry,
+)
+from structural_lib.services.beam_physical_flange_outputs import (
+    render_physical_flange_report,
+    render_physical_flange_svg,
+)
+from structural_lib.services.beam_physical_flange_strength import (
+    bind_physical_flange_actions,
+    check_physical_flange_anchorage,
+    check_physical_flange_strength,
+)
+from structural_lib.services.beam_physical_flange_strip import (
+    check_physical_flange_strip,
+)
 from structural_lib.services.beam_support_lap import check_support_lap_continuity
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
@@ -229,6 +246,11 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
 
     haunch: BeamHaunchDetailV1 | Literal["not_requested"] | None = Field(
         default="not_requested", exclude_if=lambda value: value == "not_requested"
+    )
+    physical_flange: BeamPhysicalFlangeDetailV1 | Literal["not_requested"] | None = (
+        Field(
+            default="not_requested", exclude_if=lambda value: value == "not_requested"
+        )
     )
 
     @field_validator("link_zones", mode="before")
@@ -2117,6 +2139,197 @@ def _check_haunch_detailing(
     )
 
 
+def _check_physical_flange_detailing(
+    request: BeamContinuousDetailingInputV1,
+) -> CanonicalFamilyResultV1[dict[str, Any]]:
+    member, web, detail = request.member, request.link_detail, request.physical_flange
+    status = EngineeringStatus.HOLD
+    stale = member.analysis_revision != member.current_analysis_revision
+    engineering: dict[str, Any] = {}
+    assembly: dict[str, Any] = {
+        "request": {
+            "member_id": member.member_id,
+            "beam": {
+                "width_mm": member.width_mm,
+                "depth_mm": member.depth_mm,
+                "flange": (
+                    member.flange.model_dump(mode="json")
+                    if isinstance(member, BeamLayeredContinuousCheckRequestV1)
+                    and member.flange
+                    else None
+                ),
+            },
+            "supports": [
+                support.model_dump(mode="json") for support in member.supports
+            ],
+        },
+        "engineering": engineering,
+        "pieces": [],
+        "owners_by_mark": {},
+    }
+    data: dict[str, Any] = {
+        "strength": {
+            "rows": [],
+            "governing_rows": {},
+            "ultimate_status": "HOLD",
+            "serviceability_status": "NOT_EVALUATED",
+        },
+        "paths": None,
+        "bbs": None,
+        "physical_flange": assembly,
+    }
+    issues: list[StructuralIssueV1] = []
+    if stale:
+        issues.append(
+            StructuralIssueV1(
+                "BEAM_ANALYSIS_STALE",
+                "member.analysis_revision",
+                "Supply the current signed beam actions.",
+            )
+        )
+    elif not (
+        isinstance(member, BeamLayeredContinuousCheckRequestV1)
+        and member.flange is not None
+        and member.flange.kind == "t_beam"
+        and member.flange.monolithic
+        and math.isclose(
+            member.flange.left_overhang_mm,
+            member.flange.right_overhang_mm,
+            rel_tol=0,
+            abs_tol=1e-8,
+        )
+        and member.fck_nmm2 == 25
+        and member.fy_nmm2 == member.link_fy_nmm2 == 415
+        and member.depth_mm <= 750
+        and member.straight_bars is not None
+        and isinstance(detail, BeamPhysicalFlangeDetailV1)
+        and web is not None
+        and web.restraint_link is None
+        and request.cutoff is None
+        and request.lap is None
+        and request.haunch == "not_requested"
+        and request.link_zones == "not_requested"
+        and request.placement_envelope == "not_requested"
+    ):
+        issues.append(
+            flange_issue(
+                "BASIS_HELD",
+                "member",
+                "Supply the ordinary M25 and Fe415 monolithic T beam, complete web cage and separate physical flange evidence.",
+            )
+        )
+    elif detail.slab_strip is None:
+        issues.append(
+            flange_issue(
+                "STRIP_ACTIONS_HELD",
+                "slab_strip",
+                "Supply the current physical transverse slab strip and its signed load basis.",
+            )
+        )
+    elif (
+        detail.analysis_revision != member.analysis_revision
+        or detail.reinforcement_revision != member.reinforcement_revision
+        or detail.slab_strip.geometry_revision != detail.geometry_revision
+    ):
+        stale = True
+        issues.append(
+            flange_issue(
+                "STRIP_REVISION_HELD",
+                "slab_strip.geometry_revision",
+                "The beam, reinforcement and slab strip must bind to the current geometry and analysis.",
+            )
+        )
+    else:
+        basis, basis_issues = bind_physical_flange_actions(member, detail)
+        engineering["basis"] = basis
+        issues.extend(basis_issues)
+        if not issues:
+            slot = detail.placement.maximum_assembly_translation_per_axis_mm
+            strip, strip_issues = check_physical_flange_strip(
+                detail.slab_strip,
+                member,
+                placement_tolerance_mm=slot,
+            )
+            anchorage, anchor_issues = check_physical_flange_anchorage(
+                member, detail, basis
+            )
+            engineering.update(strip=strip, anchorage=anchorage)
+            issues.extend((*strip_issues, *anchor_issues))
+        if not issues:
+            geometry, placement_issues = resolve_physical_flange_geometry(
+                member,
+                detail,
+                web_first=web.first_station_mm,
+                web_last=web.last_station_mm,
+                web_internal_radius=web.internal_bend_radius_mm,
+                web_tail=web.hook_vertex_leg_mm,
+                web_hook_shift=web.hook_plane_offset_mm,
+                source_hash=_input_hash(request),
+                stock_length_mm=request.stock_length_mm,
+            )
+            issues.extend(placement_issues)
+            if geometry is not None:
+                data["paths"] = geometry.paths.to_dict()
+                engineering["geometry"] = geometry.placement
+                assembly["pieces"] = geometry.pieces
+                assembly["request"][
+                    "slab_edge_x_mm"
+                ] = detail.slab_strip.transverse_edge_x_mm
+                assembly["owners_by_mark"] = {
+                    p["mark"]: p["owner"] for p in geometry.pieces
+                }
+                if not issues:
+                    strength, summary, strength_issues = check_physical_flange_strength(
+                        member, detail
+                    )
+                    engineering["strength"] = summary
+                    issues.extend(strength_issues)
+                    if strength:
+                        data["strength"] = strength
+                        if strength["ultimate_status"] == "FAIL":
+                            status = EngineeringStatus.FAIL
+                    if not issues:
+                        schedule = _create_bound_bbs(
+                            request, geometry.paths, geometry.zones
+                        )
+                        if schedule.engineering is EngineeringState.PASS:
+                            data["bbs"] = schedule.to_dict()
+                            status = EngineeringStatus.PASS
+                        else:
+                            issues.extend(
+                                StructuralIssueV1(
+                                    item.code,
+                                    item.field_or_location or "bbs",
+                                    item.message,
+                                )
+                                for item in schedule.diagnostics
+                            )
+        if any(issue.code.endswith("_FAIL") for issue in issues):
+            status = EngineeringStatus.FAIL
+    result = canonical_family_result(
+        request,
+        data,
+        workflow_id=WORKFLOW,
+        engineering_status=status,
+        limitations=(
+            "Ordinary monolithic symmetric T beam, two equal pinned-end spans and a perpendicular two-span slab strip.",
+            "Local placement opening covers the submitted beam and slab assembly. Joint reinforcement and field obstructions require project evidence.",
+            "Member serviceability and torsion are outside this supplied ULS profile.",
+        ),
+        provenance=("IS 456:2000 §§23.1.1–2, 26.2–5, 38 and 40, including Table 19.",),
+    )
+    return replace(
+        result,
+        envelope=replace(
+            result.envelope,
+            issues=tuple(issues),
+            freshness_status=(
+                FreshnessStatus.STALE if stale else FreshnessStatus.CURRENT
+            ),
+        ),
+    )
+
+
 def check_continuous_detailing(
     request: BeamContinuousDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -2163,6 +2376,8 @@ def check_continuous_detailing(
     Uses the checked supplied station actions, physical path and BBS owners.
     """
     require_request_type(request, BeamContinuousDetailingInputV1)
+    if request.physical_flange != "not_requested":
+        return _check_physical_flange_detailing(request)
     if request.haunch != "not_requested":
         return _check_haunch_detailing(request)
     member = request.member
@@ -2666,6 +2881,8 @@ def render_continuous_detailing_svg(
     data = result.calculation
     if data["bbs"] is None or not _matches_current(result, current):
         return None
+    if "physical_flange" in data:
+        return render_physical_flange_svg(result)
     request = result.request
     assert isinstance(request, BeamContinuousDetailingInputV1)
     member = request.member
@@ -3015,6 +3232,7 @@ def render_continuous_detailing_bbs_csv(
         return None
     out = io.StringIO()
     writer = csv.writer(out, lineterminator="\n")
+    owners = result.calculation.get("physical_flange", {}).get("owners_by_mark", {})
     writer.writerow(
         (
             "member_id",
@@ -3027,6 +3245,7 @@ def render_continuous_detailing_bbs_csv(
             "cut_mm",
             "total_mm",
             "mass_kg",
+            *(("owner",) if owners else ()),
         )
     )
     identity = result.envelope.result_identity
@@ -3043,6 +3262,7 @@ def render_continuous_detailing_bbs_csv(
                 row["fabrication_cut_length_each_mm"],
                 row["scheduled_cut_length_mm"],
                 row["theoretical_mass_kg"],
+                *((owners[row["bar_mark"]],) if owners else ()),
             )
         )
     return out.getvalue()
@@ -3090,6 +3310,10 @@ def render_continuous_detailing_html(
     current_match = _matches_current(result, current)
     svg = render_continuous_detailing_svg(result, current=current) or ""
     bbs = render_continuous_detailing_bbs_csv(result, current=current)
+    if "physical_flange" in result.calculation:
+        return render_physical_flange_report(
+            result, drawing=svg, schedule=bbs, current=current_match
+        )
     strength = result.calculation["strength"]
     governance = "".join(
         f"<li>{html.escape(check)} · {html.escape(row)}</li>"

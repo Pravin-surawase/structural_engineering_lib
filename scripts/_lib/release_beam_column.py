@@ -25,6 +25,7 @@ TESTS = tuple(
         "test_cantilever_beam_check",
         "test_continuous_beam_check",
         "test_beam_continuous_detailing",
+        "test_beam_physical_flange_reference",
         "test_signed_beam_section_check",
         "test_beam_section_catalogue",
         "test_layered_column_section",
@@ -141,6 +142,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_030_beam05_support_top_lap_reference.py",
     "docs/verification/check_library_030_beam05_varied_links_reference.py",
     "docs/verification/check_library_030_beam05_haunch_reference.py",
+    "docs/verification/check_library_030_beam05_physical_flange_reference.py",
 )
 BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
@@ -174,6 +176,9 @@ BEAM05_SUPPORT_TOP_LAP_REFERENCE = (
 )
 BEAM05_VARIED_LINKS_REFERENCE = "docs/verification/library-030-beam05-varied-links.json"
 BEAM05_HAUNCH_REFERENCE = "docs/verification/library-030-beam05-haunch.json"
+BEAM05_PHYSICAL_FLANGE_REFERENCE = (
+    "docs/verification/library-030-beam05-physical-flange.json"
+)
 BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
@@ -221,6 +226,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_SUPPORT_TOP_LAP_REFERENCE,
                 repo / BEAM05_VARIED_LINKS_REFERENCE,
                 repo / BEAM05_HAUNCH_REFERENCE,
+                repo / BEAM05_PHYSICAL_FLANGE_REFERENCE,
                 repo / BEAM05_LAP_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
@@ -474,6 +480,58 @@ def _check_haunch_replay(expected: dict[str, Any], calculation: dict[str, Any]) 
     )
 
 
+def _check_physical_flange_replay(
+    expected: dict[str, Any], result: dict[str, Any]
+) -> None:
+    if expected["status"] != "PASS":
+        code = {
+            "web_flange_link_intersection": "BEAM.FLANGE_LINK_CLASH_FAIL",
+            "flange_link_closure": "BEAM.FLANGE_CAP_CLOSURE_FAIL",
+            "flange_bar_support_development": "BEAM.FLANGE_DEVELOPMENT_FAIL",
+            "slab_strip_action_basis": "BEAM.FLANGE_STRIP_ACTIONS_HELD",
+            "slab_strip_geometry_revision": "BEAM.FLANGE_STRIP_REVISION_HELD",
+        }[expected["check"]]
+        assert code in {issue["code"] for issue in result["envelope"]["issues"]}
+        return
+    calculation = result["calculation"]
+    assembly = calculation["physical_flange"]
+    engineering = assembly["engineering"]
+    strength = engineering["strength"]
+    assert strength["governing_rows"]["hogging"] == expected["governing_moment_row"]
+    assert strength["governing_rows"]["shear"] == expected["governing_shear_row"]
+    for face, capacity in expected["adverse_placement_capacity_knm"].items():
+        assert math.isclose(strength["adverse_capacity_knm"][face], capacity)
+    for actual, target in zip(
+        engineering["strip"]["strip_checks"], expected["strip_checks"], strict=True
+    ):
+        for key, value in target.items():
+            assert (
+                actual[key] == value
+                if isinstance(value, str)
+                else math.isclose(actual[key], value, abs_tol=1e-9)
+            )
+    assert math.isclose(
+        engineering["geometry"]["axial_access_mm"],
+        expected["minimum_clearances_mm"]["cap_to_next_main_access_mm"],
+    )
+    assert math.isclose(
+        engineering["geometry"]["flange_hook_plane_clearance_mm"],
+        expected["flange_hook_plane_clearance_mm"],
+    )
+    bbs = calculation["bbs"]["outputs"]["bbs"]
+    rows = {row["bar_mark"]: row for row in bbs["rows"]}
+    assert len(rows) == len(expected["schedule"])
+    for expected_row in expected["schedule"]:
+        mark = expected_row["mark"]
+        row = rows[mark]
+        assert assembly["owners_by_mark"][mark] == expected_row["owner"]
+        assert row["scheduled_bar_count"] == expected_row["quantity"]
+        assert math.isclose(
+            row["fabrication_cut_length_each_mm"], expected_row["cut_length_mm"]
+        )
+    assert math.isclose(bbs["scheduled_steel_mass_kg"], expected["mass_kg"])
+
+
 def qualify(config: dict[str, Any]) -> dict[str, Any]:
     """Replay all selected references, tests and public drivers from installation."""
     import shutil
@@ -675,6 +733,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         (BEAM05_SUPPORT_TOP_LAP_REFERENCE, "beam-support-top-lap"),
         (BEAM05_VARIED_LINKS_REFERENCE, "beam-varied-links"),
         (BEAM05_HAUNCH_REFERENCE, "beam-haunch"),
+        (BEAM05_PHYSICAL_FLANGE_REFERENCE, "beam-physical-flange"),
     ):
         for case, entry in json.loads((clone / reference).read_text())["cases"].items():
             label = f"{profile}-{case}"
@@ -736,12 +795,23 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 _check_varied_link_replay(entry["expected"], result["calculation"])
             if reference == BEAM05_HAUNCH_REFERENCE:
                 _check_haunch_replay(entry["expected"], result["calculation"])
+            if reference == BEAM05_PHYSICAL_FLANGE_REFERENCE:
+                _check_physical_flange_replay(entry["expected"], result)
             if status == "PASS":
                 drawing = (directory / "member.svg").read_text()
                 assert input_hash in drawing
                 assert input_hash in (directory / "bbs.csv").read_text()
                 if reference == BEAM05_FLANGED_REFERENCE:
                     assert 'data-view="section"' in drawing
+                if reference == BEAM05_PHYSICAL_FLANGE_REFERENCE:
+                    svg = ElementTree.fromstring(drawing)
+                    elevation = next(
+                        child for child in svg if child.get("data-view") == "elevation"
+                    )
+                    assert (
+                        sum(node.get("data-piece-id") is not None for node in elevation)
+                        == entry["expected"]["pieces"]
+                    )
                 if reference == BEAM05_HAUNCH_REFERENCE:
                     assert 'data-view="haunch-elevation"' in drawing
                     assert drawing.count("data-link-station=") == len(
