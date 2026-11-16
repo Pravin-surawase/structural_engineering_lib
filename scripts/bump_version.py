@@ -185,6 +185,13 @@ DOC_VERSION_FILES = {
             "**Version:** {version}",
         ),
     ],
+    "docs/index.md": [
+        (
+            r"^is `[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?` and requires Python",
+            "is `{published_version}` and requires Python",
+        ),
+        (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
+    ],
     "docs/getting-started/installation-notes.md": [
         (DOC_INSTALL_VERSION_PATTERN, DOC_INSTALL_VERSION_REPLACEMENT),
     ],

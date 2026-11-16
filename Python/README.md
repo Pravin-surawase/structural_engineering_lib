@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.29.2 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.30.0 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,22 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.29.2
+## New in v0.30.0
+
+- Verify bounded rectangular, T and L reinforcement cutoffs and laps,
+  varied links, variable-depth beams and a physical T-flange detail.
+- Verify mixed, slender and circular column lap cases, circular single-plane
+  shear and rectangular two-plane shear using the supplied reinforcement.
+- Check signed slab action sets, direct one-way serviceability and unequal
+  beam service histories. Use the checked reinforcement in reports and schedules.
+- Check regular interior and exterior ductile joints and the bounded
+  PROJECT03 frame cut from one compatible, signed action revision.
+
+The 0.30.0 source is an unpublished candidate. Installed 0.29.2 remains the
+published baseline. The imported gravity and slender-column project cases
+need a matched native beam and column action export.
+
+## Introduced in v0.29.2
 
 - Beam imports and snapshots validate case coverage, source units, model
   facts and station evidence before checks use those inputs.

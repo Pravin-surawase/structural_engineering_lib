@@ -191,6 +191,12 @@ FLOW03_LAYERED_EXAMPLE = "Python/examples/beam_layered_cage_edit.py"
 FLOW03_LAYERED_TEST = (
     "Python/tests/integration/test_beam_layered_cage_edit_reference.py"
 )
+WORKBENCH_TEST = "Python/tests/integration/test_workbench_beam_layout.py"
+SL04_SL05_TEST = "Python/tests/codes/is456/slab/test_built_in_coefficients.py"
+SL06_TEST = "Python/tests/integration/test_slab_supplied_actions.py"
+SL06_EXAMPLE = "Python/examples/slab_supplied_action_references.py"
+SL06_CHECKER = "docs/verification/check_library_030_sl06_reference.py"
+SL06_REFERENCE = "docs/verification/library-030-sl06-actions.json"
 DUCT01_REFERENCE = "docs/verification/library-030-duct01-interior-joint.json"
 DUCT01_CHECKER = "docs/verification/check_library_030_duct01_interior_reference.py"
 DUCT01_EXAMPLE = "Python/examples/ductile_interior_joint.py"
@@ -219,6 +225,39 @@ COL07_CIRCULAR_REFERENCE = "docs/verification/library-029-col07-circular-member.
 COL07_SLENDER_REFERENCE = "docs/verification/library-029-col07-slender-member.json"
 COL07_SPLICE_REFERENCE = "docs/verification/library-029-col07-contact-splice.json"
 COL07_CORNER_REFERENCE = "docs/verification/library-029-col07-corner-splice.json"
+COL07_030_REFERENCES = tuple(
+    f"docs/verification/library-030-col07-{name}.json"
+    for name in (
+        "mixed-splice",
+        "two-plane-shear",
+        "circular-shear",
+        "slender-lap-reference",
+        "circular-lap-reference",
+    )
+)
+COL07_030_CHECKERS = tuple(
+    f"docs/verification/check_library_030_col07_{name}_reference.py"
+    for name in (
+        "mixed_splice",
+        "two_plane_shear",
+        "circular_shear",
+        "slender_lap",
+        "circular_lap",
+    )
+)
+COL07_030_TESTS = tuple(
+    f"Python/tests/integration/test_{name}.py"
+    for name in (
+        "column_mixed_contact_splice",
+        "circular_column_shear",
+        "column_slender_contact_splice",
+        "circular_column_contact_lap",
+    )
+)
+BEAM05_LAP_TESTS = tuple(
+    f"Python/tests/integration/test_beam_{section}_lap_reference.py"
+    for section in ("t", "l", "span2")
+)
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -240,6 +279,9 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_T_LAP_REFERENCE,
                 repo / BEAM05_L_LAP_REFERENCE,
                 repo / BEAM05_SPAN2_LAP_REFERENCE,
+                repo / "Python/tests/__init__.py",
+                repo / "Python/tests/integration/__init__.py",
+                *(repo / name for name in BEAM05_LAP_TESTS),
                 repo / BEAM05_LAP_RESTRAINT_REFERENCE,
                 repo / BEAM05_FLANGED_LAP_RESTRAINT_REFERENCE,
                 repo / BEAM05_LAP_PLACEMENT_REFERENCE,
@@ -255,6 +297,12 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / FLOW03_LAYERED_REFERENCE,
                 repo / FLOW03_LAYERED_EXAMPLE,
                 repo / FLOW03_LAYERED_TEST,
+                repo / WORKBENCH_TEST,
+                repo / SL04_SL05_TEST,
+                repo / SL06_TEST,
+                repo / SL06_EXAMPLE,
+                repo / SL06_CHECKER,
+                repo / SL06_REFERENCE,
                 *(
                     repo / name
                     for name in (
@@ -293,6 +341,14 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL07_CIRCULAR_REFERENCE,
                 repo / COL07_SPLICE_REFERENCE,
                 repo / COL07_CORNER_REFERENCE,
+                *(
+                    repo / name
+                    for name in (
+                        *COL07_030_REFERENCES,
+                        *COL07_030_CHECKERS,
+                        *COL07_030_TESTS,
+                    )
+                ),
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -646,7 +702,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     def run(label: str, script: str, *args: str, expected_code: int = 0) -> str:
         command = [sys.executable, "-I"]
-        if script in CHECKERS or script in (
+        if script in (*CHECKERS, *COL07_030_CHECKERS) or script in (
             DUCT01_CHECKER,
             DUCT02_CHECKER,
             PROJECT03_CHECKER,
@@ -682,6 +738,10 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     for checker in CHECKERS:
         run(Path(checker).stem, checker)
+    if version_at_least_030:
+        run(Path(SL06_CHECKER).stem, SL06_CHECKER)
+        for checker in COL07_030_CHECKERS:
+            run(Path(checker).stem, checker)
     for profile, reference, example in (
         ("continuous", BEAM01_REFERENCE, "continuous_beam_check"),
         ("cantilever", BEAM02_REFERENCE, "cantilever_beam_check"),
@@ -1332,10 +1392,19 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 member["envelope"]["engineering_status"] == entry["expected"]["status"]
             )
             input_hash = member["envelope"]["result_identity"]["input_hash"]
-            assert input_hash in (directory / "report.html").read_text()
-            drawing = (directory / "member.svg").read_text()
-            assert input_hash in drawing
-            ElementTree.fromstring(drawing)
+            report = (directory / "report.html").read_text()
+            assert input_hash in report
+            drawing = directory / "member.svg"
+            if (
+                version_at_least_030
+                and entry["expected"].get("issue") == "COLUMN.COMBINED_SHEAR"
+            ):
+                assert not drawing.exists()
+                assert "Checked drawing withheld" in report
+            else:
+                svg = drawing.read_text()
+                assert input_hash in svg
+                ElementTree.fromstring(svg)
             bbs = directory / "bbs.csv"
             assert bbs.is_file() == entry["expected"].get(
                 "bbs_available", entry["expected"]["status"] == "PASS"
@@ -1411,7 +1480,14 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             *(str(clone / name) for name in TESTS),
             *(
                 (
+                    "-o",
+                    f"pythonpath={clone / 'Python'}",
+                    *(str(clone / name) for name in BEAM05_LAP_TESTS),
                     str(clone / FLOW03_LAYERED_TEST),
+                    str(clone / WORKBENCH_TEST),
+                    str(clone / SL04_SL05_TEST),
+                    str(clone / SL06_TEST),
+                    *(str(clone / name) for name in COL07_030_TESTS),
                     str(clone / DUCT01_TEST),
                     str(clone / DUCT02_TEST),
                     str(clone / PROJECT03_TEST),

@@ -28,6 +28,11 @@ so an editable checkout cannot be mistaken for the published wheel.
 
 ## Run the current repository workbench
 
+The workbench requires **Node.js 24.x and npm 11.x**, matching the
+[repository Node version](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/.nvmrc) and
+[frontend package engines](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/react_app/package.json). Check
+`node --version` and `npm --version` before installing frontend dependencies.
+
 From the repository root:
 
 ```bash

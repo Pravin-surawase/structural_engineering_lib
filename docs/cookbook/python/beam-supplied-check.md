@@ -169,4 +169,4 @@ dictionary and preserve `correlation_id`. See the
 [beam facade reference](../../reference/beam-facade.md).
 
 Replay these examples with a local build of source package version
-`0.29.2`. Results require qualified review.
+`0.30.0`. Results require qualified review.

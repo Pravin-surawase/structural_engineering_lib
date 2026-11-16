@@ -12,8 +12,8 @@
   ],
   "scope": "FOOT-ISO-RC-V1 phases A-D1 plus reviewed exact-arithmetic, canonical transport, public-domain validation, LIB-PRO-002-E assumption/provenance, and LIB-PRO-007-P3 supported end-anchorage changes: concentric isolated-footing service, detailing, FastAPI route, and React workbench.",
   "scope_boundary": "Report/export and catalogue closeout were not implemented in D1 and are not claimed by this receipt. The end-anchorage refresh is limited to straight bars, 90-degree bends, and standard 180-degree U-hooks with explicit approved geometry; other arrangements, mechanical anchorage, curtailment, laps, coordinates, and complete bar-bending schedules remain held.",
-  "latest_reviewed_head": "b3309260686a05b4cbb9c9358c89d6218a700357",
-  "latest_reviewed_tree": "90894f2f39b4356b4aa30b6c3661ac9c718b3073",
+  "latest_reviewed_head": "c5346927abdfca449a2e5a4e272fae99792ad1fd",
+  "latest_reviewed_tree": "2cf90b16f2e0e6b2bd69a3e357911775659564ed",
   "reviewed_refreshes": [
     {
       "task": "INDIA-2-CLOSEOUT",
@@ -39,6 +39,11 @@
       "task": "LIB-PRO-007-P3",
       "commit": "0ea3e2d43343d70f007b0771896b41566e3b5064",
       "basis": "Add source-bound, fail-closed evaluation of straight, 90-degree bend, and standard U-hook end anchorage while holding unsupported arrangements and incomplete geometry."
+    },
+    {
+      "task": "FOOTING-REVIEW-APPROVALS",
+      "commit": "c5346927abdfca449a2e5a4e272fae99792ad1fd",
+      "basis": "PR #1098 invalidates footing approvals when their evidence changes and preserves HOLD candidate labels and anchorage shortfall. Nine focused React tests passed on the retained bytes."
     }
   ],
   "required_owned_file_sha256": {
@@ -51,12 +56,12 @@
     "fastapi_app/tests/test_footing.py": "eb135608a354a95ee5f251260c62a521ea03cdcf463725a5cc75e1ea8852fe44",
     "react_app/src/features/footing/ConcentricIsolatedFootingPage.tsx": "7065be7cb39be4dd0008cadbcb05ba708d31ba13a65b530608f0f527f042d1a6",
     "react_app/src/features/footing/FootingInputForm.tsx": "d6144c17ad02c1d2d7c23bb6c5fc7299f529dd0fd4c1f1cd6ebf92497ce6270a",
-    "react_app/src/features/footing/FootingResults.tsx": "0bf9314eed7d2533e109c25dae63961d45ea433e35486348b770730fa89699f8",
-    "react_app/src/features/footing/__tests__/ConcentricIsolatedFootingPage.test.tsx": "3afd297d48a74397132847da5e7d764c747d51a8226408120ae2a23a92ad04b9",
+    "react_app/src/features/footing/FootingResults.tsx": "37aef3eb3e90101251c17b16c09022bfa2db49882f38edbb8e112a0be35fce97",
+    "react_app/src/features/footing/__tests__/ConcentricIsolatedFootingPage.test.tsx": "c25da6f2d7777b8a20d10d295866d08a565be4b01aeeb48a87971d868a6519f5",
     "react_app/src/features/footing/__tests__/client.test.ts": "d9c81d74211b693ac63285b481adefc1f9e065e3a480ccc13015bcbecb1bdb64",
     "react_app/src/features/footing/client.ts": "6c763ab2bb187a36a8b4eb7baf7deecc9e58a43acd2e104952fa1179c95af5d9",
-    "react_app/src/features/footing/draft.ts": "793ea00adf3ff03b5248d2df187bd06071635d92008bcd2261e39b7d5492b11a",
-    "react_app/src/features/footing/types.ts": "19c8e8bb04c1026a7aa4fc96e46ce54843fdff1a4151e810e158ad6b586d9aea"
+    "react_app/src/features/footing/draft.ts": "53928757e9e0dedf5467d029fe4b4bcd90bbeecf4a6f2f9d9b4abd6a629a7051",
+    "react_app/src/features/footing/types.ts": "ba9166d371dd9f3da07c832b12e9a3b5773ffdb62ffe01016d8417cdb0d0495a"
   },
   "required_shared_markers": {
     "Python/structural_lib/codes/is456/footing/_common.py": [

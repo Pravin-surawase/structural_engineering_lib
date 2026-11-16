@@ -5,11 +5,16 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-15
+**Last Updated:** 2026-11-16
 
 ## Current State
 
-Current source metadata: 0.29.2.
+Current source metadata: 0.30.0.
+
+The 0.30.0 candidate is in S5 qualification. Bind installed checks to one
+committed source tree and the exact wheel and source archive. PROJECT01 and
+PROJECT02 remain on HOLD until a matched FLOW04 source is checked through
+design and outputs. The candidate stays unpublished during qualification.
 
 **0.29.2 is published and verified.** The [release status](../getting-started/release-status.md)
 and [publication receipt](../getting-started/releases.md#v0292-published-and-verified)

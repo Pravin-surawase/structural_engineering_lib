@@ -26,7 +26,8 @@ workflows under IS 456:2000.
 
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
-> **v0.29.2 is a normal software release of the audited supported scope.**
+> **v0.30.0 is a normal software release of the audited supported scope.**
+> The 0.30.0 candidate remains unpublished. v0.29.2 is the verified public release.
 > This describes the version format and scope. Publication state and verified
 > artifact identities are recorded in the [release ledger](docs/getting-started/releases.md)
 > and matching registry/release assets. Support is case-qualified; complete IS 456 coverage
@@ -186,6 +187,11 @@ For PDF, use `structural_lib.services.report.export_pdf(ReportData)` with the
 `pdf` extra.
 
 ### Run the full workbench
+
+The workbench requires **Node.js 24.x and npm 11.x**, matching the
+[repository Node version](.nvmrc) and
+[frontend package engines](react_app/package.json). Check
+`node --version` and `npm --version` before installing frontend dependencies.
 
 ```bash
 git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
