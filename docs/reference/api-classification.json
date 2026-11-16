@@ -23520,9 +23520,28 @@
     {
       "module": "structural_lib.design.is13920.joint",
       "export_classification": "preview",
-      "declared_export_count": 7,
-      "classified_symbol_count": 7,
+      "declared_export_count": 8,
+      "classified_symbol_count": 8,
       "symbols": [
+        {
+          "name": "DuctileExteriorJointRequestV1",
+          "qualified_name": "structural_lib.design.is13920.joint.DuctileExteriorJointRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.ductile_joint",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
         {
           "name": "DuctileJointRequestV1",
           "qualified_name": "structural_lib.design.is13920.joint.DuctileJointRequestV1",
@@ -23577,7 +23596,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(request: 'DuctileJointRequestV1') -> 'DuctileJointResultV1'",
+            "signature": "(request: 'JointRequest') -> 'DuctileJointResultV1'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -23606,7 +23625,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(value: 'Mapping[str, object] | str | bytes | DuctileJointRequestV1') -> 'DuctileJointRequestV1'",
+            "signature": "(value: 'Mapping[str, object] | str | bytes | JointRequest') -> 'JointRequest'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -23635,7 +23654,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(result: 'DuctileJointResultV1', *, current: 'DuctileJointRequestV1 | None' = None) -> 'str | None'",
+            "signature": "(result: 'DuctileJointResultV1', *, current: 'JointRequest | None' = None) -> 'str | None'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -23664,7 +23683,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(result: 'DuctileJointResultV1', *, current: 'DuctileJointRequestV1 | None' = None) -> 'str'",
+            "signature": "(result: 'DuctileJointResultV1', *, current: 'JointRequest | None' = None) -> 'str'",
             "docstring_sections": [
               "examples",
               "limitations",
@@ -23693,7 +23712,7 @@
               "GENERATED_REFERENCE",
               "REGISTERED_EXECUTABLE_EXAMPLE"
             ],
-            "signature": "(result: 'DuctileJointResultV1', *, current: 'DuctileJointRequestV1 | None' = None) -> 'str | None'",
+            "signature": "(result: 'DuctileJointResultV1', *, current: 'JointRequest | None' = None) -> 'str | None'",
             "docstring_sections": [
               "examples",
               "limitations",

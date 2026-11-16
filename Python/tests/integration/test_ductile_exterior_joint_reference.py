@@ -10,6 +10,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
+
 from structural_lib.design.is13920 import joint
 from structural_lib.services.bbs import calculate_bar_weight
 
