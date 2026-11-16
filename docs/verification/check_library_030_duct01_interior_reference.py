@@ -215,7 +215,9 @@ def joint_actions(request, direction, beam, mechanism, confinement, column_rows)
         combo = action["combination_id"]
         vertical = action["beam_on_joint_downward_shear_kn"]
         pu_above = action["upper_axial_compression_kn"]
-        axial = {"upper": pu_above, "lower": pu_above + sum(vertical.values())}
+        orthogonal = action.get("orthogonal_downward_reaction_kn", 0)
+        transfer = sum(vertical.values()) + orthogonal
+        axial = {"upper": pu_above, "lower": pu_above + transfer}
         assert min(axial.values()) > 0
         beam_shears = {}
         for side in BEAM_ENDS:
@@ -268,7 +270,7 @@ def joint_actions(request, direction, beam, mechanism, confinement, column_rows)
                 "column_axial_compression_kn": axial,
                 "signed_axial_balance_residual_kn": axial["lower"]
                 - axial["upper"]
-                - sum(vertical.values()),
+                - transfer,
                 "maximum_axial_stress_mpa": 1000 * max(axial.values()) / width**2,
                 "beam_capacity_shear": beam_shears,
                 "column_capacity_shear": column_shears,
@@ -355,7 +357,11 @@ def evaluate(request):
     for actions in request["directions"].values():
         for action in actions:
             upper = action["upper_axial_compression_kn"]
-            lower = upper + sum(action["beam_on_joint_downward_shear_kn"].values())
+            lower = (
+                upper
+                + sum(action["beam_on_joint_downward_shear_kn"].values())
+                + action.get("orthogonal_downward_reaction_kn", 0)
+            )
             for end, pu in zip(COLUMN_ENDS, (upper, lower), strict=True):
                 result = rectangular_section(
                     width,
