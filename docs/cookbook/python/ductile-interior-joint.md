@@ -47,3 +47,25 @@ the local beam continuations used in the anchorage check.
 
 [JSON request and output example](../../../Python/examples/ductile_interior_joint.py) ·
 [Independent reference](../../verification/library-030-duct01-interior-joint.json)
+
+## Check the regular exterior joint
+
+The exterior request describes a square column, a terminating X-minus beam
+and two opposed through beams in Y. Use `ductile-exterior-joint/v1` as
+`schema_version` and supply the declared applicability with the fixture
+request. Provide the separate top and bottom X bends and straight tails,
+the through-bar development in Y, and the overlapping hoops and exterior
+cross-tie. The cross-tie has an inside 90° hook and an exterior 135° hook.
+
+The four-direction result includes the governing vertical reaction and
+capacity shear checks, joint shear, strong-column weak-beam,
+termination development, full confinement and the fitted cage.
+The SVG shows the actual return directions, bar positions and link
+stations. The local BBS schedules the two closed hoops and cross-tie.
+The X termination rows show the measured portion beyond the joint face
+and carry blank order lengths and weights. The final cage fit and
+compaction opening use the supplied tolerances. Site insertion
+sequencing and temporary supports require separate project evidence.
+
+The same Python example and export guard apply to the versioned exterior
+request. [Independent exterior reference](../../verification/library-030-duct02-exterior-joint.json)

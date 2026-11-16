@@ -195,6 +195,9 @@ DUCT01_REFERENCE = "docs/verification/library-030-duct01-interior-joint.json"
 DUCT01_CHECKER = "docs/verification/check_library_030_duct01_interior_reference.py"
 DUCT01_EXAMPLE = "Python/examples/ductile_interior_joint.py"
 DUCT01_TEST = "Python/tests/integration/test_ductile_interior_joint_reference.py"
+DUCT02_REFERENCE = "docs/verification/library-030-duct02-exterior-joint.json"
+DUCT02_CHECKER = "docs/verification/check_library_030_duct02_exterior_reference.py"
+DUCT02_TEST = "Python/tests/integration/test_ductile_exterior_joint_reference.py"
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
@@ -256,6 +259,10 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                         DUCT01_TEST,
                         "docs/verification/_duct01_cage_reference.py",
                         "docs/verification/_duct01_section_reference.py",
+                        DUCT02_REFERENCE,
+                        DUCT02_CHECKER,
+                        DUCT02_TEST,
+                        "docs/verification/_duct02_cage_reference.py",
                     )
                 ),
                 repo / FLOW04_REFERENCE,
@@ -627,7 +634,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     def run(label: str, script: str, *args: str, expected_code: int = 0) -> str:
         command = [sys.executable, "-I"]
-        if script in CHECKERS or script == DUCT01_CHECKER:
+        if script in CHECKERS or script in (DUCT01_CHECKER, DUCT02_CHECKER):
             # -I deliberately excludes the script directory. These arithmetic
             # drivers share sibling helpers; expose only their copied folder.
             command.extend(
@@ -1006,6 +1013,40 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             assert (directory / "report.html").is_file()
             assert (directory / "joint.svg").is_file() == (case == "PASS")
             assert (directory / "bbs.csv").is_file() == (case == "PASS")
+        run("duct02-independent-reference", DUCT02_CHECKER)
+        frozen = json.loads((clone / DUCT02_REFERENCE).read_text(encoding="utf-8"))
+        payload = {
+            **frozen["request"],
+            "schema_version": "ductile-exterior-joint/v1",
+            "applicability_reference": "Declared IS 13920 regular exterior specimen.",
+        }
+        exterior_cases = [
+            ("baseline", {}, "PASS"),
+            *(
+                (name, control["changes"], control["expected"]["status"])
+                for name, control in frozen["controls"].items()
+            ),
+        ]
+        for case, changes, expected in exterior_cases:
+            label = f"ductile-exterior-joint-{case}"
+            directory = output / label
+            request_file = output / f"{label}-input.json"
+            request_file.write_text(json.dumps(payload | changes), encoding="utf-8")
+            result = json.loads(
+                run(
+                    label,
+                    DUCT01_EXAMPLE,
+                    "--request",
+                    str(request_file),
+                    "--output-dir",
+                    str(directory),
+                )
+            )
+            assert result["workflow_id"] == "DUCT02_EXTERIOR_JOINT"
+            assert result["envelope"]["engineering_status"] == expected
+            assert (directory / "report.html").is_file()
+            assert (directory / "joint.svg").is_file() == (expected == "PASS")
+            assert (directory / "bbs.csv").is_file() == (expected == "PASS")
     for option, expected in (
         ((), "COMPLETE_FOR_DECLARED_ROWS"),
         (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),
@@ -1312,7 +1353,11 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             str(junit),
             *(str(clone / name) for name in TESTS),
             *(
-                (str(clone / FLOW03_LAYERED_TEST), str(clone / DUCT01_TEST))
+                (
+                    str(clone / FLOW03_LAYERED_TEST),
+                    str(clone / DUCT01_TEST),
+                    str(clone / DUCT02_TEST),
+                )
                 if version_at_least_030
                 else ()
             ),

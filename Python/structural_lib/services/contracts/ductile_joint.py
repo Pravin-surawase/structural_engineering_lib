@@ -171,3 +171,188 @@ class DuctileJointRequestV1(StrictPublicModel):
                 "Joint action combinations must have distinct identifiers."
             )
         return self
+
+
+class ExteriorJointActionRowV1(StrictPublicModel):
+    """One concurrent signed row for an exterior-joint principal plane."""
+
+    combination_id: _Id
+    upper_axial_compression_kn: _PositiveLoad
+    beam_on_joint_downward_shear_kn: dict[_BeamSide, _Load]
+    analysis_column_shear_magnitude_kn: Annotated[float, Field(ge=0, le=10000)]
+    beam_axial_kn: Literal[0]
+    sway: Literal["+", "-"]
+
+
+class JointHookV1(StrictPublicModel):
+    """90-degree hook with a vertical tail measured after the bend tangent."""
+
+    tip_x_mm: _Dimension
+    tail_mm: _Dimension
+
+
+class DuctileExteriorJointRequestV1(StrictPublicModel):
+    """Regular exterior open-frame joint with one terminating X-minus beam."""
+
+    schema_version: Literal["ductile-exterior-joint/v1"] = "ductile-exterior-joint/v1"
+    topology: Literal["exterior_x_minus"]
+    joint_id: _Id
+    applicability_reference: _Reference | None = None
+    action_revision: _Id | None = None
+    cage_action_revision: _Id | None = None
+    column_width_mm: _Dimension
+    joint_depth_mm: Annotated[float, Field(gt=0, le=750)]
+    beam_width_mm: dict[_Plane, _Dimension]
+    column_bar_mm: Literal[25, 32]
+    column_bar_edge_mm: _SmallDimension
+    beam_bar_mm: dict[_Plane, Literal[20, 25, 32]]
+    beam_axes_mm: dict[_Plane, tuple[_Dimension, _Dimension, _Dimension, _Dimension]]
+    beam_top_z_mm: dict[_Plane, _SmallDimension]
+    x_hooks: dict[Literal["TOP", "BOTTOM"], JointHookV1] | None = None
+    x_hook_radius_mm: _SmallDimension
+    y_straight_each_side_mm: _Dimension
+    column_cover_mm: _SmallDimension
+    column_link_mm: Literal[16]
+    column_link_radius_mm: _SmallDimension
+    column_link_overlap_half_mm: _SmallDimension
+    column_cross_tie_axis_y_mm: _Dimension
+    column_link_tail_mm: _SmallDimension
+    column_link_ramp_run_mm: _SmallDimension
+    link_group_offset_mm: _SmallDimension
+    joint_hoop_centres_mm: Annotated[
+        tuple[_Station, ...], Field(min_length=2, max_length=40)
+    ]
+    column_end_link_first_mm: _SmallDimension
+    column_end_pitch_mm: Annotated[float, Field(ge=20, le=500)]
+    column_end_confinement_length_mm: _Dimension
+    column_clear_heights_mm: dict[_ColumnEnd, _Dimension]
+    mechanism_inflection_offsets_mm: dict[_ColumnEnd, _Dimension] | None = None
+    beam_clear_spans_mm: dict[_Plane, dict[_BeamSide, _Dimension]]
+    beam_dead_plus_live_kn_m: dict[
+        _Plane, dict[_BeamSide, Annotated[float, Field(ge=0, le=2000)]]
+    ]
+    beam_link_mm: Literal[10, 12]
+    beam_pitch_mm: _SmallDimension
+    beam_first_link_mm: _SmallDimension
+    beam_inner_link_offset_mm: _SmallDimension
+    beam_link_centre_radius_mm: dict[_Plane, _SmallDimension]
+    beam_link_seat_inset_mm: dict[_Plane, _SmallDimension]
+    beam_link_hook_tail_mm: _SmallDimension
+    column_fck_mpa: Literal[30]
+    beam_fck_mpa: Literal[30]
+    joint_fck_mpa: Literal[20, 25, 30, 35, 40, 45, 50]
+    longitudinal_fy_mpa: Literal[500]
+    link_fy_mpa: Literal[415]
+    longitudinal_grade: Literal["Fe500D"]
+    transverse_grade: Literal["Fe415D"]
+    required_beam_cover_mm: Annotated[float, Field(ge=20, le=200)]
+    required_column_cover_mm: Annotated[float, Field(ge=40, le=200)]
+    aggregate_max_mm: _SmallDimension
+    axis_tolerance_mm: _Tolerance
+    diameter_overage_mm: _Tolerance
+    tie_station_tolerance_mm: _Tolerance
+    anchor_cut_length_tolerance_mm: _Tolerance
+    compaction_head_mm: _SmallDimension | None = None
+    assembly: _Reference | None = None
+    directions: dict[
+        JointDirection,
+        Annotated[tuple[ExteriorJointActionRowV1, ...], Field(max_length=32)],
+    ] = Field(default_factory=dict)
+
+    @field_validator("beam_axes_mm", "directions", mode="before")
+    @classmethod
+    def json_sequences_by_name(cls, value: object) -> object:
+        if isinstance(value, dict):
+            return {
+                name: tuple(rows) if isinstance(rows, list) else rows
+                for name, rows in value.items()
+            }
+        return value
+
+    @field_validator("joint_hoop_centres_mm", mode="before")
+    @classmethod
+    def json_stations(cls, value: object) -> object:
+        return tuple(value) if isinstance(value, list) else value
+
+    @model_validator(mode="after")
+    def admit_exterior_geometry_and_actions(self) -> Self:
+        width = self.column_width_mm
+        if set(self.column_clear_heights_mm) != {"upper", "lower"} or (
+            self.mechanism_inflection_offsets_mm is not None
+            and set(self.mechanism_inflection_offsets_mm) != {"upper", "lower"}
+        ):
+            raise ValueError(
+                "Supply both column end heights and any inflection offsets."
+            )
+        expected_sides = {"X": {"minus"}, "Y": {"minus", "plus"}}
+        for beam_map in (self.beam_clear_spans_mm, self.beam_dead_plus_live_kn_m):
+            if {
+                plane: set(sides) for plane, sides in beam_map.items()
+            } != expected_sides:
+                raise ValueError("Supply the X-minus beam and both Y beams.")
+        plane_inputs = (
+            self.beam_width_mm,
+            self.beam_bar_mm,
+            self.beam_axes_mm,
+            self.beam_top_z_mm,
+            self.beam_link_centre_radius_mm,
+            self.beam_link_seat_inset_mm,
+        )
+        if any(set(values) != {"X", "Y"} for values in plane_inputs):
+            raise ValueError("Supply the beam and bar geometry in both planes.")
+        for plane, axes in self.beam_axes_mm.items():
+            if (
+                self.beam_width_mm[plane] > width
+                or self.beam_top_z_mm[plane] >= self.joint_depth_mm / 2
+                or axes != tuple(sorted(set(axes)))
+                or axes[-1] >= width
+                or abs(axes[0] + axes[-1] - width) > 1e-6
+                or abs(axes[1] + axes[-2] - width) > 1e-6
+            ):
+                raise ValueError(
+                    "Supply centred four-bar symmetric beam rows within the joint."
+                )
+        inset = self.column_cover_mm + self.column_link_mm / 2
+        radius = self.column_link_radius_mm
+        overlap = self.column_link_overlap_half_mm
+        jog_run = self.column_link_ramp_run_mm
+        half = width / 2
+        if (
+            not 5 < self.column_bar_edge_mm < half - 5
+            or not inset < half - overlap
+            or not inset < self.column_cross_tie_axis_y_mm - radius < width - inset
+            or width - 2 * inset <= 2 * radius
+            or half + overlap - inset <= 2 * radius + jog_run
+        ):
+            raise ValueError(
+                "Supply distinct closed hoop, cross-tie and column bar axes."
+            )
+        if self.x_hooks is not None and any(
+            hook.tip_x_mm <= self.x_hook_radius_mm for hook in self.x_hooks.values()
+        ):
+            raise ValueError("A terminating bar needs a positive horizontal tangent.")
+        stations = self.joint_hoop_centres_mm
+        if (
+            stations != tuple(sorted(set(stations)))
+            or stations[-1] > self.joint_depth_mm
+        ):
+            raise ValueError(
+                "Supply distinct increasing hoop stations within the joint."
+            )
+        ids: list[str] = []
+        for direction, rows in self.directions.items():
+            for row in rows:
+                if (
+                    set(row.beam_on_joint_downward_shear_kn)
+                    != expected_sides[direction[0]]
+                    or row.sway != direction[1]
+                ):
+                    raise ValueError(
+                        "Supply the signed reactions for the beams present in each direction."
+                    )
+                ids.append(row.combination_id)
+        if len(ids) != len(set(ids)):
+            raise ValueError(
+                "Joint action combinations must have distinct identifiers."
+            )
+        return self

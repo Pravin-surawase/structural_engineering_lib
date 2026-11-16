@@ -1,4 +1,4 @@
-"""Checked fabrication views for the DUCT01 interior-joint result.
+"""Checked fabrication views for regular interior and exterior joints.
 
 This module only projects facts already checked by :mod:`ductile_joint`.  In
 particular a calculation from another request is useful diagnostic evidence,
@@ -15,18 +15,24 @@ from io import StringIO
 from typing import TYPE_CHECKING, Any
 
 from structural_lib.services.bbs import calculate_bar_weight
+from structural_lib.services.contracts.ductile_joint import (
+    DuctileExteriorJointRequestV1,
+)
+from structural_lib.services.ductile_exterior_joint_outputs import (
+    render_exterior_joint_bbs_csv,
+    render_exterior_joint_report_html,
+    render_exterior_joint_svg,
+)
 
 if TYPE_CHECKING:
-    from .ductile_joint import DuctileJointRequestV1, DuctileJointResultV1
+    from .ductile_joint import DuctileJointResultV1, JointRequest
 
 
 def _request(result: DuctileJointResultV1) -> dict[str, Any]:
     return result.request.model_dump(mode="json")
 
 
-def _checked(
-    result: DuctileJointResultV1, current: DuctileJointRequestV1 | None
-) -> bool:
+def _checked(result: DuctileJointResultV1, current: JointRequest | None) -> bool:
     return (
         result.status == "PASS"
         and current is not None
@@ -71,7 +77,7 @@ def _tie_path(mark: str, tie: Mapping[str, Any]) -> str:
 
 
 def render_joint_svg(
-    result: DuctileJointResultV1, *, current: DuctileJointRequestV1 | None = None
+    result: DuctileJointResultV1, *, current: JointRequest | None = None
 ) -> str | None:
     """Render the checked local joint plan and both principal sections.
 
@@ -101,6 +107,8 @@ def render_joint_svg(
     """
     if not _checked(result, current):
         return None
+    if isinstance(current, DuctileExteriorJointRequestV1):
+        return render_exterior_joint_svg(result)
     request, data = _request(result), result.calculation
     placement = data["placement"]
     marks = placement["column_transverse_joint_marks"]
@@ -250,7 +258,7 @@ def render_joint_svg(
 
 
 def render_joint_bbs_csv(
-    result: DuctileJointResultV1, *, current: DuctileJointRequestV1 | None = None
+    result: DuctileJointResultV1, *, current: JointRequest | None = None
 ) -> str | None:
     """Render the checked joint hoop and cross-ties as CSV.
 
@@ -280,6 +288,8 @@ def render_joint_bbs_csv(
     """
     if not _checked(result, current):
         return None
+    if isinstance(current, DuctileExteriorJointRequestV1):
+        return render_exterior_joint_bbs_csv(result)
     request, marks = (
         _request(result),
         result.calculation["placement"]["column_transverse_joint_marks"],
@@ -341,7 +351,7 @@ def render_joint_bbs_csv(
 
 
 def render_joint_html(
-    result: DuctileJointResultV1, *, current: DuctileJointRequestV1 | None = None
+    result: DuctileJointResultV1, *, current: JointRequest | None = None
 ) -> str:
     """Render the joint's governing checks and diagnostics.
 
@@ -370,6 +380,8 @@ def render_joint_html(
     DUCT01 checked result, including the recorded IS 13920 amendment chain.
     """
     request, data = _request(result), result.calculation
+    if request["schema_version"] == "ductile-exterior-joint/v1":
+        return render_exterior_joint_report_html(result)
     governing = data.get("governing", {})
     anchor = data.get("anchorage", {})
     placement = data.get("placement", {})
