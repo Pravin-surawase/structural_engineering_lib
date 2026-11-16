@@ -188,6 +188,11 @@ For PDF, use `structural_lib.services.report.export_pdf(ReportData)` with the
 
 ### Run the full workbench
 
+The workbench requires **Node.js 24.x and npm 11.x**, matching the
+[repository Node version](.nvmrc) and
+[frontend package engines](react_app/package.json). Check
+`node --version` and `npm --version` before installing frontend dependencies.
+
 ```bash
 git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib

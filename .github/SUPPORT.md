@@ -9,7 +9,7 @@
 
 ## Getting Help
 
-Use the repository's **Support / Question** issue form for usage questions.
+Use the repository's [**Support / Question**](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=support.yml) issue form for usage questions.
 Include the interface you used, package version, input values or a minimal CSV,
 what you expected, and relevant output or screenshots.
 
