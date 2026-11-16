@@ -254,6 +254,10 @@ COL07_030_TESTS = tuple(
         "circular_column_contact_lap",
     )
 )
+BEAM05_LAP_TESTS = tuple(
+    f"Python/tests/integration/test_beam_{section}_lap_reference.py"
+    for section in ("t", "l", "span2")
+)
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -275,6 +279,9 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_T_LAP_REFERENCE,
                 repo / BEAM05_L_LAP_REFERENCE,
                 repo / BEAM05_SPAN2_LAP_REFERENCE,
+                repo / "Python/tests/__init__.py",
+                repo / "Python/tests/integration/__init__.py",
+                *(repo / name for name in BEAM05_LAP_TESTS),
                 repo / BEAM05_LAP_RESTRAINT_REFERENCE,
                 repo / BEAM05_FLANGED_LAP_RESTRAINT_REFERENCE,
                 repo / BEAM05_LAP_PLACEMENT_REFERENCE,
@@ -1473,6 +1480,9 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             *(str(clone / name) for name in TESTS),
             *(
                 (
+                    "-o",
+                    f"pythonpath={clone / 'Python'}",
+                    *(str(clone / name) for name in BEAM05_LAP_TESTS),
                     str(clone / FLOW03_LAYERED_TEST),
                     str(clone / WORKBENCH_TEST),
                     str(clone / SL04_SL05_TEST),
