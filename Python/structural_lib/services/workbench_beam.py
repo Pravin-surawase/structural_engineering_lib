@@ -10,7 +10,10 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from structural_lib.codes.is456.beam.detailing import BeamDetailingWithStirrupStations
+from structural_lib.codes.is456.beam.detailing import (
+    BeamDetailingWithStirrupStations,
+    calculate_bar_spacing,
+)
 from structural_lib.core.errors import InputContractError, StructuralLibError
 from structural_lib.services.bbs import generate_bbs_from_detailing
 from structural_lib.services.canonical_beam import (
@@ -50,18 +53,51 @@ def _layout_id(result: BeamDesignAndDetailResultV1) -> str:
     return _payload_hash(result.to_dict())
 
 
+def _check_compression_restraint(result: BeamDesignAndDetailResultV1) -> None:
+    if result.design.calculation.flexure.Asc_required <= 0:
+        return
+
+    layout = result.detailing.detailing
+    tension_at_top = result.request.actions.primary_tension_face == "TOP"
+    compression = layout.bottom_bars if tension_at_top else layout.top_bars
+    face = "bottom" if tension_at_top else "top"
+    # The generated closed hoop engages the two outer bars only. IS 456
+    # 26.5.1.2 and 26.5.3.2(b)(1) allow one intervening bar within 75 mm
+    # of a directly restrained bar on each side.
+    for bars, stirrup in zip(compression, layout.stirrups, strict=True):
+        if bars.count > 3 or (
+            bars.count == 3
+            and calculate_bar_spacing(
+                layout.b, layout.cover, stirrup.diameter, bars.diameter, bars.count
+            )
+            > 75
+        ):
+            raise ValueError(
+                f"The {face} compression bars require intermediate lateral restraint "
+                "beyond the two-legged hoop (IS 456 Cl. 26.5.1.2 and 26.5.3.2). "
+                "Use a member detailing workflow with verified cross-ties or additional link legs."
+            )
+
+
 def _bind_stirrup_stations(
     result: BeamDesignAndDetailResultV1,
 ) -> BeamDesignAndDetailResultV1:
-    """Use one centred, uniform tie run across the three workbench zones."""
+    """Check the supported cage and place one uniform, centred hoop run."""
     layout = result.detailing.detailing
+    if any(bar.layers != 1 for bar in (*layout.bottom_bars, *layout.top_bars)):
+        raise ValueError(
+            "The imported workbench requires a single bar layer on each face."
+        )
     stirrups = layout.stirrups
+    if any(stirrup.legs != 2 for stirrup in stirrups):
+        raise ValueError("The workbench requires two-legged closed hoops.")
     spacing = stirrups[0].spacing
     if any(
         stirrup.spacing != spacing or stirrup.diameter != stirrups[0].diameter
         for stirrup in stirrups
     ):
         raise ValueError("The workbench requires one stirrup size and spacing.")
+    _check_compression_restraint(result)
     centre_cover = layout.cover + stirrups[0].diameter / 2
     count = math.floor((layout.span - 2 * centre_cover) / spacing) + 1
     if count < 3 or count > 2000:
@@ -171,10 +207,6 @@ def _check_request(
     if not result.is_ok:
         raise ValueError("The member did not produce an accepted reinforcement layout.")
     layout = result.detailing.detailing
-    if any(bar.layers != 1 for bar in (*layout.bottom_bars, *layout.top_bars)):
-        raise ValueError(
-            "The imported workbench requires a single bar layer on each face."
-        )
     if options.tension_bar_count is not None and any(
         bar.count != options.tension_bar_count for bar in layout.bottom_bars
     ):
