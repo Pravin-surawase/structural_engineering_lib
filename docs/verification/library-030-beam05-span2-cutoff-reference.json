@@ -1,0 +1,2686 @@
+{
+  "fixture_version": "library-030-beam05-span2-cutoff-reference/v1",
+  "frozen_before_implementation": true,
+  "frozen_production_base": "1b22725faa5413d650611bef55323ecbc5e1f594",
+  "source": [
+    "library-030-beam05-layered-cutoff.json",
+    "76ecbaf8e6bb3246d545d76a15eabaee9191c03b15813607abfb64f9246f884f"
+  ],
+  "catalogue_window_mm": [
+    4500,
+    7500
+  ],
+  "method": {
+    "boundary": "Reflect the rectangular first-span reference along the member station axis only. Retain the section, reinforcement, links and symmetric supports. Qualify one outer-bottom cutoff in the second clear span.",
+    "statics": "Recompute signed U1 and U2 rows from three-moment statics and cross-check moment equality and shear reversal at each mirrored station. Exchange the left and right limits at the internal support.",
+    "development": "Follow the cut bar in decreasing x from the theoretical station to its actual left end. Check the reduced cage from the theoretical station toward decreasing x, including the affected left support face. Keep the published section, spacing and cut-length checks.",
+    "outputs": "Verify the actual start and continuing extent of the cut bar in the report and elevation and from the same resolved bar path in the BBS. Non-PASS cases retain a diagnostic report and withhold the checked drawing and BBS."
+  },
+  "absolute_tolerances": {
+    "length_mm": 0.001,
+    "moment_knm": 0.01,
+    "force_kn": 0.01,
+    "ratio": 0.0001,
+    "mass_kg": 0.001
+  },
+  "cases": {
+    "first_span_control": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "rect_multilayer",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-CUT-rect_multilayer",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-3",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 2500.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 3500.0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -21.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-END",
+              "combination_id": "U2",
+              "station_id": "CUT-END",
+              "mu_knm": -28.0,
+              "vu_kn": -64.0,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "B1-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "development_mm": 906.2499999999999,
+        "required_extension_mm": 485.0,
+        "available_extension_mm": 1000.0,
+        "continuing_bottom_mm2": 1570.7963267948967,
+        "termination_limit_kn": 113.88072293479152,
+        "reduced_rows": {
+          "U1:BF1": {
+            "flexure_utilization": 0.2549679949205344,
+            "shear_utilization": 0.33017001500359183
+          },
+          "U1:B1": {
+            "flexure_utilization": 0.3116491916522956,
+            "shear_utilization": 0.3512446968123317
+          },
+          "U1:B2": {
+            "flexure_utilization": 0.3116491916522956,
+            "shear_utilization": 0.3512446968123317
+          },
+          "U1:BF2": {
+            "flexure_utilization": 0.2549679949205344,
+            "shear_utilization": 0.33017001500359183
+          },
+          "U1:S2": {
+            "flexure_utilization": 0.09398137826525414,
+            "shear_utilization": 0.0
+          },
+          "U1:CF": {
+            "flexure_utilization": 0.052211876814030084,
+            "shear_utilization": 0.13034336430303667,
+            "positive_anchor_mm": 2880
+          },
+          "U1:C": {
+            "flexure_utilization": 0.0,
+            "shear_utilization": 0.210746818087399
+          },
+          "U2:BF1": {
+            "flexure_utilization": 0.33995732656071254,
+            "shear_utilization": 0.44022668667145576
+          },
+          "U2:B1": {
+            "flexure_utilization": 0.41553225553639417,
+            "shear_utilization": 0.46832626241644226
+          },
+          "U2:B2": {
+            "flexure_utilization": 0.41553225553639417,
+            "shear_utilization": 0.46832626241644226
+          },
+          "U2:BF2": {
+            "flexure_utilization": 0.33995732656071254,
+            "shear_utilization": 0.44022668667145576
+          },
+          "U2:S2": {
+            "flexure_utilization": 0.1253085043536722,
+            "shear_utilization": 0.0
+          },
+          "U2:CF": {
+            "flexure_utilization": 0.06961583575204011,
+            "shear_utilization": 0.17379115240404888,
+            "positive_anchor_mm": 2880
+          },
+          "U2:C": {
+            "flexure_utilization": 0.0,
+            "shear_utilization": 0.2809957574498654
+          },
+          "U1:CUT-THEORETICAL": {
+            "flexure_utilization": 0.052211876814030084,
+            "shear_utilization": 0.13034336430303667
+          },
+          "U1:CUT-END": {
+            "flexure_utilization": 0.13634652134787933,
+            "shear_utilization": 0.2809957574498654
+          },
+          "U2:CUT-THEORETICAL": {
+            "flexure_utilization": 0.06961583575204011,
+            "shear_utilization": 0.17379115240404888
+          },
+          "U2:CUT-END": {
+            "flexure_utilization": 0.18179536179717243,
+            "shear_utilization": 0.3746610099331538
+          }
+        },
+        "reduced_moment_knm": {
+          "bottom": 287.2909559146375,
+          "top": 154.01933098402898
+        },
+        "reduced_shear_kn": {
+          "bottom": 184.12905120510888,
+          "top": 170.8210844021873
+        },
+        "effective_flange_width_mm": null,
+        "physical_width_mm": 300,
+        "continuing_bar_ids": [
+          "B1-1",
+          "B1-2",
+          "B2-1",
+          "B2-2",
+          "B2-3",
+          "T1-1",
+          "T1-2"
+        ],
+        "cut_mm": 3960.0,
+        "full_cut_mm": 8920,
+        "marks": {
+          "B-RECT_MULTILAYER-top-L1-D20": 2,
+          "B-RECT_MULTILAYER-bottom-L1-D20": 2,
+          "B-RECT_MULTILAYER-bottom-L1-D20-cutoff": 1,
+          "B-RECT_MULTILAYER-bottom-L2-D20": 3
+        },
+        "link_count": 41,
+        "link_cut_mm": 1698.1711601071436,
+        "mass_kg": 191.22529600272077
+      }
+    },
+    "span2_cutoff": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "span2_cutoff",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-span2_cutoff",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-3",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 5500.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 4500.0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -21.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-END",
+              "combination_id": "U2",
+              "station_id": "CUT-END",
+              "mu_knm": -28.0,
+              "vu_kn": 64.0,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "B1-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "development_mm": 906.2499999999999,
+        "required_extension_mm": 485.0,
+        "available_extension_mm": 1000.0,
+        "continuing_bottom_mm2": 1570.7963267948967,
+        "termination_limit_kn": 113.88072293479152,
+        "reduced_rows": {
+          "U1:BF2": {
+            "flexure_utilization": 0.2549679949205344,
+            "shear_utilization": 0.33017001500359183,
+            "station_mm": 4150,
+            "moment_knm": -39.27000000000001,
+            "shear_kn": 56.400000000000006,
+            "diagnostic_only": false
+          },
+          "U1:B2": {
+            "flexure_utilization": 0.3116491916522956,
+            "shear_utilization": 0.3512446968123317,
+            "station_mm": 4000,
+            "moment_knm": -48.0,
+            "shear_kn": 60.0,
+            "diagnostic_only": true
+          },
+          "U1:B1": {
+            "flexure_utilization": 0.3116491916522956,
+            "shear_utilization": 0.3512446968123317,
+            "station_mm": 4000,
+            "moment_knm": -48.0,
+            "shear_kn": -60.0,
+            "diagnostic_only": true
+          },
+          "U1:BF1": {
+            "flexure_utilization": 0.2549679949205344,
+            "shear_utilization": 0.33017001500359183,
+            "station_mm": 3850,
+            "moment_knm": -39.27000000000001,
+            "shear_kn": -56.400000000000006,
+            "diagnostic_only": false
+          },
+          "U1:S1": {
+            "flexure_utilization": 0.09398137826525414,
+            "shear_utilization": 0.0,
+            "station_mm": 1500,
+            "moment_knm": 27.0,
+            "shear_kn": 0.0,
+            "diagnostic_only": false
+          },
+          "U1:AF": {
+            "flexure_utilization": 0.052211876814030084,
+            "shear_utilization": 0.13034336430303667,
+            "positive_anchor_mm": 2880,
+            "station_mm": 500,
+            "moment_knm": 15.0,
+            "shear_kn": 24.0,
+            "diagnostic_only": false
+          },
+          "U1:A": {
+            "flexure_utilization": 0.0,
+            "shear_utilization": 0.210746818087399,
+            "station_mm": 0,
+            "moment_knm": 0.0,
+            "shear_kn": 36.0,
+            "diagnostic_only": true
+          },
+          "U2:BF2": {
+            "flexure_utilization": 0.33995732656071254,
+            "shear_utilization": 0.44022668667145576,
+            "station_mm": 4150,
+            "moment_knm": -52.360000000000014,
+            "shear_kn": 75.2,
+            "diagnostic_only": false
+          },
+          "U2:B2": {
+            "flexure_utilization": 0.41553225553639417,
+            "shear_utilization": 0.46832626241644226,
+            "station_mm": 4000,
+            "moment_knm": -64.0,
+            "shear_kn": 80.0,
+            "diagnostic_only": true
+          },
+          "U2:B1": {
+            "flexure_utilization": 0.41553225553639417,
+            "shear_utilization": 0.46832626241644226,
+            "station_mm": 4000,
+            "moment_knm": -64.0,
+            "shear_kn": -80.0,
+            "diagnostic_only": true
+          },
+          "U2:BF1": {
+            "flexure_utilization": 0.33995732656071254,
+            "shear_utilization": 0.44022668667145576,
+            "station_mm": 3850,
+            "moment_knm": -52.360000000000014,
+            "shear_kn": -75.2,
+            "diagnostic_only": false
+          },
+          "U2:S1": {
+            "flexure_utilization": 0.1253085043536722,
+            "shear_utilization": 0.0,
+            "station_mm": 1500,
+            "moment_knm": 36.0,
+            "shear_kn": 0.0,
+            "diagnostic_only": false
+          },
+          "U2:AF": {
+            "flexure_utilization": 0.06961583575204011,
+            "shear_utilization": 0.17379115240404888,
+            "positive_anchor_mm": 2880,
+            "station_mm": 500,
+            "moment_knm": 20.0,
+            "shear_kn": 32.0,
+            "diagnostic_only": false
+          },
+          "U2:A": {
+            "flexure_utilization": 0.0,
+            "shear_utilization": 0.2809957574498654,
+            "station_mm": 0,
+            "moment_knm": 0.0,
+            "shear_kn": 48.0,
+            "diagnostic_only": true
+          },
+          "U1:CUT-THEORETICAL": {
+            "flexure_utilization": 0.052211876814030084,
+            "shear_utilization": 0.13034336430303667,
+            "station_mm": 5500.0,
+            "moment_knm": 15.0,
+            "shear_kn": 24.0,
+            "diagnostic_only": false
+          },
+          "U1:CUT-END": {
+            "flexure_utilization": 0.13634652134787933,
+            "shear_utilization": 0.2809957574498654,
+            "station_mm": 4500.0,
+            "moment_knm": -21.0,
+            "shear_kn": 48.0,
+            "diagnostic_only": false
+          },
+          "U2:CUT-THEORETICAL": {
+            "flexure_utilization": 0.06961583575204011,
+            "shear_utilization": 0.17379115240404888,
+            "station_mm": 5500.0,
+            "moment_knm": 20.0,
+            "shear_kn": 32.0,
+            "diagnostic_only": false
+          },
+          "U2:CUT-END": {
+            "flexure_utilization": 0.18179536179717243,
+            "shear_utilization": 0.3746610099331538,
+            "station_mm": 4500.0,
+            "moment_knm": -28.0,
+            "shear_kn": 64.0,
+            "diagnostic_only": false
+          }
+        },
+        "reduced_moment_knm": {
+          "bottom": 287.2909559146375,
+          "top": 154.01933098402898
+        },
+        "reduced_shear_kn": {
+          "bottom": 184.12905120510888,
+          "top": 170.8210844021873
+        },
+        "effective_flange_width_mm": null,
+        "physical_width_mm": 300,
+        "continuing_bar_ids": [
+          "B1-1",
+          "B1-2",
+          "B2-1",
+          "B2-2",
+          "B2-3",
+          "T1-1",
+          "T1-2"
+        ],
+        "cut_mm": 3960.0,
+        "full_cut_mm": 8920,
+        "marks": {
+          "B-RECT_MULTILAYER-top-L1-D20": 2,
+          "B-RECT_MULTILAYER-bottom-L1-D20": 2,
+          "B-RECT_MULTILAYER-bottom-L1-D20-cutoff": 1,
+          "B-RECT_MULTILAYER-bottom-L2-D20": 3
+        },
+        "link_count": 41,
+        "link_cut_mm": 1698.1711601071436,
+        "mass_kg": 191.22529600272077,
+        "required_issue_codes": [],
+        "checked_drawing_available": true,
+        "bbs_available": true,
+        "report_available": true,
+        "cutoff_direction": "decreasing_x",
+        "theoretical_station_mm": 5500.0,
+        "termination_station_mm": 4500.0,
+        "analysis_revision": "B-RECT_MULTILAYER-A1",
+        "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+        "physical_cut_bar_extent_mm": [
+          4500.0,
+          8460
+        ],
+        "governing_termination_shear": {
+          "row_id": "U2:CUT-END",
+          "shear_kn": 64.0,
+          "limit_kn": 113.88072293479152
+        }
+      }
+    },
+    "short_development": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "short_development",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-short_development",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-3",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 5500.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 4693.75,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -12.150468750000002,
+              "vu_kn": 43.349999999999994,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-END",
+              "combination_id": "U2",
+              "station_id": "CUT-END",
+              "mu_knm": -16.200625000000002,
+              "vu_kn": 57.8,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "B1-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "development_mm": 906.2499999999999,
+        "required_extension_mm": 485.0,
+        "available_extension_mm": 806.25,
+        "continuing_bottom_mm2": 1570.7963267948967,
+        "termination_limit_kn": 113.88072293479152,
+        "reduced_rows": {
+          "U1:BF2": {
+            "flexure_utilization": 0.2549679949205344,
+            "shear_utilization": 0.33017001500359183,
+            "station_mm": 4150,
+            "moment_knm": -39.27000000000001,
+            "shear_kn": 56.400000000000006,
+            "diagnostic_only": false
+          },
+          "U1:B2": {
+            "flexure_utilization": 0.3116491916522956,
+            "shear_utilization": 0.3512446968123317,
+            "station_mm": 4000,
+            "moment_knm": -48.0,
+            "shear_kn": 60.0,
+            "diagnostic_only": true
+          },
+          "U1:B1": {
+            "flexure_utilization": 0.3116491916522956,
+            "shear_utilization": 0.3512446968123317,
+            "station_mm": 4000,
+            "moment_knm": -48.0,
+            "shear_kn": -60.0,
+            "diagnostic_only": true
+          },
+          "U1:BF1": {
+            "flexure_utilization": 0.2549679949205344,
+            "shear_utilization": 0.33017001500359183,
+            "station_mm": 3850,
+            "moment_knm": -39.27000000000001,
+            "shear_kn": -56.400000000000006,
+            "diagnostic_only": false
+          },
+          "U1:S1": {
+            "flexure_utilization": 0.09398137826525414,
+            "shear_utilization": 0.0,
+            "station_mm": 1500,
+            "moment_knm": 27.0,
+            "shear_kn": 0.0,
+            "diagnostic_only": false
+          },
+          "U1:AF": {
+            "flexure_utilization": 0.052211876814030084,
+            "shear_utilization": 0.13034336430303667,
+            "positive_anchor_mm": 2880,
+            "station_mm": 500,
+            "moment_knm": 15.0,
+            "shear_kn": 24.0,
+            "diagnostic_only": false
+          },
+          "U1:A": {
+            "flexure_utilization": 0.0,
+            "shear_utilization": 0.210746818087399,
+            "station_mm": 0,
+            "moment_knm": 0.0,
+            "shear_kn": 36.0,
+            "diagnostic_only": true
+          },
+          "U2:BF2": {
+            "flexure_utilization": 0.33995732656071254,
+            "shear_utilization": 0.44022668667145576,
+            "station_mm": 4150,
+            "moment_knm": -52.360000000000014,
+            "shear_kn": 75.2,
+            "diagnostic_only": false
+          },
+          "U2:B2": {
+            "flexure_utilization": 0.41553225553639417,
+            "shear_utilization": 0.46832626241644226,
+            "station_mm": 4000,
+            "moment_knm": -64.0,
+            "shear_kn": 80.0,
+            "diagnostic_only": true
+          },
+          "U2:B1": {
+            "flexure_utilization": 0.41553225553639417,
+            "shear_utilization": 0.46832626241644226,
+            "station_mm": 4000,
+            "moment_knm": -64.0,
+            "shear_kn": -80.0,
+            "diagnostic_only": true
+          },
+          "U2:BF1": {
+            "flexure_utilization": 0.33995732656071254,
+            "shear_utilization": 0.44022668667145576,
+            "station_mm": 3850,
+            "moment_knm": -52.360000000000014,
+            "shear_kn": -75.2,
+            "diagnostic_only": false
+          },
+          "U2:S1": {
+            "flexure_utilization": 0.1253085043536722,
+            "shear_utilization": 0.0,
+            "station_mm": 1500,
+            "moment_knm": 36.0,
+            "shear_kn": 0.0,
+            "diagnostic_only": false
+          },
+          "U2:AF": {
+            "flexure_utilization": 0.06961583575204011,
+            "shear_utilization": 0.17379115240404888,
+            "positive_anchor_mm": 2880,
+            "station_mm": 500,
+            "moment_knm": 20.0,
+            "shear_kn": 32.0,
+            "diagnostic_only": false
+          },
+          "U2:A": {
+            "flexure_utilization": 0.0,
+            "shear_utilization": 0.2809957574498654,
+            "station_mm": 0,
+            "moment_knm": 0.0,
+            "shear_kn": 48.0,
+            "diagnostic_only": true
+          },
+          "U1:CUT-THEORETICAL": {
+            "flexure_utilization": 0.052211876814030084,
+            "shear_utilization": 0.13034336430303667,
+            "station_mm": 5500.0,
+            "moment_knm": 15.0,
+            "shear_kn": 24.0,
+            "diagnostic_only": false
+          },
+          "U1:CUT-END": {
+            "flexure_utilization": 0.07888924508612456,
+            "shear_utilization": 0.2537742934469096,
+            "station_mm": 4693.75,
+            "moment_knm": -12.150468750000002,
+            "shear_kn": 43.349999999999994,
+            "diagnostic_only": false
+          },
+          "U2:CUT-THEORETICAL": {
+            "flexure_utilization": 0.06961583575204011,
+            "shear_utilization": 0.17379115240404888,
+            "station_mm": 5500.0,
+            "moment_knm": 20.0,
+            "shear_kn": 32.0,
+            "diagnostic_only": false
+          },
+          "U2:CUT-END": {
+            "flexure_utilization": 0.10518566011483275,
+            "shear_utilization": 0.33836572459587955,
+            "station_mm": 4693.75,
+            "moment_knm": -16.200625000000002,
+            "shear_kn": 57.8,
+            "diagnostic_only": false
+          }
+        },
+        "reduced_moment_knm": {
+          "bottom": 287.2909559146375,
+          "top": 154.01933098402898
+        },
+        "reduced_shear_kn": {
+          "bottom": 184.12905120510888,
+          "top": 170.8210844021873
+        },
+        "effective_flange_width_mm": null,
+        "physical_width_mm": 300,
+        "continuing_bar_ids": [
+          "B1-1",
+          "B1-2",
+          "B2-1",
+          "B2-2",
+          "B2-3",
+          "T1-1",
+          "T1-2"
+        ],
+        "cut_mm": 3766.25,
+        "full_cut_mm": 8920,
+        "marks": {
+          "B-RECT_MULTILAYER-top-L1-D20": 2,
+          "B-RECT_MULTILAYER-bottom-L1-D20": 2,
+          "B-RECT_MULTILAYER-bottom-L1-D20-cutoff": 1,
+          "B-RECT_MULTILAYER-bottom-L2-D20": 3
+        },
+        "link_count": 41,
+        "link_cut_mm": 1698.1711601071436,
+        "mass_kg": 190.74747939506386,
+        "required_issue_codes": [
+          "BEAM.CUTOFF_EXTENSION_FAIL"
+        ],
+        "checked_drawing_available": false,
+        "bbs_available": false,
+        "report_available": true,
+        "cutoff_direction": "decreasing_x",
+        "theoretical_station_mm": 5500.0,
+        "termination_station_mm": 4693.75,
+        "analysis_revision": "B-RECT_MULTILAYER-A1",
+        "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+        "physical_cut_bar_extent_mm": [
+          4693.75,
+          8460
+        ],
+        "governing_termination_shear": {
+          "row_id": "U2:CUT-END",
+          "shear_kn": 57.8,
+          "limit_kn": 113.88072293479152
+        }
+      }
+    },
+    "missing_action": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "missing_action",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-missing_action",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-3",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 5500.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 4500.0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -21.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "B1-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "required_issue_codes": [
+          "BEAM_ACTION_MISSING"
+        ],
+        "checked_drawing_available": false,
+        "bbs_available": false,
+        "report_available": true,
+        "cutoff_direction": "decreasing_x",
+        "theoretical_station_mm": 5500.0,
+        "termination_station_mm": 4500.0,
+        "analysis_revision": "B-RECT_MULTILAYER-A1",
+        "current_analysis_revision": "B-RECT_MULTILAYER-A1",
+        "missing_required_rows": [
+          "U2:CUT-END"
+        ]
+      }
+    },
+    "stale_action": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "stale_action",
+          "member_id": "B-RECT_MULTILAYER"
+        },
+        "member": {
+          "member_id": "B-RECT_MULTILAYER",
+          "analysis_revision": "B-RECT_MULTILAYER-A1",
+          "current_analysis_revision": "B-RECT_MULTILAYER-A1-EDITED",
+          "reinforcement_revision": "B-RECT_MULTILAYER-R1-stale_action",
+          "source_reference": "BEAM05 two-span three-moment reference with no equilibrium torsion",
+          "width_mm": 300,
+          "depth_mm": 600,
+          "fck_nmm2": 30,
+          "fy_nmm2": 500,
+          "clear_cover_mm": 30,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 200,
+          "link_fy_nmm2": 415,
+          "bars": [
+            {
+              "bar_id": "T1-1",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "T1-2",
+              "face": "top",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 55
+            },
+            {
+              "bar_id": "B1-1",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-2",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B1-3",
+              "face": "bottom",
+              "layer": 1,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 520
+            },
+            {
+              "bar_id": "B2-1",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 55,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-2",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 150,
+              "y_from_top_mm": 450
+            },
+            {
+              "bar_id": "B2-3",
+              "face": "bottom",
+              "layer": 2,
+              "diameter_mm": 20,
+              "x_from_left_mm": 245,
+              "y_from_top_mm": 450
+            }
+          ],
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "AF",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S1",
+              "x_mm": 1500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "BF1",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B1",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B2",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "BF2",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "S2",
+              "x_mm": 6500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CF",
+              "x_mm": 7500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 8000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "CUT-THEORETICAL",
+              "x_mm": 5500.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "CUT-END",
+              "x_mm": 4500.0,
+              "side": "CONTINUOUS"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "U1",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            },
+            {
+              "combination_id": "U2",
+              "kind": "ULS",
+              "required_station_ids": [
+                "A",
+                "AF",
+                "S1",
+                "BF1",
+                "B1",
+                "B2",
+                "BF2",
+                "S2",
+                "CF",
+                "C",
+                "CUT-THEORETICAL",
+                "CUT-END"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "U1:A",
+              "combination_id": "U1",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:AF",
+              "combination_id": "U1",
+              "station_id": "AF",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S1",
+              "combination_id": "U1",
+              "station_id": "S1",
+              "mu_knm": 27.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF1",
+              "combination_id": "U1",
+              "station_id": "BF1",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": -56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B1",
+              "combination_id": "U1",
+              "station_id": "B1",
+              "mu_knm": -48.0,
+              "vu_kn": -60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:B2",
+              "combination_id": "U1",
+              "station_id": "B2",
+              "mu_knm": -48.0,
+              "vu_kn": 60.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:BF2",
+              "combination_id": "U1",
+              "station_id": "BF2",
+              "mu_knm": -39.27000000000001,
+              "vu_kn": 56.400000000000006,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:S2",
+              "combination_id": "U1",
+              "station_id": "S2",
+              "mu_knm": 27.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CF",
+              "combination_id": "U1",
+              "station_id": "CF",
+              "mu_knm": 15.0,
+              "vu_kn": -24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:C",
+              "combination_id": "U1",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -36.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:A",
+              "combination_id": "U2",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:AF",
+              "combination_id": "U2",
+              "station_id": "AF",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S1",
+              "combination_id": "U2",
+              "station_id": "S1",
+              "mu_knm": 36.0,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF1",
+              "combination_id": "U2",
+              "station_id": "BF1",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": -75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B1",
+              "combination_id": "U2",
+              "station_id": "B1",
+              "mu_knm": -64.0,
+              "vu_kn": -80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:B2",
+              "combination_id": "U2",
+              "station_id": "B2",
+              "mu_knm": -64.0,
+              "vu_kn": 80.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:BF2",
+              "combination_id": "U2",
+              "station_id": "BF2",
+              "mu_knm": -52.360000000000014,
+              "vu_kn": 75.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:S2",
+              "combination_id": "U2",
+              "station_id": "S2",
+              "mu_knm": 36.0,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CF",
+              "combination_id": "U2",
+              "station_id": "CF",
+              "mu_knm": 20.0,
+              "vu_kn": -32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:C",
+              "combination_id": "U2",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-THEORETICAL",
+              "combination_id": "U1",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 15.0,
+              "vu_kn": 24.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U1:CUT-END",
+              "combination_id": "U1",
+              "station_id": "CUT-END",
+              "mu_knm": -21.0,
+              "vu_kn": 48.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-THEORETICAL",
+              "combination_id": "U2",
+              "station_id": "CUT-THEORETICAL",
+              "mu_knm": 20.0,
+              "vu_kn": 32.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "U2:CUT-END",
+              "combination_id": "U2",
+              "station_id": "CUT-END",
+              "mu_knm": -28.0,
+              "vu_kn": 64.0,
+              "tu_knm": 0
+            }
+          ],
+          "schema_version": "is456-layered-continuous-beam-check/v1",
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 8000,
+              "width_mm": 1000
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 8460,
+            "source_reference": "Continuous straight specimen bars with covered ends"
+          }
+        },
+        "link_detail": {
+          "first_station_mm": 0,
+          "last_station_mm": 8000,
+          "internal_bend_radius_mm": 10,
+          "hook_vertex_leg_mm": 100,
+          "hook_plane_offset_mm": 10,
+          "source_reference": "BEAM05 ordinary web link with separate hook planes"
+        },
+        "stock_length_mm": 12000,
+        "cutoff": {
+          "bar_id": "B1-3",
+          "theoretical_station_id": "CUT-THEORETICAL",
+          "termination_station_id": "CUT-END"
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "required_issue_codes": [
+          "BEAM_ANALYSIS_STALE"
+        ],
+        "checked_drawing_available": false,
+        "bbs_available": false,
+        "report_available": true,
+        "cutoff_direction": "decreasing_x",
+        "theoretical_station_mm": 5500.0,
+        "termination_station_mm": 4500.0,
+        "analysis_revision": "B-RECT_MULTILAYER-A1",
+        "current_analysis_revision": "B-RECT_MULTILAYER-A1-EDITED",
+        "missing_required_rows": []
+      }
+    }
+  }
+}
