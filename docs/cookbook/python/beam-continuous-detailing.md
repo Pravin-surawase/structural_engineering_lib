@@ -302,3 +302,25 @@ Replay `t_control` for the symmetric T case. Short overlap and congested
 partner fail. Missing lap action and stale analysis hold. All four
 controls return a diagnostic report and withhold the checked drawing and
 BBS. [Independent replay](../../verification/check_library_030_beam05_l_lap_reference.py)
+
+## Check a cutoff in the second span of a layered rectangle
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-span2-cutoff-reference.json \
+  --case span2_cutoff --output-dir output/beam05-span2-cutoff
+```
+
+Choose two continuous stations within the second clear span, with the
+physical termination closer to the interior support than the theoretical
+station. The reference checks development from 5,500 mm toward decreasing
+x. The Ø20 cutoff bar runs from 4,500 to 8,460 mm and its 1,000 mm extension
+meets the 906.25 mm requirement. The reduced cage is checked from the
+theoretical station toward the left. At the termination, `U2:CUT-END`
+gives +64 kN shear against the 113.881 kN reduced-section limit.
+
+The elevation marks 4,500 mm. The two sections show the bar at the
+theoretical station and the continuing cage just left of the termination.
+The BBS uses the checked 3,960 mm cut. The short-development FAIL and
+the missing-action and stale-analysis HOLD controls withhold the drawing
+and BBS. [Independent replay](../../verification/check_library_030_beam05_span2_cutoff_reference.py)
