@@ -210,6 +210,8 @@ PROJECT03_CHECKER = "docs/verification/check_library_030_project03_frame_referen
 PROJECT03_EXAMPLE = "Python/examples/ductile_frame_cut.py"
 PROJECT03_TEST = "Python/tests/integration/test_ductile_frame_cut_reference.py"
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
+FLOW04_V21_REFERENCE = "docs/verification/library-030-flow04-altair-v21.json"
+FLOW04_V21_TEST = "Python/tests/integration/test_etabs_altair_v21_reference.py"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
 SERV01_REFERENCE = "docs/verification/library-029-serv01-beam-service.json"
@@ -326,6 +328,8 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                     )
                 ),
                 repo / FLOW04_REFERENCE,
+                repo / FLOW04_V21_REFERENCE,
+                repo / FLOW04_V21_TEST,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
                 repo / SERV01_REFERENCE,
@@ -1180,6 +1184,19 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         result = json.loads(stdout)
         assert result["engineering"] == "not_evaluated"
         assert result["outputs"]["status"] == expected
+    if version_at_least_030:
+        result = json.loads(
+            run(
+                "etabs-paired-forces-altair-v21",
+                "Python/examples/etabs_paired_forces.py",
+                "--altair-v21",
+                "--reference",
+                str(clone / FLOW04_V21_REFERENCE),
+            )
+        )
+        assert result["engineering"] == "not_evaluated"
+        assert result["outputs"]["status"] == "COMPLETE_FOR_DECLARED_ROWS"
+        assert len(result["outputs"]["normalized_snapshot"]["rows"]) == 8
     directory = output / "beam-section-catalogue"
     stdout = run(
         "beam-section-catalogue",
@@ -1484,6 +1501,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                     f"pythonpath={clone / 'Python'}",
                     *(str(clone / name) for name in BEAM05_LAP_TESTS),
                     str(clone / FLOW03_LAYERED_TEST),
+                    str(clone / FLOW04_V21_TEST),
                     str(clone / WORKBENCH_TEST),
                     str(clone / SL04_SL05_TEST),
                     str(clone / SL06_TEST),

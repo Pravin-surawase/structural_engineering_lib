@@ -27,11 +27,14 @@ ACTION_NORMALIZE_OPERATION = "structural.action_snapshot.normalize/v1"
 BEAM_LINE_SOLVE_OPERATION = "structural.beam_line.solve/v1"
 TOPOLOGY_OPERATION = "structural.beam_topology.define/v1"
 METHOD_REVISION = "structural-analysis-wp03-v1"
+_N_PER_KIP = 4_448.2216152605
+_MM_PER_FOOT = 304.8
 
 
 class ForceUnit(StrEnum):
     N = "n"
     KN = "kn"
+    KIP = "kip"
 
 
 class MomentUnit(StrEnum):
@@ -39,11 +42,19 @@ class MomentUnit(StrEnum):
     N_M = "n_m"
     KN_MM = "kn_mm"
     KN_M = "kn_m"
+    KIP_FT = "kip_ft"
 
 
 class LengthUnit(StrEnum):
     MM = "mm"
     M = "m"
+    FT = "ft"
+
+    @property
+    def mm_per_unit(self) -> float:
+        return {LengthUnit.MM: 1.0, LengthUnit.M: 1_000.0, LengthUnit.FT: _MM_PER_FOOT}[
+            self
+        ]
 
 
 class ActionConcurrency(StrEnum):
@@ -298,7 +309,7 @@ def _validate_axes(axes: LocalAxes) -> str | None:
 
 
 def _force_factor(unit: ForceUnit) -> float:
-    return {ForceUnit.N: 1.0, ForceUnit.KN: 1_000.0}[unit]
+    return {ForceUnit.N: 1.0, ForceUnit.KN: 1_000.0, ForceUnit.KIP: _N_PER_KIP}[unit]
 
 
 def _moment_factor(unit: MomentUnit) -> float:
@@ -307,11 +318,8 @@ def _moment_factor(unit: MomentUnit) -> float:
         MomentUnit.N_M: 1_000.0,
         MomentUnit.KN_MM: 1_000.0,
         MomentUnit.KN_M: 1_000_000.0,
+        MomentUnit.KIP_FT: _N_PER_KIP * _MM_PER_FOOT,
     }[unit]
-
-
-def _length_factor(unit: LengthUnit) -> float:
-    return {LengthUnit.MM: 1.0, LengthUnit.M: 1_000.0}[unit]
 
 
 def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
@@ -383,7 +391,7 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
         axis_by_id[axes.axis_id] = axes
     force_factor = _force_factor(request.force_unit)
     moment_factor = _moment_factor(request.moment_unit)
-    station_factor = _length_factor(request.station_unit)
+    station_factor = request.station_unit.mm_per_unit
     rows: list[dict[str, Any]] = []
     seen_source_rows: set[str] = set()
     for source in request.rows:
