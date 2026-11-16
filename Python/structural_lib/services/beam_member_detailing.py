@@ -93,6 +93,7 @@ from structural_lib.services.beam_continuous import (
     _support_faces,
     check_continuous_beam,
 )
+from structural_lib.services.beam_support_lap import check_support_lap_continuity
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
     FamilyIdentityV1,
@@ -152,7 +153,7 @@ class BeamBarEditV1(StrictPublicModel):
 
 
 class BeamSeparatedBottomLapV1(StrictPublicModel):
-    """One equal-diameter separated bottom bar splice in a clear span."""
+    """One equal-diameter separated tension splice in a supported lap window."""
 
     bar_id: Identifier
     partner_bar_id: Identifier
@@ -297,7 +298,13 @@ def _physical_paths(
                 ),
             ),
             splice_ids=(
-                ("bottom-lap",)
+                (
+                    (
+                        "top-lap"
+                        if bar.role is ReinforcementRole.TOP_LONGITUDINAL
+                        else "bottom-lap"
+                    ),
+                )
                 if request.lap
                 and bar.bar_id in (request.lap.bar_id, request.lap.partner_bar_id)
                 else ()
@@ -796,7 +803,7 @@ def _check_bottom_cutoff(
     )
 
 
-def _check_bottom_lap(
+def _check_lap(
     request: BeamContinuousDetailingInputV1,
     checked: BeamContinuousCheckResultV1,
 ) -> tuple[
@@ -815,10 +822,19 @@ def _check_bottom_lap(
     left, support, right = member.supports
     extent = member.straight_bars
     bar = next((item for item in member.bars if item.bar_id == lap.bar_id), None)
+    top_lap = (
+        bar is not None
+        and bar.face == "top"
+        and isinstance(member, BeamLayeredContinuousCheckRequestV1)
+        and member.flange is None
+        and request.placement_envelope != "not_requested"
+        and request.link_detail is not None
+        and request.link_detail.restraint_link is not None
+    )
     if not (
         extent
         and bar
-        and bar.face == "bottom"
+        and (bar.face == "bottom" or top_lap)
         and (not isinstance(bar, BeamSectionBarV1) or bar.layer == 1)
         and bar.diameter_mm <= 32
         and lap.partner_bar_id not in {item.bar_id for item in member.bars}
@@ -831,6 +847,7 @@ def _check_bottom_lap(
             (left.right_face_mm < start.x_mm and end.x_mm < support.left_face_mm)
             or (
                 isinstance(member, BeamLayeredContinuousCheckRequestV1)
+                and not top_lap
                 and member.flange is None
                 and support.right_face_mm < start.x_mm
                 and end.x_mm < right.left_face_mm
@@ -841,16 +858,55 @@ def _check_bottom_lap(
         issue = StructuralIssueV1(
             "BEAM.LAP_BASIS_HELD",
             "lap",
-            "Identify an outer-layer bottom bar up to Ø32, a distinct partner and three ordered stations in one clear span. The second clear span requires a layered rectangular cage.",
+            (
+                "Supply an outer-layer top bar up to Ø32 and a distinct partner with three ordered stations in the first clear span of a layered rectangle with a nested restraint link and a requested placement check."
+                if bar is not None and bar.face == "top"
+                else "Identify an outer-layer bottom bar up to Ø32, a distinct partner and three ordered stations in one clear span. The second clear span requires a layered rectangular cage."
+            ),
         )
         return None, {}, [issue], EngineeringStatus.HOLD
 
     reverse = start.x_mm > support.right_face_mm
+    tension_face = Face.TOP if top_lap else Face.BOTTOM
+    role = (
+        ReinforcementRole.TOP_LONGITUDINAL
+        if top_lap
+        else ReinforcementRole.BOTTOM_LONGITUDINAL
+    )
 
     combos = {
         combo.combination_id for combo in member.combinations if combo.kind == "ULS"
     }
     lap_ids = {start.station_id, middle.station_id, end.station_id}
+    expanded_start, expanded_end = start.x_mm, end.x_mm
+    if top_lap and isinstance(request.placement_envelope, BeamLapPlacementEnvelopeV1):
+        tolerance = request.placement_envelope.bar_end_tolerance_mm
+        expanded_start -= tolerance
+        expanded_end += tolerance
+        limits = {expanded_start, expanded_end}
+        boundary_stations = {
+            site.x_mm: site.station_id
+            for site in member.stations
+            if site.side == "CONTINUOUS" and site.x_mm in limits
+        }
+        if (
+            boundary_stations.keys() != limits
+            or expanded_start <= left.right_face_mm
+            or expanded_end >= support.left_face_mm
+        ):
+            return (
+                None,
+                {},
+                [
+                    StructuralIssueV1(
+                        "BEAM.LAP_ACTIONS_HELD",
+                        "lap",
+                        "Supply stations at both tolerance-adjusted lap ends within the first clear span.",
+                    )
+                ],
+                EngineeringStatus.HOLD,
+            )
+        lap_ids.update(boundary_stations.values())
     inventory = {
         (row.action.combination_id, row.station.station_id) for row in checked.rows
     }
@@ -859,7 +915,11 @@ def _check_bottom_lap(
         issue = StructuralIssueV1(
             "BEAM.LAP_ACTIONS_HELD",
             "lap",
-            "Supply every declared ULS combination at the start, interior and end of the overlap.",
+            (
+                "Supply every declared ULS combination at the required top lap stations."
+                if top_lap
+                else "Supply every declared ULS combination at the start, interior and end of the overlap."
+            ),
         )
         return None, {"missing_lap_rows": missing}, [issue], EngineeringStatus.HOLD
 
@@ -882,11 +942,29 @@ def _check_bottom_lap(
             )
             - diameter / 2
         )
-        if cover < 2 * diameter or any(row.action.mu_knm <= 0 for row in splice_rows):
+        sign_rows = (
+            tuple(
+                row
+                for row in checked.rows
+                if row.kind == "ULS"
+                and expanded_start <= row.station.x_mm <= expanded_end
+            )
+            if top_lap
+            else splice_rows
+        )
+        wrong_sign = any(
+            row.action.mu_knm >= 0 if top_lap else row.action.mu_knm <= 0
+            for row in sign_rows
+        )
+        if cover < 2 * diameter or wrong_sign:
             issue = StructuralIssueV1(
                 "BEAM.LAP_TENSION_BASIS_HELD",
                 "lap",
-                "The layered lap requires sagging in every supplied overlap row and clear concrete cover of at least two bar diameters at both pieces.",
+                (
+                    "The top lap needs hogging across the supplied placement window and clear concrete cover of at least two bar diameters."
+                    if top_lap
+                    else "The layered lap requires sagging in every supplied overlap row and clear concrete cover of at least two bar diameters at both pieces."
+                ),
             )
             return None, {}, [issue], EngineeringStatus.HOLD
 
@@ -895,14 +973,14 @@ def _check_bottom_lap(
         outer_axes = [
             item.x_from_left_mm
             for item in positions
-            if item.face == Face.BOTTOM
+            if item.face is tension_face
             and item.layer == 1
             and item.bar_id != bar.bar_id
         ]
         unaligned = [
             item.bar_id
             for item in positions
-            if item.face == Face.BOTTOM
+            if item.face is tension_face
             and item.layer > 1
             and not any(abs(item.x_from_left_mm - axis) <= 1e-6 for axis in outer_axes)
         ]
@@ -910,7 +988,7 @@ def _check_bottom_lap(
             issue = StructuralIssueV1(
                 "BEAM.LAP_LAYER_ALIGNMENT_FAIL",
                 "lap",
-                "Inner bottom bars must align with uninterrupted outer bars: "
+                f"Inner {tension_face.value} bars must align with uninterrupted outer bars: "
                 + ", ".join(unaligned)
                 + ".",
             )
@@ -935,12 +1013,41 @@ def _check_bottom_lap(
             else EngineeringStatus.HOLD
         )
         return None, {"partner_geometry": geometry.to_dict()}, [issue], status
+    original = LongitudinalBarPath(
+        bar.bar_id,
+        "lap-I",
+        role,
+        bar.diameter_mm,
+        bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
+        bar.x_from_left_mm,
+        bar.y_from_top_mm,
+        start.x_mm if reverse else extent.start_mm,
+        extent.end_mm if reverse else end.x_mm,
+        0.87 * member.fy_nmm2,
+    )
+    partner = replace(
+        original,
+        bar_id=lap.partner_bar_id,
+        bar_mark="lap-J",
+        x_from_left_mm=lap.partner_x_from_left_mm,
+        start_station_mm=extent.start_mm if reverse else start.x_mm,
+        end_station_mm=end.x_mm if reverse else extent.end_mm,
+    )
     faces = _support_faces(member)
     web_capacity = (
         _positive_support_web_capacity(member, partner_positions)
         if isinstance(member, BeamLayeredContinuousCheckRequestV1)
         else None
     )
+    transfer_extents = None
+    if top_lap:
+        transfer_extents = {
+            item.bar_id: (extent.start_mm, extent.end_mm) for item in partner_positions
+        }
+        transfer_extents[partner.bar_id] = (
+            partner.start_station_mm,
+            partner.end_station_mm,
+        )
     partner_rows = tuple(
         _check_row(
             member,
@@ -953,6 +1060,7 @@ def _check_bottom_lap(
             flexure,
             shear,
             web_capacity,
+            bar_extents=transfer_extents,
         )
         for row in checked.rows
         if row.kind == "ULS"
@@ -961,8 +1069,8 @@ def _check_bottom_lap(
         )
     )
     failed, held = _row_issues(partner_rows, faces, layered=layered)
-    full_bottom = checked.flexural_sections[Face.BOTTOM].outputs
-    d = float(full_bottom["effective_depth_mm"])
+    full_tension = checked.flexural_sections[tension_face].outputs
+    d = float(full_tension["effective_depth_mm"])
     demands = []
     stress_rows = []
     for row in splice_rows:
@@ -991,33 +1099,13 @@ def _check_bottom_lap(
             StationSteelDemand(
                 row.action.row_id,
                 row.station.x_mm,
-                ReinforcementRole.BOTTOM_LONGITUDINAL,
-                float(full_bottom["minimum_tension_steel_area_mm2"]),
+                role,
+                float(full_tension["minimum_tension_steel_area_mm2"]),
                 abs(row.action.vu_kn) * 1000,
-                float(shear[Face.BOTTOM].outputs["provided_capacity_kn"]) * 1000,
+                float(shear[tension_face].outputs["provided_capacity_kn"]) * 1000,
                 row.action.row_id,
             )
         )
-    original = LongitudinalBarPath(
-        bar.bar_id,
-        "lap-I",
-        ReinforcementRole.BOTTOM_LONGITUDINAL,
-        bar.diameter_mm,
-        bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
-        bar.x_from_left_mm,
-        bar.y_from_top_mm,
-        start.x_mm if reverse else extent.start_mm,
-        extent.end_mm if reverse else end.x_mm,
-        0.87 * member.fy_nmm2,
-    )
-    partner = replace(
-        original,
-        bar_id=lap.partner_bar_id,
-        bar_mark="lap-J",
-        x_from_left_mm=lap.partner_x_from_left_mm,
-        start_station_mm=extent.start_mm if reverse else start.x_mm,
-        end_station_mm=end.x_mm if reverse else extent.end_mm,
-    )
     checked_lap = check_laps_and_curtailment(
         LapCurtailmentCheckRequest(
             WORKFLOW,
@@ -1035,14 +1123,14 @@ def _check_bottom_lap(
             tuple(demands),
             (
                 SpliceDetail(
-                    "bottom-lap",
+                    "top-lap" if top_lap else "bottom-lap",
                     SpliceKind.LAP,
                     (original.bar_id, partner.bar_id),
                     start.x_mm,
                     end.x_mm,
                     StressState.TENSION,
                     False,
-                    100 / sum(item.face == "bottom" for item in member.bars),
+                    100 / sum(item.face == tension_face.value for item in member.bars),
                     "single-group",
                 ),
             ),
@@ -1093,6 +1181,7 @@ def _check_bottom_lap(
             "lap_result": checked_lap.to_dict(),
             "stress_rows": stress_rows,
             "partner_rows": [row.to_dict() for row in partner_rows],
+            **({"tension_face": "top"} if top_lap else {}),
             **({"compression_restraint": restraint} if restraint is not None else {}),
             **(
                 {"lap_direction": AnchorageDirection.DECREASING_X.value}
@@ -1435,15 +1524,37 @@ def _check_lap_placement(
                 )
             ],
         )
+    top_lap = lap.get("tension_face") == "top"
+    if top_lap:
+        continuity, continuity_issue = check_support_lap_continuity(
+            member,
+            checked.rows,
+            outer.arrangement.bars,
+            end_tolerance_mm=end_move,
+            depth_tolerance_mm=location_move,
+        )
+        if continuity_issue is not None:
+            output.update(
+                status=(
+                    "FAIL"
+                    if continuity_issue.code == "BEAM.LAP_CONTINUITY_FAIL"
+                    else "HOLD"
+                ),
+                issue="top_lap_continuity_unresolved",
+            )
+            return output, None, [continuity_issue]
+        output["negative_steel_continuity"] = continuity
     seats = {name: set(ids) for name, ids in output["corner_bar_ids_by_grid"].items()}
-    worst, minimum_development, restraint, status, issues = _check_placement_strength(
-        request,
-        member,
-        basis,
-        checked.rows,
-        lap_pieces,
-        outer.arrangement.bars,
-        seats,
+    worst, minimum_development, restraint, retained_anchors, status, issues = (
+        _check_placement_strength(
+            request,
+            member,
+            basis,
+            checked.rows,
+            lap_pieces,
+            outer.arrangement.bars,
+            seats,
+        )
     )
     output.update(
         worst_strength=worst,
@@ -1451,6 +1562,8 @@ def _check_lap_placement(
         status=status.value,
         issue="placement_strength_unresolved" if issues else None,
     )
+    if top_lap:
+        output["retained_support_anchorage"] = retained_anchors
     return output, restraint, issues
 
 
@@ -1466,6 +1579,7 @@ def _check_placement_strength(
     dict[str, Any],
     float | None,
     dict[str, Any] | None,
+    dict[str, Any],
     EngineeringStatus,
     list[StructuralIssueV1],
 ]:
@@ -1479,6 +1593,11 @@ def _check_placement_strength(
     }
     overlap_start = max(part.start_station_mm for part in lap_pieces) - end_move
     overlap_end = min(part.end_station_mm for part in lap_pieces) + end_move
+    tension_face = (
+        Face.TOP
+        if lap_pieces[0].role is ReinforcementRole.TOP_LONGITUDINAL
+        else Face.BOTTOM
+    )
     member = member.model_copy(
         update={
             "link_spacing_mm": member.link_spacing_mm
@@ -1490,6 +1609,7 @@ def _check_placement_strength(
     worst: dict[str, Any] = {}
     development: list[float] = []
     restraint = None
+    retained_anchors: dict[str, Any] = {}
     failed: list[StructuralIssueV1] = []
     held: list[StructuralIssueV1] = []
     for changes in product((-depth_move, depth_move), repeat=3):
@@ -1514,7 +1634,7 @@ def _check_placement_strength(
                     "placement_envelope",
                     "The supplied section fails the adverse placement geometry check.",
                 )
-                return worst, None, None, EngineeringStatus.FAIL, [issue]
+                return worst, None, None, {}, EngineeringStatus.FAIL, [issue]
             web = _positive_support_web_capacity(member, cage)
             # Check both layouts at a row within the range of either piece's end.
             # Anchorage always uses the shorter physical extent of each bar.
@@ -1544,6 +1664,13 @@ def _check_placement_strength(
             failed.extend(row_failed)
             held.extend(row_held)
             actual_rows = [row for row in trial_rows if not row.diagnostic_only]
+            if tension_face is Face.TOP and name == "downstream":
+                support_evidence, support_issue = _retained_top_lap_development(
+                    member, actual_rows, piece.bar_id
+                )
+                retained_anchors.update(support_evidence)
+                if support_issue is not None:
+                    held.append(support_issue)
             for row in actual_rows:
                 if row.anchorage is not None:
                     development.extend(
@@ -1551,7 +1678,7 @@ def _check_placement_strength(
                         for check in row.anchorage.outputs.get("checks", ())
                     )
                 if overlap_start <= row.station.x_mm <= overlap_end and (
-                    row.tension_face is not Face.BOTTOM
+                    row.tension_face is not tension_face
                     or row.flexure_utilization is None
                     or row.flexure_utilization > 0.5 + 1e-12
                 ):
@@ -1599,7 +1726,61 @@ def _check_placement_strength(
             + basis.link_diameter_allowance_mm
         )
         restraint["placement_envelope_verified"] = status is EngineeringStatus.PASS
-    return worst, min(development, default=None), restraint, status, unique_issues
+    return (
+        worst,
+        min(development, default=None),
+        restraint,
+        retained_anchors,
+        status,
+        unique_issues,
+    )
+
+
+def _retained_top_lap_development(
+    member: BeamLayeredContinuousCheckRequestV1,
+    rows: list[BeamContinuousRowResultV1],
+    partner_id: str,
+) -> tuple[dict[str, Any], StructuralIssueV1 | None]:
+    support = member.supports[1]
+    directions = {
+        support.left_face_mm: AnchorageDirection.INCREASING_X,
+        support.right_face_mm: AnchorageDirection.DECREASING_X,
+    }
+    required = {
+        (combination.combination_id, face_station)
+        for combination in member.combinations
+        if combination.kind == "ULS"
+        for face_station in directions
+    }
+    checked = set()
+    evidence = {}
+    for row in rows:
+        station = row.station.x_mm
+        if (
+            station not in directions
+            or row.tension_face is not Face.TOP
+            or row.anchorage is None
+            or row.anchorage.engineering is not EngineeringState.PASS
+        ):
+            continue
+        for anchor in row.anchorage.outputs.get("checks", ()):
+            if anchor["bar_id"] != partner_id:
+                continue
+            checked.add((row.action.combination_id, station))
+            evidence[row.action.row_id] = {
+                "bar_id": partner_id,
+                "direction": directions[station].value,
+                "straight_available_mm": anchor["available_straight_length_mm"],
+                "development_required_mm": anchor["required_development_length_mm"],
+            }
+    issue = None
+    if not required <= checked:
+        issue = StructuralIssueV1(
+            "BEAM.LAP_SUPPORT_DEVELOPMENT_HELD",
+            "lap",
+            "Supply checked hogging rows with the retained top lap bar developed at both interior support faces.",
+        )
+    return evidence, issue
 
 
 def _record_placement_strength(
@@ -1681,6 +1862,9 @@ def check_continuous_detailing(
     Rectangular, symmetric T and right-flanged L sections admit one
     separated straight outer-bottom tension lap. A layered rectangle can
     use the second clear span with transfer toward decreasing x.
+    The ordinary layered rectangle with two checked link grids and declared
+    placement limits also supports one first-span top tension lap near the
+    interior support.
 
     Provenance
     ----------
@@ -1744,7 +1928,7 @@ def check_continuous_detailing(
         data["cutoff"] = cutoff
         issues.extend(cutoff_issues)
     elif status is EngineeringStatus.PASS and request.lap is not None:
-        lap_pieces, lap, lap_issues, status = _check_bottom_lap(request, checked)
+        lap_pieces, lap, lap_issues, status = _check_lap(request, checked)
         data["lap"] = lap
         issues.extend(lap_issues)
     if request.cutoff or request.lap or placement_requested:
@@ -1852,7 +2036,7 @@ def check_continuous_detailing(
                 splice = None
                 if lap_pieces is not None:
                     splice = SpliceRecord(
-                        "bottom-lap",
+                        "top-lap" if lap.get("tension_face") == "top" else "bottom-lap",
                         ScheduleSpliceKind.LAP,
                         (lap["start_station_mm"] + lap["end_station_mm"]) / 2,
                         data["lap"]["lap_result"]["result_id"],
@@ -1871,9 +2055,13 @@ def check_continuous_detailing(
     if checked.ultimate_status != "PASS":
         issues.extend(checked.result_envelope.issues)
     lap_scope = (
-        "Right-flanged L cages admit one separated straight outer-bottom tension lap."
-        if request.lap and flange is not None and flange.kind == "l_beam"
-        else "Rectangular and symmetric T cages admit one separated straight outer-bottom tension lap."
+        "The layered rectangular top lap uses signed hogging and checked placement limits."
+        if data.get("lap", {}).get("tension_face") == "top"
+        else (
+            "Right-flanged L cages admit one separated straight outer-bottom tension lap."
+            if request.lap and flange is not None and flange.kind == "l_beam"
+            else "Rectangular and symmetric T cages admit one separated straight outer-bottom tension lap."
+        )
     )
     result = canonical_family_result(
         request,
@@ -2548,7 +2736,7 @@ def render_continuous_detailing_html(
         checks = lap["lap_result"]["outputs"].get("splice_checks", ())
         if checks:
             lap_html = (
-                f"<h2>Separated bottom lap</h2><p>{html.escape(lap['bar_id'])} and "
+                f"<h2>Separated {lap.get('tension_face', 'bottom')} lap</h2><p>{html.escape(lap['bar_id'])} and "
                 f"{html.escape(lap['partner_bar_id'])}. Overlap {lap['overlap_mm']:g} mm. "
                 f"Required length {checks[0]['required_length_mm']:.3f} mm.</p>"
             )
@@ -2635,6 +2823,26 @@ def _lap_placement_report(placement: dict[str, Any]) -> str:
                 f"{html.escape(row['shear_row_id'])}</li>"
             )
         details += "</ul>"
+        if continuity := placement.get("negative_steel_continuity"):
+            locations = " and ".join(
+                f"{x:g}" for x in continuity["inflection_stations_mm"]
+            )
+            details += (
+                f"<p>Continuous top steel extends {continuity['minimum_extension_mm']:g} mm "
+                f"past both inflections at {locations} mm. "
+                f"Required extension {continuity['required_extension_mm']:g} mm. "
+                f"Continuous area {continuity['area_fraction']:.1%} of the top steel.</p>"
+            )
+        if support := placement.get("retained_support_anchorage"):
+            details += "<h3>Retained top bar development</h3><ul>"
+            for row, trace in support.items():
+                details += (
+                    f"<li>{html.escape(row)} · {html.escape(trace['bar_id'])} · "
+                    f"{html.escape(trace['direction'].replace('_', ' '))} · "
+                    f"{trace['straight_available_mm']:g} mm available against "
+                    f"{trace['development_required_mm']:g} mm required</li>"
+                )
+            details += "</ul>"
     return details
 
 

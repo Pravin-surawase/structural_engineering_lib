@@ -332,6 +332,22 @@ def test_positioned_mixed_member_quantities_and_outputs(name):
     assert len(ElementTree.fromstring(drawing).findall(".//{*}circle")) == 12
 
 
+def test_mixed_column_cage_requires_all_four_corner_bars():
+    payload = deepcopy(_MIXED_CASES["mixed_continuous"]["request"])
+    bars = payload["reinforcement"]["bars"]
+    corner = next(bar for bar in bars if bar["bar_id"] == "C4")
+    corner["y_from_top_mm"] = 360
+    request = column.load_positioned_column_member_detailing(payload)
+    result = column.check_column_member_detailing(request)
+
+    assert result.engineering_status.value == "FAIL"
+    assert {issue.code for issue in result.issues} == {"COLUMN.PERIMETER_RESTRAINT"}
+    assert column.render_column_member_bbs_csv(result) is None
+    drawing = column.render_column_member_detailing_svg(result)
+    assert drawing is not None
+    assert "FAIL" in ElementTree.fromstring(drawing).find("{*}title").text
+
+
 _SLENDER_CASES = json.loads(
     _REFERENCE.with_name("library-029-col07-slender-member.json").read_text()
 )["cases"]

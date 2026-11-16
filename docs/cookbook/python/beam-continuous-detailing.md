@@ -319,6 +319,30 @@ evidence. The bend interference case fails and the lost restraint case
 holds. All three controls withhold the checked drawing and BBS.
 [Independent placement replay](../../verification/check_library_030_beam05_lap_placement_reference.py)
 
+### Check an ordinary top lap near the interior support
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-support-top-lap-reference.json \
+  --case support_top_lap --output-dir output/beam05-support-top-lap
+```
+
+The Ø16 top pieces overlap from 3,020 to 3,780 mm on the first-span
+side of support B. After bar-end tolerances the minimum lap is
+740 mm against 725 mm required. The left and right support faces have
+4,600 and 1,120 mm of straight development on the partner in their
+respective support directions. Supply signed rows at both expanded
+lap endpoints and at the inflections in each span. Two continuous top
+corner bars provide the required extension past both inflections.
+
+The exterior and fully nested links remain in place through the sagging
+regions, where the top pieces can be credited in compression. The
+review report records the placement check and governing rows. The
+drawing uses the checked top bar paths and the BBS totals 92 pieces
+and 239.426 kg. This case uses ordinary detailing. Ductile beam
+lap locations and actual support obstructions need separate checks.
+[Independent top lap replay](../../verification/check_library_030_beam05_support_top_lap_reference.py)
+
 ## Check a cutoff in the second span of a layered rectangle
 
 ```bash
