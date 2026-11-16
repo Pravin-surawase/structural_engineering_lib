@@ -5,26 +5,21 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-16
+**Last Updated:** 2026-11-17
 
 ## Current State
 
 Current source metadata: 0.30.0.
 
-The 0.30.0 candidate is in S5 qualification. Bind installed checks to one
-committed source tree and the exact wheel and source archive. PROJECT01 and
-PROJECT02 remain on HOLD until a matched FLOW04 source is checked through
-design and outputs. The candidate stays unpublished during qualification.
-
-**0.29.2 is published and verified.** The [release status](../getting-started/release-status.md)
-and [publication receipt](../getting-started/releases.md#v0292-published-and-verified)
-record the exact tag, retained archives and clean public installation.
-The release includes the Coding Lab repairs from #1086.
+**0.30.0 is published and verified.** The [release status](../getting-started/release-status.md)
+and [publication receipt](../getting-started/releases.md#v0300-published-and-verified)
+record the exact tag, retained archives and clean public installation. PROJECT01 and
+PROJECT02 remain on HOLD pending member design and checked-output integration.
 
 - [x] Exact retained wheel and source archive qualified on all 20 installed profiles.
 - [x] Independent software review and required PR and Weekly checks passed.
 - [x] TestPyPI, PyPI and GitHub archive identities match the qualified hashes.
-- [x] Fresh no-cache PyPI installation imports 0.29.2 from its isolated environment.
+- [x] Fresh no-cache PyPI installation imports 0.30.0 from its isolated environment.
 
 The following records are historical receipts for their named versions.
 

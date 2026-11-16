@@ -27,7 +27,7 @@ workflows under IS 456:2000.
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
 > **v0.30.0 is a normal software release of the audited supported scope.**
-> The 0.30.0 candidate remains unpublished. v0.29.2 is the verified public release.
+> The qualified wheel and source archive are published and verified.
 > This describes the version format and scope. Publication state and verified
 > artifact identities are recorded in the [release ledger](docs/getting-started/releases.md)
 > and matching registry/release assets. Support is case-qualified; complete IS 456 coverage
@@ -95,19 +95,19 @@ reconciliation, or professional approval.
 
 ### Install the Python package
 
-**0.29.2 is published and verified** on
-[PyPI](https://pypi.org/project/structural-lib-is456/0.29.2/) and
-[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.29.2).
+**0.30.0 is published and verified** on
+[PyPI](https://pypi.org/project/structural-lib-is456/0.30.0/) and
+[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.30.0).
 Install the exact public version:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.29.2"
+python3 -m pip install "structural-lib-is456==0.30.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.29.2` uses the final PEP 440 version format; that format alone does not
+`0.30.0` uses the final PEP 440 version format; that format alone does not
 establish registry availability.
 The project's development-maturity classifier remains **Beta**. Pin the exact
 version for reproducible work. See the

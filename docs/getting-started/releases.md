@@ -2109,3 +2109,30 @@ and [owner authorization](../verification/release-publication-authorization.json
 record the source and archive identities in
 [PR #1118](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1118).
 TestPyPI verifies both archives before the production tag and upload.
+
+
+## v0.30.0 published and verified
+
+**2026-11-17 (Asia/Kolkata).** The annotated tag targets `2176154ec5d78f146ebdd6a47af98bc738d7b514`.
+Both archives were built at `24d657081027d69a058d3e1e0a321e3d3274349b` from Python tree
+`ee48d10cdeaee161163fc4890afc05ffeb1d042c`.
+[PyPI 0.30.0](https://pypi.org/project/structural-lib-is456/0.30.0/) · [GitHub Release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.30.0)
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.30.0-py3-none-any.whl` | `50779361e162f835ce86da79c3fbfbd33e794b0263d6dfd801de2c5ce9788611` | 1602804 |
+| `structural_lib_is456-0.30.0.tar.gz` | `40aebdb2dc97b63776a4810ae2763114c4aa3ca046cb82ad1b430c844538216d` | 1366442 |
+
+All 20 installed profiles and 29 exact-wheel acceptance cases passed. Each
+archive passed 971 beam and column tests, 25 slab and footing scenarios, and
+39 retained Coding Lab findings.
+[TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43957482648) · [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43957873781)
+
+All six public archive downloads match the qualified hashes. A fresh PyPI
+installation imports 0.30.0 from its isolated environment. The public
+verification receipt SHA-256 is `de6c92b268fd4096bdc1308698b17d3ca95125c8746fd3e141ceb8d440208be9`.
+[Public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.30.0/public-install-verification.json) · [Artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.30.0/artifact-manifest.json)
+
+The matched FLOW04 source evidence remains in [draft PR #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117).
+PROJECT01 and PROJECT02 remain on HOLD pending member design and checked-output
+integration. PROJECT03 remains qualified for the bounded design-review workflow.
