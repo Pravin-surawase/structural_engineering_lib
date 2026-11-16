@@ -373,6 +373,41 @@ fail. Missing zone evidence, missing transition actions and stale
 actions hold. The supplied cage and support fit use nominal dimensions.
 [Independent varied-link replay](../../verification/check_library_030_beam05_varied_links_reference.py)
 
+## Check a beam with a variable-depth haunch
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-haunch.json \
+  --case haunch --output-dir output/beam05-variable-depth
+```
+
+Supply the flat-top concrete outline, the nominal bottom-bar bend
+vertices and centreline bend radii, the individual link heights and
+marks, and the links assigned to each bend in `haunch`. The 250 mm
+wide example deepens from 500 to 600 mm around the interior support.
+Top corner bars remain straight. The two bottom bars follow 1:6
+ramps with four rounded bends. The checked section uses the resolved
+bar ordinate and a signed shear correction at each slope.
+
+At 3,300 mm the U2 shear is −60.026 kN. The slope correction reduces
+the absolute design shear by 8.012 kN. Two dedicated links per bend
+provide 36.297 kN per side against a 22.543 kN demand for each bottom
+bar. The 200 mm regular link grid carries the shear check. The
+additional links are reserved for the bend forces.
+
+The drawing shows actual bar bends, link stations and the cage
+sections. The schedule includes 49 links, two straight bars with
+8,920 mm cuts and two bent bars with 8,936.101 mm cuts. It totals
+53 pieces and 115.119 kg. The bounded nominal cage retains 32 mm
+link cover and a 32 mm axial opening. Check the project tolerances
+and actual support obstructions before using the detail on site.
+
+Clashing link geometry, insufficient dedicated bend restraint and
+excessive corrected shear fail. Omitted transition actions, missing
+bend evidence and stale actions hold. Each control withholds the
+checked drawing and BBS.
+[Independent haunch replay](../../verification/check_library_030_beam05_haunch_reference.py)
+
 ## Check a cutoff in the second span of a layered rectangle
 
 ```bash

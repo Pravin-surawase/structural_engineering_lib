@@ -94,6 +94,18 @@ from structural_lib.services.beam_continuous import (
     _support_faces,
     check_continuous_beam,
 )
+from structural_lib.services.beam_haunch_geometry import (
+    BeamHaunchDetailV1,
+    resolve_haunch_geometry,
+)
+from structural_lib.services.beam_haunch_outputs import (
+    render_haunch_report,
+    render_haunch_svg,
+)
+from structural_lib.services.beam_haunch_strength import (
+    check_haunch_bend_restraint,
+    check_haunch_station_strength,
+)
 from structural_lib.services.beam_link_zones import (
     BeamLinkZoneV1,
     ResolvedBeamLinkZone,
@@ -212,6 +224,10 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
         | Literal["not_requested"]
         | None
     ) = Field(
+        default="not_requested", exclude_if=lambda value: value == "not_requested"
+    )
+
+    haunch: BeamHaunchDetailV1 | Literal["not_requested"] | None = Field(
         default="not_requested", exclude_if=lambda value: value == "not_requested"
     )
 
@@ -564,8 +580,6 @@ def _schedule(
     splice: SpliceRecord | None,
     resolved_zones: tuple[ResolvedBeamLinkZone, ...] = (),
 ) -> OperationResult:
-    data = paths.output_as("reinforcement_schedule", BarPathOutput)
-    binding = result_binding(paths, "reinforcement_schedule")
     link = request.link_detail
     assert link is not None
     zones = [
@@ -590,9 +604,29 @@ def _schedule(
                 end_station_x_mm=link.last_station_mm + offset,
             )
         )
+    return _create_bound_bbs(
+        request,
+        paths,
+        (
+            tuple(zone.placement for zone in resolved_zones)
+            if resolved_zones
+            else tuple(zones)
+        ),
+        splice,
+    )
+
+
+def _create_bound_bbs(
+    request: BeamContinuousDetailingInputV1,
+    paths: OperationResult,
+    zones: tuple[LinkPlacementZone, ...],
+    splice: SpliceRecord | None = None,
+) -> OperationResult:
+    data = paths.output_as("reinforcement_schedule", BarPathOutput)
+    binding = result_binding(paths, "reinforcement_schedule")
     return create_bbs(
         BbsRequest(
-            WORKFLOW,
+            data.profile_id,
             data.project_basis_id,
             data.member_id,
             data.detail_revision_id,
@@ -605,11 +639,7 @@ def _schedule(
             ),
             7850,
             splice_records=(splice,) if splice else (),
-            link_zones=(
-                tuple(zone.placement for zone in resolved_zones)
-                if resolved_zones
-                else tuple(zones)
-            ),
+            link_zones=zones,
         )
     )
 
@@ -1943,6 +1973,150 @@ def _varied_link_basis(
     )
 
 
+def _check_haunch_detailing(
+    request: BeamContinuousDetailingInputV1,
+) -> CanonicalFamilyResultV1[dict[str, Any]]:
+    member, detail, haunch = request.member, request.link_detail, request.haunch
+    status = EngineeringStatus.HOLD
+    stale = member.analysis_revision != member.current_analysis_revision
+    data: dict[str, Any] = {
+        "strength": {
+            "rows": [],
+            "governing_rows": {},
+            "ultimate_status": "HOLD",
+            "serviceability_status": "NOT_EVALUATED",
+        },
+        "paths": None,
+        "bbs": None,
+        "haunch": {},
+    }
+    issues: list[StructuralIssueV1] = []
+    if stale:
+        issues.append(
+            StructuralIssueV1(
+                "BEAM_ANALYSIS_STALE",
+                "member.analysis_revision",
+                "Supply the signed actions from the current analysis revision.",
+            )
+        )
+    elif (
+        not isinstance(member, BeamContinuousCheckRequestV1)
+        or not isinstance(haunch, BeamHaunchDetailV1)
+        or haunch.bend_restraint is None
+        or len(member.bars) != 4
+        or len({bar.diameter_mm for bar in member.bars}) != 1
+        or member.straight_bars is None
+        or detail is None
+        or detail.restraint_link is not None
+        or request.cutoff is not None
+        or request.lap is not None
+        or request.link_zones != "not_requested"
+        or request.placement_envelope != "not_requested"
+    ):
+        issues.append(
+            StructuralIssueV1(
+                "BEAM.HAUNCH_BASIS_HELD",
+                "haunch",
+                "Supply the ordinary haunch outline, four uninterrupted corner bars, closed links and dedicated bend restraint.",
+            )
+        )
+    else:
+        geometry, fit_issues = resolve_haunch_geometry(
+            member,
+            haunch,
+            first_station_mm=detail.first_station_mm,
+            last_station_mm=detail.last_station_mm,
+            internal_bend_radius_mm=detail.internal_bend_radius_mm,
+            hook_vertex_leg_mm=detail.hook_vertex_leg_mm,
+            hook_plane_offset_mm=detail.hook_plane_offset_mm,
+            source_hash=_input_hash(request),
+            stock_length_mm=request.stock_length_mm,
+        )
+        issues.extend(fit_issues)
+        if geometry is not None:
+            data["paths"] = geometry.paths.to_dict()
+            data["haunch"].update(
+                bottom_segments=geometry.bottom_segments,
+                link_checks=geometry.link_checks,
+                minimum_link_cover_mm=geometry.minimum_link_cover_mm,
+                bottom_bar_soffit_cover_bound_mm=geometry.bottom_bar_soffit_cover_bound_mm,
+                minimum_axial_opening_mm=geometry.minimum_axial_opening_mm,
+                face_bar_clear_spacing_mm=min(
+                    max(bar.x_from_left_mm for bar in member.bars if bar.face == face)
+                    - min(bar.x_from_left_mm for bar in member.bars if bar.face == face)
+                    for face in ("top", "bottom")
+                )
+                - member.bars[0].diameter_mm,
+                outline=[point.model_dump(mode="json") for point in haunch.outline],
+            )
+        if fit_issues:
+            if any(not issue.code.endswith("_HELD") for issue in fit_issues):
+                status = EngineeringStatus.FAIL
+        elif geometry is not None:
+            strength, receipts, failed, held = check_haunch_station_strength(
+                member, haunch, geometry
+            )
+            bend_checks, bend_issues = check_haunch_bend_restraint(
+                member, haunch, geometry
+            )
+            data["strength"] = strength
+            data["haunch"].update(receipts, bend_checks=bend_checks)
+            issues.extend([*failed, *held, *bend_issues])
+            status = EngineeringStatus(strength["ultimate_status"])
+            if any(issue.code.endswith("_FAIL") for issue in bend_issues):
+                status = EngineeringStatus.FAIL
+            elif bend_issues and status is EngineeringStatus.PASS:
+                status = EngineeringStatus.HOLD
+            if status is EngineeringStatus.PASS:
+                zones = tuple(
+                    LinkPlacementZone(
+                        f"link-{index}",
+                        link.bar_mark,
+                        link.station_mm,
+                        link.station_mm,
+                        member.link_spacing_mm,
+                        True,
+                        True,
+                    )
+                    for index, link in enumerate(haunch.links, 1)
+                )
+                schedule = _create_bound_bbs(request, geometry.paths, zones)
+                if schedule.engineering is EngineeringState.PASS:
+                    data["bbs"] = schedule.to_dict()
+                else:
+                    status = EngineeringStatus.HOLD
+                    issues.extend(
+                        StructuralIssueV1(
+                            issue.code, issue.field_or_location or "bbs", issue.message
+                        )
+                        for issue in schedule.diagnostics
+                    )
+    result = canonical_family_result(
+        request,
+        data,
+        workflow_id=WORKFLOW,
+        engineering_status=status,
+        limitations=(
+            "Ordinary constant-width haunch with continuous corner bars and nominal placement checks.",
+            "Checks supplied station actions. Joint obstructions and field tolerances require project evidence.",
+        ),
+        provenance=(
+            "IS 456:2000 §§26.2.1–4, 26.5.1–3 and 40.1.1–40.4.",
+            "SP 34 §§8.10.2 and 8.11, vertical individual closed links.",
+        ),
+    )
+    return replace(
+        result,
+        envelope=replace(
+            result.envelope,
+            issues=tuple(issues),
+            freshness_status=(
+                FreshnessStatus.STALE if stale else FreshnessStatus.CURRENT
+            ),
+        ),
+    )
+
+
 def check_continuous_detailing(
     request: BeamContinuousDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -1981,12 +2155,16 @@ def check_continuous_detailing(
     interior support.
     One straight rectangular four-corner cage can use declared link pitch
     zones with a single ordinary closed link shape and signed transition rows.
+    The ordinary four-corner haunch uses resolved bottom bends, individual
+    link depths and the signed varying-depth shear check.
 
     Provenance
     ----------
     Uses the checked supplied station actions, physical path and BBS owners.
     """
     require_request_type(request, BeamContinuousDetailingInputV1)
+    if request.haunch != "not_requested":
+        return _check_haunch_detailing(request)
     member = request.member
     varied_requested = request.link_zones != "not_requested"
     zones: tuple[ResolvedBeamLinkZone, ...] = ()
@@ -2491,6 +2669,18 @@ def render_continuous_detailing_svg(
     request = result.request
     assert isinstance(request, BeamContinuousDetailingInputV1)
     member = request.member
+    if isinstance(request.haunch, BeamHaunchDetailV1):
+        identity = result.envelope.result_identity
+        detail = request.link_detail
+        assert isinstance(member, BeamContinuousCheckRequestV1) and detail is not None
+        return render_haunch_svg(
+            member,
+            request.haunch,
+            data["haunch"],
+            input_hash=identity.input_hash if identity and identity.input_hash else "",
+            path_id=data["paths"]["result_id"],
+            bend_radius_mm=detail.internal_bend_radius_mm + member.link_diameter_mm / 2,
+        )
     geometry = data["paths"]["outputs"]["reinforcement_schedule"]
     link_zones = data.get("link_zones", {}).get("zones", ())
     left, support, right = member.supports
@@ -2991,8 +3181,12 @@ def render_continuous_detailing_html(
     placement_html = _lap_placement_report(placement) if placement else ""
     zones = result.calculation.get("link_zones") if current_match else None
     zone_html = _varied_link_report(zones) if zones else ""
+    haunch = result.calculation.get("haunch") if current_match else None
+    haunch_html = render_haunch_report(haunch) if haunch is not None else ""
     governing_title = (
-        "Governing action rows" if zones else "Governing baseline action rows"
+        "Governing action rows"
+        if zones or haunch is not None
+        else "Governing baseline action rows"
     )
     edit_html = ""
     if bar_edit:
@@ -3007,7 +3201,7 @@ def render_continuous_detailing_html(
 <p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
 <p>Supplied strength {strength["ultimate_status"]} · Serviceability {strength["serviceability_status"]}</p>
 <h2>{governing_title}</h2><ul>{governance}</ul>
-{edit_html}{cutoff_html}{lap_html}{section_html}{placement_html}{zone_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+{edit_html}{cutoff_html}{lap_html}{section_html}{placement_html}{zone_html}{haunch_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
 
 
 def _varied_link_report(data: dict[str, Any]) -> str:
