@@ -26,9 +26,15 @@ from structural_lib.services.beam_instantaneous_service import (
     check_instantaneous_service,
     render_instantaneous_service_html,
 )
+from structural_lib.services.beam_layered_edit_checks import BeamLayeredEditServiceV1
+from structural_lib.services.beam_layered_edit_placement import (
+    BeamCentreCrossTieV1,
+    BeamLayeredCagePlacementV1,
+)
 from structural_lib.services.beam_member_detailing import (
     BeamBarEditV1,
     BeamContinuousDetailingInputV1,
+    BeamLayeredCageDetailV1,
     check_continuous_detailing,
     recheck_continuous_bar_edit,
     render_continuous_detailing_bbs_csv,
@@ -109,7 +115,11 @@ from structural_lib.services.supplied_beam_check import (
 __all__ = [
     "BeamActionsV1",
     "BeamBarEditV1",
+    "BeamCentreCrossTieV1",
     "BeamContinuousDetailingInputV1",
+    "BeamLayeredCageDetailV1",
+    "BeamLayeredCagePlacementV1",
+    "BeamLayeredEditServiceV1",
     "load_continuous_detailing",
     "recheck_continuous_bar_edit",
     "check_continuous_detailing",

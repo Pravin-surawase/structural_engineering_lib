@@ -13670,8 +13670,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 88,
-      "classified_symbol_count": 98,
+      "declared_export_count": 92,
+      "classified_symbol_count": 102,
       "symbols": [
         {
           "name": "BEAM_FIELD_CONTRACTS",
@@ -13870,6 +13870,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_continuous",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCentreCrossTieV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamCentreCrossTieV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_layered_edit_placement",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
@@ -14155,6 +14174,63 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_instantaneous_service",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamLayeredCageDetailV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamLayeredCageDetailV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_member_detailing",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamLayeredCagePlacementV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamLayeredCagePlacementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_layered_edit_placement",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamLayeredEditServiceV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamLayeredEditServiceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_layered_edit_checks",
           "claim_disposition": "canonical",
           "documentation": {
             "role": "CANONICAL_CONTRACT",
