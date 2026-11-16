@@ -123,12 +123,18 @@ def _strengths(member, layouts):
     physical = web
     effective = None
     if flange is not None:
-        assert flange["monolithic"] and flange["kind"] == "t_beam"
+        assert flange["monolithic"]
         # Both positive-moment zeros follow from the equal-span UDL parabola.
         zero_distance = 2 * (3 * 4000 / 8)
         assert flange["zero_moment_distance_mm"] == zero_distance
         physical += flange["left_overhang_mm"] + flange["right_overhang_mm"]
-        effective = min(physical, web + zero_distance / 6 + 6 * flange["thickness_mm"])
+        thickness = flange["thickness_mm"]
+        if flange["kind"] == "t_beam":
+            effective = min(physical, web + zero_distance / 6 + 6 * thickness)
+        else:
+            assert flange["kind"] == "l_beam"
+            assert flange["left_overhang_mm"] == 0 < flange["right_overhang_mm"]
+            effective = min(physical, web + zero_distance / 12 + 3 * thickness)
     capacities = {}
     for name, bars in layouts.items():
         model = {**member, "bars": bars}
@@ -251,9 +257,9 @@ def _takeoff(request, layout, original, partner, overlap):
             [web, thickness],
             [web, height],
             [0, height],
-            [0, thickness],
-            [left, thickness],
         ]
+        if left < 0:
+            outline.extend(([0, thickness], [left, thickness]))
     first, last = (member["straight_bars"][f"{end}_mm"] for end in ("start", "end"))
     overlap_start, overlap_end = overlap
     paths = {
