@@ -1011,7 +1011,9 @@ def load_finite_service_history(
 
     Limitations
     -----------
-    Simply supported rectangular beams with downward UDLs.
+    Rectangular gravity beams with a prescribed downward UDL history.
+    Unequal continuous spans require current signed service rows and
+    the declared free-shrinkage basis.
 
     Provenance
     ----------

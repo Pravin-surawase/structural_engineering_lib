@@ -1,0 +1,2910 @@
+{
+  "fixture_version": "library-030-serv02-unequal-span/v1",
+  "sources": [
+    "IS 456:2000 Cl. 23.2, Annex C-3, C-4 and Annex F",
+    "Independent elastic rotation compatibility and direct integration with a per-age fully cracked prismatic stiffness",
+    "Prescribed finite ages and uniform shrinkage reproduce the declared model"
+  ],
+  "cases": {
+    "unequal_history": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "SERV02-unequal",
+          "member_id": "SERV02-B45"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "SERV02-B45",
+          "analysis_revision": "B45-A1",
+          "current_analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Independent two-span compatibility reference with both signed service combinations.",
+          "width_mm": 250,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 36,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 150,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 9000,
+              "width_mm": 1000
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 496
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 9460,
+            "source_reference": "Six uninterrupted \u00d820 bars with 40 mm nominal cover at the straight ends."
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-M",
+              "x_mm": 1343.75,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D",
+              "x_mm": 1463.5577303454502,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-ZERO",
+              "x_mm": 2687.5,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D2",
+              "x_mm": 3608.975543766078,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-ZERO",
+              "x_mm": 5050.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-D",
+              "x_mm": 6791.684220538417,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-M",
+              "x_mm": 7025.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 8500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 9000,
+              "side": "LEFT"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "SLS-45",
+              "kind": "SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            },
+            {
+              "combination_id": "SLS-45-G",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "SLS-45:A",
+              "combination_id": "SLS-45",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:A-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 27.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-M",
+              "combination_id": "SLS-45",
+              "station_id": "L-M",
+              "mu_knm": 28.890625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D",
+              "combination_id": "SLS-45",
+              "station_id": "L-D",
+              "mu_knm": 28.66096272399155,
+              "vu_kn": -3.833847371054406,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D2",
+              "combination_id": "SLS-45",
+              "station_id": "L-D2",
+              "mu_knm": -53.209323226085154,
+              "vu_kn": -72.4872174005145,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -71.61,
+              "vu_kn": -80.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT",
+              "mu_knm": -84.0,
+              "vu_kn": -85.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT",
+              "mu_knm": -84.0,
+              "vu_kn": 96.8,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -69.84,
+              "vu_kn": 92.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-D",
+              "combination_id": "SLS-45",
+              "station_id": "R-D",
+              "mu_knm": 61.53901995286776,
+              "vu_kn": 7.466104942770646,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-M",
+              "combination_id": "SLS-45",
+              "station_id": "R-M",
+              "mu_knm": 62.41,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "C-FACE",
+              "mu_knm": 27.6,
+              "vu_kn": -47.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C",
+              "combination_id": "SLS-45",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A",
+              "combination_id": "SLS-45-G",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "A-FACE",
+              "mu_knm": 10.9375,
+              "vu_kn": 16.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-M",
+              "mu_knm": 18.056640625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D",
+              "mu_knm": 17.913101702494718,
+              "vu_kn": -2.3961546069090036,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D2",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D2",
+              "mu_knm": -33.25582701630322,
+              "vu_kn": -45.30451087532156,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -44.75625,
+              "vu_kn": -50.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT",
+              "mu_knm": -52.5,
+              "vu_kn": -53.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT",
+              "mu_knm": -52.5,
+              "vu_kn": 60.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -43.65,
+              "vu_kn": 57.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 39.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-D",
+              "mu_knm": 38.46188747054235,
+              "vu_kn": 4.666315589231654,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-M",
+              "mu_knm": 39.00625,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "C-FACE",
+              "mu_knm": 17.25,
+              "vu_kn": -29.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C",
+              "combination_id": "SLS-45-G",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -39.5,
+              "tu_knm": 0
+            }
+          ]
+        },
+        "span_mm": 5000,
+        "service_load": {
+          "combination_id": "SLS-45",
+          "analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+          "uniform_load_kn_per_m": 32,
+          "midpoint_load_kn": 0
+        },
+        "exposure": "mild",
+        "instantaneous_deflection_limit_mm": 16,
+        "crack_width_limit_mm": 0.3,
+        "history": {
+          "sustained_load": {
+            "combination_id": "SLS-45-G",
+            "analysis_revision": "B45-A1",
+            "reinforcement_revision": "B45-R1",
+            "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+            "uniform_load_kn_per_m": 20,
+            "midpoint_load_kn": 0
+          },
+          "loading_age_days": 28,
+          "at_finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "at_assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 171.875,
+          "finish_added_load_kn_per_m": 0,
+          "source_reference": "SERV02 example input worksheet: prescribed finite-age coefficients and strains, given for replay",
+          "bending_basis": "downward_gravity"
+        },
+        "unequal_span_basis": {
+          "axial_restraint": "free",
+          "shrinkage_profile": "uniform_through_section",
+          "source_reference": "Prismatic beam, vertically supported and axially free with no shrinkage gradient."
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "initial": {
+          "concrete_modulus_nmm2": 25000.0,
+          "neutral_axis_mm": 133.0978978250509,
+          "cracked_inertia_mm4": 1230741510.1864107,
+          "cracking_moment_knm": 44.114583333333336
+        },
+        "at_finishes": {
+          "concrete_modulus_nmm2": 15625.0,
+          "neutral_axis_mm": 154.7957830700674,
+          "cracked_inertia_mm4": 1826549019.6422567,
+          "cracking_moment_knm": 44.114583333333336
+        },
+        "at_assessment": {
+          "concrete_modulus_nmm2": 11363.636363636362,
+          "neutral_axis_mm": 169.73527799319749,
+          "cracked_inertia_mm4": 2382797077.478833,
+          "cracking_moment_knm": 44.114583333333336
+        },
+        "signed_rows": [
+          {
+            "row_id": "SLS-45:A",
+            "combination_id": "SLS-45",
+            "station_id": "A",
+            "mu_knm": 0.0,
+            "vu_kn": 43.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:A-FACE",
+            "combination_id": "SLS-45",
+            "station_id": "A-FACE",
+            "mu_knm": 17.5,
+            "vu_kn": 27.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:L-M",
+            "combination_id": "SLS-45",
+            "station_id": "L-M",
+            "mu_knm": 28.890625,
+            "vu_kn": 0.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:L-D",
+            "combination_id": "SLS-45",
+            "station_id": "L-D",
+            "mu_knm": 28.66096272399155,
+            "vu_kn": -3.833847371054406,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:L-ZERO",
+            "combination_id": "SLS-45",
+            "station_id": "L-ZERO",
+            "mu_knm": 0.0,
+            "vu_kn": -43.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:L-D2",
+            "combination_id": "SLS-45",
+            "station_id": "L-D2",
+            "mu_knm": -53.209323226085154,
+            "vu_kn": -72.4872174005145,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:B-LEFT-FACE",
+            "combination_id": "SLS-45",
+            "station_id": "B-LEFT-FACE",
+            "mu_knm": -71.61,
+            "vu_kn": -80.2,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:B-LEFT",
+            "combination_id": "SLS-45",
+            "station_id": "B-LEFT",
+            "mu_knm": -84.0,
+            "vu_kn": -85.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:B-RIGHT",
+            "combination_id": "SLS-45",
+            "station_id": "B-RIGHT",
+            "mu_knm": -84.0,
+            "vu_kn": 96.8,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:B-RIGHT-FACE",
+            "combination_id": "SLS-45",
+            "station_id": "B-RIGHT-FACE",
+            "mu_knm": -69.84,
+            "vu_kn": 92.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:R-ZERO",
+            "combination_id": "SLS-45",
+            "station_id": "R-ZERO",
+            "mu_knm": 0.0,
+            "vu_kn": 63.2,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:R-D",
+            "combination_id": "SLS-45",
+            "station_id": "R-D",
+            "mu_knm": 61.53901995286776,
+            "vu_kn": 7.466104942770646,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:R-M",
+            "combination_id": "SLS-45",
+            "station_id": "R-M",
+            "mu_knm": 62.41,
+            "vu_kn": -0.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:C-FACE",
+            "combination_id": "SLS-45",
+            "station_id": "C-FACE",
+            "mu_knm": 27.6,
+            "vu_kn": -47.2,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45:C",
+            "combination_id": "SLS-45",
+            "station_id": "C",
+            "mu_knm": 0.0,
+            "vu_kn": -63.2,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:A",
+            "combination_id": "SLS-45-G",
+            "station_id": "A",
+            "mu_knm": 0.0,
+            "vu_kn": 26.875,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:A-FACE",
+            "combination_id": "SLS-45-G",
+            "station_id": "A-FACE",
+            "mu_knm": 10.9375,
+            "vu_kn": 16.875,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:L-M",
+            "combination_id": "SLS-45-G",
+            "station_id": "L-M",
+            "mu_knm": 18.056640625,
+            "vu_kn": 0.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:L-D",
+            "combination_id": "SLS-45-G",
+            "station_id": "L-D",
+            "mu_knm": 17.913101702494718,
+            "vu_kn": -2.3961546069090036,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:L-ZERO",
+            "combination_id": "SLS-45-G",
+            "station_id": "L-ZERO",
+            "mu_knm": 0.0,
+            "vu_kn": -26.875,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:L-D2",
+            "combination_id": "SLS-45-G",
+            "station_id": "L-D2",
+            "mu_knm": -33.25582701630322,
+            "vu_kn": -45.30451087532156,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:B-LEFT-FACE",
+            "combination_id": "SLS-45-G",
+            "station_id": "B-LEFT-FACE",
+            "mu_knm": -44.75625,
+            "vu_kn": -50.125,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:B-LEFT",
+            "combination_id": "SLS-45-G",
+            "station_id": "B-LEFT",
+            "mu_knm": -52.5,
+            "vu_kn": -53.125,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:B-RIGHT",
+            "combination_id": "SLS-45-G",
+            "station_id": "B-RIGHT",
+            "mu_knm": -52.5,
+            "vu_kn": 60.5,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:B-RIGHT-FACE",
+            "combination_id": "SLS-45-G",
+            "station_id": "B-RIGHT-FACE",
+            "mu_knm": -43.65,
+            "vu_kn": 57.5,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:R-ZERO",
+            "combination_id": "SLS-45-G",
+            "station_id": "R-ZERO",
+            "mu_knm": 0.0,
+            "vu_kn": 39.5,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:R-D",
+            "combination_id": "SLS-45-G",
+            "station_id": "R-D",
+            "mu_knm": 38.46188747054235,
+            "vu_kn": 4.666315589231654,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:R-M",
+            "combination_id": "SLS-45-G",
+            "station_id": "R-M",
+            "mu_knm": 39.00625,
+            "vu_kn": -0.0,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:C-FACE",
+            "combination_id": "SLS-45-G",
+            "station_id": "C-FACE",
+            "mu_knm": 17.25,
+            "vu_kn": -29.5,
+            "tu_knm": 0
+          },
+          {
+            "row_id": "SLS-45-G:C",
+            "combination_id": "SLS-45-G",
+            "station_id": "C",
+            "mu_knm": 0.0,
+            "vu_kn": -39.5,
+            "tu_knm": 0
+          }
+        ],
+        "span_deflections": [
+          {
+            "span_id": "SPAN-1",
+            "span_mm": 4000,
+            "station_id": "L-D",
+            "x_mm": 1463.5577303454502,
+            "initial_total_mm": 0.863918148287168,
+            "initial_sustained_mm": 0.53994884267948,
+            "at_finishes_mm": 0.5821140933346776,
+            "at_assessment_mm": 0.9375265458595208,
+            "after_finishes_mm": 0.3554124525248432,
+            "shrinkage_deflection_mm": 0,
+            "total_limit_mm": 16.0,
+            "after_finishes_limit_mm": 11.428571428571429
+          },
+          {
+            "span_id": "SPAN-2",
+            "span_mm": 5000,
+            "station_id": "R-D",
+            "x_mm": 6791.684220538417,
+            "initial_total_mm": 4.281776280864891,
+            "initial_sustained_mm": 2.676110175540557,
+            "at_finishes_mm": 2.8850908185448705,
+            "at_assessment_mm": 4.646596364136261,
+            "after_finishes_mm": 1.7615055455913908,
+            "shrinkage_deflection_mm": 0,
+            "total_limit_mm": 20.0,
+            "after_finishes_limit_mm": 14.285714285714286
+          }
+        ],
+        "deflection_extrema": [
+          {
+            "span_id": "SPAN-1",
+            "span_mm": 4000,
+            "station_id": "L-D",
+            "x_mm": 1463.5577303454502,
+            "initial_total_mm": 0.863918148287168,
+            "initial_sustained_mm": 0.53994884267948,
+            "at_finishes_mm": 0.5821140933346776,
+            "at_assessment_mm": 0.9375265458595208,
+            "after_finishes_mm": 0.3554124525248432,
+            "shrinkage_deflection_mm": 0,
+            "total_limit_mm": 16.0,
+            "after_finishes_limit_mm": 11.428571428571429
+          },
+          {
+            "span_id": "SPAN-1",
+            "span_mm": 4000,
+            "station_id": "L-D2",
+            "x_mm": 3608.975543766078,
+            "initial_total_mm": -0.15669690231328412,
+            "initial_sustained_mm": -0.09793556394580256,
+            "at_finishes_mm": -0.10558346922019948,
+            "at_assessment_mm": -0.1700479447780135,
+            "after_finishes_mm": -0.06446447555781401,
+            "shrinkage_deflection_mm": 0,
+            "total_limit_mm": 16.0,
+            "after_finishes_limit_mm": 11.428571428571429
+          },
+          {
+            "span_id": "SPAN-2",
+            "span_mm": 5000,
+            "station_id": "R-D",
+            "x_mm": 6791.684220538417,
+            "initial_total_mm": 4.281776280864891,
+            "initial_sustained_mm": 2.676110175540557,
+            "at_finishes_mm": 2.8850908185448705,
+            "at_assessment_mm": 4.646596364136261,
+            "after_finishes_mm": 1.7615055455913908,
+            "shrinkage_deflection_mm": 0,
+            "total_limit_mm": 20.0,
+            "after_finishes_limit_mm": 14.285714285714286
+          }
+        ],
+        "crack_sections": [
+          {
+            "station_id": "L-M",
+            "x_mm": 1343.75,
+            "tension_face": "bottom",
+            "assessment_row_id": "SLS-45:L-M",
+            "sustained_row_id": "SLS-45-G:L-M",
+            "cracked": false,
+            "width_mm": 0,
+            "neutral_axis_mm": 157.07495742437825,
+            "surface_strain": 0.0004003785155026893,
+            "tensile_steel_stress_nmm2": 69.07083576226727,
+            "surface_x_mm": 0,
+            "nearest_steel_mm": 66.36753236814714
+          },
+          {
+            "station_id": "B-LEFT-FACE",
+            "x_mm": 3850,
+            "tension_face": "top",
+            "assessment_row_id": "SLS-45:B-LEFT-FACE",
+            "sustained_row_id": "SLS-45-G:B-LEFT-FACE",
+            "cracked": true,
+            "width_mm": 0.17739328370156615,
+            "neutral_axis_mm": 157.07495742437825,
+            "surface_strain": 0.0009924017045372878,
+            "tensile_steel_stress_nmm2": 171.20303035797804,
+            "surface_x_mm": 0,
+            "nearest_steel_mm": 66.36753236814714
+          },
+          {
+            "station_id": "B-LEFT",
+            "x_mm": 4000,
+            "tension_face": "top",
+            "assessment_row_id": "SLS-45:B-LEFT",
+            "sustained_row_id": "SLS-45-G:B-LEFT",
+            "cracked": true,
+            "width_mm": 0.2080859632862946,
+            "neutral_axis_mm": 157.07495742437828,
+            "surface_strain": 0.0011641075713047365,
+            "tensile_steel_stress_nmm2": 200.82466904161643,
+            "surface_x_mm": 0,
+            "nearest_steel_mm": 66.36753236814714
+          },
+          {
+            "station_id": "B-RIGHT",
+            "x_mm": 4000,
+            "tension_face": "top",
+            "assessment_row_id": "SLS-45:B-RIGHT",
+            "sustained_row_id": "SLS-45-G:B-RIGHT",
+            "cracked": true,
+            "width_mm": 0.2080859632862946,
+            "neutral_axis_mm": 157.07495742437828,
+            "surface_strain": 0.0011641075713047365,
+            "tensile_steel_stress_nmm2": 200.82466904161643,
+            "surface_x_mm": 0,
+            "nearest_steel_mm": 66.36753236814714
+          },
+          {
+            "station_id": "B-RIGHT-FACE",
+            "x_mm": 4150,
+            "tension_face": "top",
+            "assessment_row_id": "SLS-45:B-RIGHT-FACE",
+            "sustained_row_id": "SLS-45-G:B-RIGHT-FACE",
+            "cracked": true,
+            "width_mm": 0.17300861518946212,
+            "neutral_axis_mm": 157.07495742437825,
+            "surface_strain": 0.0009678722949990811,
+            "tensile_steel_stress_nmm2": 166.97136768888686,
+            "surface_x_mm": 0,
+            "nearest_steel_mm": 66.36753236814714
+          },
+          {
+            "station_id": "R-M",
+            "x_mm": 7025.0,
+            "tension_face": "bottom",
+            "assessment_row_id": "SLS-45:R-M",
+            "sustained_row_id": "SLS-45-G:R-M",
+            "cracked": true,
+            "width_mm": 0.15460291629401957,
+            "neutral_axis_mm": 157.07495742437828,
+            "surface_strain": 0.0008649042086324832,
+            "tensile_steel_stress_nmm2": 149.2079475581819,
+            "surface_x_mm": 0,
+            "nearest_steel_mm": 66.36753236814714
+          }
+        ],
+        "governing_deflection_station_id": "R-D",
+        "governing_after_finishes_station_id": "R-D",
+        "governing_crack_station_id": "B-LEFT",
+        "uniform_shrinkage_curvature_per_mm": 0
+      }
+    },
+    "missing_history": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "SERV02-unequal",
+          "member_id": "SERV02-B45"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "SERV02-B45",
+          "analysis_revision": "B45-A1",
+          "current_analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Independent two-span compatibility reference with both signed service combinations.",
+          "width_mm": 250,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 36,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 150,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 9000,
+              "width_mm": 1000
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 496
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 9460,
+            "source_reference": "Six uninterrupted \u00d820 bars with 40 mm nominal cover at the straight ends."
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-M",
+              "x_mm": 1343.75,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D",
+              "x_mm": 1463.5577303454502,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-ZERO",
+              "x_mm": 2687.5,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D2",
+              "x_mm": 3608.975543766078,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-ZERO",
+              "x_mm": 5050.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-D",
+              "x_mm": 6791.684220538417,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-M",
+              "x_mm": 7025.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 8500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 9000,
+              "side": "LEFT"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "SLS-45",
+              "kind": "SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            },
+            {
+              "combination_id": "SLS-45-G",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "SLS-45:A",
+              "combination_id": "SLS-45",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:A-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 27.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-M",
+              "combination_id": "SLS-45",
+              "station_id": "L-M",
+              "mu_knm": 28.890625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D",
+              "combination_id": "SLS-45",
+              "station_id": "L-D",
+              "mu_knm": 28.66096272399155,
+              "vu_kn": -3.833847371054406,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D2",
+              "combination_id": "SLS-45",
+              "station_id": "L-D2",
+              "mu_knm": -53.209323226085154,
+              "vu_kn": -72.4872174005145,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -71.61,
+              "vu_kn": -80.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT",
+              "mu_knm": -84.0,
+              "vu_kn": -85.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT",
+              "mu_knm": -84.0,
+              "vu_kn": 96.8,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -69.84,
+              "vu_kn": 92.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-D",
+              "combination_id": "SLS-45",
+              "station_id": "R-D",
+              "mu_knm": 61.53901995286776,
+              "vu_kn": 7.466104942770646,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-M",
+              "combination_id": "SLS-45",
+              "station_id": "R-M",
+              "mu_knm": 62.41,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "C-FACE",
+              "mu_knm": 27.6,
+              "vu_kn": -47.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C",
+              "combination_id": "SLS-45",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A",
+              "combination_id": "SLS-45-G",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "A-FACE",
+              "mu_knm": 10.9375,
+              "vu_kn": 16.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-M",
+              "mu_knm": 18.056640625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D",
+              "mu_knm": 17.913101702494718,
+              "vu_kn": -2.3961546069090036,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D2",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D2",
+              "mu_knm": -33.25582701630322,
+              "vu_kn": -45.30451087532156,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -44.75625,
+              "vu_kn": -50.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT",
+              "mu_knm": -52.5,
+              "vu_kn": -53.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT",
+              "mu_knm": -52.5,
+              "vu_kn": 60.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -43.65,
+              "vu_kn": 57.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 39.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-D",
+              "mu_knm": 38.46188747054235,
+              "vu_kn": 4.666315589231654,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-M",
+              "mu_knm": 39.00625,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "C-FACE",
+              "mu_knm": 17.25,
+              "vu_kn": -29.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C",
+              "combination_id": "SLS-45-G",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -39.5,
+              "tu_knm": 0
+            }
+          ]
+        },
+        "span_mm": 5000,
+        "service_load": {
+          "combination_id": "SLS-45",
+          "analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+          "uniform_load_kn_per_m": 32,
+          "midpoint_load_kn": 0
+        },
+        "exposure": "mild",
+        "instantaneous_deflection_limit_mm": 16,
+        "crack_width_limit_mm": 0.3,
+        "unequal_span_basis": {
+          "axial_restraint": "free",
+          "shrinkage_profile": "uniform_through_section",
+          "source_reference": "Prismatic beam, vertically supported and axially free with no shrinkage gradient."
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "BEAM.SUSTAINED_LOAD_HELD"
+      }
+    },
+    "stale_reinforcement": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "SERV02-unequal",
+          "member_id": "SERV02-B45"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "SERV02-B45",
+          "analysis_revision": "B45-A1",
+          "current_analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Independent two-span compatibility reference with both signed service combinations.",
+          "width_mm": 250,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 36,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 150,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 9000,
+              "width_mm": 1000
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 496
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 9460,
+            "source_reference": "Six uninterrupted \u00d820 bars with 40 mm nominal cover at the straight ends."
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-M",
+              "x_mm": 1343.75,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D",
+              "x_mm": 1463.5577303454502,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-ZERO",
+              "x_mm": 2687.5,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D2",
+              "x_mm": 3608.975543766078,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-ZERO",
+              "x_mm": 5050.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-D",
+              "x_mm": 6791.684220538417,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-M",
+              "x_mm": 7025.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 8500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 9000,
+              "side": "LEFT"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "SLS-45",
+              "kind": "SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            },
+            {
+              "combination_id": "SLS-45-G",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "SLS-45:A",
+              "combination_id": "SLS-45",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:A-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 27.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-M",
+              "combination_id": "SLS-45",
+              "station_id": "L-M",
+              "mu_knm": 28.890625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D",
+              "combination_id": "SLS-45",
+              "station_id": "L-D",
+              "mu_knm": 28.66096272399155,
+              "vu_kn": -3.833847371054406,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D2",
+              "combination_id": "SLS-45",
+              "station_id": "L-D2",
+              "mu_knm": -53.209323226085154,
+              "vu_kn": -72.4872174005145,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -71.61,
+              "vu_kn": -80.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT",
+              "mu_knm": -84.0,
+              "vu_kn": -85.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT",
+              "mu_knm": -84.0,
+              "vu_kn": 96.8,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -69.84,
+              "vu_kn": 92.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-D",
+              "combination_id": "SLS-45",
+              "station_id": "R-D",
+              "mu_knm": 61.53901995286776,
+              "vu_kn": 7.466104942770646,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-M",
+              "combination_id": "SLS-45",
+              "station_id": "R-M",
+              "mu_knm": 62.41,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "C-FACE",
+              "mu_knm": 27.6,
+              "vu_kn": -47.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C",
+              "combination_id": "SLS-45",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A",
+              "combination_id": "SLS-45-G",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "A-FACE",
+              "mu_knm": 10.9375,
+              "vu_kn": 16.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-M",
+              "mu_knm": 18.056640625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D",
+              "mu_knm": 17.913101702494718,
+              "vu_kn": -2.3961546069090036,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D2",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D2",
+              "mu_knm": -33.25582701630322,
+              "vu_kn": -45.30451087532156,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -44.75625,
+              "vu_kn": -50.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT",
+              "mu_knm": -52.5,
+              "vu_kn": -53.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT",
+              "mu_knm": -52.5,
+              "vu_kn": 60.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -43.65,
+              "vu_kn": 57.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 39.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-D",
+              "mu_knm": 38.46188747054235,
+              "vu_kn": 4.666315589231654,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-M",
+              "mu_knm": 39.00625,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "C-FACE",
+              "mu_knm": 17.25,
+              "vu_kn": -29.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C",
+              "combination_id": "SLS-45-G",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -39.5,
+              "tu_knm": 0
+            }
+          ]
+        },
+        "span_mm": 5000,
+        "service_load": {
+          "combination_id": "SLS-45",
+          "analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+          "uniform_load_kn_per_m": 32,
+          "midpoint_load_kn": 0
+        },
+        "exposure": "mild",
+        "instantaneous_deflection_limit_mm": 16,
+        "crack_width_limit_mm": 0.3,
+        "history": {
+          "sustained_load": {
+            "combination_id": "SLS-45-G",
+            "analysis_revision": "B45-A1",
+            "reinforcement_revision": "B45-R0",
+            "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+            "uniform_load_kn_per_m": 20,
+            "midpoint_load_kn": 0
+          },
+          "loading_age_days": 28,
+          "at_finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "at_assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 171.875,
+          "finish_added_load_kn_per_m": 0,
+          "source_reference": "SERV02 example input worksheet: prescribed finite-age coefficients and strains, given for replay",
+          "bending_basis": "downward_gravity"
+        },
+        "unequal_span_basis": {
+          "axial_restraint": "free",
+          "shrinkage_profile": "uniform_through_section",
+          "source_reference": "Prismatic beam, vertically supported and axially free with no shrinkage gradient."
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "BEAM.SERVICE_REVISION_STALE"
+      }
+    },
+    "missing_sustained_station": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "SERV02-unequal",
+          "member_id": "SERV02-B45"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "SERV02-B45",
+          "analysis_revision": "B45-A1",
+          "current_analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Independent two-span compatibility reference with both signed service combinations.",
+          "width_mm": 250,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 36,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 150,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 9000,
+              "width_mm": 1000
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 496
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 9460,
+            "source_reference": "Six uninterrupted \u00d820 bars with 40 mm nominal cover at the straight ends."
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-M",
+              "x_mm": 1343.75,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D",
+              "x_mm": 1463.5577303454502,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-ZERO",
+              "x_mm": 2687.5,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D2",
+              "x_mm": 3608.975543766078,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-ZERO",
+              "x_mm": 5050.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-D",
+              "x_mm": 6791.684220538417,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-M",
+              "x_mm": 7025.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 8500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 9000,
+              "side": "LEFT"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "SLS-45",
+              "kind": "SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            },
+            {
+              "combination_id": "SLS-45-G",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "SLS-45:A",
+              "combination_id": "SLS-45",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:A-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 27.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-M",
+              "combination_id": "SLS-45",
+              "station_id": "L-M",
+              "mu_knm": 28.890625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D",
+              "combination_id": "SLS-45",
+              "station_id": "L-D",
+              "mu_knm": 28.66096272399155,
+              "vu_kn": -3.833847371054406,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D2",
+              "combination_id": "SLS-45",
+              "station_id": "L-D2",
+              "mu_knm": -53.209323226085154,
+              "vu_kn": -72.4872174005145,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -71.61,
+              "vu_kn": -80.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT",
+              "mu_knm": -84.0,
+              "vu_kn": -85.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT",
+              "mu_knm": -84.0,
+              "vu_kn": 96.8,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -69.84,
+              "vu_kn": 92.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-D",
+              "combination_id": "SLS-45",
+              "station_id": "R-D",
+              "mu_knm": 61.53901995286776,
+              "vu_kn": 7.466104942770646,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-M",
+              "combination_id": "SLS-45",
+              "station_id": "R-M",
+              "mu_knm": 62.41,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "C-FACE",
+              "mu_knm": 27.6,
+              "vu_kn": -47.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C",
+              "combination_id": "SLS-45",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A",
+              "combination_id": "SLS-45-G",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "A-FACE",
+              "mu_knm": 10.9375,
+              "vu_kn": 16.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-M",
+              "mu_knm": 18.056640625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D",
+              "mu_knm": 17.913101702494718,
+              "vu_kn": -2.3961546069090036,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D2",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D2",
+              "mu_knm": -33.25582701630322,
+              "vu_kn": -45.30451087532156,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -44.75625,
+              "vu_kn": -50.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT",
+              "mu_knm": -52.5,
+              "vu_kn": -53.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -43.65,
+              "vu_kn": 57.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 39.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-D",
+              "mu_knm": 38.46188747054235,
+              "vu_kn": 4.666315589231654,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-M",
+              "mu_knm": 39.00625,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "C-FACE",
+              "mu_knm": 17.25,
+              "vu_kn": -29.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C",
+              "combination_id": "SLS-45-G",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -39.5,
+              "tu_knm": 0
+            }
+          ]
+        },
+        "span_mm": 5000,
+        "service_load": {
+          "combination_id": "SLS-45",
+          "analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+          "uniform_load_kn_per_m": 32,
+          "midpoint_load_kn": 0
+        },
+        "exposure": "mild",
+        "instantaneous_deflection_limit_mm": 16,
+        "crack_width_limit_mm": 0.3,
+        "history": {
+          "sustained_load": {
+            "combination_id": "SLS-45-G",
+            "analysis_revision": "B45-A1",
+            "reinforcement_revision": "B45-R1",
+            "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+            "uniform_load_kn_per_m": 20,
+            "midpoint_load_kn": 0
+          },
+          "loading_age_days": 28,
+          "at_finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "at_assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 171.875,
+          "finish_added_load_kn_per_m": 0,
+          "source_reference": "SERV02 example input worksheet: prescribed finite-age coefficients and strains, given for replay",
+          "bending_basis": "downward_gravity"
+        },
+        "unequal_span_basis": {
+          "axial_restraint": "free",
+          "shrinkage_profile": "uniform_through_section",
+          "source_reference": "Prismatic beam, vertically supported and axially free with no shrinkage gradient."
+        }
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "BEAM.SERVICE_ROWS_HELD"
+      }
+    },
+    "governing_crack_limit": {
+      "request": {
+        "identity": {
+          "family_id": "beam",
+          "case_id": "SERV02-unequal",
+          "member_id": "SERV02-B45"
+        },
+        "member": {
+          "schema_version": "is456-continuous-beam-check/v1",
+          "member_id": "SERV02-B45",
+          "analysis_revision": "B45-A1",
+          "current_analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Independent two-span compatibility reference with both signed service combinations.",
+          "width_mm": 250,
+          "depth_mm": 550,
+          "fck_nmm2": 25,
+          "fy_nmm2": 415,
+          "clear_cover_mm": 36,
+          "aggregate_size_mm": 20,
+          "link_diameter_mm": 8,
+          "link_spacing_mm": 150,
+          "link_fy_nmm2": 415,
+          "supports": [
+            {
+              "support_id": "A",
+              "centre_mm": 0,
+              "width_mm": 1000
+            },
+            {
+              "support_id": "B",
+              "centre_mm": 4000,
+              "width_mm": 300
+            },
+            {
+              "support_id": "C",
+              "centre_mm": 9000,
+              "width_mm": 1000
+            }
+          ],
+          "bars": [
+            {
+              "bar_id": "top-1",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-2",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "top-3",
+              "face": "top",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 54
+            },
+            {
+              "bar_id": "bottom-1",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 54,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-2",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 496
+            },
+            {
+              "bar_id": "bottom-3",
+              "face": "bottom",
+              "diameter_mm": 20,
+              "x_from_left_mm": 196,
+              "y_from_top_mm": 496
+            }
+          ],
+          "straight_bars": {
+            "start_mm": -460,
+            "end_mm": 9460,
+            "source_reference": "Six uninterrupted \u00d820 bars with 40 mm nominal cover at the straight ends."
+          },
+          "stations": [
+            {
+              "station_id": "A",
+              "x_mm": 0,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "A-FACE",
+              "x_mm": 500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-M",
+              "x_mm": 1343.75,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D",
+              "x_mm": 1463.5577303454502,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-ZERO",
+              "x_mm": 2687.5,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "L-D2",
+              "x_mm": 3608.975543766078,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT-FACE",
+              "x_mm": 3850,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "B-LEFT",
+              "x_mm": 4000,
+              "side": "LEFT"
+            },
+            {
+              "station_id": "B-RIGHT",
+              "x_mm": 4000,
+              "side": "RIGHT"
+            },
+            {
+              "station_id": "B-RIGHT-FACE",
+              "x_mm": 4150,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-ZERO",
+              "x_mm": 5050.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-D",
+              "x_mm": 6791.684220538417,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "R-M",
+              "x_mm": 7025.0,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C-FACE",
+              "x_mm": 8500,
+              "side": "CONTINUOUS"
+            },
+            {
+              "station_id": "C",
+              "x_mm": 9000,
+              "side": "LEFT"
+            }
+          ],
+          "combinations": [
+            {
+              "combination_id": "SLS-45",
+              "kind": "SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            },
+            {
+              "combination_id": "SLS-45-G",
+              "kind": "SUSTAINED_SLS",
+              "required_station_ids": [
+                "A",
+                "A-FACE",
+                "L-M",
+                "L-D",
+                "L-ZERO",
+                "L-D2",
+                "B-LEFT-FACE",
+                "B-LEFT",
+                "B-RIGHT",
+                "B-RIGHT-FACE",
+                "R-ZERO",
+                "R-D",
+                "R-M",
+                "C-FACE",
+                "C"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "row_id": "SLS-45:A",
+              "combination_id": "SLS-45",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:A-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "A-FACE",
+              "mu_knm": 17.5,
+              "vu_kn": 27.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-M",
+              "combination_id": "SLS-45",
+              "station_id": "L-M",
+              "mu_knm": 28.890625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D",
+              "combination_id": "SLS-45",
+              "station_id": "L-D",
+              "mu_knm": 28.66096272399155,
+              "vu_kn": -3.833847371054406,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -43.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:L-D2",
+              "combination_id": "SLS-45",
+              "station_id": "L-D2",
+              "mu_knm": -53.209323226085154,
+              "vu_kn": -72.4872174005145,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -71.61,
+              "vu_kn": -80.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-LEFT",
+              "combination_id": "SLS-45",
+              "station_id": "B-LEFT",
+              "mu_knm": -84.0,
+              "vu_kn": -85.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT",
+              "mu_knm": -84.0,
+              "vu_kn": 96.8,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:B-RIGHT-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -69.84,
+              "vu_kn": 92.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-ZERO",
+              "combination_id": "SLS-45",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-D",
+              "combination_id": "SLS-45",
+              "station_id": "R-D",
+              "mu_knm": 61.53901995286776,
+              "vu_kn": 7.466104942770646,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:R-M",
+              "combination_id": "SLS-45",
+              "station_id": "R-M",
+              "mu_knm": 62.41,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C-FACE",
+              "combination_id": "SLS-45",
+              "station_id": "C-FACE",
+              "mu_knm": 27.6,
+              "vu_kn": -47.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45:C",
+              "combination_id": "SLS-45",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -63.2,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A",
+              "combination_id": "SLS-45-G",
+              "station_id": "A",
+              "mu_knm": 0.0,
+              "vu_kn": 26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:A-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "A-FACE",
+              "mu_knm": 10.9375,
+              "vu_kn": 16.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-M",
+              "mu_knm": 18.056640625,
+              "vu_kn": 0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D",
+              "mu_knm": 17.913101702494718,
+              "vu_kn": -2.3961546069090036,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": -26.875,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:L-D2",
+              "combination_id": "SLS-45-G",
+              "station_id": "L-D2",
+              "mu_knm": -33.25582701630322,
+              "vu_kn": -45.30451087532156,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT-FACE",
+              "mu_knm": -44.75625,
+              "vu_kn": -50.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-LEFT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-LEFT",
+              "mu_knm": -52.5,
+              "vu_kn": -53.125,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT",
+              "mu_knm": -52.5,
+              "vu_kn": 60.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:B-RIGHT-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "B-RIGHT-FACE",
+              "mu_knm": -43.65,
+              "vu_kn": 57.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-ZERO",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-ZERO",
+              "mu_knm": 0.0,
+              "vu_kn": 39.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-D",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-D",
+              "mu_knm": 38.46188747054235,
+              "vu_kn": 4.666315589231654,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:R-M",
+              "combination_id": "SLS-45-G",
+              "station_id": "R-M",
+              "mu_knm": 39.00625,
+              "vu_kn": -0.0,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C-FACE",
+              "combination_id": "SLS-45-G",
+              "station_id": "C-FACE",
+              "mu_knm": 17.25,
+              "vu_kn": -29.5,
+              "tu_knm": 0
+            },
+            {
+              "row_id": "SLS-45-G:C",
+              "combination_id": "SLS-45-G",
+              "station_id": "C",
+              "mu_knm": 0.0,
+              "vu_kn": -39.5,
+              "tu_knm": 0
+            }
+          ]
+        },
+        "span_mm": 5000,
+        "service_load": {
+          "combination_id": "SLS-45",
+          "analysis_revision": "B45-A1",
+          "reinforcement_revision": "B45-R1",
+          "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+          "uniform_load_kn_per_m": 32,
+          "midpoint_load_kn": 0
+        },
+        "exposure": "mild",
+        "instantaneous_deflection_limit_mm": 16,
+        "crack_width_limit_mm": 0.2,
+        "history": {
+          "sustained_load": {
+            "combination_id": "SLS-45-G",
+            "analysis_revision": "B45-A1",
+            "reinforcement_revision": "B45-R1",
+            "source_reference": "Three-moment signed service actions with identical UDL in each span.",
+            "uniform_load_kn_per_m": 20,
+            "midpoint_load_kn": 0
+          },
+          "loading_age_days": 28,
+          "at_finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "at_assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 171.875,
+          "finish_added_load_kn_per_m": 0,
+          "source_reference": "SERV02 example input worksheet: prescribed finite-age coefficients and strains, given for replay",
+          "bending_basis": "downward_gravity"
+        },
+        "unequal_span_basis": {
+          "axial_restraint": "free",
+          "shrinkage_profile": "uniform_through_section",
+          "source_reference": "Prismatic beam, vertically supported and axially free with no shrinkage gradient."
+        }
+      },
+      "expected": {
+        "status": "FAIL",
+        "issue": "BEAM.HISTORY_LIMIT_EXCEEDED",
+        "governing_crack_station_id": "B-LEFT"
+      }
+    }
+  }
+}

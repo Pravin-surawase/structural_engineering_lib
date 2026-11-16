@@ -66,6 +66,34 @@ is 0.56289 mm. The support hogging crack is 0.14198 mm. The sagging station
 is below the cracking threshold. The report retains each face and its
 station. A stale sustained reinforcement revision holds the history.
 
-Unequal spans, asymmetric loading or reinforcement, axial restraint
-effects from shrinkage, and a time-varying load sequence need their own
-reference cases.
+## Replay an unequal two-span history
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_finite_service_history.py \
+  --reference docs/verification/library-030-serv02-unequal-span.json \
+  --case unequal_history --output-dir output/unequal-service-history
+```
+
+Use a prismatic rectangular section with a mirrored continuous cage.
+Take both span lengths from the support centrelines and set `span_mm`
+to the longer span. Supply a current signed row at every declared
+station for the total and sustained cases. Include the two sides and
+faces of the interior support, both span sagging peaks and each
+deflection extremum. Each load case applies one uniform downward
+load to both spans. The `unequal_span_basis` declares free axial
+shortening and uniform through-depth shrinkage.
+
+The 4 m and 5 m example has a 250 × 550 mm section with three Ø20
+bars per face. Both spans carry 20 kN/m sustained and 32 kN/m at
+assessment. The 5 m span governs at 4.647 mm after 365 days, with a
+1.762 mm increase after finishes. The 4 m span has an upward
+extremum of 0.170 mm near the interior support. The interior support
+governs flexural crack width at 0.2081 mm. The report checks the
+limits against each span length and identifies the governing stations.
+
+The 0.20 mm crack-limit control fails at the interior support.
+Missing history, stale reinforcement or a missing signed sustained
+row hold the history. The method uses one cracked stiffness per age
+throughout the prismatic member and gives zero flexural shrinkage
+curvature for the prescribed symmetric, axially free case.
+[Independent unequal-span replay](../../verification/check_library_030_serv02_unequal_span_reference.py)

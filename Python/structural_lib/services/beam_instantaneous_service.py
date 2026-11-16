@@ -141,7 +141,10 @@ def _same_faces(bars: tuple[BarPosition, ...], depth: float) -> bool:
 
 
 def _service_domain(
-    request: _BeamServiceInput, bars: tuple[BarPosition, ...]
+    request: _BeamServiceInput,
+    bars: tuple[BarPosition, ...],
+    *,
+    unequal_spans: bool = False,
 ) -> StructuralIssueV1 | None:
     member, load = request.member, request.service_load
     if load is None:
@@ -187,18 +190,30 @@ def _service_domain(
             )
     if isinstance(member, BeamContinuousCheckRequestV1):
         centres = [support.centre_mm for support in member.supports]
-        if (
-            any(
-                abs(right - left - request.span_mm) > 1e-8
-                for left, right in zip(centres[:-1], centres[1:], strict=True)
+        spans = tuple(
+            right - left for left, right in zip(centres[:-1], centres[1:], strict=True)
+        )
+        if unequal_spans:
+            supported_lengths = (
+                min(spans) >= 4 * member.depth_mm
+                and not math.isclose(*spans, abs_tol=1e-8, rel_tol=0)
+                and math.isclose(max(spans), request.span_mm, abs_tol=1e-8, rel_tol=0)
             )
+            requirement = "Declare unequal spans of at least four section depths and set span_mm to the longer span."
+        else:
+            supported_lengths = all(
+                abs(span - request.span_mm) <= 1e-8 for span in spans
+            )
+            requirement = "The two-span model requires equal spans, continuous bars and mirrored reinforcement depths."
+        if (
+            not supported_lengths
             or not _same_faces(bars, member.depth_mm)
             or member.straight_bars is None
         ):
             return StructuralIssueV1(
                 "BEAM.SERVICE_TOPOLOGY_HELD",
                 "member",
-                "The two-span model requires equal spans, continuous bars and mirrored reinforcement depths.",
+                requirement,
             )
     elif member.flange is not None or request.span_mm < 4 * member.depth_mm:
         return StructuralIssueV1(
@@ -275,6 +290,8 @@ def _face_crack(
     axis: float,
     stress: float,
     surface_strain: float,
+    *,
+    service_action_row_id: str | None = None,
 ) -> OperationResult:
     member, load = request.member, request.service_load
     assert load is not None
@@ -295,7 +312,7 @@ def _face_crack(
                 WORKFLOW,
                 member.member_id,
                 station_id,
-                f"{load.combination_id}/{station_id}",
+                service_action_row_id or f"{load.combination_id}/{station_id}",
                 member.reinforcement_revision,
                 b,
                 depth,
@@ -422,24 +439,12 @@ def check_instantaneous_service(
 def _evaluate_instantaneous_service(
     request: _BeamServiceInput,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
-    member = request.member
     bars = _service_bars(request)
     issue = _service_domain(request, bars)
     status = EngineeringStatus.HOLD
     data: dict[str, Any] = {"instantaneous": None, "long_term_status": "HOLD"}
     if issue is None:
-        fit = _evaluate_geometry(
-            ReinforcementGeometryRequest(
-                WORKFLOW,
-                member.width_mm,
-                member.depth_mm,
-                member.clear_cover_mm,
-                member.link_diameter_mm,
-                max(member.aggregate_size_mm + 5, max(bar.diameter_mm for bar in bars)),
-                bars,
-            ),
-            maximum_aggregate_size_mm=member.aggregate_size_mm,
-        )
+        fit = _service_geometry(request, bars)
         if fit.engineering is not EngineeringState.PASS:
             issue = StructuralIssueV1(
                 "BEAM.SERVICE_GEOMETRY_HELD",
@@ -481,6 +486,24 @@ def _evaluate_instantaneous_service(
                 else CalculationStatus.COMPLETED
             ),
         ),
+    )
+
+
+def _service_geometry(
+    request: _BeamServiceInput, bars: tuple[BarPosition, ...]
+) -> OperationResult:
+    member = request.member
+    return _evaluate_geometry(
+        ReinforcementGeometryRequest(
+            WORKFLOW,
+            member.width_mm,
+            member.depth_mm,
+            member.clear_cover_mm,
+            member.link_diameter_mm,
+            max(member.aggregate_size_mm + 5, max(bar.diameter_mm for bar in bars)),
+            bars,
+        ),
+        maximum_aggregate_size_mm=member.aggregate_size_mm,
     )
 
 
