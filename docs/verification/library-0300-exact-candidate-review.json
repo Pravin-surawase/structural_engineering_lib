@@ -1,0 +1,72 @@
+{
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.30.0-py3-none-any.whl",
+      "sha256": "50779361e162f835ce86da79c3fbfbd33e794b0263d6dfd801de2c5ce9788611",
+      "size_bytes": 1602804
+    },
+    {
+      "filename": "structural_lib_is456-0.30.0.tar.gz",
+      "sha256": "40aebdb2dc97b63776a4810ae2763114c4aa3ca046cb82ad1b430c844538216d",
+      "size_bytes": 1366442
+    }
+  ],
+  "decision": "ACCEPT",
+  "hosted_checks": {
+    "required_pr_checks": {
+      "head_sha": "9b09b3c24b0e7e219623360c4f5cd1f8a7da6cd6",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43950860538/job/133593527644"
+    },
+    "weekly_verification": {
+      "head_sha": "9b09b3c24b0e7e219623360c4f5cd1f8a7da6cd6",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43951200197"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-11-16T21:06:52Z",
+  "integration_requirement": "Preserve the reviewed candidate ancestry, qualified Python tree and exact archive bytes.",
+  "local_verification": {
+    "artifact_record": "docs/verification/library-0300-release-artifacts.json",
+    "artifact_record_sha256": "32eb5c20b27d86d0251065a33032557de819c9f481fe7abe1e9bc331b5ae0729",
+    "beam_column_tests_per_archive": {
+      "sdist": 971,
+      "wheel": 971
+    },
+    "build_head": "24d657081027d69a058d3e1e0a321e3d3274349b",
+    "coding_lab_findings_per_archive": {
+      "sdist": 39,
+      "wheel": 39
+    },
+    "distribution_inputs_changed_after_build": false,
+    "installed_wheel_uat_cases": 29,
+    "qualification_receipt_sha256": "d5fc3c836b65347c51e6f294ceec75c8196052af6e59c9d10388fb8e968d60cf",
+    "qualified_installed_profiles": 20,
+    "slab_footing_cases_per_archive": {
+      "sdist": 25,
+      "wheel": 25
+    },
+    "source_merge_sha": "4246504360620ad04b4cf3b49ac308736d186eb4"
+  },
+  "professional_approval": false,
+  "qualified_structural_engineering_review": false,
+  "review_scope": "Independent software review verified the exact retained archives, their build inputs and installed qualification, the generated API compatibility ledger, and the candidate scope and its project HOLDs. Required PR and cross-platform Weekly Verification subsequently passed on the independently reviewed head.",
+  "reviewed_candidate": {
+    "head_sha": "9b09b3c24b0e7e219623360c4f5cd1f8a7da6cd6",
+    "python_tree_sha": "ee48d10cdeaee161163fc4890afc05ffeb1d042c",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ],
+    "tag": "v0.30.0",
+    "tree_sha": "89b8b9fbbc9406faf217ac5f79491fdcfcf8852b",
+    "version": "0.30.0"
+  },
+  "reviewer": {
+    "identity": "Codex independent release-packet reviewer /root/beam_lap_restraint_review",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-16T20:33:09Z"
+  },
+  "schema_version": "exact-candidate-review-receipt/v1"
+}

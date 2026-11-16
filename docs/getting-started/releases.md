@@ -2096,3 +2096,16 @@ Project qualification still requires carrying those actions through member
 design and checked outputs. PROJECT03 site insertion, temporary supports
 and boundary anchorage still require project evidence.
 v0.29.2 remains the published release.
+
+
+## v0.30.0 — Release authorized (2026-11-17)
+
+The owner authorized publication of the retained wheel and source archive
+after independent review, [PR Validation](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43950860538/job/133593527644) and
+[Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43951200197) passed on the same candidate.
+
+The [exact-candidate review](../verification/library-0300-exact-candidate-review.json)
+and [owner authorization](../verification/release-publication-authorization.json)
+record the source and archive identities in
+[PR #1118](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1118).
+TestPyPI verifies both archives before the production tag and upload.

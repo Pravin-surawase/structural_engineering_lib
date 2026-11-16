@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.30.0] — Prepared candidate (unreleased; on hold)
+## [0.30.0] — 2026-11-17
 
 ### Added
 
@@ -33,9 +33,9 @@ All notable changes to this project will be documented in this file.
 
 ### Qualification scope
 
-- PROJECT01 and PROJECT02 remain on HOLD pending a matched FLOW04 native
-  beam and column action export. PROJECT03 site insertion, temporary
-  supports and boundary anchorage require project evidence.
+- PROJECT01 and PROJECT02 remain on HOLD until matched FLOW04 actions are
+  carried through member design and checked outputs. PROJECT03 site
+  insertion, temporary supports and boundary anchorage require project evidence.
 
 ## [0.29.2] — 2026-11-15
 
