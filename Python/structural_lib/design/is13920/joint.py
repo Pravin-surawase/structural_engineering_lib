@@ -1,6 +1,7 @@
-"""Check a regular interior beam–column joint under supplied design actions."""
+"""Check a regular beam–column joint under supplied design actions."""
 
 from structural_lib.services.ductile_joint import (
+    DuctileExteriorJointRequestV1,
     DuctileJointRequestV1,
     DuctileJointResultV1,
     check_joint,
@@ -13,6 +14,7 @@ from structural_lib.services.ductile_joint_outputs import (
 )
 
 __all__ = [
+    "DuctileExteriorJointRequestV1",
     "DuctileJointRequestV1",
     "DuctileJointResultV1",
     "check_joint",

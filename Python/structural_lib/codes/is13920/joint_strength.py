@@ -1,4 +1,4 @@
-"""Section capacities and signed equilibrium for the centred interior profile."""
+"""Section capacities and signed equilibrium for the supported regular joint profiles."""
 
 from __future__ import annotations
 
@@ -172,8 +172,10 @@ def _beam_reactions(
 ) -> dict[str, float]:
     """Downward joint forces, with opposite hinge increments for the two ends."""
     reactions = {}
-    for side, multiplier in (("minus", sway_sign), ("plus", -sway_sign)):
-        length_m = spans_mm[side] / 1000
+    for side in (side for side in ("minus", "plus") if side in spans_mm):
+        span_mm = spans_mm[side]
+        multiplier = sway_sign if side == "minus" else -sway_sign
+        length_m = span_mm / 1000
         reactions[side] = (
             0.6 * loads_kn_m[side] * length_m + multiplier * 2 * moment_knm / length_m
         )
@@ -185,7 +187,7 @@ def _column_axial(action: Mapping[str, Any]) -> dict[str, float]:
     lower = upper + sum(action["beam_on_joint_downward_shear_kn"].values())
     if lower <= 0:
         raise JointStrengthDomainError(
-            "The interior profile requires compression at both column ends."
+            "The joint profile requires compression at both column ends."
         )
     return {"upper": upper, "lower": lower}
 
@@ -210,11 +212,11 @@ def _direction_strength(
     )
     column_table19_percent = 0.25 if tension_steel_percent >= 0.25 else 0.15
     beam_d = depth - request["beam_row_depth_from_top_mm"][plane]
-    beam_width = request["beam_width_mm"]
+    beam_width = request["beam_width_mm"][plane]
     link_fy = request["link_fy_mpa"]
     tolerance = request["tie_station_tolerance_mm"]
     beam_pitch = request["beam_pitch_mm"] + 2 * tolerance
-    beam_limit = calculate_confinement_spacing(beam_d, request["beam_bar_mm"])
+    beam_limit = calculate_confinement_spacing(beam_d, request["beam_bar_mm"][plane])
     first_link = (
         request["beam_first_link_mm"] + request["beam_inner_link_offset_mm"] + tolerance
     )
@@ -227,6 +229,7 @@ def _direction_strength(
     beam_capacity = min(beam_vus, beam_crush)
     gravity = request["beam_dead_plus_live_kn_m"][plane]
     spans = request["beam_clear_spans_mm"][plane]
+    count = len(spans)
     hinge_moment = 1.4 * beam_moment_knm
     hinge_reactions = _beam_reactions(gravity, spans, hinge_moment, sign)
     mechanism_reactions = _beam_reactions(gravity, spans, mechanism["moment_knm"], sign)
@@ -236,14 +239,14 @@ def _direction_strength(
     mechanism_arm_mm = sum(request["mechanism_inflection_offsets_mm"].values()) + depth
     reaction_couple = (
         sign
-        * (mechanism_reactions["minus"] - mechanism_reactions["plus"])
+        * (mechanism_reactions["minus"] - mechanism_reactions.get("plus", 0.0))
         * width
         / 2000
     )
     mechanism_column_shear = (
-        1000 * (2 * mechanism["moment_knm"] + reaction_couple) / mechanism_arm_mm
+        1000 * (count * mechanism["moment_knm"] + reaction_couple) / mechanism_arm_mm
     )
-    joint_shear = 2 * mechanism["tension_kn"] - mechanism_column_shear
+    joint_shear = count * mechanism["tension_kn"] - mechanism_column_shear
     if min(joint_shear, mechanism_column_shear) <= 0:
         raise JointStrengthDomainError(
             "The supplied inflection offsets do not resolve the declared joint shear mechanism."
@@ -251,17 +254,16 @@ def _direction_strength(
     joint_breadth = min(width, beam_width + width / 2)
     joint_area = joint_breadth * width
     joint_stress = 1000 * joint_shear / joint_area
-    joint_limit = (1.5 if confinement["confined_faces"] == 4 else 1.0) * math.sqrt(
-        request["joint_fck_mpa"]
-    )
+    confinement_factor = {4: 1.5, 3: 1.2}.get(confinement["confined_faces"], 1.0)
+    joint_limit = confinement_factor * math.sqrt(request["joint_fck_mpa"])
     top = column_governing["upper"]
     bottom = column_governing["lower"]
     scwb = check_scwb(
         column_top_capacity_knm=top["moment_knm"],
         column_bottom_capacity_knm=bottom["moment_knm"],
         beam_left_capacity_knm=beam_moment_knm,
-        beam_right_capacity_knm=beam_moment_knm,
-        topology=JointTopology.INTERIOR,
+        beam_right_capacity_knm=beam_moment_knm if count == 2 else None,
+        topology=JointTopology.INTERIOR if count == 2 else JointTopology.EXTERIOR_LEFT,
         principal_plane=PrincipalPlane(plane),
         shaking_direction=shaking,
         column_capacity_direction=shaking.opposite(),
@@ -276,7 +278,8 @@ def _direction_strength(
         axial = _column_axial(action)
         elastic = action["beam_on_joint_downward_shear_kn"]
         beam_shears = {}
-        for side, hinge_sign in (("minus", -sign), ("plus", sign)):
+        for side in hinge_reactions:
+            hinge_sign = -sign if side == "minus" else sign
             demand = max(abs(elastic[side]), abs(hinge_reactions[side]))
             beam_shears[side] = {
                 "signed_near_hinge_moment_knm": hinge_sign * beam_moment_knm,
@@ -295,7 +298,9 @@ def _direction_strength(
             }
         column_shears = {}
         for end, pu in axial.items():
-            hinge = 2000 * hinge_moment / request["column_clear_heights_mm"][end]
+            hinge = (
+                1000 * count * hinge_moment / request["column_clear_heights_mm"][end]
+            )
             analysis = action["analysis_column_shear_magnitude_kn"]
             demand = max(analysis, hinge)
             shear = ordinary_column_shear(
@@ -338,6 +343,7 @@ def _direction_strength(
         )
 
     return {
+        "connected_beams": count,
         "rows": rows,
         "scwb": {
             "beam_capacity_direction": direction,
@@ -352,6 +358,7 @@ def _direction_strength(
             "pass": scwb.is_satisfied,
         },
         "joint_shear": {
+            "confined_faces": confinement["confined_faces"],
             "design_beam_tension_kn_each": mechanism["tension_kn"],
             "mechanism_beam_reactions_kn": mechanism_reactions,
             "reaction_moment_about_centre_knm": reaction_couple,
@@ -368,27 +375,33 @@ def _direction_strength(
     }
 
 
-def check_interior_joint_strength(
+def check_regular_joint_strength(
     request: Mapping[str, Any], confinement: Mapping[str, Any]
 ) -> dict[str, Any]:
     """Calculate direction, combination and section evidence from admitted geometry."""
     width = request["column_width_mm"]
     depth = request["joint_depth_mm"]
-    beam_width = request["beam_width_mm"]
-    beam_phi = request["beam_bar_mm"]
+    exterior = request.get("topology") == "exterior_x_minus"
+    if not exterior:
+        request = {
+            **request,
+            "beam_width_mm": dict.fromkeys(("X", "Y"), request["beam_width_mm"]),
+            "beam_bar_mm": dict.fromkeys(("X", "Y"), request["beam_bar_mm"]),
+        }
+    else:
+        request = {**request, "beam_row_depth_from_top_mm": request["beam_top_z_mm"]}
     fy = request["longitudinal_fy_mpa"]
-    beam = _Section(beam_width, depth, request["beam_fck_mpa"], fy)
     beams = {}
     mechanisms = {}
-    beam_area = _area(beam_phi, 4)
-    spans = request["beam_clear_spans_mm"].values()
-    minimum_span = min(value for plane in spans for value in plane.values())
-    minimum_steel = get_min_tension_steel_percentage(beam.fck_mpa, fy)
+    minimum_steel = get_min_tension_steel_percentage(request["beam_fck_mpa"], fy)
     maximum_steel = get_max_tension_steel_percentage()
-    beam_flexure_pass = (
-        check_geometry(beam_width, depth)[0] and depth <= minimum_span / 4
-    )
+    beam_flexure_pass = True
     for plane, level in request["beam_row_depth_from_top_mm"].items():
+        beam_width = request["beam_width_mm"][plane]
+        beam_phi = request["beam_bar_mm"][plane]
+        beam = _Section(beam_width, depth, request["beam_fck_mpa"], fy)
+        beam_area = _area(beam_phi, 4)
+        minimum_span = min(request["beam_clear_spans_mm"][plane].values())
         effective_depth = depth - level
         beams[plane] = beam.section_response(
             ((level, 4, beam_phi), (effective_depth, 4, beam_phi))
@@ -396,7 +409,10 @@ def check_interior_joint_strength(
         mechanisms[plane] = beam.capacity_mechanism(level, beam_area)
         ratio = 100 * beam_area / (beam_width * effective_depth)
         beam_flexure_pass &= (
-            beams[plane]["tension_ductile"] and minimum_steel <= ratio <= maximum_steel
+            check_geometry(beam_width, depth)[0]
+            and depth <= minimum_span / 4
+            and beams[plane]["tension_ductile"]
+            and minimum_steel <= ratio <= maximum_steel
         )
 
     col_phi = request["column_bar_mm"]
@@ -426,6 +442,15 @@ def check_interior_joint_strength(
         )
         for direction in request["directions"]
     }
+    for result in directions.values():
+        if exterior:
+            for row in result["rows"]:
+                row["maximum_column_axial_stress_mpa"] = row.pop(
+                    "maximum_axial_stress_mpa"
+                )
+        else:
+            result.pop("connected_beams")
+            result["joint_shear"].pop("confined_faces")
     return {
         "directions": directions,
         "beam_section_by_plane": beams,

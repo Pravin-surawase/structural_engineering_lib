@@ -1,4 +1,4 @@
-"""Run the checked DUCT01 local joint and bind its artifacts to the input."""
+"""Run a regular ductile joint check and bind its artifacts to the input."""
 
 from __future__ import annotations
 
@@ -11,10 +11,16 @@ from structural_lib.codes.is456.beam.detailing import (
     calculate_development_length_unrounded,
     get_bond_stress,
 )
+from structural_lib.codes.is13920.exterior_joint_cage import exterior_joint_placement
+from structural_lib.codes.is13920.exterior_joint_detail import (
+    exterior_anchorage,
+    exterior_beam_link_sections,
+    exterior_confinement,
+)
 from structural_lib.codes.is13920.joint_cage import check_joint_cage
 from structural_lib.codes.is13920.joint_strength import (
     JointStrengthDomainError,
-    check_interior_joint_strength,
+    check_regular_joint_strength,
 )
 from structural_lib.core.result_contract import (
     CalculationStatus,
@@ -28,17 +34,28 @@ from structural_lib.core.result_contract import (
 from structural_lib.core.version import get_runtime_version
 from structural_lib.services.canonical_family import _input_hash, require_request_type
 from structural_lib.services.contracts.common import (
-    model_validate_json_or_error,
     model_validate_or_error,
+    parse_json_or_error,
 )
 from structural_lib.services.contracts.ductile_joint import (
     JOINT_DIRECTIONS,
+    DuctileExteriorJointRequestV1,
     DuctileJointRequestV1,
 )
 
-__all__ = ["DuctileJointRequestV1", "DuctileJointResultV1", "load_joint", "check_joint"]
+__all__ = [
+    "DuctileExteriorJointRequestV1",
+    "DuctileJointRequestV1",
+    "DuctileJointResultV1",
+    "load_joint",
+    "check_joint",
+]
+
+JointRequest = DuctileJointRequestV1 | DuctileExteriorJointRequestV1
 
 _WORKFLOW = "DUCT01_INTERIOR_JOINT"
+_EXTERIOR_WORKFLOW = "DUCT02_EXTERIOR_JOINT"
+_EXTERIOR_SCHEMA = "ductile-exterior-joint/v1"
 _PROVENANCE = (
     "IS 13920:2016 with Amendment 1 (2017) and Amendment 2 (2020)",
     "IS 13920 §§6.2–6.3, 7.1–7.2, 7.4–7.6 and 9.1–9.2",
@@ -52,7 +69,24 @@ _LIMITATIONS = (
     "The BBS covers the joint hoop and cross-ties. The drawing shows local through-bar "
     "continuations and adjacent cages. Frame fabrication and global seismic acceptance require separate evidence.",
 )
+_EXTERIOR_LIMITATIONS = (
+    "Regular exterior joint with one terminating X-minus beam and two Y through beams. "
+    "The equal-depth rectangular beams contain symmetric bar rows and no participating slab steel.",
+    "The action inventory, inflection offsets, fabrication tolerances and compaction "
+    "basis come from the caller.",
+    "The local BBS schedules the joint links. It lists the in-core X termination "
+    "geometry separately from the cut list. Whole-member fabrication, installation "
+    "sequencing and temporary support require project evidence.",
+)
 _CHECK_ISSUES = {
+    "anchorage": (
+        "anchorage",
+        "A terminating bar, through-joint width or adjacent straight development is inadequate.",
+    ),
+    "column_axial_stress": (
+        "directions",
+        "A concurrent factored column compression exceeds 0.40 fck.",
+    ),
     "construction_fit": (
         "placement",
         "The supplied cage fails a physical fit or restraint check.",
@@ -96,13 +130,13 @@ _CHECK_ISSUES = {
 class DuctileJointResultV1:
     """Checked local joint result with detached request and calculation views."""
 
-    _request: DuctileJointRequestV1
+    _request: JointRequest
     _calculation_json: str
     envelope: StructuralResultEnvelopeV2
     input_hash: str
 
     @property
-    def request(self) -> DuctileJointRequestV1:
+    def request(self) -> JointRequest:
         return self._request.model_copy(deep=True)
 
     @property
@@ -118,39 +152,45 @@ class DuctileJointResultV1:
     def issues(self) -> tuple[StructuralIssueV1, ...]:
         return self.envelope.issues
 
-    def artifacts_match(self, current: DuctileJointRequestV1 | None) -> bool:
+    def artifacts_match(self, current: JointRequest | None) -> bool:
         """Require an explicit current request that matches the checked inputs."""
         return (
             self.envelope.engineering_status is EngineeringStatus.PASS
-            and isinstance(current, DuctileJointRequestV1)
+            and current is not None
+            and type(current) is type(self._request)
             and _input_hash(current) == self.input_hash
         )
 
     def to_dict(self) -> dict[str, Any]:
         """Return the same evidence that is used by all artifact renderers."""
+        exterior = isinstance(self._request, DuctileExteriorJointRequestV1)
         return {
-            "schema_version": "ductile-interior-joint-result/v1",
-            "workflow_id": _WORKFLOW,
+            "schema_version": (
+                "ductile-exterior-joint-result/v1"
+                if exterior
+                else "ductile-interior-joint-result/v1"
+            ),
+            "workflow_id": _EXTERIOR_WORKFLOW if exterior else _WORKFLOW,
             "request": self._request.model_dump(mode="json"),
             "envelope": self.envelope.to_dict(),
             "calculation": self.calculation,
             "provenance": list(_PROVENANCE),
-            "limitations": list(_LIMITATIONS),
+            "limitations": list(_EXTERIOR_LIMITATIONS if exterior else _LIMITATIONS),
         }
 
 
 def load_joint(
-    value: Mapping[str, object] | str | bytes | DuctileJointRequestV1,
-) -> DuctileJointRequestV1:
-    """Load a regular interior joint request.
+    value: Mapping[str, object] | str | bytes | JointRequest,
+) -> JointRequest:
+    """Load a regular interior or explicitly versioned exterior joint request.
 
     Parameters
     ----------
-    value : mapping, str, bytes or DuctileJointRequestV1
-        Request in the centred interior profile. Dimensions use mm.
+    value : mapping, str, bytes or joint request model
+        Interior or exterior JSON data. Exterior data declares the exterior schema version.
     Returns
     -------
-    DuctileJointRequestV1
+    DuctileJointRequestV1 or DuctileExteriorJointRequestV1
         Validated geometry, action rows and supplied evidence.
     Raises
     ------
@@ -161,22 +201,22 @@ def load_joint(
     See Python/examples/ductile_interior_joint.py.
     Limitations
     -----------
-    Admits four centred equal-depth rectangular beams and a square column.
+    Admits centred equal-depth rectangular beams and a square column.
     Provenance
     ----------
-    DUCT01 interior-joint request v1.
+    DUCT01 interior-joint and DUCT02 exterior-joint requests v1.
     """
-    if isinstance(value, DuctileJointRequestV1):
-        return model_validate_or_error(
-            DuctileJointRequestV1, value.model_dump(mode="json")
-        )
+    if isinstance(value, (DuctileJointRequestV1, DuctileExteriorJointRequestV1)):
+        value = value.model_dump(mode="json")
     if isinstance(value, (str, bytes)):
-        return model_validate_json_or_error(DuctileJointRequestV1, value)
+        value = parse_json_or_error(value)
+    if isinstance(value, Mapping) and value.get("schema_version") == _EXTERIOR_SCHEMA:
+        return model_validate_or_error(DuctileExteriorJointRequestV1, value)
     return model_validate_or_error(DuctileJointRequestV1, value)
 
 
 def _result(
-    request: DuctileJointRequestV1,
+    request: JointRequest,
     status: EngineeringStatus,
     calculation: dict[str, Any],
     issues: tuple[StructuralIssueV1, ...] = (),
@@ -197,7 +237,11 @@ def _result(
             contract_version=request.schema_version,
             library_version=get_runtime_version(),
             input_hash=digest,
-            calculation_identity=_WORKFLOW,
+            calculation_identity=(
+                _EXTERIOR_WORKFLOW
+                if isinstance(request, DuctileExteriorJointRequestV1)
+                else _WORKFLOW
+            ),
         ),
     )
     return DuctileJointResultV1(
@@ -206,7 +250,7 @@ def _result(
 
 
 def _hold(
-    request: DuctileJointRequestV1,
+    request: JointRequest,
     reason: str,
     path: str,
     message: str,
@@ -222,7 +266,7 @@ def _hold(
     )
 
 
-def _missing_evidence(request: DuctileJointRequestV1) -> DuctileJointResultV1 | None:
+def _missing_evidence(request: JointRequest) -> DuctileJointResultV1 | None:
     if request.applicability_reference is None:
         return _hold(
             request,
@@ -251,6 +295,15 @@ def _missing_evidence(request: DuctileJointRequestV1) -> DuctileJointResultV1 | 
             "cage_action_revision",
             "The cage action revision differs from the current analysis actions.",
             stale=True,
+        )
+    if isinstance(request, DuctileExteriorJointRequestV1) and (
+        request.x_hooks is None or set(request.x_hooks) != {"TOP", "BOTTOM"}
+    ):
+        return _hold(
+            request,
+            "terminated_bar_path_missing",
+            "x_hooks",
+            "Provide the upper and lower terminating bar bends and tails.",
         )
     offsets = request.mechanism_inflection_offsets_mm
     if offsets is None or any(
@@ -320,7 +373,7 @@ def _governing_strength(
 
 
 def _checked_result(
-    request: DuctileJointRequestV1,
+    request: JointRequest,
     calculation: dict[str, Any],
     checks: dict[str, bool],
 ) -> DuctileJointResultV1:
@@ -338,12 +391,12 @@ def _checked_result(
     )
 
 
-def check_joint(request: DuctileJointRequestV1) -> DuctileJointResultV1:
+def check_joint(request: JointRequest) -> DuctileJointResultV1:
     """Check the supplied joint in X+, X−, Y+ and Y−.
 
     Parameters
     ----------
-    request : DuctileJointRequestV1
+    request : DuctileJointRequestV1 or DuctileExteriorJointRequestV1
         Checked input contract with the caller's complete action inventory.
     Returns
     -------
@@ -363,7 +416,8 @@ def check_joint(request: DuctileJointRequestV1) -> DuctileJointResultV1:
     ----------
     IS 13920:2016 with Amendments 1 and 2 and IS 456:2000.
     """
-    require_request_type(request, DuctileJointRequestV1)
+    if not isinstance(request, DuctileExteriorJointRequestV1):
+        require_request_type(request, DuctileJointRequestV1)
     # Snapshot and validate nested data, including Python-side mutable mappings.
     request = load_joint(request)
     held = _missing_evidence(request)
@@ -373,32 +427,54 @@ def check_joint(request: DuctileJointRequestV1) -> DuctileJointResultV1:
     physical["directions"] = {
         direction: physical["directions"][direction] for direction in JOINT_DIRECTIONS
     }
-    cage = check_joint_cage(physical)
-    anchorage = _straight_anchorage(request)
-    calculation: dict[str, Any] = {"placement": cage, "anchorage": anchorage}
-    checks = {
-        "construction_fit": all(cage["fit_checks"].values()),
-        "confinement": all(cage["confinement_checks"].values()),
-        "continuous_bar_anchorage": anchorage["pass"],
-    }
-    confinement = cage["confinement"]
+    exterior = isinstance(request, DuctileExteriorJointRequestV1)
+    calculation: dict[str, Any]
+    if isinstance(request, DuctileExteriorJointRequestV1):
+        cage = exterior_joint_placement(physical)
+        anchorage = exterior_anchorage(physical)
+        confinement = exterior_confinement(physical)
+        beam_links = exterior_beam_link_sections(physical)
+        calculation = {
+            "placement": cage,
+            "anchorage": anchorage,
+            "confinement": confinement,
+            "adjacent_beam_link_sections": beam_links,
+        }
+        checks = {
+            "construction_fit": all(cage["fit_checks"].values())
+            and all(section["pass"] for section in beam_links.values()),
+            "confinement": confinement["pass"],
+            "anchorage": anchorage["pass"],
+        }
+    else:
+        cage = check_joint_cage(physical)
+        anchorage = _straight_anchorage(request)
+        confinement = cage["confinement"]
+        calculation = {"placement": cage, "anchorage": anchorage}
+        checks = {
+            "construction_fit": all(cage["fit_checks"].values()),
+            "confinement": all(cage["confinement_checks"].values()),
+            "continuous_bar_anchorage": anchorage["pass"],
+        }
     if not confinement:
         return _checked_result(request, calculation, checks)
     try:
-        strengths = check_interior_joint_strength(physical, confinement)
+        strengths = check_regular_joint_strength(physical, confinement)
     except JointStrengthDomainError as exc:
         if not all(checks.values()):
             calculation["strength_diagnostic"] = str(exc)
             return _checked_result(request, calculation, checks)
         return _hold(request, "strength_basis_outside_profile", "directions", str(exc))
     directions = strengths["directions"]
-    checks.update(
-        beam_flexural_prerequisite=strengths.pop("beam_flexure_pass"),
-        axial_stress=all(
-            row["maximum_axial_stress_mpa"] <= 0.40 * request.column_fck_mpa
-            for item in directions.values()
-            for row in item["rows"]
-        ),
+    checks["beam_flexural_prerequisite"] = strengths.pop("beam_flexure_pass")
+    axial_status = "column_axial_stress" if exterior else "axial_stress"
+    axial_measure = (
+        "maximum_column_axial_stress_mpa" if exterior else "maximum_axial_stress_mpa"
+    )
+    checks[axial_status] = all(
+        row[axial_measure] <= 0.40 * request.column_fck_mpa
+        for item in directions.values()
+        for row in item["rows"]
     )
     governing = _governing_strength(directions, checks)
     calculation.update(strengths, governing=governing)

@@ -1,4 +1,4 @@
-"""Check a regular IS 13920 interior joint from a versioned JSON request."""
+"""Check a regular IS 13920 joint from a versioned JSON request."""
 
 from __future__ import annotations
 
