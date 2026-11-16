@@ -23,6 +23,7 @@ TAU_C_NMM2 = 0.37 + (0.50 - 0.37) / 0.25 * (
 )
 MAX_PITCH_MM = min(
     300,
+    WIDTH_MM,
     0.75 * DEPTH_EFFECTIVE_MM,
     0.87 * 415 * LINK_AREA_MM2 / (0.4 * WIDTH_MM),
     16 * BAR_DIA_MM,

@@ -6,7 +6,7 @@
     "Ordinary rounded centreline tangent lengths and discrete link ownership."
   ],
   "effective_depth_mm": 552.0,
-  "maximum_pitch_mm": 300,
+  "maximum_pitch_mm": 250,
   "clear_spacing_mm": 134.0,
   "maximum_clear_spacing_mm": 150,
   "cases": {
