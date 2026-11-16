@@ -324,3 +324,28 @@ theoretical station and the continuing cage just left of the termination.
 The BBS uses the checked 3,960 mm cut. The short-development FAIL and
 the missing-action and stale-analysis HOLD controls withhold the drawing
 and BBS. [Independent replay](../../verification/check_library_030_beam05_span2_cutoff_reference.py)
+
+## Check a separated lap in the second span of a layered rectangle
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-span2-lap-reference.json \
+  --case span2_lap --output-dir output/beam05-span2-lap
+```
+
+Supply the three overlap stations by increasing x within the second clear
+span. Lap-I extends from the lower overlap coordinate to the right end.
+Lap-J reaches from the left end to the upper overlap coordinate. The
+reference checks the partner layout toward the left support and checks
+each layout separately within the overlap.
+
+The 5,150–6,450 mm overlap exceeds the 906.25 mm development requirement.
+`U2:LAP-END` governs the lap at 35.960 kN·m against the 148.426 kN·m
+limit. The elevation marks both piece ends, and the sections show the
+partner alone to the left, both pieces in the overlap and the original
+piece alone to the right. The BBS includes the distinct 3,310 and
+6,910 mm cuts.
+
+Short overlap and congestion fail. Missing actions and stale analysis
+hold. These four controls keep diagnostics and withhold the checked
+drawing and BBS. [Independent replay](../../verification/check_library_030_beam05_span2_lap_reference.py)

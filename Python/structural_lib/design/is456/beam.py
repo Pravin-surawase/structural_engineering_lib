@@ -1097,8 +1097,9 @@ def load_continuous_detailing(
     outer-bottom cutoff. Layered rectangular cages also admit a second-span
     cutoff toward the interior support. Layered rectangular, symmetric T and
     right-flanged L cages admit one separated straight outer-bottom tension
-    lap. The original rectangular schema admits one first-span bottom cutoff
-    or separated lap.
+    lap. The layered rectangular route supports that lap in either clear span.
+    The original rectangular schema admits one first-span bottom cutoff or
+    separated lap.
 
     Provenance
     ----------

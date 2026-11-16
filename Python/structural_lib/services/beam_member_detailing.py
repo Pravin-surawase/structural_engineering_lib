@@ -132,7 +132,7 @@ class BeamBarEditV1(StrictPublicModel):
 
 
 class BeamSeparatedBottomLapV1(StrictPublicModel):
-    """One equal-diameter separated bottom bar splice within the first span."""
+    """One equal-diameter separated bottom bar splice in a clear span."""
 
     bar_id: Identifier
     partner_bar_id: Identifier
@@ -167,7 +167,7 @@ def _physical_paths(
     request: BeamContinuousDetailingInputV1,
     source_hash: str,
     cutoff_bounds: tuple[float, float] | None,
-    lap_bounds: tuple[float, float] | None,
+    lap_pieces: tuple[LongitudinalBarPath, LongitudinalBarPath] | None,
 ) -> tuple[BarPathRequest, ClosedLinkDetailRequest] | None:
     member, detail = request.member, request.link_detail
     extent = member.straight_bars
@@ -224,22 +224,13 @@ def _physical_paths(
         )
         for bar in member.bars
     )
-    if request.lap is not None and lap_bounds is not None:
-        lap = request.lap
-        start, end = lap_bounds
-        original = next(bar for bar in bars if bar.bar_id == lap.bar_id)
+    if lap_pieces is not None:
+        original, partner = lap_pieces
+        lap_mark = next(bar.bar_mark for bar in bars if bar.bar_id == original.bar_id)
         bars = (
-            *(bar for bar in bars if bar.bar_id != lap.bar_id),
-            replace(
-                original, bar_mark=f"{original.bar_mark}-lap-I", end_station_mm=end
-            ),
-            replace(
-                original,
-                bar_id=lap.partner_bar_id,
-                bar_mark=f"{original.bar_mark}-lap-J",
-                start_station_mm=start,
-                x_from_left_mm=lap.partner_x_from_left_mm,
-            ),
+            *(bar for bar in bars if bar.bar_id != original.bar_id),
+            replace(original, bar_mark=f"{lap_mark}-{original.bar_mark}"),
+            replace(partner, bar_mark=f"{lap_mark}-{partner.bar_mark}"),
         )
     seeds = [
         BarPathSeed(
@@ -650,7 +641,7 @@ def _check_bottom_lap(
     request: BeamContinuousDetailingInputV1,
     checked: BeamContinuousCheckResultV1,
 ) -> tuple[
-    tuple[float, float] | None,
+    tuple[LongitudinalBarPath, LongitudinalBarPath] | None,
     dict[str, Any],
     list[StructuralIssueV1],
     EngineeringStatus,
@@ -662,7 +653,7 @@ def _check_bottom_lap(
     start = stations.get(lap.start_station_id)
     middle = stations.get(lap.middle_station_id)
     end = stations.get(lap.end_station_id)
-    left, support, _ = member.supports
+    left, support, right = member.supports
     extent = member.straight_bars
     bar = next((item for item in member.bars if item.bar_id == lap.bar_id), None)
     if not (
@@ -676,19 +667,26 @@ def _check_bottom_lap(
         and middle
         and end
         and start.side == middle.side == end.side == "CONTINUOUS"
-        and left.right_face_mm
-        < start.x_mm
-        < middle.x_mm
-        < end.x_mm
-        < support.left_face_mm
+        and start.x_mm < middle.x_mm < end.x_mm
+        and (
+            (left.right_face_mm < start.x_mm and end.x_mm < support.left_face_mm)
+            or (
+                isinstance(member, BeamLayeredContinuousCheckRequestV1)
+                and member.flange is None
+                and support.right_face_mm < start.x_mm
+                and end.x_mm < right.left_face_mm
+            )
+        )
         and lap.partner_x_from_left_mm < member.width_mm
     ):
         issue = StructuralIssueV1(
             "BEAM.LAP_BASIS_HELD",
             "lap",
-            "Identify an outer-layer bottom bar up to Ø32, a distinct partner and three ordered stations in the first clear span.",
+            "Identify an outer-layer bottom bar up to Ø32, a distinct partner and three ordered stations in one clear span. The second clear span requires a layered rectangular cage.",
         )
         return None, {}, [issue], EngineeringStatus.HOLD
+
+    reverse = start.x_mm > support.right_face_mm
 
     combos = {
         combo.combination_id for combo in member.combinations if combo.kind == "ULS"
@@ -809,7 +807,10 @@ def _check_bottom_lap(
             web_capacity,
         )
         for row in checked.rows
-        if row.kind == "ULS" and row.station.x_mm >= start.x_mm
+        if row.kind == "ULS"
+        and (
+            row.station.x_mm <= end.x_mm if reverse else row.station.x_mm >= start.x_mm
+        )
     )
     failed, held = _row_issues(partner_rows, faces, layered=layered)
     full_bottom = checked.flexural_sections[Face.BOTTOM].outputs
@@ -857,8 +858,8 @@ def _check_bottom_lap(
         bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
         bar.x_from_left_mm,
         bar.y_from_top_mm,
-        extent.start_mm,
-        end.x_mm,
+        start.x_mm if reverse else extent.start_mm,
+        extent.end_mm if reverse else end.x_mm,
         0.87 * member.fy_nmm2,
     )
     partner = replace(
@@ -866,18 +867,18 @@ def _check_bottom_lap(
         bar_id=lap.partner_bar_id,
         bar_mark="lap-J",
         x_from_left_mm=lap.partner_x_from_left_mm,
-        start_station_mm=start.x_mm,
-        end_station_mm=extent.end_mm,
+        start_station_mm=extent.start_mm if reverse else start.x_mm,
+        end_station_mm=end.x_mm if reverse else extent.end_mm,
     )
     checked_lap = check_laps_and_curtailment(
         LapCurtailmentCheckRequest(
             WORKFLOW,
             member.member_id,
-            "first-span",
+            "second-span" if reverse else "first-span",
             member.analysis_revision,
             member.reinforcement_revision,
-            left.left_face_mm,
-            support.right_face_mm,
+            support.left_face_mm if reverse else left.left_face_mm,
+            right.right_face_mm if reverse else support.right_face_mm,
             d,
             member.fck_nmm2,
             member.fy_nmm2,
@@ -918,7 +919,7 @@ def _check_bottom_lap(
         else EngineeringStatus.HOLD if held else EngineeringStatus.PASS
     )
     return (
-        (start.x_mm, end.x_mm),
+        (original, partner),
         {
             "bar_id": bar.bar_id,
             "partner_bar_id": lap.partner_bar_id,
@@ -929,6 +930,11 @@ def _check_bottom_lap(
             "lap_result": checked_lap.to_dict(),
             "stress_rows": stress_rows,
             "partner_rows": [row.to_dict() for row in partner_rows],
+            **(
+                {"lap_direction": AnchorageDirection.DECREASING_X.value}
+                if reverse
+                else {}
+            ),
             **(
                 {"web_only_anchor_moment_knm": web_capacity}
                 if isinstance(member, BeamLayeredContinuousCheckRequestV1)
@@ -972,7 +978,8 @@ def check_continuous_detailing(
     first-span outer-layer bottom cutoff is supported. Layered rectangular
     cages also admit a second-span cutoff toward the interior support.
     Rectangular, symmetric T and right-flanged L sections admit one
-    separated straight outer-bottom tension lap.
+    separated straight outer-bottom tension lap. A layered rectangle can
+    use the second clear span with transfer toward decreasing x.
 
     Provenance
     ----------
@@ -986,7 +993,7 @@ def check_continuous_detailing(
     issues = []
     status = EngineeringStatus(checked.ultimate_status)
     cutoff_bounds = None
-    lap_bounds = None
+    lap_pieces = None
     source_hash = identity.input_hash
     layered = isinstance(request.member, BeamLayeredContinuousCheckRequestV1)
     flange = (
@@ -1035,7 +1042,7 @@ def check_continuous_detailing(
         data["cutoff"] = cutoff
         issues.extend(cutoff_issues)
     elif status is EngineeringStatus.PASS and request.lap is not None:
-        lap_bounds, lap, lap_issues, status = _check_bottom_lap(request, checked)
+        lap_pieces, lap, lap_issues, status = _check_bottom_lap(request, checked)
         data["lap"] = lap
         issues.extend(lap_issues)
     if request.cutoff or request.lap:
@@ -1055,7 +1062,7 @@ def check_continuous_detailing(
             },
         )
     if status is EngineeringStatus.PASS:
-        inputs = _physical_paths(request, source_hash, cutoff_bounds, lap_bounds)
+        inputs = _physical_paths(request, source_hash, cutoff_bounds, lap_pieces)
         if inputs is None:
             status = EngineeringStatus.HOLD
             issues.append(
@@ -1094,11 +1101,11 @@ def check_continuous_detailing(
                 )
             if status is EngineeringStatus.PASS:
                 splice = None
-                if lap_bounds is not None and request.lap is not None:
+                if lap_pieces is not None:
                     splice = SpliceRecord(
                         "bottom-lap",
                         ScheduleSpliceKind.LAP,
-                        sum(lap_bounds) / 2,
+                        (lap["start_station_mm"] + lap["end_station_mm"]) / 2,
                         data["lap"]["lap_result"]["result_id"],
                     )
                 schedule = _schedule(request, paths, link_request, splice)
@@ -1367,7 +1374,7 @@ def render_continuous_detailing_svg(
     assert isinstance(request, BeamContinuousDetailingInputV1)
     member = request.member
     geometry = data["paths"]["outputs"]["reinforcement_schedule"]
-    left, _, right = member.supports
+    left, support, right = member.supports
     start, end = left.left_face_mm, right.right_face_mm
     depth = member.depth_mm
     support_lines = "".join(
@@ -1385,9 +1392,10 @@ def render_continuous_detailing_svg(
         if isinstance(member, BeamLayeredContinuousCheckRequestV1)
         else {}
     )
+    reverse_lap = lap.get("lap_direction") == AnchorageDirection.DECREASING_X
     lap_colors = (
         {lap["bar_id"]: "#92400e", lap["partner_bar_id"]: "#0f766e"}
-        if "web_only_anchor_moment_knm" in lap
+        if reverse_lap or "web_only_anchor_moment_knm" in lap
         else {}
     )
     lap_lines = []
@@ -1422,9 +1430,10 @@ def render_continuous_detailing_svg(
             color = lap_colors[item["bar_id"]]
             first = item["bar_id"] == lap["bar_id"]
             dash = "" if first else ' stroke-dasharray="42 22"'
+            lap_tip_x = x2 if first != reverse_lap else x1
             lap_lines.append(
                 line + f'stroke="{color}" stroke-width="14"{dash}/>'
-                f'<circle cx="{x2 if first else x1:g}" cy="{y1:g}" r="18" fill="{color}"/>'
+                f'<circle cx="{lap_tip_x:g}" cy="{y1:g}" r="18" fill="{color}"/>'
             )
         else:
             bars.append(line + f'stroke="{color}" stroke-width="8"/>')
@@ -1491,8 +1500,9 @@ def render_continuous_detailing_svg(
                 label=f"Section just {cut_side} {cut_at:g} mm · continuing cage",
             )
         elif lap:
+            entering_face = support.right_face_mm if reverse_lap else left.right_face_mm
             views = (
-                ((left.right_face_mm + lap["start_station_mm"]) / 2, "before lap"),
+                ((entering_face + lap["start_station_mm"]) / 2, "before lap"),
                 (lap["middle_station_mm"], "lap overlap"),
                 (lap["end_station_mm"], "after lap"),
             )
@@ -1848,7 +1858,9 @@ def _layered_lap_report(lap: dict[str, Any], arrangement: dict[str, Any]) -> str
         for row in stress_rows
     )
     basis = ""
-    if "web_only_anchor_moment_knm" in lap and stress_rows:
+    reverse = lap.get("lap_direction") == AnchorageDirection.DECREASING_X
+    has_flange_basis = "web_only_anchor_moment_knm" in lap
+    if (reverse or has_flange_basis) and stress_rows:
         governor = min(
             stress_rows,
             key=lambda row: (
@@ -1860,6 +1872,11 @@ def _layered_lap_report(lap: dict[str, Any], arrangement: dict[str, Any]) -> str
             f"<p>Governing lap moment {html.escape(governor['row_id'])} · "
             f"{governor['moment_knm']:.3f} kN·m against "
             f"{governor['half_capacity_knm']:.3f} kN·m.</p>"
+        )
+    if reverse:
+        basis += "<p>Lap transfer toward decreasing x. Each transfer layout credits one lap piece.</p>"
+    if has_flange_basis and stress_rows:
+        basis += (
             "<p>Each transfer layout credits one lap piece. Sagging uses the compression flange. "
             "Hogging and shear use the web.</p>"
         )
