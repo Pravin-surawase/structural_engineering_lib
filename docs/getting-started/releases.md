@@ -2063,8 +2063,49 @@ The patch integrates the Coding Lab repairs in [PR #1086](https://github.com/Pra
 
 ## v0.30.0 — Prepared candidate (unreleased; on hold)
 
-The candidate extends the beam, column, slab, serviceability and ductile
-frame workflows listed in the [delivery plan](../planning/beam-column-programme-delivery.md).
-S5 qualifies the exact wheel and source archive. The imported gravity and
-slender-column projects remain on HOLD pending the matched FLOW04 export.
-v0.29.2 remains the published release. This candidate is not tagged or published.
+The qualified software was integrated in [PR #1116](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1116).
+The [delivery plan](../planning/beam-column-programme-delivery.md) and
+[changelog](../../CHANGELOG.md)
+describe the complete candidate scope.
+
+- BEAM05 covers bounded rectangular, T and L multilayer cutoffs and laps,
+  varied link pitch, an interior-support haunch and a physical T-flange
+  cage. Checked reports, drawings and bar bending schedules share the
+  same reinforcement. The original lap cages without compression-bar
+  restraint evidence receive HOLD and withhold the checked drawing and
+  schedule.
+- COL07 covers mixed-bar, slender and circular laps, circular single-plane
+  shear and rectangular two-plane shear. The ordinary tied cage checks
+  corner bar positions, link engagement and clear spacing.
+- SL06 checks supplied B02 and B04 actions through both coefficient routes.
+  SERV02 and SERV03 extend direct beam and slab serviceability. The exact
+  archive replays include the regular-interior flat slab and its refusals.
+- FLOW03 rechecks an edited two-layer cage. DUCT01 and DUCT02 cover regular
+  interior and exterior joints in the bounded PROJECT03 frame. PROJECT03
+  provides design-review outputs and reconciles member and joint bar marks.
+
+Both archives passed all 20 installed profiles, including 971 beam and column
+tests, 25 slab and footing scenarios, and all 39 retained Coding Lab findings
+per archive. The exact wheel passed all 29 installed acceptance cases.
+The [retained artifact record](../verification/library-0300-release-artifacts.json)
+binds those results to the archive hashes and reviewed source.
+
+The imported PROJECT01 and PROJECT02 workflows remain on HOLD. The matched
+ETABS source evidence is in [draft PR #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117).
+Project qualification still requires carrying those actions through member
+design and checked outputs. PROJECT03 site insertion, temporary supports
+and boundary anchorage still require project evidence.
+v0.29.2 remains the published release.
+
+
+## v0.30.0 — Release authorized (2026-11-17)
+
+The owner authorized publication of the retained wheel and source archive
+after independent review, [PR Validation](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43950860538/job/133593527644) and
+[Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43951200197) passed on the same candidate.
+
+The [exact-candidate review](../verification/library-0300-exact-candidate-review.json)
+and [owner authorization](../verification/release-publication-authorization.json)
+record the source and archive identities in
+[PR #1118](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1118).
+TestPyPI verifies both archives before the production tag and upload.
