@@ -23,6 +23,7 @@ from structural_lib.services.etabs_paired_forces import (
     EtabsForceTable,
     EtabsMemberBinding,
     EtabsPairedForcesRequest,
+    EtabsStationSidePair,
     EtabsTableUnits,
     import_etabs_paired_forces,
 )
@@ -152,6 +153,9 @@ def build_altair_request(path: Path = ALTAIR_REFERENCE) -> EtabsPairedForcesRequ
         EtabsCombination(entry["name"], entry["type"], entry["design_use"])
         for entry in data["combinations"]
     )
+    side_pairs = tuple(
+        EtabsStationSidePair(**item) for item in data.get("station_side_pairs", ())
+    )
     kinds: tuple[Literal["beam", "column"], ...] = ("beam", "column")
     members = []
     tables = []
@@ -181,7 +185,7 @@ def build_altair_request(path: Path = ALTAIR_REFERENCE) -> EtabsPairedForcesRequ
             )
         )
     return EtabsPairedForcesRequest(
-        tables[0], tables[1], basis, units, tuple(members), combinations
+        tables[0], tables[1], basis, units, tuple(members), combinations, side_pairs
     )
 
 

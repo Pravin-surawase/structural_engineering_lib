@@ -12,6 +12,8 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any, Protocol, TypedDict, TypeVar
 
+from structural_lib.core.analysis_snapshot import StationSide
+
 from .semantics import (
     Diagnostic,
     EngineeringState,
@@ -100,6 +102,11 @@ class RawActionRow:
     t: float
     m2: float
     m3: float
+
+
+@dataclass(frozen=True)
+class RawStationSideRow(RawActionRow):
+    station_side: StationSide
 
 
 @dataclass(frozen=True)
@@ -395,6 +402,9 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
     rows: list[dict[str, Any]] = []
     seen_source_rows: set[str] = set()
     for source in request.rows:
+        station_side = (
+            source.station_side if isinstance(source, RawStationSideRow) else None
+        )
         row_ids = (
             source.source_row_id,
             source.member_id,
@@ -418,6 +428,10 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
         if (
             not all(row_ids)
             or not isinstance(source.concurrency, ActionConcurrency)
+            or (
+                isinstance(source, RawStationSideRow)
+                and not isinstance(station_side, StationSide)
+            )
             or not all(_finite(value) for value in values)
             or (source.step_number is not None and not _finite(source.step_number))
         ):
@@ -487,6 +501,8 @@ def normalize_action_snapshot(request: RawActionSnapshot) -> OperationResult:
             "m2_nmm": source.m2 * moment_factor,
             "m3_nmm": source.m3 * moment_factor,
         }
+        if station_side is not None:
+            normalized["station_side"] = station_side
         normalized["row_id"] = semantic_hash("action_row_id", normalized)
         rows.append(normalized)
     snapshot_value = {
@@ -1263,6 +1279,7 @@ __all__ = [
     "PhysicalSupport",
     "RawActionRow",
     "RawActionSnapshot",
+    "RawStationSideRow",
     "SectionRegion",
     "Vector3",
     "define_beam_topology",

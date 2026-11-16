@@ -53,13 +53,35 @@ single immutable snapshot. Member design still needs its own inputs and
 engineering checks.
 [Source review](../../verification/library-029-flow04-etabs-source-review.md#altair-workshop-database)
 
+### Interior station sides
+
+```bash
+./scripts/python_runtime.sh Python/examples/etabs_paired_forces.py \
+  --altair-v21 --reference docs/verification/library-030-flow04-altair-v21-station-sides.json
+```
+
+The interior case imports 12 rows for B130 and its connected column C1.
+A request declares both sides of an interior beam station with
+`EtabsStationSidePair`. Each required combination then needs a
+`Before` and `After` row at that coordinate. The normalized result
+retains distinct row IDs and each row's `station_side`, in source
+I-to-J orientation. A missing side leaves the available rows in the
+diagnostic snapshot and withholds the current snapshot. A blank side at
+the declared pair, a duplicate or different coordinates rejects
+the input.
+
+The two side rows capture a 10 kN service shear jump and a 12 kN ultimate
+shear jump, rounded here for display. Both preserve moment and torque.
+[Frozen station-side reference](../../verification/library-030-flow04-altair-v21-station-sides.json)
+
 ## Supply your own tables
 
 1. Save each native Element Forces table projection as UTF-8 CSV. Keep its
    title, header, unit row, and all force columns. In a 22.7.0 projection
    the beam header includes `Step Type` and the column header ends
-   with `Location`. Both 21.0.0 headers end with `Location`. Leave
-   those fields blank in the admitted cases.
+   with `Location`. Both 21.0.0 headers end with `Location`. Use
+   `Before` and `After` for declared 21.0.0 interior beam pairs. Leave
+   `Location` or `Step Type` blank elsewhere.
 2. Create `EtabsForceTable` records using the CSV bytes, ETABS release,
    capture ID and action basis from the same run. The action basis identifies
    the model SHA-256, analysis revision and the section, stiffness and

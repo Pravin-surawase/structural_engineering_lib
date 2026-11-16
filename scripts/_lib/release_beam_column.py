@@ -211,6 +211,9 @@ PROJECT03_EXAMPLE = "Python/examples/ductile_frame_cut.py"
 PROJECT03_TEST = "Python/tests/integration/test_ductile_frame_cut_reference.py"
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
 FLOW04_V21_REFERENCE = "docs/verification/library-030-flow04-altair-v21.json"
+FLOW04_V21_SIDES_REFERENCE = (
+    "docs/verification/library-030-flow04-altair-v21-station-sides.json"
+)
 FLOW04_V21_TEST = "Python/tests/integration/test_etabs_altair_v21_reference.py"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
@@ -329,6 +332,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 ),
                 repo / FLOW04_REFERENCE,
                 repo / FLOW04_V21_REFERENCE,
+                repo / FLOW04_V21_SIDES_REFERENCE,
                 repo / FLOW04_V21_TEST,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
@@ -1185,18 +1189,24 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         assert result["engineering"] == "not_evaluated"
         assert result["outputs"]["status"] == expected
     if version_at_least_030:
-        result = json.loads(
-            run(
-                "etabs-paired-forces-altair-v21",
-                "Python/examples/etabs_paired_forces.py",
-                "--altair-v21",
-                "--reference",
-                str(clone / FLOW04_V21_REFERENCE),
+        for case, reference, row_count, side_count in (
+            ("altair-v21", FLOW04_V21_REFERENCE, 8, 0),
+            ("altair-v21-station-sides", FLOW04_V21_SIDES_REFERENCE, 12, 4),
+        ):
+            result = json.loads(
+                run(
+                    f"etabs-paired-forces-{case}",
+                    "Python/examples/etabs_paired_forces.py",
+                    "--altair-v21",
+                    "--reference",
+                    str(clone / reference),
+                )
             )
-        )
-        assert result["engineering"] == "not_evaluated"
-        assert result["outputs"]["status"] == "COMPLETE_FOR_DECLARED_ROWS"
-        assert len(result["outputs"]["normalized_snapshot"]["rows"]) == 8
+            assert result["engineering"] == "not_evaluated"
+            assert result["outputs"]["status"] == "COMPLETE_FOR_DECLARED_ROWS"
+            rows = result["outputs"]["normalized_snapshot"]["rows"]
+            assert len(rows) == row_count
+            assert sum("station_side" in row for row in rows) == side_count
     directory = output / "beam-section-catalogue"
     stdout = run(
         "beam-section-catalogue",

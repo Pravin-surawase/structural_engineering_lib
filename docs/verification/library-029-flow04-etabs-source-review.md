@@ -69,11 +69,39 @@ checks missing and duplicate station rows, a changed capture identity,
 an envelope definition, an ambiguous station location and changed I/J
 orientation. The exact zero rule for 22.7.0 has its own regression.
 
-The screened connected pairs have endpoint-only beam rows. PROJECT01 needs
+The initial B43/C20 replay has endpoint-only beam rows. PROJECT01 needs
 interior design stations as well as the project material and reinforcement
-basis. The screened connected columns are 15 ft long with 3 ft square
-sections. PROJECT02 needs documented axis-specific slenderness and the
-torsion transfer path with current support and receiving cages.
+basis. Its companion source screen below includes a native interior pair.
+PROJECT02 needs documented axis-specific slenderness and the torsion
+transfer path with current support and receiving cages.
+
+### Native interior station sides
+
+Both gravity combinations contain interior rows for 539 Altair beam
+objects. Fourteen of those objects each map to one analysis element.
+All 28 interior station pairs on those unmeshed objects have separate
+`Before` and `After` rows. The separate station-side intake replay uses B130 and its
+connected column C1, object 23.
+
+`STORY1/B130` (object and element 43) and `STORY1/B131` (object and
+element 44) each have an assigned downward `SDL` load of 2.248089 kip
+at half span. Their native shear jumps match that load at factors 1.0
+and 1.2 in `SLS_Gravity` and `ULS_Gravity`, respectively. Both pairs
+preserve moment and torque across the load. The independent check
+reproduced 9.999998 kN and 11.999998 kN jumps from the source values.
+Its receipt SHA-256 is
+`288d439cfeca95253db59f6892dfd373dcfe087804f2bcdc6074a0d5cab16b10`.
+
+The two beams meet at joint 94 at an included angle of 171.120435°.
+All eight screened adjacent pairs with a column at each support are
+noncollinear. Use these rows as an interior station-side reference.
+PROJECT01 still needs a regular frame with adequate station coverage and
+a verified design and reinforcement basis. The database lists ACI 318-08
+as its concrete frame design code. The geometry screen also found zero
+rectangular columns with physical length divided by their smaller side
+above 12 among 496 checked objects. PROJECT02 needs independently
+supported effective lengths and receiving reinforcement for equilibrium
+torsion.
 
 ## Public archive
 
