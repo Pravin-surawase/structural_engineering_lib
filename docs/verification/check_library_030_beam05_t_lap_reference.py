@@ -212,7 +212,7 @@ def _support_evidence(member, checked_rows, capacities, first, last, development
     return rows
 
 
-def _takeoff(request, layout, original, partner, overlap):
+def _takeoff(request, layout, original, partner, overlap, *, right_span=False):
     member, detail = request["member"], request["link_detail"]
     diameter = member["link_diameter_mm"]
     cover = member["clear_cover_mm"]
@@ -262,10 +262,11 @@ def _takeoff(request, layout, original, partner, overlap):
             outline.extend(([0, thickness], [left, thickness]))
     first, last = (member["straight_bars"][f"{end}_mm"] for end in ("start", "end"))
     overlap_start, overlap_end = overlap
+    left_piece, right_piece = (partner, original) if right_span else (original, partner)
     paths = {
         bar["bar_id"]: [
-            overlap_start if bar == partner else first,
-            overlap_end if bar == original else last,
+            overlap_start if bar == right_piece else first,
+            overlap_end if bar == left_piece else last,
         ]
         for bar in layout
     }
@@ -297,9 +298,9 @@ def _takeoff(request, layout, original, partner, overlap):
                     for bar in layout
                     if not (
                         name == "before"
-                        and bar == partner
+                        and bar == right_piece
                         or name == "after"
-                        and bar == original
+                        and bar == left_piece
                     )
                 }
                 for name in ("before", "overlap", "after")
@@ -327,14 +328,15 @@ def _takeoff(request, layout, original, partner, overlap):
     }
 
 
-def expected(request):
+def expected(request, *, right_span=False):
     member, lap = request["member"], request["lap"]
     _check_bound_statics(member)
     stations = {row["station_id"]: row["x_mm"] for row in member["stations"]}
     start, middle, end = (
         stations[lap[f"{part}_station_id"]] for part in ("start", "middle", "end")
     )
-    assert 500 < start < middle < end < 3850
+    near, far = (4150, 7500) if right_span else (500, 3850)
+    assert near < start < middle < end < far
     original = next(bar for bar in member["bars"] if bar["bar_id"] == lap["bar_id"])
     partner = {
         **original,
@@ -378,9 +380,9 @@ def expected(request):
     half_cap = baseline["bottom"]["capacity_knm"] / 2
     max_moments = {}
     for cid, load in LOADS_KNM.items():
-        vertex_mm = 1500
+        vertex_mm = 6500 if right_span else 1500
         points = [start, end] + ([vertex_mm] if start < vertex_mm < end else [])
-        moments = [_span_actions(load, x)[0] for x in points]
+        moments = [_span_actions(load, x, right_span=right_span)[0] for x in points]
         x_max = points[moments.index(max(moments))]
         assert 0 < min(moments) <= max(moments) < half_cap
         max_moments[cid] = {
@@ -434,8 +436,8 @@ def expected(request):
         active_layouts = [
             name
             for name, applies in (
-                ("upstream", x_mm <= end),
-                ("downstream", x_mm >= start),
+                ("upstream", x_mm >= start if right_span else x_mm <= end),
+                ("downstream", x_mm <= end if right_span else x_mm >= start),
             )
             if applies
         ]
@@ -522,7 +524,12 @@ def expected(request):
             member, acceptance, capacities, first, last, development
         ),
         **_takeoff(
-            request, [*unchanged, original, partner], original, partner, (start, end)
+            request,
+            [*unchanged, original, partner],
+            original,
+            partner,
+            (start, end),
+            right_span=right_span,
         ),
     }
 
