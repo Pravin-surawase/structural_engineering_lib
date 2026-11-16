@@ -408,6 +408,39 @@ bend evidence and stale actions hold. Each control withholds the
 checked drawing and BBS.
 [Independent haunch replay](../../verification/check_library_030_beam05_haunch_reference.py)
 
+## Check an ordinary T beam with physical flange reinforcement
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-physical-flange.json \
+  --case physical_flange --output-dir output/beam05-physical-flange
+```
+
+The two 4 m beam spans receive concurrent signed actions from uniform
+loads. A perpendicular two-span strip supplies its slab reaction to
+each declared beam combination. Two Ø16 bars extend outside the web
+within a 400 mm hogging distribution width. Their shallow links have
+two anchored 90° ends. The web keeps its four seated corner bars and
+separate shear links. Stagger the web links, flange links and slab main
+bars on the grids shown in the support plan.
+
+U2:B1 governs with −128.00 kN·m and −160.00 kN. The adverse hogging
+and web shear capacities are 166.83 kN·m and 185.05 kN. The two
+outboard bars are checked for straight support development and
+extension past both zero-moment stations. The slab strip has its own
+signed moment, shear, spacing and development checks.
+
+The drawing reports the 47.0 × 41.3 mm clear local opening after the
+declared placement allowance. The schedule carries 118 beam pieces and
+142 slab pieces under nine marks and totals 451.792 kg. The report,
+sections, elevation and schedule share the checked geometry. Confirm
+actual joint steel and field obstructions for a construction detail.
+
+The clash and short flange development cases fail. Missing slab
+actions and stale strip geometry hold. Each withholds the checked
+drawing and schedule.
+[Independent T-flange replay](../../verification/check_library_030_beam05_physical_flange_reference.py)
+
 ## Check a cutoff in the second span of a layered rectangle
 
 ```bash
