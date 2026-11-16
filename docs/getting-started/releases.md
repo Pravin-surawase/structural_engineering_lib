@@ -2065,7 +2065,7 @@ The patch integrates the Coding Lab repairs in [PR #1086](https://github.com/Pra
 
 The qualified software was integrated in [PR #1116](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1116).
 The [delivery plan](../planning/beam-column-programme-delivery.md) and
-[changelog](../../CHANGELOG.md#0300--prepared-candidate-unreleased-on-hold)
+[changelog](../../CHANGELOG.md)
 describe the complete candidate scope.
 
 - BEAM05 covers bounded rectangular, T and L multilayer cutoffs and laps,
@@ -2090,7 +2090,9 @@ per archive. The exact wheel passed all 29 installed acceptance cases.
 The [retained artifact record](../verification/library-0300-release-artifacts.json)
 binds those results to the archive hashes and reviewed source.
 
-FLOW04 and the imported PROJECT01 and PROJECT02 workflows remain on HOLD
-pending a matched native ETABS export. PROJECT03 site insertion, temporary
-supports and boundary anchorage still require project evidence.
+The imported PROJECT01 and PROJECT02 workflows remain on HOLD. The matched
+ETABS source evidence is in [draft PR #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117).
+Project qualification still requires carrying those actions through member
+design and checked outputs. PROJECT03 site insertion, temporary supports
+and boundary anchorage still require project evidence.
 v0.29.2 remains the published release.
