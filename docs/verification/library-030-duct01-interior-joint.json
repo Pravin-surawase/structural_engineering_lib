@@ -1,0 +1,2417 @@
+{
+  "acceptance_tolerances": {
+    "dispositions_signs_identifiers_and_counts": "exact",
+    "geometry_and_cut_lengths_abs_mm": 1e-06,
+    "section_and_action_results_relative": 1e-08
+  },
+  "controls": {
+    "excess_beam_capacity_shear": {
+      "action_override": {
+        "combination_id": "EQ-X+-1",
+        "direction": "X+",
+        "field": "beam_on_joint_downward_shear_kn",
+        "value": {
+          "minus": 450,
+          "plus": -17
+        }
+      },
+      "expected": {
+        "failed_checks": [
+          "beam_capacity_shear"
+        ],
+        "governing": {
+          "accepted_capacity_kn": 396.2586693748598,
+          "analysis_downward_reaction_kn": 450,
+          "capacity_downward_reaction_kn": 363.83026403835413,
+          "combination_id": "EQ-X+-1",
+          "concrete_crushing_cap_kn": 847.35,
+          "demand_kn": 450,
+          "direction": "X+",
+          "pass": false,
+          "pitch_limit_mm": 100,
+          "pitch_mm": 77,
+          "side": "minus",
+          "signed_near_hinge_moment_knm": -416.9003771976488,
+          "steel_capacity_kn": 396.2586693748598,
+          "utilization": 1.1356218419395667
+        },
+        "status": "FAIL"
+      }
+    },
+    "excess_column_capacity_shear": {
+      "action_override": {
+        "combination_id": "EQ-X+-1",
+        "direction": "X+",
+        "field": "analysis_column_shear_magnitude_kn",
+        "value": 850
+      },
+      "expected": {
+        "failed_checks": [
+          "column_capacity_shear"
+        ],
+        "governing": {
+          "accepted_capacity_kn": 687.3864402872433,
+          "axial_shear_multiplier": 1.1818181818181819,
+          "combination_id": "EQ-X+-1",
+          "concrete_capacity_kn": 113.27550000000001,
+          "concrete_crushing_cap_kn": 906.675,
+          "concurrent_axial_compression_kn": 550,
+          "demand_kn": 850,
+          "direction": "X+",
+          "pass": false,
+          "side": "upper",
+          "signed_analysis_shear_kn": 850,
+          "signed_capacity_shear_kn": 343.3297223980637,
+          "steel_capacity_kn": 574.1109402872434,
+          "utilization": 1.2365678898827335
+        },
+        "status": "FAIL"
+      }
+    },
+    "insufficient_joint_links": {
+      "changes": {
+        "joint_hoop_centres_mm": [
+          18,
+          149,
+          349,
+          443,
+          582
+        ]
+      },
+      "expected": {
+        "failed_checks": [
+          "confinement"
+        ],
+        "status": "FAIL"
+      }
+    },
+    "intersecting_orthogonal_bars": {
+      "changes": {
+        "beam_row_depth_from_top_mm": {
+          "X": 62,
+          "Y": 62
+        }
+      },
+      "expected": {
+        "failed_checks": [
+          "construction_fit"
+        ],
+        "status": "FAIL"
+      }
+    },
+    "missing_compaction_basis": {
+      "changes": {
+        "compaction_head_mm": null
+      },
+      "expected": {
+        "reason": "compaction_basis_missing",
+        "status": "HOLD"
+      }
+    },
+    "missing_direction": {
+      "changes": {
+        "directions": {
+          "X+": [
+            {
+              "analysis_column_shear_magnitude_kn": 150,
+              "beam_on_joint_downward_shear_kn": {
+                "minus": 45,
+                "plus": -17
+              },
+              "combination_id": "EQ-X+-1",
+              "upper_axial_compression_kn": 550
+            },
+            {
+              "analysis_column_shear_magnitude_kn": 157,
+              "beam_on_joint_downward_shear_kn": {
+                "minus": 51,
+                "plus": -12
+              },
+              "combination_id": "EQ-X+-2",
+              "upper_axial_compression_kn": 640
+            }
+          ],
+          "X-": [
+            {
+              "analysis_column_shear_magnitude_kn": 162,
+              "beam_on_joint_downward_shear_kn": {
+                "minus": 49,
+                "plus": -20
+              },
+              "combination_id": "EQ-X--1",
+              "upper_axial_compression_kn": 620
+            },
+            {
+              "analysis_column_shear_magnitude_kn": 169,
+              "beam_on_joint_downward_shear_kn": {
+                "minus": 55,
+                "plus": -15
+              },
+              "combination_id": "EQ-X--2",
+              "upper_axial_compression_kn": 710
+            }
+          ],
+          "Y+": [
+            {
+              "analysis_column_shear_magnitude_kn": 174,
+              "beam_on_joint_downward_shear_kn": {
+                "minus": 53,
+                "plus": -23
+              },
+              "combination_id": "EQ-Y+-1",
+              "upper_axial_compression_kn": 690
+            },
+            {
+              "analysis_column_shear_magnitude_kn": 181,
+              "beam_on_joint_downward_shear_kn": {
+                "minus": 59,
+                "plus": -18
+              },
+              "combination_id": "EQ-Y+-2",
+              "upper_axial_compression_kn": 815
+            }
+          ]
+        }
+      },
+      "expected": {
+        "reason": "required_direction_missing",
+        "status": "HOLD"
+      }
+    },
+    "missing_mechanism": {
+      "changes": {
+        "mechanism_inflection_offsets_mm": null
+      },
+      "expected": {
+        "reason": "compatible_capacity_mechanism_missing",
+        "status": "HOLD"
+      }
+    },
+    "short_adjacent_development": {
+      "changes": {
+        "beam_uninterrupted_development_mm": 700
+      },
+      "expected": {
+        "failed_checks": [
+          "continuous_bar_anchorage"
+        ],
+        "status": "FAIL"
+      }
+    },
+    "stale_revision": {
+      "changes": {
+        "cage_action_revision": "DUCT01-DECLARED-R0"
+      },
+      "expected": {
+        "reason": "stale_action_revision",
+        "status": "HOLD"
+      }
+    },
+    "weak_column": {
+      "changes": {
+        "column_bar_edge_mm": 75,
+        "column_bar_mm": 20
+      },
+      "expected": {
+        "failed_checks": [
+          "scwb"
+        ],
+        "status": "FAIL"
+      }
+    },
+    "weak_joint_core": {
+      "changes": {
+        "joint_fck_mpa": 20
+      },
+      "expected": {
+        "failed_checks": [
+          "joint_shear"
+        ],
+        "status": "FAIL"
+      }
+    }
+  },
+  "expected": {
+    "anchorage": {
+      "adjacent_member_development_provided_mm_each_side": 1400,
+      "adjacent_member_development_required_mm": 1132.8125,
+      "bond_stress_mpa_m30_deformed_in_tension": 2.4,
+      "joint_length_in_each_plane_mm": 550,
+      "joint_width_required_mm": 500,
+      "pass": true,
+      "through_bar_diameter_mm": 25
+    },
+    "beam_joint_shear_mechanism_by_plane": {
+      "X": {
+        "concrete_compression_kn": 585.6334835095801,
+        "moment_knm": 590.8100731025577,
+        "net_steel_compression_kn": 641.5511467989329,
+        "neutral_axis_mm": 120.50071677151854,
+        "tension_kn": 1227.184630308513
+      },
+      "Y": {
+        "concrete_compression_kn": 777.2489640266267,
+        "moment_knm": 508.00559562875475,
+        "net_steel_compression_kn": 449.9356662818864,
+        "neutral_axis_mm": 159.92777037584915,
+        "tension_kn": 1227.184630308513
+      }
+    },
+    "beam_section_by_plane": {
+      "X": {
+        "axial_kn": 0.0,
+        "concrete_compression_force_n": 440492.39492192084,
+        "equilibrium_residual_n": -5.820766091346741e-11,
+        "layers": [
+          {
+            "area_mm2": 1963.4954084936207,
+            "count": 4.0,
+            "diameter_mm": 25,
+            "displaced_concrete_stress_mpa": 10.721455042257864,
+            "distance_from_compression_face_mm": 62,
+            "force_n": 413201.2609448707,
+            "layer": 1.0,
+            "steel_stress_mpa": 221.16312919003482,
+            "strain": 0.0011058156459501742
+          },
+          {
+            "area_mm2": 1963.4954084936207,
+            "count": 4.0,
+            "diameter_mm": 25,
+            "displaced_concrete_stress_mpa": 0.0,
+            "distance_from_compression_face_mm": 538,
+            "force_n": -853693.6558667916,
+            "layer": 2.0,
+            "steel_stress_mpa": -434.7826086956522,
+            "strain": -0.017275341652883972
+          }
+        ],
+        "moment_knm": 416.9003771976488,
+        "neutral_axis_mm": 90.63629525142406,
+        "tension_ductile": true,
+        "tension_yielded": true,
+        "yield_strain_threshold": 0.004173913043478261
+      },
+      "Y": {
+        "axial_kn": 0.0,
+        "concrete_compression_force_n": 621562.947526167,
+        "equilibrium_residual_n": -2.3283064365386963e-10,
+        "layers": [
+          {
+            "area_mm2": 1963.4954084936207,
+            "count": 4.0,
+            "diameter_mm": 25,
+            "displaced_concrete_stress_mpa": 7.080382240648143,
+            "distance_from_compression_face_mm": 105,
+            "force_n": 232130.70834062438,
+            "layer": 1.0,
+            "steel_stress_mpa": 125.30358120331512,
+            "strain": 0.0006265179060165756
+          },
+          {
+            "area_mm2": 1963.4954084936207,
+            "count": 4.0,
+            "diameter_mm": 25,
+            "displaced_concrete_stress_mpa": 0.0,
+            "distance_from_compression_face_mm": 495,
+            "force_n": -853693.6558667916,
+            "layer": 2.0,
+            "steel_stress_mpa": -434.7826086956522,
+            "strain": -0.01004641558592186
+          }
+        ],
+        "moment_knm": 364.81718485654415,
+        "neutral_axis_mm": 127.893610602092,
+        "tension_ductile": true,
+        "tension_yielded": true,
+        "yield_strain_threshold": 0.004173913043478261
+      }
+    },
+    "checks": {
+      "axial_stress": true,
+      "beam_capacity_shear": true,
+      "beam_flexural_prerequisite": true,
+      "column_capacity_shear": true,
+      "confinement": true,
+      "construction_fit": true,
+      "continuous_bar_anchorage": true,
+      "joint_shear": true,
+      "scwb": true
+    },
+    "column_sections_by_combination_and_end": {
+      "lower": [
+        {
+          "axial_kn": 578,
+          "combination_id": "EQ-X+-1",
+          "concrete_compression_force_n": 1177295.9503652158,
+          "equilibrium_residual_n": 0.0,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 886028.9890498307,
+              "layer": 1.0,
+              "steel_stress_mpa": 380.62888888019626,
+              "strain": 0.0021049302220987865
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -436306.17508593295,
+              "layer": 2.0,
+              "steel_stress_mpa": -271.2511111970476,
+              "strain": -0.0013562555559852379
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.0048174413340692605
+            }
+          ],
+          "moment_knm": 605.0239249700371,
+          "neutral_axis_mm": 198.19797144195553,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 679,
+          "combination_id": "EQ-X+-2",
+          "concrete_compression_force_n": 1218068.3185969237,
+          "equilibrium_residual_n": 4.656612873077393e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 893963.368554603,
+              "layer": 1.0,
+              "steel_stress_mpa": 383.9174193972575,
+              "strain": 0.0021516273554410565
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -384012.92282241274,
+              "layer": 2.0,
+              "steel_stress_mpa": -238.74044874356835,
+              "strain": -0.0011937022437178417
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.0045390318428767396
+            }
+          ],
+          "moment_knm": 610.8858816049508,
+          "neutral_axis_mm": 205.06200649779862,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 649,
+          "combination_id": "EQ-X--1",
+          "concrete_compression_force_n": 1205784.6507187167,
+          "equilibrium_residual_n": 0.0,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 891629.4215213262,
+              "layer": 1.0,
+              "steel_stress_mpa": 382.95007771168287,
+              "strain": 0.002137891103505896
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -399395.3079109294,
+              "layer": 2.0,
+              "steel_stress_mpa": -248.30366211614836,
+              "strain": -0.0012415183105807417
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004620927724667379
+            }
+          ],
+          "moment_knm": 609.1556378454242,
+          "neutral_axis_mm": 202.9940489425449,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 750,
+          "combination_id": "EQ-X--2",
+          "concrete_compression_force_n": 1247728.4741965875,
+          "equilibrium_residual_n": -2.3283064365386963e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 899409.473681273,
+              "layer": 1.0,
+              "steel_stress_mpa": 386.1746447918087,
+              "strain": 0.0021836799560436835
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -348119.1835487472,
+              "layer": 2.0,
+              "steel_stress_mpa": -216.42534705819503,
+              "strain": -0.0010821267352909751
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004347933426625632
+            }
+          ],
+          "moment_knm": 614.9386345768587,
+          "neutral_axis_mm": 210.05529868629424,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 720,
+          "combination_id": "EQ-Y+-1",
+          "concrete_compression_force_n": 1235094.6074067815,
+          "equilibrium_residual_n": -4.656612873077393e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 897121.6618019979,
+              "layer": 1.0,
+              "steel_stress_mpa": 385.2264245588634,
+              "strain": 0.00217021522873586
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -363197.5048796663,
+              "layer": 2.0,
+              "steel_stress_mpa": -225.79952429781903,
+              "strain": -0.001128997621489095
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.00442821047171405
+            }
+          ],
+          "moment_knm": 613.2338251573791,
+          "neutral_axis_mm": 207.9283850853168,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 856,
+          "combination_id": "EQ-Y+-2",
+          "concrete_compression_force_n": 1292494.5593514864,
+          "equilibrium_residual_n": -2.3283064365386963e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 907155.9578143755,
+              "layer": 1.0,
+              "steel_stress_mpa": 389.3852990661998,
+              "strain": 0.002229271246740037
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -297064.2965618027,
+              "layer": 2.0,
+              "steel_stress_mpa": -184.68457505440477,
+              "strain": -0.0009234228752720238
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1046586.2206040595,
+              "layer": 3.0,
+              "steel_stress_mpa": -433.7744020338566,
+              "strain": -0.004076116997284084
+            }
+          ],
+          "moment_knm": 620.2503263303352,
+          "neutral_axis_mm": 217.5916766584994,
+          "tension_ductile": false,
+          "tension_yielded": false,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 776,
+          "combination_id": "EQ-Y--1",
+          "concrete_compression_force_n": 1258798.4938291751,
+          "equilibrium_residual_n": 3.4924596548080444e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 901376.3471371246,
+              "layer": 1.0,
+              "steel_stress_mpa": 386.9898469609103,
+              "strain": 0.002195255826844926
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -335156.0766371859,
+              "layer": 2.0,
+              "steel_stress_mpa": -208.3661965003681,
+              "strain": -0.0010418309825018404
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004278917791848608
+            }
+          ],
+          "moment_knm": 616.4064666759998,
+          "neutral_axis_mm": 211.91893835508,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 907,
+          "combination_id": "EQ-Y--2",
+          "concrete_compression_force_n": 1313825.656053138,
+          "equilibrium_residual_n": 3.4924596548080444e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 910661.4665317866,
+              "layer": 1.0,
+              "steel_stress_mpa": 390.8382132339803,
+              "strain": 0.0022499026279225198
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -273960.47961414,
+              "layer": 2.0,
+              "steel_stress_mpa": -170.32095524381566,
+              "strain": -0.0008516047762190782
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1043526.6429707842,
+              "layer": 3.0,
+              "steel_stress_mpa": -432.5063111377389,
+              "strain": -0.003953112180360676
+            }
+          ],
+          "moment_knm": 622.2727735485895,
+          "neutral_axis_mm": 221.1827703793162,
+          "tension_ductile": false,
+          "tension_yielded": false,
+          "yield_strain_threshold": 0.004173913043478261
+        }
+      ],
+      "upper": [
+        {
+          "axial_kn": 550,
+          "combination_id": "EQ-X+-1",
+          "concrete_compression_force_n": 1166284.2738392174,
+          "equilibrium_residual_n": -4.656612873077393e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 883790.9497705986,
+              "layer": 1.0,
+              "steel_stress_mpa": 379.7012976975827,
+              "strain": 0.002091758427305674
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -451056.4592807029,
+              "layer": 2.0,
+              "steel_stress_mpa": -280.42134807832844,
+              "strain": -0.0014021067403916423
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004895971908088957
+            }
+          ],
+          "moment_knm": 603.3817777356647,
+          "neutral_axis_mm": 196.34415384498612,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 640,
+          "combination_id": "EQ-X+-2",
+          "concrete_compression_force_n": 1202128.1826127628,
+          "equilibrium_residual_n": -2.3283064365386963e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 890925.4654018771,
+              "layer": 1.0,
+              "steel_stress_mpa": 382.658311836344,
+              "strain": 0.002133748028076085
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -404034.8836855265,
+              "layer": 2.0,
+              "steel_stress_mpa": -251.18808171918172,
+              "strain": -0.0012559404085959085
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.0046456288452679005
+            }
+          ],
+          "moment_knm": 608.634671043531,
+          "neutral_axis_mm": 202.37848192134055,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 620,
+          "combination_id": "EQ-X--1",
+          "concrete_compression_force_n": 1194049.834967457,
+          "equilibrium_residual_n": -4.656612873077393e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 889354.9086436431,
+              "layer": 1.0,
+              "steel_stress_mpa": 382.0073694627,
+              "strain": 0.00212450464637034
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -414385.9792819871,
+              "layer": 2.0,
+              "steel_stress_mpa": -257.6233474636874,
+              "strain": -0.0012881167373184372
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004700738121007215
+            }
+          ],
+          "moment_knm": 607.4739843298153,
+          "neutral_axis_mm": 201.01849073526216,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 710,
+          "combination_id": "EQ-X--2",
+          "concrete_compression_force_n": 1230916.3532019823,
+          "equilibrium_residual_n": 0.0,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 896354.7058523245,
+              "layer": 1.0,
+              "steel_stress_mpa": 384.9085473960398,
+              "strain": 0.002165701373023765
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -368252.29472519335,
+              "layer": 2.0,
+              "steel_stress_mpa": -228.94208207206256,
+              "strain": -0.0011447104103603127
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004455122193744389
+            }
+          ],
+          "moment_knm": 612.6630207198396,
+          "neutral_axis_mm": 207.22497528652906,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 690,
+          "combination_id": "EQ-Y+-1",
+          "concrete_compression_force_n": 1222609.2323657006,
+          "equilibrium_residual_n": 0.0,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 894814.2876412065,
+              "layer": 1.0,
+              "steel_stress_mpa": 384.27009642539343,
+              "strain": 0.002156635369240586
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -378404.7556777937,
+              "layer": 2.0,
+              "steel_stress_mpa": -235.2538568578196,
+              "strain": -0.001176269284289098
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004509173937818784
+            }
+          ],
+          "moment_knm": 611.5177731932056,
+          "neutral_axis_mm": 205.82647009523583,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 815,
+          "combination_id": "EQ-Y+-2",
+          "concrete_compression_force_n": 1275614.6196836596,
+          "equilibrium_residual_n": 2.3283064365386963e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 904298.8475109362,
+              "layer": 1.0,
+              "steel_stress_mpa": 388.2011239939312,
+              "strain": 0.002212455960713823
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -315894.70286548213,
+              "layer": 2.0,
+              "steel_stress_mpa": -196.3914197561992,
+              "strain": -0.000981957098780996
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004176370158275815
+            }
+          ],
+          "moment_knm": 618.5902460139106,
+          "neutral_axis_mm": 214.74993597368012,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 745,
+          "combination_id": "EQ-Y--1",
+          "concrete_compression_force_n": 1245612.4868829697,
+          "equilibrium_residual_n": 2.3283064365386963e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 899029.5342667802,
+              "layer": 1.0,
+              "steel_stress_mpa": 386.01717282334005,
+              "strain": 0.0021814438540914286
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -350623.2568206363,
+              "layer": 2.0,
+              "steel_stress_mpa": -217.98212689837254,
+              "strain": -0.0010899106344918628
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1049018.7643291135,
+              "layer": 3.0,
+              "steel_stress_mpa": -434.7826086956522,
+              "strain": -0.004361265123075155
+            }
+          ],
+          "moment_knm": 614.6553118080014,
+          "neutral_axis_mm": 209.69907186581986,
+          "tension_ductile": true,
+          "tension_yielded": true,
+          "yield_strain_threshold": 0.004173913043478261
+        },
+        {
+          "axial_kn": 865,
+          "combination_id": "EQ-Y--2",
+          "concrete_compression_force_n": 1296229.3761303963,
+          "equilibrium_residual_n": -3.4924596548080444e-10,
+          "layers": [
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 13.400000000000002,
+              "distance_from_compression_face_mm": 79,
+              "force_n": 907778.0618906433,
+              "layer": 1.0,
+              "steel_stress_mpa": 389.64314005280306,
+              "strain": 0.002232932588749803
+            },
+            {
+              "area_mm2": 1608.495438637974,
+              "count": 2.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 275.0,
+              "force_n": -292964.18446420657,
+              "layer": 2.0,
+              "steel_stress_mpa": -182.13553947798565,
+              "strain": -0.0009106776973899282
+            },
+            {
+              "area_mm2": 2412.743157956961,
+              "count": 3.0,
+              "diameter_mm": 32,
+              "displaced_concrete_stress_mpa": 0.0,
+              "distance_from_compression_face_mm": 471,
+              "force_n": -1046043.2535568334,
+              "layer": 3.0,
+              "steel_stress_mpa": -433.54936065494496,
+              "strain": -0.004054287983529658
+            }
+          ],
+          "moment_knm": 620.6092868817082,
+          "neutral_axis_mm": 218.22043369198593,
+          "tension_ductile": false,
+          "tension_yielded": false,
+          "yield_strain_threshold": 0.004173913043478261
+        }
+      ]
+    },
+    "directions": {
+      "X+": {
+        "joint_shear": {
+          "column_inflection_force_couple_arm_mm": 4100.0,
+          "design_beam_tension_kn_each": 1227.184630308513,
+          "effective_area_mm2": 302500,
+          "effective_breadth_mm": 550,
+          "mechanism_beam_reactions_kn": {
+            "minus": 367.40503655127884,
+            "plus": -200.69813004883702
+          },
+          "pass": true,
+          "reaction_moment_about_centre_knm": 156.22837081503187,
+          "signed_compatible_column_shear_kn": 326.3045163463774,
+          "signed_joint_shear_kn": 2128.0647442706486,
+          "strength_mpa": 8.215838362577491,
+          "stress_mpa": 7.034924774448426,
+          "utilization": 0.8562637754038546
+        },
+        "rows": [
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": 45,
+                "capacity_downward_reaction_kn": 363.83026403835413,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 363.83026403835413,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.9181635435568769
+              },
+              "plus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": -17,
+                "capacity_downward_reaction_kn": -197.2935847984325,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 197.2935847984325,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.49789089815923554
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 578,
+              "upper": 550
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 688.273633014516,
+                "axial_shear_multiplier": 1.1910743801652892,
+                "concrete_capacity_kn": 114.16269272727271,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 578,
+                "demand_kn": 324.2558489315046,
+                "pass": true,
+                "signed_analysis_shear_kn": 150,
+                "signed_capacity_shear_kn": 324.2558489315046,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.4711147331204912
+              },
+              "upper": {
+                "accepted_capacity_kn": 687.3864402872433,
+                "axial_shear_multiplier": 1.1818181818181819,
+                "concrete_capacity_kn": 113.27550000000001,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 550,
+                "demand_kn": 343.3297223980637,
+                "pass": true,
+                "signed_analysis_shear_kn": 150,
+                "signed_capacity_shear_kn": 343.3297223980637,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.49947118865858625
+              }
+            },
+            "combination_id": "EQ-X+-1",
+            "maximum_axial_stress_mpa": 1.9107438016528926,
+            "signed_axial_balance_residual_kn": 0
+          },
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": 51,
+                "capacity_downward_reaction_kn": 363.83026403835413,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 363.83026403835413,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.9181635435568769
+              },
+              "plus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": -12,
+                "capacity_downward_reaction_kn": -197.2935847984325,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 197.2935847984325,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.49789089815923554
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 679,
+              "upper": 640
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 691.473863923607,
+                "axial_shear_multiplier": 1.2244628099173553,
+                "concrete_capacity_kn": 117.36292363636363,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 679,
+                "demand_kn": 324.2558489315046,
+                "pass": true,
+                "signed_analysis_shear_kn": 157,
+                "signed_capacity_shear_kn": 324.2558489315046,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.46893435290755675
+              },
+              "upper": {
+                "accepted_capacity_kn": 690.2381311963343,
+                "axial_shear_multiplier": 1.2115702479338843,
+                "concrete_capacity_kn": 116.12719090909091,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 640,
+                "demand_kn": 343.3297223980637,
+                "pass": true,
+                "signed_analysis_shear_kn": 157,
+                "signed_capacity_shear_kn": 343.3297223980637,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.4974076436533547
+              }
+            },
+            "combination_id": "EQ-X+-2",
+            "maximum_axial_stress_mpa": 2.244628099173554,
+            "signed_axial_balance_residual_kn": 0
+          }
+        ],
+        "scwb": {
+          "available_column_capacity_knm": 1208.405702705702,
+          "beam_capacity_direction": "X+",
+          "column_capacity_direction": "X-",
+          "governing_column_combination_ids": {
+            "lower": "EQ-X+-1",
+            "upper": "EQ-X+-1"
+          },
+          "pass": true,
+          "required_column_capacity_knm": 1167.3210561534165,
+          "utilization": 0.9660009494656521
+        }
+      },
+      "X-": {
+        "joint_shear": {
+          "column_inflection_force_couple_arm_mm": 4100.0,
+          "design_beam_tension_kn_each": 1227.184630308513,
+          "effective_area_mm2": 302500,
+          "effective_breadth_mm": 550,
+          "mechanism_beam_reactions_kn": {
+            "minus": -223.40503655127884,
+            "plus": 361.978130048837
+          },
+          "pass": true,
+          "reaction_moment_about_centre_knm": 160.98037081503185,
+          "signed_compatible_column_shear_kn": -327.4635407366213,
+          "signed_joint_shear_kn": -2126.905719880405,
+          "strength_mpa": 8.215838362577491,
+          "stress_mpa": 7.031093288860842,
+          "utilization": 0.8557974218293934
+        },
+        "rows": [
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": 49,
+                "capacity_downward_reaction_kn": -219.83026403835413,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 219.83026403835413,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.5547645541362155
+              },
+              "plus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": -20,
+                "capacity_downward_reaction_kn": 358.5735847984325,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 358.5735847984325,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.9048977663103762
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 649,
+              "upper": 620
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 690.5233002872434,
+                "axial_shear_multiplier": 1.2145454545454546,
+                "concrete_capacity_kn": 116.41236000000002,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 649,
+                "demand_kn": 324.2558489315046,
+                "pass": true,
+                "signed_analysis_shear_kn": -162,
+                "signed_capacity_shear_kn": -324.2558489315046,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.4695798806450425
+              },
+              "upper": {
+                "accepted_capacity_kn": 689.6044221054252,
+                "axial_shear_multiplier": 1.2049586776859504,
+                "concrete_capacity_kn": 115.49348181818182,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 620,
+                "demand_kn": 343.3297223980637,
+                "pass": true,
+                "signed_analysis_shear_kn": -162,
+                "signed_capacity_shear_kn": -343.3297223980637,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.4978647343209412
+              }
+            },
+            "combination_id": "EQ-X--1",
+            "maximum_axial_stress_mpa": 2.1454545454545455,
+            "signed_axial_balance_residual_kn": 0
+          },
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": 55,
+                "capacity_downward_reaction_kn": -219.83026403835413,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 219.83026403835413,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.5547645541362155
+              },
+              "plus": {
+                "accepted_capacity_kn": 396.2586693748598,
+                "analysis_downward_reaction_kn": -15,
+                "capacity_downward_reaction_kn": 358.5735847984325,
+                "concrete_crushing_cap_kn": 847.35,
+                "demand_kn": 358.5735847984325,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -416.9003771976488,
+                "steel_capacity_kn": 396.2586693748598,
+                "utilization": 0.9048977663103762
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 750,
+              "upper": 710
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 693.7235311963343,
+                "axial_shear_multiplier": 1.2479338842975207,
+                "concrete_capacity_kn": 119.61259090909091,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 750,
+                "demand_kn": 324.2558489315046,
+                "pass": true,
+                "signed_analysis_shear_kn": -169,
+                "signed_capacity_shear_kn": -324.2558489315046,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.46741365162043963
+              },
+              "upper": {
+                "accepted_capacity_kn": 692.4561130145161,
+                "axial_shear_multiplier": 1.234710743801653,
+                "concrete_capacity_kn": 118.34517272727271,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 710,
+                "demand_kn": 343.3297223980637,
+                "pass": true,
+                "signed_analysis_shear_kn": -169,
+                "signed_capacity_shear_kn": -343.3297223980637,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.4958144147264773
+              }
+            },
+            "combination_id": "EQ-X--2",
+            "maximum_axial_stress_mpa": 2.479338842975207,
+            "signed_axial_balance_residual_kn": 0
+          }
+        ],
+        "scwb": {
+          "available_column_capacity_knm": 1208.405702705702,
+          "beam_capacity_direction": "X-",
+          "column_capacity_direction": "X+",
+          "governing_column_combination_ids": {
+            "lower": "EQ-X+-1",
+            "upper": "EQ-X+-1"
+          },
+          "pass": true,
+          "required_column_capacity_knm": 1167.3210561534165,
+          "utilization": 0.9660009494656521
+        }
+      },
+      "Y+": {
+        "joint_shear": {
+          "column_inflection_force_couple_arm_mm": 4100.0,
+          "design_beam_tension_kn_each": 1227.184630308513,
+          "effective_area_mm2": 302500,
+          "effective_breadth_mm": 550,
+          "mechanism_beam_reactions_kn": {
+            "minus": 319.1476076237828,
+            "plus": -156.30167238546736
+          },
+          "pass": true,
+          "reaction_moment_about_centre_knm": 130.7485520025438,
+          "signed_compatible_column_shear_kn": 279.6974983561106,
+          "signed_joint_shear_kn": 2174.671762260916,
+          "strength_mpa": 8.215838362577491,
+          "stress_mpa": 7.188997561193109,
+          "utilization": 0.8750169178033538
+        },
+        "rows": [
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": 53,
+                "capacity_downward_reaction_kn": 320.4834433166643,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 320.4834433166643,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.8790304064520669
+              },
+              "plus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": -23,
+                "capacity_downward_reaction_kn": -157.57537618565667,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 157.57537618565667,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.43220188082681144
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 720,
+              "upper": 690
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 692.7729675599707,
+                "axial_shear_multiplier": 1.2380165289256198,
+                "concrete_capacity_kn": 118.66202727272726,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 720,
+                "demand_kn": 283.74669933286765,
+                "pass": true,
+                "signed_analysis_shear_kn": 174,
+                "signed_capacity_shear_kn": 283.74669933286765,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.40958107867900434
+              },
+              "upper": {
+                "accepted_capacity_kn": 691.822403923607,
+                "axial_shear_multiplier": 1.228099173553719,
+                "concrete_capacity_kn": 117.71146363636363,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 690,
+                "demand_kn": 300.43768164656575,
+                "pass": true,
+                "signed_analysis_shear_kn": 174,
+                "signed_capacity_shear_kn": 300.43768164656575,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.4342699512803591
+              }
+            },
+            "combination_id": "EQ-Y+-1",
+            "maximum_axial_stress_mpa": 2.3801652892561984,
+            "signed_axial_balance_residual_kn": 0
+          },
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": 59,
+                "capacity_downward_reaction_kn": 320.4834433166643,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 320.4834433166643,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.8790304064520669
+              },
+              "plus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": -18,
+                "capacity_downward_reaction_kn": -157.57537618565667,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 157.57537618565667,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.43220188082681144
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 856,
+              "upper": 815
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 697.0821893781524,
+                "axial_shear_multiplier": 1.2829752066115703,
+                "concrete_capacity_kn": 122.97124909090908,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 856,
+                "demand_kn": 283.74669933286765,
+                "pass": true,
+                "signed_analysis_shear_kn": 181,
+                "signed_capacity_shear_kn": 283.74669933286765,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.40704913087220057
+              },
+              "upper": {
+                "accepted_capacity_kn": 695.7830857417888,
+                "axial_shear_multiplier": 1.2694214876033059,
+                "concrete_capacity_kn": 121.67214545454544,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 815,
+                "demand_kn": 300.43768164656575,
+                "pass": true,
+                "signed_analysis_shear_kn": 181,
+                "signed_capacity_shear_kn": 300.43768164656575,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.431797909151906
+              }
+            },
+            "combination_id": "EQ-Y+-2",
+            "maximum_axial_stress_mpa": 2.8297520661157023,
+            "signed_axial_balance_residual_kn": 0
+          }
+        ],
+        "scwb": {
+          "available_column_capacity_knm": 1208.405702705702,
+          "beam_capacity_direction": "Y+",
+          "column_capacity_direction": "Y-",
+          "governing_column_combination_ids": {
+            "lower": "EQ-X+-1",
+            "upper": "EQ-X+-1"
+          },
+          "pass": true,
+          "required_column_capacity_knm": 1021.4881175983236,
+          "utilization": 0.8453188488858855
+        }
+      },
+      "Y-": {
+        "joint_shear": {
+          "column_inflection_force_couple_arm_mm": 4100.0,
+          "design_beam_tension_kn_each": 1227.184630308513,
+          "effective_area_mm2": 302500,
+          "effective_breadth_mm": 550,
+          "mechanism_beam_reactions_kn": {
+            "minus": -176.46760762378284,
+            "plus": 316.26167238546736
+          },
+          "pass": true,
+          "reaction_moment_about_centre_knm": 135.50055200254383,
+          "signed_compatible_column_shear_kn": -280.85652274635447,
+          "signed_joint_shear_kn": -2173.5127378706716,
+          "strength_mpa": 8.215838362577491,
+          "stress_mpa": 7.185166075605527,
+          "utilization": 0.8745505642288927
+        },
+        "rows": [
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": 57,
+                "capacity_downward_reaction_kn": -177.8034433166643,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 177.8034433166643,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.4876839546834011
+              },
+              "plus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": -26,
+                "capacity_downward_reaction_kn": 317.5353761856567,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 317.5353761856567,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.8709443704884022
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 776,
+              "upper": 745
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 694.547353014516,
+                "axial_shear_multiplier": 1.2565289256198346,
+                "concrete_capacity_kn": 120.43641272727272,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 776,
+                "demand_kn": 283.74669933286765,
+                "pass": true,
+                "signed_analysis_shear_kn": -186,
+                "signed_capacity_shear_kn": -283.74669933286765,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.40853470695890387
+              },
+              "upper": {
+                "accepted_capacity_kn": 693.565103923607,
+                "axial_shear_multiplier": 1.2462809917355373,
+                "concrete_capacity_kn": 119.45416363636365,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 745,
+                "demand_kn": 300.43768164656575,
+                "pass": true,
+                "signed_analysis_shear_kn": -186,
+                "signed_capacity_shear_kn": -300.43768164656575,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.433178774345685
+              }
+            },
+            "combination_id": "EQ-Y--1",
+            "maximum_axial_stress_mpa": 2.565289256198347,
+            "signed_axial_balance_residual_kn": 0
+          },
+          {
+            "beam_capacity_shear": {
+              "minus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": 63,
+                "capacity_downward_reaction_kn": -177.8034433166643,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 177.8034433166643,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": 364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.4876839546834011
+              },
+              "plus": {
+                "accepted_capacity_kn": 364.58743743597694,
+                "analysis_downward_reaction_kn": -21,
+                "capacity_downward_reaction_kn": 317.5353761856567,
+                "concrete_crushing_cap_kn": 779.625,
+                "demand_kn": 317.5353761856567,
+                "pass": true,
+                "pitch_limit_mm": 100,
+                "pitch_mm": 77,
+                "signed_near_hinge_moment_knm": -364.81718485654415,
+                "steel_capacity_kn": 364.58743743597694,
+                "utilization": 0.8709443704884022
+              }
+            },
+            "column_axial_compression_kn": {
+              "lower": 907,
+              "upper": 865
+            },
+            "column_capacity_shear": {
+              "lower": {
+                "accepted_capacity_kn": 698.6981475599706,
+                "axial_shear_multiplier": 1.2998347107438017,
+                "concrete_capacity_kn": 124.58720727272726,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 907,
+                "demand_kn": 283.74669933286765,
+                "pass": true,
+                "signed_analysis_shear_kn": -193,
+                "signed_capacity_shear_kn": -283.74669933286765,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.406107702337243
+              },
+              "upper": {
+                "accepted_capacity_kn": 697.3673584690615,
+                "axial_shear_multiplier": 1.2859504132231405,
+                "concrete_capacity_kn": 123.25641818181818,
+                "concrete_crushing_cap_kn": 906.675,
+                "concurrent_axial_compression_kn": 865,
+                "demand_kn": 300.43768164656575,
+                "pass": true,
+                "signed_analysis_shear_kn": -193,
+                "signed_capacity_shear_kn": -300.43768164656575,
+                "steel_capacity_kn": 574.1109402872434,
+                "utilization": 0.43081695464800646
+              }
+            },
+            "combination_id": "EQ-Y--2",
+            "maximum_axial_stress_mpa": 2.9983471074380166,
+            "signed_axial_balance_residual_kn": 0
+          }
+        ],
+        "scwb": {
+          "available_column_capacity_knm": 1208.405702705702,
+          "beam_capacity_direction": "Y-",
+          "column_capacity_direction": "Y+",
+          "governing_column_combination_ids": {
+            "lower": "EQ-X+-1",
+            "upper": "EQ-X+-1"
+          },
+          "pass": true,
+          "required_column_capacity_knm": 1021.4881175983236,
+          "utilization": 0.8453188488858855
+        }
+      }
+    },
+    "governing": {
+      "beam_capacity_shear": {
+        "accepted_capacity_kn": 396.2586693748598,
+        "analysis_downward_reaction_kn": 45,
+        "capacity_downward_reaction_kn": 363.83026403835413,
+        "combination_id": "EQ-X+-1",
+        "concrete_crushing_cap_kn": 847.35,
+        "demand_kn": 363.83026403835413,
+        "direction": "X+",
+        "pass": true,
+        "pitch_limit_mm": 100,
+        "pitch_mm": 77,
+        "side": "minus",
+        "signed_near_hinge_moment_knm": -416.9003771976488,
+        "steel_capacity_kn": 396.2586693748598,
+        "utilization": 0.9181635435568769
+      },
+      "column_capacity_shear": {
+        "accepted_capacity_kn": 687.3864402872433,
+        "axial_shear_multiplier": 1.1818181818181819,
+        "combination_id": "EQ-X+-1",
+        "concrete_capacity_kn": 113.27550000000001,
+        "concrete_crushing_cap_kn": 906.675,
+        "concurrent_axial_compression_kn": 550,
+        "demand_kn": 343.3297223980637,
+        "direction": "X+",
+        "pass": true,
+        "side": "upper",
+        "signed_analysis_shear_kn": 150,
+        "signed_capacity_shear_kn": 343.3297223980637,
+        "steel_capacity_kn": 574.1109402872434,
+        "utilization": 0.49947118865858625
+      },
+      "joint_shear": {
+        "column_inflection_force_couple_arm_mm": 4100.0,
+        "design_beam_tension_kn_each": 1227.184630308513,
+        "direction": "Y+",
+        "effective_area_mm2": 302500,
+        "effective_breadth_mm": 550,
+        "mechanism_beam_reactions_kn": {
+          "minus": 319.1476076237828,
+          "plus": -156.30167238546736
+        },
+        "pass": true,
+        "reaction_moment_about_centre_knm": 130.7485520025438,
+        "signed_compatible_column_shear_kn": 279.6974983561106,
+        "signed_joint_shear_kn": 2174.671762260916,
+        "strength_mpa": 8.215838362577491,
+        "stress_mpa": 7.188997561193109,
+        "utilization": 0.8750169178033538
+      },
+      "scwb": {
+        "available_column_capacity_knm": 1208.405702705702,
+        "beam_capacity_direction": "X+",
+        "column_capacity_direction": "X-",
+        "direction": "X+",
+        "governing_column_combination_ids": {
+          "lower": "EQ-X+-1",
+          "upper": "EQ-X+-1"
+        },
+        "pass": true,
+        "required_column_capacity_knm": 1167.3210561534165,
+        "utilization": 0.9660009494656521
+      }
+    },
+    "placement": {
+      "beam_bar_paths": {
+        "X": [
+          {
+            "across_axis_mm": 115,
+            "bar_id": "BX-TOP-1",
+            "depth_mm": 62,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 220,
+            "bar_id": "BX-TOP-2",
+            "depth_mm": 62,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 330,
+            "bar_id": "BX-TOP-3",
+            "depth_mm": 62,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 435,
+            "bar_id": "BX-TOP-4",
+            "depth_mm": 62,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 115,
+            "bar_id": "BX-BOTTOM-1",
+            "depth_mm": 538,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 220,
+            "bar_id": "BX-BOTTOM-2",
+            "depth_mm": 538,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 330,
+            "bar_id": "BX-BOTTOM-3",
+            "depth_mm": 538,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 435,
+            "bar_id": "BX-BOTTOM-4",
+            "depth_mm": 538,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          }
+        ],
+        "Y": [
+          {
+            "across_axis_mm": 115,
+            "bar_id": "BY-TOP-1",
+            "depth_mm": 105,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 220,
+            "bar_id": "BY-TOP-2",
+            "depth_mm": 105,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 330,
+            "bar_id": "BY-TOP-3",
+            "depth_mm": 105,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 435,
+            "bar_id": "BY-TOP-4",
+            "depth_mm": 105,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 115,
+            "bar_id": "BY-BOTTOM-1",
+            "depth_mm": 495,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 220,
+            "bar_id": "BY-BOTTOM-2",
+            "depth_mm": 495,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 330,
+            "bar_id": "BY-BOTTOM-3",
+            "depth_mm": 495,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          },
+          {
+            "across_axis_mm": 435,
+            "bar_id": "BY-BOTTOM-4",
+            "depth_mm": 495,
+            "joint_relative_axial_interval_mm": [
+              -1400,
+              1950
+            ]
+          }
+        ]
+      },
+      "beam_hoop_sections": {
+        "X": {
+          "depth_axis_bounds_mm": [
+            39,
+            561
+          ],
+          "first_outer_hoop_station_from_face_mm": 30,
+          "internal_bend_radius_mm": 23.0,
+          "link_pitch_mm": 75,
+          "middle_across_axis_bounds_mm": [
+            197,
+            353
+          ],
+          "middle_hoop_station_offset_mm": 16,
+          "outer_across_axis_bounds_mm": [
+            92,
+            458
+          ],
+          "steel_clearance_between_link_planes_mm": 3.5,
+          "top_nominal_cover_mm": 34.0
+        },
+        "Y": {
+          "depth_axis_bounds_mm": [
+            82,
+            518
+          ],
+          "first_outer_hoop_station_from_face_mm": 30,
+          "internal_bend_radius_mm": 23.0,
+          "link_pitch_mm": 75,
+          "middle_across_axis_bounds_mm": [
+            197,
+            353
+          ],
+          "middle_hoop_station_offset_mm": 16,
+          "outer_across_axis_bounds_mm": [
+            92,
+            458
+          ],
+          "steel_clearance_between_link_planes_mm": 3.5,
+          "top_nominal_cover_mm": 77.0
+        }
+      },
+      "column_end_hoop_stations_from_face_mm": [
+        35,
+        100,
+        165,
+        230,
+        295,
+        360,
+        425,
+        490,
+        555,
+        620
+      ],
+      "column_hoop_axis_bounds_mm": [
+        51.0,
+        499.0
+      ],
+      "column_hoop_closure_rise_mm": 18,
+      "column_hoop_corner_centre_axes_mm": [
+        83.0,
+        467.0
+      ],
+      "column_longitudinal_axes_xy_mm": [
+        [
+          79,
+          79
+        ],
+        [
+          79,
+          275.0
+        ],
+        [
+          79,
+          471
+        ],
+        [
+          275.0,
+          79
+        ],
+        [
+          275.0,
+          471
+        ],
+        [
+          471,
+          79
+        ],
+        [
+          471,
+          275.0
+        ],
+        [
+          471,
+          471
+        ]
+      ],
+      "column_transverse_joint_marks": {
+        "C-H": {
+          "cut_mm": 2080.234733798083,
+          "plane_offset_mm": 0,
+          "quantity": 6,
+          "stations_mm": [
+            18,
+            149,
+            249,
+            349,
+            443,
+            582
+          ]
+        },
+        "C-TX": {
+          "arc_end_xy_mm": [
+            [
+              61.37258300203048,
+              297.62741699796953
+            ],
+            [
+              488.62741699796953,
+              297.62741699796953
+            ]
+          ],
+          "bend_centres_xy_mm": [
+            [
+              84,
+              275.0
+            ],
+            [
+              466,
+              275.0
+            ]
+          ],
+          "cut_mm": 772.79644737231,
+          "plane_offset_mm": -18,
+          "quantity": 6,
+          "stations_mm": [
+            0,
+            131,
+            231,
+            331,
+            425,
+            564
+          ],
+          "stem_xy_mm": [
+            [
+              84,
+              243.0
+            ],
+            [
+              466,
+              243.0
+            ]
+          ],
+          "tail_end_xy_mm": [
+            [
+              146.22539674441617,
+              382.48023074035524
+            ],
+            [
+              403.7746032555838,
+              382.48023074035524
+            ]
+          ]
+        },
+        "C-TY": {
+          "arc_end_xy_mm": [
+            [
+              252.37258300203047,
+              61.37258300203048
+            ],
+            [
+              252.37258300203047,
+              488.62741699796953
+            ]
+          ],
+          "bend_centres_xy_mm": [
+            [
+              275.0,
+              84
+            ],
+            [
+              275.0,
+              466
+            ]
+          ],
+          "cut_mm": 772.79644737231,
+          "plane_offset_mm": 18,
+          "quantity": 6,
+          "stations_mm": [
+            36,
+            167,
+            267,
+            367,
+            461,
+            600
+          ],
+          "stem_xy_mm": [
+            [
+              307.0,
+              84
+            ],
+            [
+              307.0,
+              466
+            ]
+          ],
+          "tail_end_xy_mm": [
+            [
+              167.51976925964476,
+              146.22539674441617
+            ],
+            [
+              167.51976925964476,
+              403.7746032555838
+            ]
+          ]
+        }
+      },
+      "confinement": {
+        "Ag_mm2": 302500,
+        "Ak_outer_mm2": 211600,
+        "ash_provided_per_leg_mm2": 113.09733552923255,
+        "confined_faces": 4,
+        "end_ash_terms_mm2": [
+          100.36989728289336,
+          64.90120481927711
+        ],
+        "end_length_required_mm": 600.0,
+        "end_pitch_limit_mm": 100,
+        "end_pitch_mm": 67,
+        "h_outer_mm": 268.0,
+        "joint_ash_full_terms_mm2": [
+          211.2262017445965,
+          136.58313253012048
+        ],
+        "joint_ash_required_mm2": 105.61310087229825,
+        "joint_pitch_limit_mm": 150,
+        "joint_pitch_mm": 141,
+        "joint_to_end_zone_transition_pitch_mm": 55,
+        "min_face_coverage": 0.8181818181818182
+      },
+      "confinement_checks": {
+        "area": true,
+        "end_zone": true,
+        "hooks": true,
+        "joint_to_end_zone_transition": true,
+        "leg_spacing": true,
+        "pitch": true
+      },
+      "cross_tie_orientation": "Both hooks turn into the core. Their planes are staggered.",
+      "fit_checks": {
+        "beam_beam_clearance": true,
+        "beam_column_clearance": true,
+        "beam_link_seats_and_cover": true,
+        "beam_outer_middle_link_clearance": true,
+        "beam_parallel_row_spacing": true,
+        "beam_tie_clearance": true,
+        "cage_seats": true,
+        "column_cover": true,
+        "compaction_access": true,
+        "perimeter_bar_spacing": true,
+        "perimeter_longitudinal_ratio": true,
+        "tie_plane_and_closure_clearance": true
+      },
+      "minimum_clearances_mm": {
+        "beam_to_column_bars": 5.0,
+        "beam_to_column_ties": 5.0,
+        "face_bar_to_cross_tie": 3.085786437626905,
+        "hoop_corner_seat": 2.4289321881345245,
+        "parallel_beam_row_clear_spacing": 77.5,
+        "parallel_beam_row_clear_spacing_required": 25,
+        "perpendicular_beam_bars": 15.5,
+        "tie_planes_and_hoop_closure": 3.5,
+        "vertical_compaction_corridor_diameter": 49.5
+      }
+    },
+    "status": "PASS"
+  },
+  "fixture_version": "library-030-duct01-interior-joint/v1",
+  "request": {
+    "action_revision": "DUCT01-DECLARED-R1",
+    "aggregate_max_mm": 20,
+    "assembly": "Jig the column cage. Thread the lower X and Y rows through their clear corridors, then the upper rows. Keep the two orthogonal row levels distinct. Fit the staggered beam links outside the joint face. Use the central vertical corridor for compaction before closing the forms.",
+    "axis_tolerance_mm": 1,
+    "beam_axis_across_column_mm": [
+      115,
+      220,
+      330,
+      435
+    ],
+    "beam_bar_mm": 25,
+    "beam_clear_spans_mm": {
+      "X": {
+        "minus": 4000,
+        "plus": 4200
+      },
+      "Y": {
+        "minus": 4100,
+        "plus": 4300
+      }
+    },
+    "beam_dead_plus_live_kn_m": {
+      "X": {
+        "minus": 30,
+        "plus": 32
+      },
+      "Y": {
+        "minus": 29,
+        "plus": 31
+      }
+    },
+    "beam_fck_mpa": 30,
+    "beam_first_link_mm": 30,
+    "beam_inner_link_offset_mm": 16,
+    "beam_link_centre_radius_mm": 28,
+    "beam_link_mm": 10,
+    "beam_link_seat_inset_mm": 23,
+    "beam_pitch_mm": 75,
+    "beam_row_depth_from_top_mm": {
+      "X": 62,
+      "Y": 105
+    },
+    "beam_uninterrupted_development_mm": 1400,
+    "beam_width_mm": 450,
+    "cage_action_revision": "DUCT01-DECLARED-R1",
+    "column_bar_edge_mm": 79,
+    "column_bar_mm": 32,
+    "column_clear_heights_mm": {
+      "lower": 3600,
+      "upper": 3400
+    },
+    "column_cover_mm": 45,
+    "column_end_confinement_length_mm": 600,
+    "column_end_pitch_mm": 65,
+    "column_fck_mpa": 30,
+    "column_first_end_hoop_mm": 35,
+    "column_hook_ramp_length_mm": 60,
+    "column_hook_rise_mm": 18,
+    "column_hook_tail_mm": 120,
+    "column_link_centre_radius_mm": 32,
+    "column_link_mm": 12,
+    "column_width_mm": 550,
+    "compaction_head_mm": 40,
+    "continuity": "Interior, non-roof. Centred beams on four faces, no participating slab steel.",
+    "cross_tie_station_offset_mm": 18,
+    "diameter_overage_mm": 0.5,
+    "directions": {
+      "X+": [
+        {
+          "analysis_column_shear_magnitude_kn": 150,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 45,
+            "plus": -17
+          },
+          "combination_id": "EQ-X+-1",
+          "upper_axial_compression_kn": 550
+        },
+        {
+          "analysis_column_shear_magnitude_kn": 157,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 51,
+            "plus": -12
+          },
+          "combination_id": "EQ-X+-2",
+          "upper_axial_compression_kn": 640
+        }
+      ],
+      "X-": [
+        {
+          "analysis_column_shear_magnitude_kn": 162,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 49,
+            "plus": -20
+          },
+          "combination_id": "EQ-X--1",
+          "upper_axial_compression_kn": 620
+        },
+        {
+          "analysis_column_shear_magnitude_kn": 169,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 55,
+            "plus": -15
+          },
+          "combination_id": "EQ-X--2",
+          "upper_axial_compression_kn": 710
+        }
+      ],
+      "Y+": [
+        {
+          "analysis_column_shear_magnitude_kn": 174,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 53,
+            "plus": -23
+          },
+          "combination_id": "EQ-Y+-1",
+          "upper_axial_compression_kn": 690
+        },
+        {
+          "analysis_column_shear_magnitude_kn": 181,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 59,
+            "plus": -18
+          },
+          "combination_id": "EQ-Y+-2",
+          "upper_axial_compression_kn": 815
+        }
+      ],
+      "Y-": [
+        {
+          "analysis_column_shear_magnitude_kn": 186,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 57,
+            "plus": -26
+          },
+          "combination_id": "EQ-Y--1",
+          "upper_axial_compression_kn": 745
+        },
+        {
+          "analysis_column_shear_magnitude_kn": 193,
+          "beam_on_joint_downward_shear_kn": {
+            "minus": 63,
+            "plus": -21
+          },
+          "combination_id": "EQ-Y--2",
+          "upper_axial_compression_kn": 865
+        }
+      ]
+    },
+    "joint_depth_mm": 600,
+    "joint_fck_mpa": 30,
+    "joint_hoop_centres_mm": [
+      18,
+      149,
+      249,
+      349,
+      443,
+      582
+    ],
+    "joint_id": "J1",
+    "link_fy_mpa": 415,
+    "longitudinal_fy_mpa": 500,
+    "longitudinal_grade": "Fe500D",
+    "mechanism_inflection_offsets_mm": {
+      "lower": 1800,
+      "upper": 1700
+    },
+    "required_beam_cover_mm": 30,
+    "required_column_cover_mm": 40,
+    "tie_station_tolerance_mm": 1,
+    "transverse_grade": "Fe415D"
+  },
+  "scope": [
+    "Independent specimen with declared simultaneous actions and an explicit capacity mechanism. No source ETABS capture or global seismic system inferred.",
+    "Columns and opposed beam sections are symmetric. SCWB tests each shaking sign using the lowest member capacity across all eight supplied axial rows.",
+    "Beam capacity shear credits two outer hoop legs and no concrete. Column capacity shear credits two closed-hoop legs and the M30 Table 19 lower-bound row, adjusted for the concurrent axial force.",
+    "Joint equilibrium uses 1.25fy tension forces, the opposing compression resultants, and the compatible column shear at the supplied inflection heights. It does not substitute the separate \u00a77.5 shear envelope.",
+    "End beam restraint uses nested hoops at staggered stations. The joint column tie groups use a closed hoop and two orthogonal cross-ties at distinct elevations. Fit and confinement use the declared adverse placement limits.",
+    "The beam path intervals are the checked local continuations used for development. Full-span beam and storey splice schedules belong to the frame specimen."
+  ],
+  "sources": [
+    "BIS IS 13920:2016 with Amendment 1 (2017) and Amendment 2 (2020). https://standards.bis.gov.in/website/standard-details?encryptedId=eyJpdiI6Ik9yaTN1NC9ERTFvYVN5b1UwTG1ZUVE9PSIsInZhbHVlIjoiRHdrTlIzRloyOXg1WXFqMUN6ZTVBdz09IiwibWFjIjoiNmM5NTg5NzU4ZTIwOTNlMDkwMjcyZDg1MzM1MjEzMmNlNGYwMjc2MGVjMWFjYjM2ODdjYWRhOGQyNzE2MDU1NiIsInRhZyI6IiJ9",
+    "IS 13920 \u00a7\u00a76.2\u20136.3, 7.1\u20137.2, 7.4\u20137.6 and 9.1\u20139.2, base text. https://nfrlyconstruction.org/uploads/File/Codes/17072023-29_147_IS_13920-2016_DUCTILE_DETAILING_OF_RC_STRUCTURES.pdf_504314034.pdf",
+    "IS 456 \u00a7\u00a726.2, 26.3, 26.5.3, 38, 40 and Tables 19\u201320. https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf"
+  ]
+}
