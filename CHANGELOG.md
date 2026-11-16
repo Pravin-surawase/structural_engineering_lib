@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Extend the bounded multilayer beam detailing cases to rectangular, T and L
+  cutoffs and separated laps, including a restrained support-region top lap.
+  Add checked link pitch zones, a variable-depth haunch and a physical
+  T-flange cage with drawing and BBS readback.
+- Extend the positioned column member profiles to mixed-bar, slender and
+  circular laps, tied circular shear and rectangular two-plane shear.
+- Check supplied two-way slab action sets through both coefficient routes.
+  Add direct one-way strip deflection and crack-width checks and unequal-span
+  beam service histories with signed governing rows.
+- Recheck edited two-layer cages from the same positions in calculations,
+  drawings and schedules, including corner seats and intermediate restraint.
+- Add regular interior and exterior ductile joint checks and the common
+  PROJECT03 frame cut. Preserve signed actions, resolved bar paths and unique
+  joint and member quantities in its design-review outputs.
+
+### Fixed
+
+- Bind Quick Beam reports, drawings and schedules to the checked cage and
+  require the actual compression-bar restraint. Refresh Pareto effective
+  depth after cover or depth edits.
+- Correct rectangular and circular column detailing limits, corner torsion
+  bar diameter checks and inaccurate beam flexure and shear report traces.
+
+### Qualification scope
+
+- PROJECT01 and PROJECT02 remain on HOLD pending a matched FLOW04 native
+  beam and column action export. PROJECT03 site insertion, temporary
+  supports and boundary anchorage require project evidence.
+
 ## [0.29.2] — 2026-11-15
 
 ### Fixed

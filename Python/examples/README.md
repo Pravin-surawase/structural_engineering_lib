@@ -1,6 +1,6 @@
 # Python Examples
 
-Runnable examples for `structural-lib-is456` 0.29.2. Get the example files from
+Runnable examples for `structural-lib-is456` 0.30.0. Get the example files from
 the source checkout that contains them and install the package in a virtual
 environment.
 
