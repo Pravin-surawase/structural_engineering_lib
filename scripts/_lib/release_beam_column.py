@@ -22,6 +22,7 @@ TESTS = tuple(
         "test_beam_comparator_example",
         "test_beam_instantaneous_service",
         "test_beam_finite_service_history",
+        "test_beam_unequal_service_history",
         "test_cantilever_beam_check",
         "test_continuous_beam_check",
         "test_beam_continuous_detailing",
@@ -119,6 +120,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_sec03_reference.py",
     "docs/verification/check_library_029_serv01_reference.py",
     "docs/verification/check_library_029_serv02_reference.py",
+    "docs/verification/check_library_030_serv02_unequal_span_reference.py",
     "docs/verification/check_library_029_col02_reference.py",
     "docs/verification/check_library_029_col03_reference.py",
     "docs/verification/check_library_029_col04_reference.py",
@@ -188,6 +190,7 @@ SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
 SERV01_REFERENCE = "docs/verification/library-029-serv01-beam-service.json"
 SERV02_REFERENCE = "docs/verification/library-029-serv02-beam-history.json"
+SERV02_UNEQUAL_REFERENCE = "docs/verification/library-030-serv02-unequal-span.json"
 COL03_REFERENCE = "docs/verification/library-029-col03-mixed-column.json"
 COL04_REFERENCE = "docs/verification/library-029-col04-slender-column.json"
 COL05_REFERENCE = "docs/verification/library-029-col05-circular-column.json"
@@ -236,6 +239,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / SEC03_REFERENCE,
                 repo / SERV01_REFERENCE,
                 repo / SERV02_REFERENCE,
+                repo / SERV02_UNEQUAL_REFERENCE,
                 repo / COL03_REFERENCE,
                 repo / COL04_REFERENCE,
                 repo / COL05_REFERENCE,
@@ -532,6 +536,50 @@ def _check_physical_flange_replay(
     assert math.isclose(bbs["scheduled_steel_mass_kg"], expected["mass_kg"])
 
 
+def _check_unequal_service_replay(
+    expected: dict[str, Any], result: dict[str, Any]
+) -> None:
+    status = result["envelope"]["engineering_status"]
+    assert status == expected["status"]
+    actual = result["calculation"]["history"]
+    if "issue" in expected:
+        assert expected["issue"] in {
+            issue["code"] for issue in result["envelope"]["issues"]
+        }
+    if status == "HOLD":
+        assert actual is None
+        return
+    for field in (
+        "governing_deflection_station_id",
+        "governing_after_finishes_station_id",
+        "governing_crack_station_id",
+    ):
+        if field in expected:
+            assert actual[field] == expected[field]
+    if status != "PASS":
+        assert (
+            actual["crack_checks"][expected["governing_crack_station_id"]][
+                "engineering"
+            ]
+            == "fail"
+        )
+        return
+    assert {row["row_id"]: row for row in actual["signed_rows"]} == {
+        row["row_id"]: row for row in expected["signed_rows"]
+    }
+    for field in ("span_deflections", "deflection_extrema", "crack_sections"):
+        rows = {row["station_id"]: row for row in actual[field]}
+        assert len(rows) == len(expected[field])
+        for target in expected[field]:
+            row = rows[target["station_id"]]
+            for key, value in target.items():
+                assert (
+                    math.isclose(row[key], value, abs_tol=1e-6)
+                    if isinstance(value, float)
+                    else row[key] == value
+                )
+
+
 def qualify(config: dict[str, Any]) -> dict[str, Any]:
     """Replay all selected references, tests and public drivers from installation."""
     import shutil
@@ -697,28 +745,30 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             result["envelope"]["result_identity"]["input_hash"]
             in (directory / "report.html").read_text()
         )
-    for case, entry in json.loads((clone / SERV02_REFERENCE).read_text())[
-        "cases"
-    ].items():
-        label = f"beam-service-history-{case}"
-        directory = output / label
-        stdout = run(
-            label,
-            "Python/examples/beam_finite_service_history.py",
-            "--reference",
-            str(clone / SERV02_REFERENCE),
-            "--case",
-            case,
-            "--output-dir",
-            str(directory),
-        )
-        result = json.loads(stdout)
-        assert result["envelope"]["engineering_status"] == entry["status"]
-        assert result == json.loads((directory / "result.json").read_text())
-        assert (
-            result["envelope"]["result_identity"]["input_hash"]
-            in (directory / "report.html").read_text()
-        )
+    for reference in (SERV02_REFERENCE, SERV02_UNEQUAL_REFERENCE):
+        for case, entry in json.loads((clone / reference).read_text())["cases"].items():
+            label = f"beam-service-history-{case}"
+            directory = output / label
+            stdout = run(
+                label,
+                "Python/examples/beam_finite_service_history.py",
+                "--reference",
+                str(clone / reference),
+                "--case",
+                case,
+                "--output-dir",
+                str(directory),
+            )
+            result = json.loads(stdout)
+            if reference == SERV02_UNEQUAL_REFERENCE:
+                _check_unequal_service_replay(entry["expected"], result)
+            else:
+                assert result["envelope"]["engineering_status"] == entry["status"]
+            assert result == json.loads((directory / "result.json").read_text())
+            assert (
+                result["envelope"]["result_identity"]["input_hash"]
+                in (directory / "report.html").read_text()
+            )
     for reference, profile in (
         (BEAM05_REFERENCE, "beam-continuous-detailing"),
         (BEAM05_CUTOFF_REFERENCE, "beam-continuous-detailing"),

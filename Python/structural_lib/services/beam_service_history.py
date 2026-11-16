@@ -40,6 +40,12 @@ from structural_lib.services.beam_instantaneous_service import (
     _face_crack,
     _service_bars,
 )
+from structural_lib.services.beam_unequal_service_history import (
+    evaluate_unequal_service_history,
+)
+from structural_lib.services.beam_unequal_service_outputs import (
+    render_unequal_service_history_html,
+)
 from structural_lib.services.canonical_family import (
     CanonicalFamilyResultV1,
     canonical_family_result,
@@ -77,6 +83,14 @@ class BeamServiceHistoryV1(StrictPublicModel):
     bending_basis: Literal["downward_gravity", "reverse"]
 
 
+class BeamUnequalSpanBasisV1(StrictPublicModel):
+    """Shrinkage boundary conditions for the bounded unequal-span history."""
+
+    axial_restraint: Literal["free", "restrained"]
+    shrinkage_profile: Literal["uniform_through_section", "nonuniform_through_section"]
+    source_reference: Reference
+
+
 class BeamServiceHistoryInputV1(_BeamServiceInput):
     """The instantaneous physical member plus an explicit finite-age history."""
 
@@ -84,6 +98,9 @@ class BeamServiceHistoryInputV1(_BeamServiceInput):
         "is456-beam-finite-service-history-input/v1"
     )
     history: BeamServiceHistoryV1 | None = None
+    unequal_span_basis: BeamUnequalSpanBasisV1 | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
 
 
 def _history_issue(request: BeamServiceHistoryInputV1) -> StructuralIssueV1 | None:
@@ -354,6 +371,66 @@ def _resolve_history(
     }, None
 
 
+def _check_unequal_history(
+    request: BeamServiceHistoryInputV1,
+) -> CanonicalFamilyResultV1[dict[str, Any]]:
+    issue = _history_issue(request)
+    state = None
+    instantaneous = None
+    if issue is None:
+        state, issue = evaluate_unequal_service_history(request)
+    if state is not None:
+        peak = max(
+            state["deflection_extrema"], key=lambda row: abs(row["initial_total_mm"])
+        )
+        instantaneous = {
+            "deflection_mm": abs(peak["initial_total_mm"]),
+            "deflection_x_mm": peak["x_mm"],
+            "deflection_limit_mm": request.instantaneous_deflection_limit_mm,
+            "crack_width_limit_mm": request.crack_width_limit_mm,
+            "crack_checks": state.pop("instantaneous_crack_checks"),
+            "analysis_result_ids": state["analysis_result_ids"],
+        }
+    status = (
+        EngineeringStatus.HOLD
+        if state is None
+        else EngineeringStatus.FAIL if issue is not None else EngineeringStatus.PASS
+    )
+    result = canonical_family_result(
+        request,
+        {"instantaneous": instantaneous, "history": state},
+        workflow_id=WORKFLOW,
+        engineering_status=status,
+        limitations=(
+            "Prismatic rectangular beam with two unequal spans, mirrored steel and an identical downward UDL in each span.",
+            "The same cracked stiffness applies throughout the member within each age stage. The transient UDL acts at assessment only.",
+            "Uniform shrinkage and free axial shortening of the symmetric cage give zero flexural shrinkage curvature.",
+            "Torsional and shear cracking, support settlement and complete member design require separate checks.",
+        ),
+        provenance=(
+            "Euler-Bernoulli direct stiffness with supplied signed service rows.",
+            "IS 456:2000 Cl. 23.2, Annex C-3, C-4 and Annex F; actual section and prescribed finite-age inputs.",
+        ),
+    )
+    return replace(
+        result,
+        envelope=replace(
+            result.envelope,
+            issues=(issue,) if issue is not None else (),
+            calculation_status=(
+                CalculationStatus.COMPLETED
+                if state is not None
+                else CalculationStatus.NOT_EVALUATED
+            ),
+            freshness_status=(
+                FreshnessStatus.STALE
+                if issue and issue.code == "BEAM.SERVICE_REVISION_STALE"
+                else FreshnessStatus.CURRENT
+            ),
+        ),
+    )
+
+
 def check_finite_service_history(
     request: BeamServiceHistoryInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -381,14 +458,17 @@ def check_finite_service_history(
 
     Limitations
     -----------
-    One simply supported gravity beam or two identical continuous spans with
-    mirrored reinforcement, and supplied finite-age material inputs.
+    A simply supported gravity beam or a two-span continuous beam with
+    mirrored reinforcement and supplied finite-age material inputs.
+    Unequal spans require signed service rows and a free-shrinkage basis.
 
     Provenance
     ----------
     IS 456 Annex C-3, C-4 and Annex F with actual bar layers and supplied history.
     """
     require_request_type(request, BeamServiceHistoryInputV1)
+    if request.unequal_span_basis is not None:
+        return _check_unequal_history(request)
     initial = _evaluate_instantaneous_service(request)
     issue = _history_issue(request)
     state = None
@@ -503,6 +583,11 @@ def render_finite_service_history_html(
         or result.workflow_id != WORKFLOW
     ):
         raise TypeError("result must be a finite beam service history result")
+    if (
+        isinstance(result.request, BeamServiceHistoryInputV1)
+        and result.request.unequal_span_basis is not None
+    ):
+        return render_unequal_service_history_html(result)
     identity = result.envelope.result_identity
     state = result.calculation["history"]
     content = "<p>History held.</p>"
