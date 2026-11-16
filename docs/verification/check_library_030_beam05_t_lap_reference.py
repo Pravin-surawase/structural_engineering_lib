@@ -163,7 +163,7 @@ def _governing(rows, field, face=None):
     return {"row_id": tied[0], "tied_row_ids": tied, "utilization": maximum}
 
 
-def _support_evidence(member, checked_rows, capacities, first, last, development):
+def _support_evidence(member, checked_rows, capacities, paths, diameters, *, detailed):
     left, inner, right = member["supports"]
     face_geometry = {
         left["centre_mm"] + left["width_mm"] / 2: (left, -1),
@@ -178,30 +178,48 @@ def _support_evidence(member, checked_rows, capacities, first, last, development
             continue
         support, direction = face_geometry[x_mm]
         at_end = support in (left, right)
-        path_end = first if direction < 0 else last
-        straight = direction * (path_end - x_mm)
-        assert straight >= development
+        checked_bars = (
+            row["layout_bar_ids"]
+            if at_end
+            else [mark for mark in row["layout_bar_ids"] if mark.startswith("T")]
+        )
+        end_index = 0 if direction < 0 else 1
+        bar_checks = {}
+        for mark in checked_bars:
+            straight = direction * (paths[mark][end_index] - x_mm)
+            development = 0.87 * member["fy_nmm2"] * diameters[mark] / (4 * 1.5 * 1.6)
+            assert straight >= development
+            bar_checks[mark] = {
+                "straight_available_mm": straight,
+                "development_required_mm": development,
+            }
         check = {
             "support_id": support["support_id"],
             "direction": "decreasing_x" if direction < 0 else "increasing_x",
-            "straight_available_mm": straight,
-            "development_required_mm": development,
-            "checked_bar_ids": (
-                row["layout_bar_ids"]
-                if at_end
-                else [mark for mark in row["layout_bar_ids"] if mark.startswith("T")]
+            "straight_available_mm": min(
+                value["straight_available_mm"] for value in bar_checks.values()
             ),
+            "development_required_mm": max(
+                value["development_required_mm"] for value in bar_checks.values()
+            ),
+            "checked_bar_ids": checked_bars,
         }
+        if detailed:
+            check["checks_by_bar"] = bar_checks
         if at_end:
+            bottom = [mark for mark in checked_bars if mark.startswith("B")]
+            path_end = paths[bottom[0]][end_index]
+            assert all(paths[mark][end_index] == path_end for mark in bottom)
+            straight = direction * (path_end - x_mm)
             moment = capacities[row["layout"]]["bottom_web"]["capacity_knm"]
             over_centre = direction * (path_end - support["centre_mm"])
             flexure_shear = 1000 * moment / abs(row["shear_kn"]) + over_centre
             limit = min(3 * straight, flexure_shear)
-            assert limit >= development
+            assert limit >= max(
+                bar_checks[mark]["development_required_mm"] for mark in bottom
+            )
             check["positive_support"] = {
-                "bottom_bar_ids": [
-                    mark for mark in row["layout_bar_ids"] if mark.startswith("B")
-                ],
+                "bottom_bar_ids": bottom,
                 "web_only_capacity_knm": moment,
                 "extension_beyond_centre_mm": over_centre,
                 "three_times_projection_mm": 3 * straight,
@@ -358,12 +376,31 @@ def expected(request, *, right_span=False):
     overlap = end - start
     min_clear = max(dia, member["aggregate_size_mm"] + 5)
     pair_clear = abs(original["x_from_left_mm"] - partner["x_from_left_mm"]) - dia
-    all_outer = sorted(bar["x_from_left_mm"] for bar in [*outer, original, partner])
-    actual_clear = min(b - a - dia for a, b in pairwise(all_outer))
-    vertical_clear = (
-        original["y_from_top_mm"] - max(bar["y_from_top_mm"] for bar in inner) - dia
+    all_outer = sorted(
+        [*outer, original, partner], key=lambda bar: bar["x_from_left_mm"]
     )
-    assert vertical_clear >= max(15, (2 / 3) * member["aggregate_size_mm"], dia)
+    clearances = [
+        (
+            b["x_from_left_mm"]
+            - a["x_from_left_mm"]
+            - (a["diameter_mm"] + b["diameter_mm"]) / 2,
+            max(a["diameter_mm"], b["diameter_mm"], member["aggregate_size_mm"] + 5),
+        )
+        for a, b in pairwise(all_outer)
+    ]
+    actual_clear = min(actual for actual, _ in clearances)
+    vertical_clear = min(
+        original["y_from_top_mm"]
+        - bar["y_from_top_mm"]
+        - (bar["diameter_mm"] + dia) / 2
+        for bar in inner
+    )
+    assert vertical_clear >= max(
+        15,
+        (2 / 3) * member["aggregate_size_mm"],
+        dia,
+        *(bar["diameter_mm"] for bar in inner),
+    )
     piece_cover = {
         bar["bar_id"]: min(
             bar["x_from_left_mm"],
@@ -403,7 +440,7 @@ def expected(request, *, right_span=False):
     issues = []
     if overlap < required_lap:
         issues.append("SPLICE.NONCOMPLIANT")
-    if actual_clear < min_clear:
+    if any(actual < minimum for actual, minimum in clearances):
         issues.append("SPACING.HORIZONTAL")
     missing_rows = [f"{cid}:{sid}" for cid, sid in sorted(required - supplied)]
     if missing_rows:
@@ -489,7 +526,10 @@ def expected(request, *, right_span=False):
     assert minimum_link_stress >= 0.4 and member["link_spacing_mm"] <= max_link_pitch
     bottom_bars = sum(bar["face"] == "bottom" for bar in member["bars"])
     assert 1 / bottom_bars <= 0.5
-    first, last = (member["straight_bars"][f"{part}_mm"] for part in ("start", "end"))
+    pieces = [*unchanged, original, partner]
+    takeoff = _takeoff(
+        request, pieces, original, partner, (start, end), right_span=right_span
+    )
     return {
         **result,
         "physical_width_mm": physical_width,
@@ -521,16 +561,14 @@ def expected(request, *, right_span=False):
             "shear": _governing(centreline, "shear_utilization"),
         },
         "support_anchorage": _support_evidence(
-            member, acceptance, capacities, first, last, development
+            member,
+            acceptance,
+            capacities,
+            takeoff["drawing"]["bar_extents_mm"],
+            {bar["bar_id"]: bar["diameter_mm"] for bar in pieces},
+            detailed=len({bar["diameter_mm"] for bar in pieces}) > 1,
         ),
-        **_takeoff(
-            request,
-            [*unchanged, original, partner],
-            original,
-            partner,
-            (start, end),
-            right_span=right_span,
-        ),
+        **takeoff,
     }
 
 
