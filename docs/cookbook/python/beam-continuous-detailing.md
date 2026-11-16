@@ -277,3 +277,28 @@ The `short_overlap` and `congested_partner` controls fail (splice length and
 horizontal spacing respectively). `missing_lap_action` and `stale_analysis`
 hold, and all failed or held controls withhold the checked drawing and BBS.
 See the [independent replay](../../verification/check_library_030_beam05_t_lap_reference.py).
+
+## Check a separated lap in the right-flanged L beam
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-l-lap-reference.json \
+  --case l_lap --output-dir output/beam05-l-lap
+```
+
+The two-span case uses a 300 × 600 mm web, a 300 mm right overhang and a
+120 mm flange. The Ø20 outer-bottom bar laps from 1,550 to 2,850 mm in the
+first clear span. Two aligned inner bars and uniform web links are
+continuous. The supplied U1 and U2 actions have zero torsion.
+
+The physical width caps the effective compression flange at 600 mm for
+sagging. Hogging, shear and positive support anchorage use the web.
+`U2:LAP-START` governs the lap moment screen at 35.960 kN·m against
+154.623 kN·m. The drawing shows the right overhang and both physical
+pieces within the lap. The BBS includes their 3,310 mm and 6,910 mm cuts
+and totals 49 pieces and 184.665 kg.
+
+Replay `t_control` for the symmetric T case. Short overlap and congested
+partner fail. Missing lap action and stale analysis hold. All four
+controls return a diagnostic report and withhold the checked drawing and
+BBS. [Independent replay](../../verification/check_library_030_beam05_l_lap_reference.py)

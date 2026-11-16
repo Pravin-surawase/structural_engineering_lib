@@ -1094,8 +1094,8 @@ def load_continuous_detailing(
     -----------
     The nested member schema is `is456-layered-continuous-beam-check/v1`
     for monolithic flanges or actual face layers. It admits one first-span
-    outer-bottom cutoff. Layered rectangular and symmetric T cages admit
-    one separated straight outer-bottom tension lap. The original
+    outer-bottom cutoff. Layered rectangular, symmetric T and right-flanged
+    L cages admit one separated straight outer-bottom tension lap. The original
     rectangular schema admits one first-span bottom cutoff or separated lap.
 
     Provenance

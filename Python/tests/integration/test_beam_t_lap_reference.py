@@ -104,7 +104,7 @@ def test_t_lap_reference(name: str) -> None:
             in report
         )
 
-    _assert_rows_and_capacities(result.calculation, expected, name)
+    _assert_rows_and_capacities(result.calculation, expected)
     _assert_sections_and_bbs(
         drawing,
         schedule,
@@ -114,7 +114,7 @@ def test_t_lap_reference(name: str) -> None:
     )
 
 
-def _assert_rows_and_capacities(calculation: dict, expected: dict, name: str) -> None:
+def _assert_rows_and_capacities(calculation: dict, expected: dict) -> None:
     strength = calculation["strength"]
     lap = calculation["lap"]
 
@@ -215,7 +215,7 @@ def _assert_rows_and_capacities(calculation: dict, expected: dict, name: str) ->
                     reference["positive_support"]["m_over_v_plus_extension_mm"],
                     "length_mm",
                 )
-    if name == "t_lap":
+    if expected["effective_flange_width_mm"] is not None:
         assert lap["web_only_anchor_moment_knm"] == _approx(
             expected["strength_by_layout"]["upstream"]["bottom_web"]["capacity_knm"],
             "moment_knm",

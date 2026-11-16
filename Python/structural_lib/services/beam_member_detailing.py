@@ -909,7 +909,6 @@ def _check_bottom_lap(
                 {"web_only_anchor_moment_knm": web_capacity}
                 if isinstance(member, BeamLayeredContinuousCheckRequestV1)
                 and member.flange is not None
-                and member.flange.kind == "t_beam"
                 else {}
             ),
         },
@@ -946,8 +945,9 @@ def check_continuous_detailing(
     Limitations
     -----------
     Straight longitudinal bars and a uniform ordinary web link mark. One
-    first-span outer-layer bottom cutoff is supported. Rectangular and
-    symmetric T sections admit one separated straight outer-bottom tension lap.
+    first-span outer-layer bottom cutoff is supported. Rectangular, symmetric
+    T and right-flanged L sections admit one separated straight outer-bottom
+    tension lap.
 
     Provenance
     ----------
@@ -973,12 +973,15 @@ def check_continuous_detailing(
         request.lap
         and flange is not None
         and (
-            flange.kind != "t_beam"
-            or not math.isclose(
-                flange.left_overhang_mm,
-                flange.right_overhang_mm,
-                rel_tol=0,
-                abs_tol=1e-6,
+            (flange.kind == "l_beam" and flange.left_overhang_mm > 0)
+            or (
+                flange.kind == "t_beam"
+                and not math.isclose(
+                    flange.left_overhang_mm,
+                    flange.right_overhang_mm,
+                    rel_tol=0,
+                    abs_tol=1e-6,
+                )
             )
         )
     ):
@@ -986,7 +989,7 @@ def check_continuous_detailing(
             StructuralIssueV1(
                 "BEAM.LAYERED_BAR_DETAIL_HELD",
                 "lap",
-                "The layered lap profile covers rectangles and symmetric T web cages.",
+                "The layered lap profile covers rectangles, symmetric T cages and right-flanged L cages.",
             )
         )
         if status is EngineeringStatus.PASS:
@@ -1086,6 +1089,11 @@ def check_continuous_detailing(
                     )
     if checked.ultimate_status != "PASS":
         issues.extend(checked.result_envelope.issues)
+    lap_scope = (
+        "Right-flanged L cages admit one separated straight outer-bottom tension lap."
+        if request.lap and flange is not None and flange.kind == "l_beam"
+        else "Rectangular and symmetric T cages admit one separated straight outer-bottom tension lap."
+    )
     result = canonical_family_result(
         request,
         data,
@@ -1094,7 +1102,8 @@ def check_continuous_detailing(
         limitations=(
             "Only the supplied strength and anchorage rows and the declared physical layout are checked.",
             (
-                "Prismatic web cage with straight layers, one optional outer-layer bottom cutoff and one uniform two-hook web link. Rectangular and symmetric T cages admit one separated straight outer-bottom tension lap. Slab reinforcement and equilibrium torsion need separate evidence."
+                "Prismatic web cage with straight layers, one optional outer-layer bottom cutoff and one uniform two-hook web link. "
+                f"{lap_scope} Slab reinforcement and equilibrium torsion need separate evidence."
                 if layered
                 else "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark."
             ),
@@ -1501,8 +1510,11 @@ def _section_panel(
     if flange:
         outline = (
             f"M{flange_left:g} 0 H{width + right:g} V{flange_depth:g} H{width:g} "
-            f"V{depth:g} H0 V{flange_depth:g} H{flange_left:g} Z"
+            f"V{depth:g} H0"
         )
+        if left > 0:
+            outline += f" V{flange_depth:g} H{flange_left:g}"
+        outline += " Z"
     else:
         outline = f"M0 0 H{width:g} V{depth:g} H0 Z"
     inset = member.clear_cover_mm + member.link_diameter_mm / 2
@@ -1721,6 +1733,13 @@ def render_continuous_detailing_html(
                         lap, result.calculation.get("arrangement", {})
                     )
                 )
+                flange = request.member.flange
+                if flange is not None and flange.kind == "l_beam":
+                    width = request.member.width_mm + flange.right_overhang_mm
+                    lap_html += (
+                        f"<p>L beam with a {flange.right_overhang_mm:g} mm right overhang "
+                        f"and a {flange.thickness_mm:g} mm flange. Physical width {width:g} mm.</p>"
+                    )
     issues = "".join(f"<li>{html.escape(item.message)}</li>" for item in result.issues)
     limits = "".join(f"<li>{html.escape(item)}</li>" for item in result.limitations)
     status = result.engineering_status.value if current_match else "HOLD · stale result"
