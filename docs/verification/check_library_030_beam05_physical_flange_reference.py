@@ -132,20 +132,21 @@ def fixture():
         [1, 5],
         "BEAM",
     )
-    # This shallow single-piece transverse link hooks around each of the
-    # outboard Ø16 bars. The full-depth web links enclose the four web
-    # corners. The shallow link supplies no web shear or torsion resistance.
+    # The shallow closed link surrounds the outboard Ø16 bars. Two
+    # overlapping returns sit in different station planes. The link
+    # supplies no web shear or torsion resistance.
     cap = link(
-        list(range(-35, 8066, PITCH)),
+        list(range(-45, 8056, PITCH)),
         [
             room(0, 69, 36),
             room(0, -26, 36),
             room(0, -26, 118),
-            room(0, 326, 118),
-            room(0, 326, 36),
-            room(0, 231, 36),
+            room(10, 326, 118),
+            room(10, 326, 36),
+            room(10, -26, 36),
+            room(10, -26, 115),
         ],
-        [1, 4],
+        [1, 5],
         "BEAM",
     )
     slab_transverse = {
@@ -302,13 +303,14 @@ def fixture():
     beam_anchor = [3850 - PIECE_ENDS[0], PIECE_ENDS[1] - 4150]
     min_ext_after_zero = min(3000 - PIECE_ENDS[0], PIECE_ENDS[1] - 5000)
     assert all(a > required_flange_ld for a in (*beam_anchor, outer_end))
-    assert main_anchor > required_main_ld and min_ext_after_zero > 493.2
+    extension_required = max(HEIGHT - 50 + XY_TOLERANCE, 12 * 16, 3350 / 16)
+    assert main_anchor > required_main_ld and min_ext_after_zero > extension_required
 
     # All bend fillets stay within their nominal vertex boxes. Axial
     # separation therefore bounds both crossing link systems, and the
     # horizontal cap rail clears the lower slab distribution row vertically.
     separation = {
-        "web_to_flange_link_mm": 35 - 8,
+        "web_to_flange_link_mm": 25 - 8,
         "web_to_slab_main_mm": 45 - 9,
         "flange_link_to_slab_main_mm": 60 - 9,
         "flange_link_to_web_top_bar_mm": 58 - 36 - 14,
@@ -328,6 +330,12 @@ def fixture():
     assert min(slab_main_area, slab_distrib_area) >= 0.0012 * FLANGE * 1000
     web_cut, web_tails = link_cut_mm(web_link["vertices"])
     cap_cut, cap_tails = link_cut_mm(cap["vertices"])
+    # At the closing vertical tail, the left bottom fillet is within one
+    # radius measured along the slightly skew bottom rail. Conservatively
+    # bound its approach toward the closing hook plane by that projection.
+    cap_hook_plane_clearance = 10 - RADIUS * 10 / math.hypot(352, 10) - 8
+    assert cap_hook_plane_clearance > 0
+    assert cap["vertices"][0][1] + RADIUS < cap["vertices"][4][1] - RADIUS
 
     schedule_rows = [
         schedule("WT20", 20, 2, 8920, "BEAM"),
@@ -390,10 +398,12 @@ def fixture():
         "required_flange_development_mm": required_flange_ld,
         "minimum_flange_support_development_mm": min(beam_anchor),
         "flange_beyond_zero_moment_mm": min_ext_after_zero,
+        "required_flange_extension_mm": extension_required,
         "required_slab_main_development_mm": required_main_ld,
         "available_slab_main_development_mm": main_anchor,
         "web_hook_tails_mm": web_tails,
         "flange_hook_tails_mm": cap_tails,
+        "flange_hook_plane_clearance_mm": cap_hook_plane_clearance,
         "strip_main_area_per_m_mm2": slab_main_area,
         "strip_distribution_area_per_m_mm2": slab_distrib_area,
         "strip_flexure_capacity_knm": capacity["capacity_knm"],
@@ -406,6 +416,7 @@ def fixture():
     cases = {"physical_flange": {"request": request, "expected": expected}}
     for name, status, check in (
         ("link_clash", "FAIL", "web_flange_link_intersection"),
+        ("open_flange_link", "FAIL", "flange_link_closure"),
         ("short_flange_development", "FAIL", "flange_bar_support_development"),
         ("missing_strip_actions", "HOLD", "slab_strip_action_basis"),
         ("stale_strip_geometry", "HOLD", "slab_strip_geometry_revision"),
@@ -415,6 +426,17 @@ def fixture():
             altered["flange_links"]["stations_mm"] = web_link["stations_mm"]
             assert cap["vertices"][2][1] < 44 < cap["vertices"][3][1]
             assert 44 < cap["vertices"][2][2] < 506
+        elif name == "open_flange_link":
+            altered["flange_links"]["vertices"] = [
+                room(0, 69, 36),
+                room(0, -26, 36),
+                room(0, -26, 118),
+                room(0, 326, 118),
+                room(0, 326, 36),
+                room(0, 231, 36),
+            ]
+            altered["flange_links"]["hook_vertices"] = [1, 4]
+            assert 231 - 69 == 162
         elif name == "short_flange_development":
             altered["flange_bars"][0]["start_mm"] = 3400
             assert 3850 - 3400 < required_flange_ld
@@ -453,4 +475,4 @@ if __name__ == "__main__":
         assert (
             FIXTURE.read_text(encoding="utf-8") == generated
         ), "Independent reference drift"
-    print("Reproduced physical T-flange PASS, two FAIL and two HOLD cases.")
+    print("Reproduced physical T-flange PASS, three FAIL and two HOLD cases.")
