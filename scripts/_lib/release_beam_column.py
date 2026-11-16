@@ -115,6 +115,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_beam07_reference.py",
     "docs/verification/check_library_029_flow02_reference.py",
     "docs/verification/check_library_029_flow03_beam_reference.py",
+    "docs/verification/check_library_030_flow03_two_layer_reference.py",
     "docs/verification/check_library_029_flow04_reference.py",
     "docs/verification/check_library_029_sec02_reference.py",
     "docs/verification/check_library_029_sec03_reference.py",
@@ -185,6 +186,11 @@ BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
 FLOW03_BEAM_REFERENCE = "docs/verification/library-029-flow03-beam-edit.json"
+FLOW03_LAYERED_REFERENCE = "docs/verification/library-030-flow03-two-layer-edit.json"
+FLOW03_LAYERED_EXAMPLE = "Python/examples/beam_layered_cage_edit.py"
+FLOW03_LAYERED_TEST = (
+    "Python/tests/integration/test_beam_layered_cage_edit_reference.py"
+)
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
@@ -234,6 +240,9 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
                 repo / FLOW03_BEAM_REFERENCE,
+                repo / FLOW03_LAYERED_REFERENCE,
+                repo / FLOW03_LAYERED_EXAMPLE,
+                repo / FLOW03_LAYERED_TEST,
                 repo / FLOW04_REFERENCE,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
@@ -587,6 +596,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     import pytest
 
     repo, output = Path(config["repo"]), Path(config["output"])
+    layered_edit = tuple(map(int, config["version"].split(".")[:2])) >= (0, 30)
     clone = Path.cwd() / "beam-column-drivers"
     hashes = {}
     for source in input_paths(repo):
@@ -917,6 +927,41 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         assert result["envelope"]["engineering_status"] == flow03["states"][case]
         assert (directory / "member.svg").is_file() == (case == "edited")
         assert (directory / "bbs.csv").is_file() == (case == "edited")
+    if layered_edit:
+        reference = clone / FLOW03_LAYERED_REFERENCE
+        frozen = json.loads(reference.read_text(encoding="utf-8"))
+        cases = {
+            "base": frozen["base_expected"],
+            **{name: row["expected"] for name, row in frozen["cases"].items()},
+        }
+        for case, expected in cases.items():
+            label = f"beam-layered-cage-edit-{case}"
+            directory = output / label
+            result = json.loads(
+                run(
+                    label,
+                    FLOW03_LAYERED_EXAMPLE,
+                    "--reference",
+                    str(reference),
+                    "--case",
+                    case,
+                    "--output-dir",
+                    str(directory),
+                )
+            )
+            assert result["envelope"]["engineering_status"] == expected["status"]
+            assert (directory / "report.html").is_file() == expected["report_available"]
+            assert (directory / "member.svg").is_file() == expected[
+                "checked_drawing_available"
+            ]
+            assert (directory / "bbs.csv").is_file() == expected["bbs_available"]
+            if expected["bbs_available"]:
+                bbs = result["calculation"]["bbs"]["outputs"]["bbs"]
+                assert math.isclose(
+                    bbs["scheduled_steel_mass_kg"],
+                    expected["bbs"]["total_mass_kg"],
+                    rel_tol=1e-9,
+                )
     for option, expected in (
         ((), "COMPLETE_FOR_DECLARED_ROWS"),
         (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),
@@ -1222,6 +1267,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             "--junitxml",
             str(junit),
             *(str(clone / name) for name in TESTS),
+            *((str(clone / FLOW03_LAYERED_TEST),) if layered_edit else ()),
         ]
     )
     suites = ElementTree.parse(junit).getroot().findall("testsuite")

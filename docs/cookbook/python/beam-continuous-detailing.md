@@ -512,3 +512,37 @@ the credited compression bars lack verified restraint. The same check
 applies to the original layered rectangular, T-beam and L-beam lap
 replays. [IS 456 clauses 26.5.1.2 and 26.5.3.2](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf) ·
 [Independent restraint replay](../../verification/check_library_030_beam05_span2_lap_restraint_reference.py)
+
+## Edit a two-layer cage with declared placement limits
+
+The B05 companion keeps the admitted bottom-bar inventory and seats four
+continuous outer bars in the rounded hoop. One open cross-tie restrains
+the vertically aligned outer middle bars. The checked example changes
+one inner bottom bar from Ø16 to Ø20. The check uses the new bar area
+and positions through the signed actions, placement limits and
+instantaneous service response.
+
+Supply the `layered_cage` group when loading the continuous detailing
+request. It carries the placement dimensions and tolerances, the physical
+cross-tie and the current unfactored service load. Call
+`recheck_continuous_bar_edit` using the checked base and the applicable
+analysis basis. Render using the returned edited request.
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_layered_cage_edit.py \
+  --reference docs/verification/library-030-flow03-two-layer-edit.json \
+  --case edited --output-dir output/flow03-layered-edit
+```
+
+The checked edit retains a 63 mm consolidation opening against the
+declared 40 mm requirement. Its 90-piece schedule contains eight
+longitudinal bars, 41 closed hoops and 41 open cross-ties. The member
+drawing projects the cross-tie shape onto the section and marks the
+separate tie stations on the elevation.
+
+Use `empty_corner`, `congested`, `short_form_opening` or
+`missing_cross_tie` to replay the placement failures. The
+`stale_analysis`, `stiffness_dependent` and `missing_placement`
+cases return HOLD. All seven cases emit a diagnostic report and
+withhold the checked drawing and BBS.
+[Frozen FLOW03 reference](../../verification/library-030-flow03-two-layer-edit.json)

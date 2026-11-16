@@ -106,6 +106,20 @@ from structural_lib.services.beam_haunch_strength import (
     check_haunch_bend_restraint,
     check_haunch_station_strength,
 )
+from structural_lib.services.beam_layered_edit_checks import (
+    BeamLayeredEditServiceV1,
+    check_layered_edit_actions,
+)
+from structural_lib.services.beam_layered_edit_outputs import (
+    project_centre_cross_tie,
+    render_layered_cage_report,
+)
+from structural_lib.services.beam_layered_edit_paths import centre_cross_tie_paths
+from structural_lib.services.beam_layered_edit_placement import (
+    BeamCentreCrossTieV1,
+    BeamLayeredCagePlacementV1,
+    check_layered_cage_placement,
+)
 from structural_lib.services.beam_link_zones import (
     BeamLinkZoneV1,
     ResolvedBeamLinkZone,
@@ -218,6 +232,14 @@ class BeamLapPlacementEnvelopeV1(StrictPublicModel):
     concrete_placement_access_diameter_mm: float = Field(gt=0, le=200)
 
 
+class BeamLayeredCageDetailV1(StrictPublicModel):
+    """Placement and service evidence for an ordinary two-layer rectangular cage."""
+
+    placement: BeamLayeredCagePlacementV1 | None = None
+    cross_tie: BeamCentreCrossTieV1 | None = None
+    service: BeamLayeredEditServiceV1 | None = None
+
+
 class BeamContinuousDetailingInputV1(StrictPublicModel):
     """Two-span action and reinforcement check with a current ordinary link detail."""
 
@@ -251,6 +273,9 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
         Field(
             default="not_requested", exclude_if=lambda value: value == "not_requested"
         )
+    )
+    layered_cage: BeamLayeredCageDetailV1 | Literal["not_requested"] = Field(
+        default="not_requested", exclude_if=lambda value: value == "not_requested"
     )
 
     @field_validator("link_zones", mode="before")
@@ -624,6 +649,18 @@ def _schedule(
                 bar_mark=details[1].link.link_id,
                 start_station_x_mm=link.first_station_mm + offset,
                 end_station_x_mm=link.last_station_mm + offset,
+            )
+        )
+    cage = request.layered_cage
+    if isinstance(cage, BeamLayeredCageDetailV1) and cage.cross_tie is not None:
+        tie = cage.cross_tie
+        zones.append(
+            replace(
+                zones[0],
+                zone_id="centre-cross-ties",
+                bar_mark=f"{request.member.member_id}-CT{tie.diameter_mm:g}",
+                start_station_x_mm=link.first_station_mm + tie.station_offset_mm,
+                end_station_x_mm=link.last_station_mm + tie.station_offset_mm,
             )
         )
     return _create_bound_bbs(
@@ -2330,6 +2367,116 @@ def _check_physical_flange_detailing(
     )
 
 
+def _check_layered_cage(
+    request: BeamContinuousDetailingInputV1,
+    checked: BeamContinuousCheckResultV1,
+    cage: BeamLayeredCageDetailV1,
+) -> tuple[dict[str, Any], EngineeringStatus, tuple[StructuralIssueV1, ...]]:
+    member, link = request.member, request.link_detail
+    if (
+        not isinstance(member, BeamLayeredContinuousCheckRequestV1)
+        or member.flange is not None
+        or member.straight_bars is None
+        or link is None
+        or link.restraint_link is not None
+        or request.cutoff is not None
+        or request.lap is not None
+        or request.link_zones != "not_requested"
+        or request.placement_envelope != "not_requested"
+        or request.haunch != "not_requested"
+        or request.physical_flange != "not_requested"
+    ):
+        return (
+            {},
+            EngineeringStatus.HOLD,
+            (
+                StructuralIssueV1(
+                    "BEAM.EDIT_CAGE_SCOPE_HELD",
+                    "layered_cage",
+                    "The placement edit needs an ordinary two-layer rectangular cage with uninterrupted bars and one uniform outer hoop grid.",
+                ),
+            ),
+        )
+    if cage.placement is None:
+        return (
+            {},
+            EngineeringStatus.HOLD,
+            (
+                StructuralIssueV1(
+                    "BEAM.EDIT_PLACEMENT_HELD",
+                    "layered_cage.placement",
+                    "Supply cover, form opening, placement tolerances and concrete consolidation access.",
+                ),
+            ),
+        )
+    inset = member.clear_cover_mm + member.link_diameter_mm / 2
+    bounds = (inset, inset, member.width_mm - inset, member.depth_mm - inset)
+    placement, issues = check_layered_cage_placement(
+        member,
+        link_bounds_mm=bounds,
+        internal_bend_radius_mm=link.internal_bend_radius_mm,
+        hook_vertex_leg_mm=link.hook_vertex_leg_mm,
+        hook_plane_offset_mm=link.hook_plane_offset_mm,
+        placement=cage.placement,
+        cross_tie=cage.cross_tie,
+    )
+    evidence: dict[str, Any] = {"placement": placement}
+    if issues:
+        status = (
+            EngineeringStatus.HOLD
+            if any(issue.code == "BEAM.EDIT_CAGE_SCOPE_HELD" for issue in issues)
+            else EngineeringStatus.FAIL
+        )
+        return evidence, status, issues
+    if checked.ultimate_status != "PASS":
+        return evidence, EngineeringStatus(checked.ultimate_status), ()
+    hoop_edge = (
+        member.link_diameter_mm + cage.placement.link_diameter_allowance_mm
+    ) / 2 + cage.placement.link_station_tolerance_mm
+    first = link.first_station_mm - hoop_edge
+    last = (
+        link.last_station_mm
+        + link.hook_plane_offset_mm
+        + cage.placement.closed_hook_plane_offset_tolerance_mm
+        + hoop_edge
+    )
+    if cage.cross_tie is not None:
+        tie = cage.cross_tie
+        tie_edge = (
+            tie.diameter_mm + cage.placement.link_diameter_allowance_mm
+        ) / 2 + cage.placement.link_station_tolerance_mm
+        first = min(first, link.first_station_mm + tie.station_offset_mm - tie_edge)
+        last = max(last, link.last_station_mm + tie.station_offset_mm + tie_edge)
+    left, _, right = member.supports
+    if (
+        min(first - left.left_face_mm, right.right_face_mm - last)
+        < cage.placement.required_cover_mm
+    ):
+        return (
+            evidence,
+            EngineeringStatus.FAIL,
+            (
+                StructuralIssueV1(
+                    "BEAM.EDIT_LINK_END_COVER",
+                    "link_detail",
+                    "The hoop and cross-tie grids require end cover under the declared station tolerances.",
+                ),
+            ),
+        )
+    actions, status, issue = check_layered_edit_actions(
+        member,
+        checked,
+        cage.placement,
+        placement["max_pitch_under_tolerance_mm"],
+        cage.service,
+    )
+    if cage.cross_tie is not None:
+        evidence["cross_tie_mark"] = (
+            f"{member.member_id}-CT{cage.cross_tie.diameter_mm:g}"
+        )
+    return {**evidence, **actions}, status, (issue,) if issue is not None else ()
+
+
 def check_continuous_detailing(
     request: BeamContinuousDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -2370,16 +2517,20 @@ def check_continuous_detailing(
     zones with a single ordinary closed link shape and signed transition rows.
     The ordinary four-corner haunch uses resolved bottom bends, individual
     link depths and the signed varying-depth shear check.
+    A layered rectangular cage with declared construction limits checks
+    the outer seats, supported middle cross-ties and form placement.
 
     Provenance
     ----------
     Uses the checked supplied station actions, physical path and BBS owners.
     """
     require_request_type(request, BeamContinuousDetailingInputV1)
-    if request.physical_flange != "not_requested":
-        return _check_physical_flange_detailing(request)
-    if request.haunch != "not_requested":
-        return _check_haunch_detailing(request)
+    cage = request.layered_cage
+    if cage == "not_requested":
+        if request.physical_flange != "not_requested":
+            return _check_physical_flange_detailing(request)
+        if request.haunch != "not_requested":
+            return _check_haunch_detailing(request)
     member = request.member
     varied_requested = request.link_zones != "not_requested"
     zones: tuple[ResolvedBeamLinkZone, ...] = ()
@@ -2443,7 +2594,17 @@ def check_continuous_detailing(
         if isinstance(request.member, BeamLayeredContinuousCheckRequestV1)
         else None
     )
-    if (
+    if isinstance(cage, BeamLayeredCageDetailV1):
+        source_hash = _input_hash(request)
+        if checked.result_envelope.freshness_status is FreshnessStatus.CURRENT:
+            evidence, cage_status, cage_issues = _check_layered_cage(
+                request, checked, cage
+            )
+            if status is not EngineeringStatus.FAIL:
+                status = cage_status
+            data["layered_cage"] = evidence
+            issues.extend(cage_issues)
+    elif (
         request.lap
         and flange is not None
         and (
@@ -2487,7 +2648,9 @@ def check_continuous_detailing(
         lap_pieces, lap, lap_issues, status = _check_lap(request, checked)
         data["lap"] = lap
         issues.extend(lap_issues)
-    if request.cutoff or request.lap or placement_requested or varied_requested:
+    if cage == "not_requested" and (
+        request.cutoff or request.lap or placement_requested or varied_requested
+    ):
         source_hash = semantic_hash(
             "beam_detailing_source",
             {
@@ -2541,6 +2704,17 @@ def check_continuous_detailing(
             )
         else:
             paths_request, link_requests = inputs
+            if isinstance(cage, BeamLayeredCageDetailV1) and cage.cross_tie is not None:
+                assert isinstance(member, BeamLayeredContinuousCheckRequestV1)
+                stations = tuple(
+                    path.nodes[0].point.station_x_mm
+                    for path in paths_request.paths
+                    if path.role is BarPathRole.TRANSVERSE_LINK
+                )
+                cross_ties = centre_cross_tie_paths(member, cage.cross_tie, stations)
+                paths_request = replace(
+                    paths_request, paths=(*paths_request.paths, *cross_ties)
+                )
             fit = check_reinforcement_arrangement(link_requests[0].arrangement)
             paths = resolve_bar_paths(paths_request)
             links = tuple(check_closed_link_detail(detail) for detail in link_requests)
@@ -2643,11 +2817,15 @@ def check_continuous_detailing(
             (
                 "Prismatic web cage with straight layers and one optional outer-layer bottom cutoff or lap. "
                 f"{lap_scope} Slab reinforcement and equilibrium torsion need separate evidence."
-                if layered
+                if layered and cage == "not_requested"
                 else (
-                    "Ordinary uninterrupted corner bars with one two-hook link mark on declared pitch zones."
-                    if varied_requested
-                    else "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark."
+                    "Seated outer corner bars, supported middle bars and a two-layer section with the declared placement limits."
+                    if isinstance(cage, BeamLayeredCageDetailV1)
+                    else (
+                        "Ordinary uninterrupted corner bars with one two-hook link mark on declared pitch zones."
+                        if varied_requested
+                        else "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark."
+                    )
                 )
             ),
             "Unreported demand between stations, other splices, member serviceability, support connections and fabrication approval require separate evidence.",
@@ -2932,6 +3110,7 @@ def render_continuous_detailing_svg(
         if request.link_detail and request.link_detail.restraint_link
         else None
     )
+    centre_cross_mark = data.get("layered_cage", {}).get("cross_tie_mark")
     section_note = ""
     if restraint_mark is not None:
         detail = request.link_detail
@@ -2943,19 +3122,49 @@ def render_continuous_detailing_svg(
             '<text x="18" y="295" font-size="17" fill="#334155">'
             "Link shapes are projected onto each bar section. See elevation for placement.</text>"
         )
+    if centre_cross_mark is not None:
+        assert isinstance(request.layered_cage, BeamLayeredCageDetailV1)
+        tie = request.layered_cage.cross_tie
+        assert tie is not None
+        section_note = (
+            '<text x="18" y="273" font-size="17" fill="#334155">'
+            f"Outer hoops @ {member.link_spacing_mm:g} mm · "
+            f"centre cross-ties @ {member.link_spacing_mm:g} mm, +{tie.station_offset_mm:g} mm</text>"
+            '<text x="18" y="295" font-size="17" fill="#334155">'
+            "Purple shows the cross-tie projected onto the web section.</text>"
+        )
     for item in geometry["paths"]:
         path_id = html.escape(item["bar_id"], quote=True)
         segments = item["segments"]
         x1 = segments[0]["start"]["station_x_mm"]
+        mark_attribute = ""
         if item["role"] == "transverse_link":
             x2, y1, y2 = x1, member.clear_cover_mm, depth - member.clear_cover_mm
-            color = "#7e22ce" if item["bar_mark"] == restraint_mark else "#64748b"
+            color = (
+                "#7e22ce"
+                if item["bar_mark"] in (restraint_mark, centre_cross_mark)
+                else "#64748b"
+            )
+            if item["bar_mark"] == centre_cross_mark:
+                hook_limits = tuple(
+                    (
+                        segment["bend_centre"]["section_y_from_top_mm"],
+                        segment["bend_radius_mm"],
+                    )
+                    for segment in segments
+                    if segment["bend_centre"] is not None
+                )
+                y1 = min(centre - radius for centre, radius in hook_limits)
+                y2 = max(centre + radius for centre, radius in hook_limits)
+                mark_attribute = (
+                    f' data-cross-tie="{html.escape(centre_cross_mark, quote=True)}"'
+                )
         else:
             x2 = segments[-1]["end"]["station_x_mm"]
             y1 = y2 = segments[0]["start"]["section_y_from_top_mm"]
             color = "#1e40af"
         line = (
-            f'<line data-bar-id="{path_id}" data-layer="{item["layer"]}" '
+            f'<line data-bar-id="{path_id}" data-layer="{item["layer"]}"{mark_attribute} '
             f'x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}" '
         )
         if item["bar_id"] == cutoff.get("bar_id"):
@@ -3097,7 +3306,12 @@ def render_continuous_detailing_svg(
                 ),
             )
         else:
-            panels += _section_panel(member, request.link_detail, geometry["paths"])
+            panels += _section_panel(
+                member,
+                request.link_detail,
+                geometry["paths"],
+                centre_cross_mark=centre_cross_mark,
+            )
     else:
         drawing_view, panels = elevation_view, elevation
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="{drawing_view}" role="img">
@@ -3117,6 +3331,7 @@ def _section_panel(
     panel_width: int = 1200,
     label: str = "Physical cross-section · web cage",
     lap_colors: dict[str, str] | None = None,
+    centre_cross_mark: str | None = None,
 ) -> str:
     """Draw the web cage at the selected side of the section station."""
     assert link is not None
@@ -3180,6 +3395,10 @@ def _section_panel(
             f'height="{depth - 2 * inset:g}" rx="{radius:g}" fill="none" '
             f'stroke="#7e22ce" stroke-width="{member.link_diameter_mm:g}"/>'
         )
+    if centre_cross_mark is not None:
+        path = next(item for item in paths if item["bar_mark"] == centre_cross_mark)
+        inner_shape += project_centre_cross_tie(path)
+        section_offset = 42
     return f"""<text x="{panel_x + 18}" y="{302 + section_offset}" font-size="22">{html.escape(label)}</text>
 <svg data-view="section"{station} x="{panel_x}" y="{318 + section_offset}" width="{panel_width}" height="320"
  viewBox="{-left - 35:g} -35 {width + left + right + 70:g} {depth + 70:g}">
@@ -3407,6 +3626,16 @@ def render_continuous_detailing_html(
     zone_html = _varied_link_report(zones) if zones else ""
     haunch = result.calculation.get("haunch") if current_match else None
     haunch_html = render_haunch_report(haunch) if haunch is not None else ""
+    layered_cage = result.calculation.get("layered_cage") if current_match else None
+    cage_html = (
+        render_layered_cage_report(
+            layered_cage,
+            analysis_revision=request.member.analysis_revision,
+            reinforcement_revision=request.member.reinforcement_revision,
+        )
+        if layered_cage and isinstance(request, BeamContinuousDetailingInputV1)
+        else ""
+    )
     governing_title = (
         "Governing action rows"
         if zones or haunch is not None
@@ -3425,7 +3654,7 @@ def render_continuous_detailing_html(
 <p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
 <p>Supplied strength {strength["ultimate_status"]} · Serviceability {strength["serviceability_status"]}</p>
 <h2>{governing_title}</h2><ul>{governance}</ul>
-{edit_html}{cutoff_html}{lap_html}{section_html}{placement_html}{zone_html}{haunch_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+{edit_html}{cutoff_html}{lap_html}{section_html}{placement_html}{zone_html}{haunch_html}{cage_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
 
 
 def _varied_link_report(data: dict[str, Any]) -> str:
