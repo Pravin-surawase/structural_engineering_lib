@@ -223,8 +223,8 @@ separate acceptance cases. [IS 456 clauses 26.2.5 and 26.3](https://wriddodoti.g
 
 ```bash
 ./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
-  --reference docs/verification/library-030-beam05-layered-lap.json \
-  --case layered_lap --output-dir output/beam05-layered-lap
+  --reference docs/verification/library-030-beam05-rectangular-lap-placement-reference.json \
+  --case rectangular_lap --output-dir output/beam05-layered-lap
 ```
 
 Use the same lap fields with the layered rectangular schema. Keep the lap
@@ -233,75 +233,115 @@ row. Both pieces are Ø20 in the outer bottom layer, with at least two bar
 diameters of clear concrete cover. The inner bottom bars stay in line
 over uninterrupted outer bars, as required by IS 456 clause 26.3.2(c).
 
-This specimen retains the published 300 × 600 mm section, spans, links and
-actions. It omits inner bar `B2-3` to keep both remaining inner bars aligned
-when the outer bar `B1-3` changes transverse position. Keeping `B2-3` in the
-original published cage gives FAIL for layer alignment.
+The specimen keeps the original 300 × 600 mm rectangular section, spans
+and actions. Four continuous corner bars are seated inside the exterior
+closed links. One fully nested link restrains the two additional top bars
+and the separated pieces of the intermediate bottom bar `B1-2`. Both
+inner bottom bars align with the continuous exterior bars. The two Ø8
+link grids use 200 mm nominal pitch and a 60 mm offset.
 
-The 1,300 mm overlap from 1,550 to 2,850 mm exceeds the 906.250 mm basic
-straight flexural-tension lap requirement. At a partner centre of 197.5 mm,
-the pair has 27.5 mm clear spacing against a 25 mm minimum. Moving the centre
-to 215 mm reduces the gap to 10 mm and fails the overlap spacing check.
+The nominal 1,300 mm lap runs from 1,550 to 2,850 mm. The declared limits
+leave at least 1,280 mm of overlap and 950 mm of straight support
+development against 906.25 mm required. The lowest adverse capacities
+are 300.106 kN·m in sagging, 260.327 kN·m in hogging and 186.351 kN in
+shear. The report records the signed rows and placement checks.
+The drawing shows the three lap sections and both link grids in elevation.
+The 92-piece BBS totals 249.352 kg.
 
-The report retains concurrent actions and the as-checked downstream
-anchorage. The drawing shows the cage before, within and after the lap.
-The BBS assigns separate 3,310 and 6,910 mm cuts to the pieces and totals
-184.665 kg. Both failing controls withhold drawing and schedule.
-[Independent lap replay](../../verification/check_library_030_beam05_lap_reference.py)
-[IS 456 clauses 26.2.5 and 26.3.2](https://www.cracindia.in/admin/uploads/IS-456.pdf)
+Short overlap, congestion and bend interference fail. Missing actions,
+stale analysis, lost bend restraint and missing placement evidence hold.
+Each control withholds the checked drawing and BBS. The original
+`layered_lap` remains a separate numerical control for unverified
+compression restraint.
+[Independent replay](../../verification/check_library_030_beam05_rectangular_lap_placement_reference.py)
+[IS 456 clauses 26.2.5 and 26.3.2](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf)
 
-## Check a separated lap in the symmetric T beam
-
-```bash
-./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
-  --reference docs/verification/library-030-beam05-t-lap-reference.json \
-  --case t_lap --output-dir output/beam05-t-lap
-```
-
-This bounded case is one straight, separated Ø20 `B1-3` lap in the outer
-bottom layer of the first clear span of a prismatic symmetric T web cage. It
-retains the two aligned inner bars, omits `B2-3` and uses uniform closed
-web links with zero torsion.
-
-The 1,300 mm overlap from 1,550 to 2,850 mm exceeds the 906.250 mm
-requirement. The pieces have 27.5 mm clear spacing against a 25 mm
-minimum. The physical and effective flange widths are both 1,000 mm.
-Sagging uses the monolithic effective flange. Hogging, shear, support
-anchorage and the closed links use the web. The report records concurrent
-U1/U2 lap actions and the governing moment at `U2:LAP-START`. The drawing
-shows the T outline, web link cage and the bar positions before, within
-and after the lap. The 49-piece BBS includes separate 3,310 mm and
-6,910 mm cuts for the lap pieces and totals 184.665 kg.
-
-The `short_overlap` and `congested_partner` controls fail (splice length and
-horizontal spacing respectively). `missing_lap_action` and `stale_analysis`
-hold, and all failed or held controls withhold the checked drawing and BBS.
-See the [independent replay](../../verification/check_library_030_beam05_t_lap_reference.py).
-
-## Check a separated lap in the right-flanged L beam
+## Check a separated Ø20 lap in the right-flanged L and symmetric T beams
 
 ```bash
 ./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
-  --reference docs/verification/library-030-beam05-l-lap-reference.json \
+  --reference docs/verification/library-030-beam05-flanged-lap-restraint-reference.json \
   --case l_lap --output-dir output/beam05-l-lap
 ```
 
-The two-span case uses a 300 × 600 mm web, a 300 mm right overhang and a
-120 mm flange. The Ø20 outer-bottom bar laps from 1,550 to 2,850 mm in the
-first clear span. Two aligned inner bars and uniform web links are
-continuous. The supplied U1 and U2 actions have zero torsion.
+Both cases use a 300 × 600 mm web and have zero torsion in the supplied U1
+and U2 actions. The effective sagging flange width is 600 mm for the L
+beam and 1,000 mm for the T beam. Hogging, shear and positive support
+anchorage use the web. The lap provides 1,300 mm where 906.25 mm is
+required. The L-beam lap check is governed by `U2:LAP-START` at 35.960 kN·m
+against 163.513 kN·m.
 
-The physical width caps the effective compression flange at 600 mm for
-sagging. Hogging, shear and positive support anchorage use the web.
-`U2:LAP-START` governs the lap moment screen at 35.960 kN·m against
-154.623 kN·m. The drawing shows the right overhang and both physical
-pieces within the lap. The BBS includes their 3,310 mm and 6,910 mm cuts
-and totals 49 pieces and 184.665 kg.
+Use four continuous Ø20 bars at the exterior link bends. A narrower
+closed link seats the intermediate lap bars and two continuous top bars.
+Both Ø8 grids use 200 mm pitch. The narrower grid is offset 50 mm and has
+32 mm clear to the nearest exterior link. The two tie marks and each
+physical lap piece appear in the drawing and BBS. The schedule has 92
+pieces totaling 251.261 kg.
 
-Replay `t_control` for the symmetric T case. Short overlap and congested
-partner fail. Missing lap action and stale analysis hold. All four
-controls return a diagnostic report and withhold the checked drawing and
-BBS. [Independent replay](../../verification/check_library_030_beam05_l_lap_reference.py)
+Replay `t_control` for the symmetric T case. Short overlap and congestion
+fail. Missing actions and stale analysis hold. The original T and L
+fixtures retain their numerical checks and hold for unverified
+compression restraint. Each control supplies a diagnostic report and
+withholds the checked drawing and BBS.
+[Independent replay](../../verification/check_library_030_beam05_flanged_lap_restraint_reference.py)
+
+The example checks nominal bar and link geometry, clearances, hooks and
+placement grids. A project detail also needs its placement tolerances,
+cover blocks, layer spacers, cage installation sequence and concrete
+access checked. Apply ductile hook and confinement details under the
+separate seismic basis when applicable.
+[CPWD Specifications 2009, §5.3.3](https://cpwd.gov.in/Publication/speci_vol1.pdf)
+
+### Check the declared placement envelope
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-lap-placement-reference.json \
+  --case l_lap --output-dir output/beam05-l-lap-placement
+```
+
+The revised L and T cages use four continuous corner bars and one
+fully nested closed link. Both Ø8 link grids are nominally at 200 mm
+pitch and the nested links are offset by 60 mm. The request carries
+the project placement limits as `placement_envelope`. The L review
+checks all eight combinations of adverse bar row depths and uses only
+the exterior links for strength. Its lowest signed flexural capacities
+are 311.491 kN·m in sagging and 260.327 kN·m in hogging. Minimum link
+cover is 34.5 mm and the minimum lap is 1,280 mm.
+
+The report records the clearances, placement basis and adverse
+capacities. The drawing and BBS retain the nominal geometry, including
+the two link schedules of 41 pieces each. The full BBS totals 92 pieces
+and 249.352 kg. Check flange and support obstructions with the actual
+project details. A declared cage tolerance supports this review route.
+An explicit null holds the requested placement check for missing
+evidence. The bend interference case fails and the lost restraint case
+holds. All three controls withhold the checked drawing and BBS.
+[Independent placement replay](../../verification/check_library_030_beam05_lap_placement_reference.py)
+
+### Check an ordinary top lap near the interior support
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-support-top-lap-reference.json \
+  --case support_top_lap --output-dir output/beam05-support-top-lap
+```
+
+The Ø16 top pieces overlap from 3,020 to 3,780 mm on the first-span
+side of support B. After bar-end tolerances the minimum lap is
+740 mm against 725 mm required. The left and right support faces have
+4,600 and 1,120 mm of straight development on the partner in their
+respective support directions. Supply signed rows at both expanded
+lap endpoints and at the inflections in each span. Two continuous top
+corner bars provide the required extension past both inflections.
+
+The exterior and fully nested links remain in place through the sagging
+regions, where the top pieces can be credited in compression. The
+review report records the placement check and governing rows. The
+drawing uses the checked top bar paths and the BBS totals 92 pieces
+and 239.426 kg. This case uses ordinary detailing. Ductile beam
+lap locations and actual support obstructions need separate checks.
+[Independent top lap replay](../../verification/check_library_030_beam05_support_top_lap_reference.py)
 
 ## Check a cutoff in the second span of a layered rectangle
 
@@ -324,3 +364,53 @@ theoretical station and the continuing cage just left of the termination.
 The BBS uses the checked 3,960 mm cut. The short-development FAIL and
 the missing-action and stale-analysis HOLD controls withhold the drawing
 and BBS. [Independent replay](../../verification/check_library_030_beam05_span2_cutoff_reference.py)
+
+## Check a separated lap in the second span of a layered rectangle
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-span2-lap-reference.json \
+  --case span2_lap --output-dir output/beam05-span2-lap
+```
+
+Supply the three overlap stations by increasing x within the second clear
+span. Lap-I extends from the lower overlap coordinate to the right end.
+Lap-J reaches from the left end to the upper overlap coordinate. The
+reference checks the partner layout toward the left support and checks
+each layout separately within the overlap.
+
+The 5,150–6,450 mm overlap exceeds the 906.25 mm development requirement.
+`U2:LAP-END` governs the lap at 35.960 kN·m against the 148.426 kN·m
+limit. The elevation marks both piece ends, and the sections show the
+partner alone to the left, both pieces in the overlap and the original
+piece alone to the right. The BBS includes the distinct 3,310 and
+6,910 mm cuts.
+
+Short overlap and congestion fail. Missing actions and stale analysis
+hold. These four controls keep diagnostics and withhold the checked
+drawing and BBS. [Independent replay](../../verification/check_library_030_beam05_span2_lap_reference.py)
+
+### Check the compression-bar restraint
+
+Use the revised specimen to obtain checked artifacts for this lap.
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-span2-lap-restraint-reference.json \
+  --case restrained_span2_lap --output-dir output/beam05-span2-lap-restrained
+```
+
+The 230 × 600 mm web keeps four continuous Ø20 bars seated at the
+ordinary closed link bends. Each compression layout has a single
+intermediate Ø16 bar within 75 mm of the neighbouring corner bars.
+Both lap pieces are present together in the sagging interval. The
+overlap clearances are checked on the physical section, and the
+restraint check uses the signed compression layouts and verified
+link geometry. The BBS has 49 pieces and weighs 172.035 kg.
+
+The original right-span cage remains a numerical control. Its report
+shows the lap calculation and holds the checked drawing and BBS because
+the credited compression bars lack verified restraint. The same check
+applies to the original layered rectangular, T-beam and L-beam lap
+replays. [IS 456 clauses 26.5.1.2 and 26.5.3.2](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf) ·
+[Independent restraint replay](../../verification/check_library_030_beam05_span2_lap_restraint_reference.py)

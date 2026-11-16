@@ -560,6 +560,8 @@ def _anchor(
     support_face: _SupportFace,
     face: Face,
     moment_capacity_knm: float,
+    *,
+    bar_extents: dict[str, tuple[float, float]] | None = None,
 ) -> OperationResult | None:
     extent = request.straight_bars
     if extent is None:
@@ -584,8 +586,11 @@ def _anchor(
             station.station_id,
             support_face.location,
             support_face.direction,
-            extent.start_mm,
-            extent.end_mm,
+            *(
+                bar_extents[bar.bar_id]
+                if bar_extents is not None
+                else (extent.start_mm, extent.end_mm)
+            ),
             station.x_mm,
             support_face.support_id,
             station.x_mm,
@@ -627,6 +632,8 @@ def _check_row(
     flexure: dict[Face, OperationResult],
     shear: dict[Face, OperationResult],
     end_web_capacity_knm: float | None = None,
+    *,
+    bar_extents: dict[str, tuple[float, float]] | None = None,
 ) -> BeamContinuousRowResultV1:
     if kind != "ULS" or not flexure:
         return BeamContinuousRowResultV1(action, station, kind, diagnostic)
@@ -655,7 +662,16 @@ def _check_row(
         and v_util <= 1 + 1e-12
     )
     anchor = (
-        _anchor(request, bars, action, station, support_face, face, m_cap)
+        _anchor(
+            request,
+            bars,
+            action,
+            station,
+            support_face,
+            face,
+            m_cap,
+            bar_extents=bar_extents,
+        )
         if support_face is not None and m_cap > 0
         else None
     )
@@ -673,6 +689,7 @@ def _check_row(
             replace(support_face, location=AnchorageLocation.SIMPLE_SUPPORT),
             Face.BOTTOM,
             end_web_capacity_knm,
+            bar_extents=bar_extents,
         )
     return BeamContinuousRowResultV1(
         action,

@@ -46,6 +46,18 @@ def _anchor_summary(row: dict) -> dict:
     }
 
 
+def _assert_legacy_lap_restraint_hold(result, report: str, drawing, schedule) -> None:
+    """Legacy frozen cages retain mechanics but lack the new restraint proof."""
+    assert result.engineering_status.value == "HOLD"
+    assert "BEAM.LAP_COMPRESSION_RESTRAINT_HELD" in {
+        issue.code for issue in result.issues
+    }
+    assert result.calculation["bbs"] is None
+    assert drawing is schedule is None
+    assert "BBS held" in report
+    assert "<svg" not in report.lower()
+
+
 def test_t_lap_reference_is_frozen() -> None:
     assert hashlib.sha256(REFERENCE_PATH.read_bytes()).hexdigest() == REFERENCE_SHA256
 
@@ -59,6 +71,11 @@ def test_t_lap_reference(name: str) -> None:
     report = beam.render_continuous_detailing_html(result, current=request)
     drawing = beam.render_continuous_detailing_svg(result, current=request)
     schedule = beam.render_continuous_detailing_bbs_csv(result, current=request)
+
+    if expected["status"] == "PASS":
+        _assert_legacy_lap_restraint_hold(result, report, drawing, schedule)
+        _assert_rows_and_capacities(result.calculation, expected)
+        return
 
     assert result.engineering_status.value == expected["status"]
     assert {issue.code for issue in result.issues} >= set(
@@ -193,7 +210,8 @@ def _assert_rows_and_capacities(calculation: dict, expected: dict) -> None:
         if "positive_support" in reference:
             source = (
                 partner[row_id]
-                if "B1-3-partner" in reference["positive_support"]["bottom_bar_ids"]
+                if lap["partner_bar_id"]
+                in reference["positive_support"]["bottom_bar_ids"]
                 else primary[row_id]
             )
             positive = source["positive_support_anchorage"]["outputs"]["checks"]
@@ -234,9 +252,13 @@ def _assert_sections_and_bbs(
     for bar_id, (start, end) in extents.items():
         assert float(lines[bar_id]["x1"]) == _approx(start, "length_mm")
         assert float(lines[bar_id]["x2"]) == _approx(end, "length_mm")
+    link_stations = sorted(
+        expected["drawing"]["link_stations_mm"]
+        + expected["drawing"].get("restraint_link_stations_mm", [])
+    )
     assert (
         sorted(float(lines[mark]["x1"]) for mark in lines.keys() - extents.keys())
-        == expected["drawing"]["link_stations_mm"]
+        == link_stations
     )
 
     panels = root.findall("{*}svg[@data-view='section']")
@@ -264,6 +286,19 @@ def _assert_sections_and_bbs(
             (left, top, right, bottom),
             abs=TOLERANCES["length_mm"],
         )
+        restraint_link = panel.find("{*}rect[@data-outline='restraint-link']")
+        if "restraint_link_centreline_bounds_mm" in expected["drawing"]:
+            assert restraint_link is not None
+            x, y, width, height = (
+                float(restraint_link.attrib[key])
+                for key in ("x", "y", "width", "height")
+            )
+            assert (x, y, x + width, y + height) == pytest.approx(
+                expected["drawing"]["restraint_link_centreline_bounds_mm"],
+                abs=TOLERANCES["length_mm"],
+            )
+        else:
+            assert restraint_link is None
         points = {
             point.attrib["data-bar-id"]: point.attrib
             for point in panel.findall("{*}circle")
