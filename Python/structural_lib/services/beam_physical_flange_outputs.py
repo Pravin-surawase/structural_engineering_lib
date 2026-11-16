@@ -171,7 +171,8 @@ def render_physical_flange_report(
     assert stamp is not None
     anchored = "".join(
         f'<tr><th>{_escape(row["bar_id"])}</th><td>{row["available_after_tolerance_mm"]:.3f}</td>'
-        f'<td>{row["required_development_mm"]:.3f}</td><td>{row["beyond_zero_moment_mm"]:.3f}</td></tr>'
+        f'<td>{row["required_development_mm"]:.3f}</td><td>{row["beyond_zero_moment_mm"]:.3f}</td>'
+        f'<td>{row["required_extension_mm"]:.3f}</td></tr>'
         for row in details.get("anchorage", {}).get("bars", ())
     )
     strip_rows = "".join(
@@ -218,6 +219,7 @@ def render_physical_flange_report(
     fit = (
         f'<h2>Placement</h2><p>Clear axial opening {geometry["axial_access_mm"]:.3f} mm. '
         f'Clear transverse opening {geometry["transverse_access_mm"]:.3f} mm. '
+        f'Flange hook clearance {geometry["flange_hook_plane_clearance_mm"]:.3f} mm. '
         "Minimum cover after tolerance</p>"
         f"<ul>{cover_rows}</ul>"
         if geometry
@@ -225,7 +227,7 @@ def render_physical_flange_report(
     )
     anchorage = (
         f"<h2>Beam flange development</h2><table><tr><th>Bar</th><th>Available (mm)</th>"
-        f"<th>Required (mm)</th><th>Past zero moment (mm)</th></tr>{anchored}</table>"
+        f"<th>Required (mm)</th><th>Past zero moment (mm)</th><th>Required extension (mm)</th></tr>{anchored}</table>"
         if anchored
         else ""
     )

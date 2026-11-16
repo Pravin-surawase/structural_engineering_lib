@@ -486,6 +486,7 @@ def _check_physical_flange_replay(
     if expected["status"] != "PASS":
         code = {
             "web_flange_link_intersection": "BEAM.FLANGE_LINK_CLASH_FAIL",
+            "flange_link_closure": "BEAM.FLANGE_CAP_CLOSURE_FAIL",
             "flange_bar_support_development": "BEAM.FLANGE_DEVELOPMENT_FAIL",
             "slab_strip_action_basis": "BEAM.FLANGE_STRIP_ACTIONS_HELD",
             "slab_strip_geometry_revision": "BEAM.FLANGE_STRIP_REVISION_HELD",
@@ -512,6 +513,10 @@ def _check_physical_flange_replay(
     assert math.isclose(
         engineering["geometry"]["axial_access_mm"],
         expected["minimum_clearances_mm"]["cap_to_next_main_access_mm"],
+    )
+    assert math.isclose(
+        engineering["geometry"]["flange_hook_plane_clearance_mm"],
+        expected["flange_hook_plane_clearance_mm"],
     )
     bbs = calculation["bbs"]["outputs"]["bbs"]
     rows = {row["bar_mark"]: row for row in bbs["rows"]}

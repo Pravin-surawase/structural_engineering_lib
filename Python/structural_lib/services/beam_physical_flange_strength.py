@@ -177,7 +177,11 @@ def check_physical_flange_anchorage(
     """Check the beam-owned flange bars from both sides of the support."""
     strip, flange = detail.slab_strip, member.flange
     assert strip is not None and flange is not None
-    middle = member.supports[1]
+    left, middle, right = member.supports
+    clear = max(
+        middle.left_face_mm - left.right_face_mm,
+        right.left_face_mm - middle.right_face_mm,
+    )
     left_zero, right_zero = basis["negative_moment_limits_mm"]
     band = basis["hogging_distribution_width_mm"]
     centre = member.width_mm / 2
@@ -234,9 +238,8 @@ def check_physical_flange_anchorage(
                     "The full bar and placement allowance must remain within the hogging distribution width.",
                 )
             )
-        if available - tol < required or extension - tol < max(
-            depth, 12 * bar.diameter_mm
-        ):
+        required_extension = max(depth, 12 * bar.diameter_mm, clear / 16)
+        if available - tol < required or extension - tol < required_extension:
             issues.append(
                 flange_issue(
                     "DEVELOPMENT_FAIL",
@@ -252,6 +255,7 @@ def check_physical_flange_anchorage(
                 "available_at_support_mm": available,
                 "available_after_tolerance_mm": available - tol,
                 "beyond_zero_moment_mm": extension,
+                "required_extension_mm": required_extension,
                 "inside_distribution_band": covered,
             }
         )

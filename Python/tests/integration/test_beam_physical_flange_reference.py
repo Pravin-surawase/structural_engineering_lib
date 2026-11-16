@@ -18,6 +18,7 @@ REFERENCE = ROOT / "docs/verification/library-030-beam05-physical-flange.json"
 CASES = json.loads(REFERENCE.read_text(encoding="utf-8"))["cases"]
 ISSUES = {
     "link_clash": "BEAM.FLANGE_LINK_CLASH_FAIL",
+    "open_flange_link": "BEAM.FLANGE_CAP_CLOSURE_FAIL",
     "short_flange_development": "BEAM.FLANGE_DEVELOPMENT_FAIL",
     "missing_strip_actions": "BEAM.FLANGE_STRIP_ACTIONS_HELD",
     "stale_strip_geometry": "BEAM.FLANGE_STRIP_REVISION_HELD",
@@ -26,7 +27,7 @@ ISSUES = {
 
 def test_physical_flange_reference_is_unchanged() -> None:
     assert hashlib.sha256(REFERENCE.read_bytes()).hexdigest() == (
-        "107e0eb54f5051aed00f2c18c4bb87ed31b28b4ffa123ea0df291ec1a53f3e8a"
+        "2168766fbdd95d8657e8274172b2dd8c3318fb083fa35640f10cf2b69db7cf3e"
     )
 
 
@@ -102,14 +103,21 @@ def test_physical_flange_reference_and_outputs(name: str) -> None:
             expected["required_flange_development_mm"]
         )
     placement = checks["geometry"]
-    assert placement["nominal_cover_mm"] == {
-        "web": expected["nominal_cover_mm"]["web_mm"],
-        "flange": expected["nominal_cover_mm"]["cap_mm"],
-        "slab": expected["nominal_cover_mm"]["slab_mm"],
-    }
-    assert (
-        placement["axial_access_mm"]
-        == expected["minimum_clearances_mm"]["cap_to_next_main_access_mm"]
+    assert placement["flange_hook_plane_clearance_mm"] == pytest.approx(
+        expected["flange_hook_plane_clearance_mm"]
+    )
+    assert placement["flange_hook_tails_mm"] == pytest.approx(
+        expected["flange_hook_tails_mm"]
+    )
+    assert placement["nominal_cover_mm"] == pytest.approx(
+        {
+            "web": expected["nominal_cover_mm"]["web_mm"],
+            "flange": expected["nominal_cover_mm"]["cap_mm"],
+            "slab": expected["nominal_cover_mm"]["slab_mm"],
+        }
+    )
+    assert placement["axial_access_mm"] == pytest.approx(
+        expected["minimum_clearances_mm"]["cap_to_next_main_access_mm"]
     )
     assert placement["transverse_access_mm"] == pytest.approx(184 / 3 - 20)
     assert (

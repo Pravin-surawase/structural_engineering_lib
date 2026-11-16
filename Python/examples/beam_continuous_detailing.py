@@ -120,6 +120,14 @@ def physical_flange_fixture_input(frozen: dict[str, Any]) -> dict[str, Any]:
                 "internal_bend_radius_mm": cap["centreline_radius_mm"]
                 - cap["diameter_mm"] / 2,
                 "hook_vertex_leg_mm": cap_vertices[0][1] - cap_vertices[1][1],
+                "hook_plane_offset_mm": (
+                    cap_vertices[3][0] if len(cap_vertices) == 7 else None
+                ),
+                "closing_hook_vertex_leg_mm": (
+                    cap_vertices[-1][2] - cap_vertices[5][2]
+                    if len(cap_vertices) == 7
+                    else None
+                ),
             },
             "placement": {
                 "maximum_assembly_translation_per_axis_mm": frozen["placement"][

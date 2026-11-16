@@ -419,8 +419,8 @@ checked drawing and BBS.
 The two 4 m beam spans receive concurrent signed actions from uniform
 loads. A perpendicular two-span strip supplies its slab reaction to
 each declared beam combination. Two Ø16 bars extend outside the web
-within a 400 mm hogging distribution width. Their shallow links have
-two anchored 90° ends. The web keeps its four seated corner bars and
+within a 400 mm hogging distribution width. Their shallow closed links
+have overlapping hooks in separate planes. The web keeps its four seated corner bars and
 separate shear links. Stagger the web links, flange links and slab main
 bars on the grids shown in the support plan.
 
@@ -432,11 +432,11 @@ signed moment, shear, spacing and development checks.
 
 The drawing reports the 47.0 × 41.3 mm clear local opening after the
 declared placement allowance. The schedule carries 118 beam pieces and
-142 slab pieces under nine marks and totals 451.792 kg. The report,
+142 slab pieces under nine marks and totals 458.957 kg. The report,
 sections, elevation and schedule share the checked geometry. Confirm
 actual joint steel and field obstructions for a construction detail.
 
-The clash and short flange development cases fail. Missing slab
+The clash, open flange link and short flange development cases fail. Missing slab
 actions and stale strip geometry hold. Each withholds the checked
 drawing and schedule.
 [Independent T-flange replay](../../verification/check_library_030_beam05_physical_flange_reference.py)

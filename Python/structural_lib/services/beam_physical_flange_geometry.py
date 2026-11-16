@@ -61,7 +61,7 @@ class BeamPhysicalFlangeBarV1(StrictPublicModel):
 
 
 class BeamFlangeLinkV1(StrictPublicModel):
-    """One linked pair of 90-degree hooks on a uniform transverse grid."""
+    """Shallow closed link with its overlapping hooks in separate planes."""
 
     mark: Identifier
     first_station_mm: _MM
@@ -74,6 +74,8 @@ class BeamFlangeLinkV1(StrictPublicModel):
     diameter_mm: Annotated[float, Field(ge=6, le=16)]
     internal_bend_radius_mm: Annotated[float, Field(gt=0, le=100)]
     hook_vertex_leg_mm: Annotated[float, Field(gt=0, le=300)]
+    closing_hook_vertex_leg_mm: Annotated[float, Field(gt=0, le=300)] | None = None
+    hook_plane_offset_mm: Annotated[float, Field(gt=0, le=100)] | None = None
 
 
 class BeamPhysicalFlangePlacementV1(StrictPublicModel):
@@ -510,11 +512,38 @@ def resolve_physical_flange_geometry(
             ),
         )
     radius = cap.internal_bend_radius_mm + cap.diameter_mm / 2
+    cap_width = cap.right_axis_mm - cap.left_axis_mm
+    cap_height = cap.bottom_axis_mm - cap.top_axis_mm
+    shift, closing = cap.hook_plane_offset_mm, cap.closing_hook_vertex_leg_mm
+    if (
+        shift is None
+        or closing is None
+        or cap_width <= cap.hook_vertex_leg_mm + radius
+        or not (8 * cap.diameter_mm <= closing - radius and closing <= cap_height)
+        or shift + cap.diameter_mm >= cap.spacing_mm
+    ):
+        return None, (
+            flange_issue(
+                "CAP_CLOSURE_FAIL",
+                "flange_links",
+                "Provide overlapping flange-link hooks with full tails in two separate planes.",
+            ),
+        )
+    hook_clearance = (
+        shift - radius * shift / math.hypot(cap_width, shift) - cap.diameter_mm
+    )
+    if hook_clearance <= _EPS:
+        return None, (
+            flange_issue(
+                "CAP_CLOSURE_FAIL",
+                "flange_links",
+                "The closing flange hook conflicts with the other hook plane or bottom bend.",
+            ),
+        )
     left, right = sorted(detail.flange_bars, key=lambda b: b.x_from_left_mm)
     if not (
         cap.hook_vertex_leg_mm - radius >= 8 * cap.diameter_mm
-        and cap.right_axis_mm - cap.left_axis_mm > 2 * cap.hook_vertex_leg_mm
-        and cap.bottom_axis_mm - cap.top_axis_mm > 2 * radius
+        and cap_height > 2 * radius
         and right.x_from_left_mm > member.width_mm > 0 > left.x_from_left_mm
         and _spacing_is_clear(left.x_from_left_mm, cap.left_axis_mm + radius, _EPS)
         and _spacing_is_clear(right.x_from_left_mm, cap.right_axis_mm - radius, _EPS)
@@ -565,9 +594,10 @@ def resolve_physical_flange_geometry(
         (0, cap.left_axis_mm + cap.hook_vertex_leg_mm, cap.top_axis_mm),
         (0, cap.left_axis_mm, cap.top_axis_mm),
         (0, cap.left_axis_mm, cap.bottom_axis_mm),
-        (0, cap.right_axis_mm, cap.bottom_axis_mm),
-        (0, cap.right_axis_mm, cap.top_axis_mm),
-        (0, cap.right_axis_mm - cap.hook_vertex_leg_mm, cap.top_axis_mm),
+        (shift, cap.right_axis_mm, cap.bottom_axis_mm),
+        (shift, cap.right_axis_mm, cap.top_axis_mm),
+        (shift, cap.left_axis_mm, cap.top_axis_mm),
+        (shift, cap.left_axis_mm, cap.top_axis_mm + closing),
     )
     web_mark = f"WL{member.link_diameter_mm:g}"
     pieces = _links(
@@ -584,7 +614,7 @@ def resolve_physical_flange_geometry(
         _links(
             cap.mark,
             cap_vertices,
-            (1, 4),
+            (1, 5),
             fl,
             cap.diameter_mm,
             radius,
@@ -727,6 +757,10 @@ def resolve_physical_flange_geometry(
         )
     items = tuple(resolved)
     placement = _receipts(items, member, detail, origin)
+    placement.update(
+        flange_hook_plane_clearance_mm=hook_clearance,
+        flange_hook_tails_mm=(cap.hook_vertex_leg_mm - radius, closing - radius),
+    )
     issues = []
     if not _parallel_bars_fit(
         items,
