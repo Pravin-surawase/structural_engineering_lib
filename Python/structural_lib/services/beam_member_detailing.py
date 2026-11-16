@@ -2420,7 +2420,7 @@ def _check_layered_cage(
         placement=cage.placement,
         cross_tie=cage.cross_tie,
     )
-    evidence = {"placement": placement}
+    evidence: dict[str, Any] = {"placement": placement}
     if issues:
         status = (
             EngineeringStatus.HOLD

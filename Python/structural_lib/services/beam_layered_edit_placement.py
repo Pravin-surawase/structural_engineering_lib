@@ -278,7 +278,7 @@ def check_layered_cage_placement(
         "member.bars",
         "Each rounded hoop corner must remain occupied by its outer bar throughout the placement tolerance.",
     )
-    horizontal = {}
+    horizontal: dict[str, list[float]] = {}
     for label, row in zip(
         ("top-1", "bottom-1", "bottom-2"), (top, bottom, inner), strict=True
     ):
