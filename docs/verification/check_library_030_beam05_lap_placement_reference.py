@@ -72,7 +72,12 @@ def layouts(member, lap):
     }, partner
 
 
-def placement_geometry(request, basis):
+def placement_geometry(
+    request,
+    basis,
+    *,
+    seat_ids: dict[tuple[str, str, str], str] | None = None,
+):
     member, link, lap = request["member"], request["link_detail"], request["lap"]
     if basis is None:
         return {"status": "HOLD", "issue": "placement_basis_missing"}
@@ -90,19 +95,32 @@ def placement_geometry(request, basis):
     width, depth = member["width_mm"], member["depth_mm"]
     centre_inset = member["clear_cover_mm"] + d_link / 2
     inner_bounds = (inner["left_centre_x_mm"], inner["right_centre_x_mm"])
-    seats = {
-        "T1-1": (centre_inset, True, True),
-        "T1-2": (width - centre_inset, False, True),
-        "T1-3": (inner_bounds[0], True, True),
-        "T1-4": (inner_bounds[1], False, True),
-        "B1-1": (centre_inset, True, False),
-        "B1-2": (inner_bounds[0], True, False),
-        "B1-2-partner": (inner_bounds[1], False, False),
-        "B1-3": (width - centre_inset, False, False),
+    if seat_ids is None:
+        seat_ids = {
+            ("outer", "top", "left"): "T1-1",
+            ("outer", "top", "right"): "T1-2",
+            ("restraint", "top", "left"): "T1-3",
+            ("restraint", "top", "right"): "T1-4",
+            ("outer", "bottom", "left"): "B1-1",
+            ("restraint", "bottom", "left"): "B1-2",
+            ("restraint", "bottom", "right"): "B1-2-partner",
+            ("outer", "bottom", "right"): "B1-3",
+        }
+    seat_centres = {
+        ("outer", "top", "left"): centre_inset,
+        ("outer", "top", "right"): width - centre_inset,
+        ("restraint", "top", "left"): inner_bounds[0],
+        ("restraint", "top", "right"): inner_bounds[1],
+        ("outer", "bottom", "left"): centre_inset,
+        ("restraint", "bottom", "left"): inner_bounds[0],
+        ("restraint", "bottom", "right"): inner_bounds[1],
+        ("outer", "bottom", "right"): width - centre_inset,
     }
     returns = {}
-    for mark, (side, left, top) in seats.items():
-        x = side + centre_radius * (1 if left else -1)
+    for (grid, face, side), mark in seat_ids.items():
+        position = seat_centres[(grid, face, side)]
+        left, top = side == "left", face == "top"
+        x = position + centre_radius * (1 if left else -1)
         y = centre_inset + centre_radius
         if not top:
             y = depth - y
@@ -119,7 +137,14 @@ def placement_geometry(request, basis):
             "stays_inside_bend_sector": min(dx, dy) > mesh,
         }
     clearances = {}
-    for face, layer in (("top", 1), ("bottom", 1), ("bottom", 2)):
+    row_limits = [
+        (face, layer)
+        for face in ("top", "bottom")
+        for layer in sorted(
+            {bar["layer"] for bar in bars.values() if bar["face"] == face}
+        )
+    ]
+    for face, layer in row_limits:
         row = sorted(
             (
                 bar
@@ -139,8 +164,13 @@ def placement_geometry(request, basis):
     inner_bottom_y = max(
         bar["y_from_top_mm"] for bar in bars.values() if bar["layer"] == 2
     )
+    outer_bottom_left = bars[seat_ids[("outer", "bottom", "left")]]
     vertical = (
-        bars["B1-1"]["y_from_top_mm"] - inner_bottom_y - 2 * mesh - 20 - bar_allowance
+        outer_bottom_left["y_from_top_mm"]
+        - inner_bottom_y
+        - 2 * mesh
+        - outer_bottom_left["diameter_mm"]
+        - bar_allowance
     )
     maximum_shift = link["hook_plane_offset_mm"] + basis["hook_plane_tolerance_mm"]
     min_grid_pitch = min(
@@ -192,7 +222,7 @@ def placement_geometry(request, basis):
     )
     minimum_shift = link["hook_plane_offset_mm"] - basis["hook_plane_tolerance_mm"]
     link_width = inner_bounds[1] - inner_bounds[0]
-    min_gap = min(gap for row in clearances.values() for gap in row)
+    min_gap = min((gap for row in clearances.values() for gap in row), default=math.inf)
     required_gap = max(20, member["aggregate_size_mm"] + 5)
     if (
         min(row["min_clearance_mm"] for row in returns.values()) < 0
