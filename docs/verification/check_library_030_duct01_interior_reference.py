@@ -205,7 +205,7 @@ def joint_actions(request, direction, beam, mechanism, confinement, column_rows)
     joint_strength = (1.5 if confinement["confined_faces"] == 4 else 1.0) * math.sqrt(
         request["joint_fck_mpa"]
     )
-    # M30 Table 19 lower-bound 0.15% row. Each specimen provides at least that
+    # M30 Table 19 conservative 0.25% row. Each specimen provides at least that
     # ratio on its tension face. §40.2.2 axial factor is evaluated per row.
     pct = 100 * 3 * area(phi) / (width * col_d)
     tc = TABLE_19_M30[0][1]

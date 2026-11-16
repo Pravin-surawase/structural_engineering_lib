@@ -191,6 +191,10 @@ FLOW03_LAYERED_EXAMPLE = "Python/examples/beam_layered_cage_edit.py"
 FLOW03_LAYERED_TEST = (
     "Python/tests/integration/test_beam_layered_cage_edit_reference.py"
 )
+DUCT01_REFERENCE = "docs/verification/library-030-duct01-interior-joint.json"
+DUCT01_CHECKER = "docs/verification/check_library_030_duct01_interior_reference.py"
+DUCT01_EXAMPLE = "Python/examples/ductile_interior_joint.py"
+DUCT01_TEST = "Python/tests/integration/test_ductile_interior_joint_reference.py"
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
@@ -243,6 +247,17 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / FLOW03_LAYERED_REFERENCE,
                 repo / FLOW03_LAYERED_EXAMPLE,
                 repo / FLOW03_LAYERED_TEST,
+                *(
+                    repo / name
+                    for name in (
+                        DUCT01_REFERENCE,
+                        DUCT01_CHECKER,
+                        DUCT01_EXAMPLE,
+                        DUCT01_TEST,
+                        "docs/verification/_duct01_cage_reference.py",
+                        "docs/verification/_duct01_section_reference.py",
+                    )
+                ),
                 repo / FLOW04_REFERENCE,
                 repo / SEC02_REFERENCE,
                 repo / SEC03_REFERENCE,
@@ -596,7 +611,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     import pytest
 
     repo, output = Path(config["repo"]), Path(config["output"])
-    layered_edit = tuple(map(int, config["version"].split(".")[:2])) >= (0, 30)
+    version_at_least_030 = tuple(map(int, config["version"].split(".")[:2])) >= (0, 30)
     clone = Path.cwd() / "beam-column-drivers"
     hashes = {}
     for source in input_paths(repo):
@@ -612,7 +627,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     def run(label: str, script: str, *args: str, expected_code: int = 0) -> str:
         command = [sys.executable, "-I"]
-        if script in CHECKERS:
+        if script in CHECKERS or script == DUCT01_CHECKER:
             # -I deliberately excludes the script directory. These arithmetic
             # drivers share sibling helpers; expose only their copied folder.
             command.extend(
@@ -927,7 +942,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         assert result["envelope"]["engineering_status"] == flow03["states"][case]
         assert (directory / "member.svg").is_file() == (case == "edited")
         assert (directory / "bbs.csv").is_file() == (case == "edited")
-    if layered_edit:
+    if version_at_least_030:
         reference = clone / FLOW03_LAYERED_REFERENCE
         frozen = json.loads(reference.read_text(encoding="utf-8"))
         cases = {
@@ -962,6 +977,35 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                     expected["bbs"]["total_mass_kg"],
                     rel_tol=1e-9,
                 )
+    if version_at_least_030:
+        run("duct01-independent-reference", DUCT01_CHECKER)
+        frozen = json.loads((clone / DUCT01_REFERENCE).read_text(encoding="utf-8"))
+        payload = {
+            **frozen["request"],
+            "applicability_reference": "Declared IS 13920 regular interior specimen.",
+        }
+        for case, changes in (
+            ("PASS", {}),
+            ("HOLD", frozen["controls"]["missing_direction"]["changes"]),
+        ):
+            label = f"ductile-interior-joint-{case.lower()}"
+            directory = output / label
+            request_file = output / f"{label}-input.json"
+            request_file.write_text(json.dumps(payload | changes), encoding="utf-8")
+            result = json.loads(
+                run(
+                    label,
+                    DUCT01_EXAMPLE,
+                    "--request",
+                    str(request_file),
+                    "--output-dir",
+                    str(directory),
+                )
+            )
+            assert result["envelope"]["engineering_status"] == case
+            assert (directory / "report.html").is_file()
+            assert (directory / "joint.svg").is_file() == (case == "PASS")
+            assert (directory / "bbs.csv").is_file() == (case == "PASS")
     for option, expected in (
         ((), "COMPLETE_FOR_DECLARED_ROWS"),
         (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),
@@ -1267,7 +1311,11 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             "--junitxml",
             str(junit),
             *(str(clone / name) for name in TESTS),
-            *((str(clone / FLOW03_LAYERED_TEST),) if layered_edit else ()),
+            *(
+                (str(clone / FLOW03_LAYERED_TEST), str(clone / DUCT01_TEST))
+                if version_at_least_030
+                else ()
+            ),
         ]
     )
     suites = ElementTree.parse(junit).getroot().findall("testsuite")

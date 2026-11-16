@@ -39,9 +39,14 @@ def ordinary_column_shear(
     hoop_diameter_mm: float,
     hoop_fy_nmm2: float,
     pitch_mm: float,
+    table19_steel_percent: float = 0.15,
 ) -> ColumnShearCheck:
-    """Cl. 40 using the lowest Table 19 row and two effective closed hoop legs."""
-    base_stress = tables.get_tc_value(fck_nmm2, 0.15)
+    """Cl. 40 using a justified Table 19 steel percentage and two hoop legs.
+
+    The default is the lowest Table 19 row. Callers selecting another row must
+    demonstrate the corresponding steel percentage on the tension face.
+    """
+    base_stress = tables.get_tc_value(fck_nmm2, table19_steel_percent)
     axial_factor = min(1 + 3000 * pu_kn / (gross_area_mm2 * fck_nmm2), 1.5)
     area = width_mm * d_mm
     vc = base_stress * axial_factor * area / 1000
