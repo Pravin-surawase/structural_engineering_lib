@@ -69,6 +69,21 @@ def cage(request):
         + math.hypot(ramp, raised_hook)
         - ramp
     )
+    if request.get("column_hook_offset_radiused"):
+        from _duct02_cage_reference import _closed_hoop
+
+        _, hoop_cut, _ = _closed_hoop(
+            "C-H",
+            inner,
+            width - inner,
+            inner,
+            width - inner,
+            hoop_r,
+            hoop_tail,
+            ramp,
+            raised_hook,
+            hoop_dia,
+        )
     tie = cross_tie(width, col_edge, hoop_r, hoop_tail)
     # The Y cross-tie is the X path turned 90 degrees about the core centre.
     y_tie = {
@@ -187,12 +202,13 @@ def cage(request):
     beam_link_dia = request["beam_link_mm"]
     beam_outline = (width - request["beam_width_mm"]) / 2
     beam_inset = request["beam_link_seat_inset_mm"]
+    depth_inset = request.get("beam_link_depth_seat_inset_mm", beam_inset)
     beam_r = request["beam_link_centre_radius_mm"]
     outer_rail_cover = min(beam_across) - beam_outline - beam_inset - beam_link_dia / 2
     beam_corner_clear = (
         beam_r
         - (beam_dia + beam_link_dia) / 2
-        - math.sqrt(2) * abs(beam_r - beam_inset)
+        - math.hypot(beam_r - beam_inset, beam_r - depth_inset)
     )
     min_row_clear = (
         min(b - a for a, b in pairwise(beam_across))
@@ -201,7 +217,7 @@ def cage(request):
     )
     min_row_clear_required = max(beam_dia, request["aggregate_max_mm"] + 5)
     for plane, level in (("X", X), ("Y", Y)):
-        top = level - beam_inset
+        top = level - depth_inset
         beam_hoops[plane] = {
             "outer_across_axis_bounds_mm": [
                 beam_across[0] - beam_inset,

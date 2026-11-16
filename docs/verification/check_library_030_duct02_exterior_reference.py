@@ -267,7 +267,11 @@ def _column_axial(action):
     up = action["upper_axial_compression_kn"]
     return {
         "upper": up,
-        "lower": up + sum(action["beam_on_joint_downward_shear_kn"].values()),
+        "lower": (
+            up
+            + sum(action["beam_on_joint_downward_shear_kn"].values())
+            + action.get("orthogonal_downward_reaction_kn", 0)
+        ),
     }
 
 
@@ -311,15 +315,16 @@ def _beam_link_detail(request, plane):
     b = request["beam_width_mm"][plane]
     r = request["beam_link_centre_radius_mm"][plane]
     inset = request["beam_link_seat_inset_mm"][plane]
+    depth_inset = request.get("beam_link_depth_seat_inset_mm", {}).get(plane, inset)
     phi = request["beam_bar_mm"][plane]
     tie = request["beam_link_mm"]
     depth = request["joint_depth_mm"]
     top_axis = request["beam_top_z_mm"][plane]
     tolerance = request["axis_tolerance_mm"]
     dia_increase = request["diameter_overage_mm"]
-    z = top_axis - inset
+    z = top_axis - depth_inset
     edge = (w - b) / 2
-    hook_seat_clear = r - math.sqrt(2) * abs(r - inset) - (phi + tie) / 2
+    hook_seat_clear = r - math.hypot(r - inset, r - depth_inset) - (phi + tie) / 2
     hook_seat_adverse = hook_seat_clear - math.sqrt(2) * tolerance - dia_increase
     clear_h = (
         min(y - x for x, y in zip(axes, axes[1:])) - phi - 2 * tolerance - dia_increase
@@ -464,7 +469,10 @@ def _signed_checks(request, direction, beams, mechanisms, columns, transverse):
                 "column_axial_compression_kn": axial,
                 "signed_axial_balance_residual_kn": axial["lower"]
                 - axial["upper"]
-                - sum(vertical.values()),
+                - (
+                    sum(vertical.values())
+                    + action.get("orthogonal_downward_reaction_kn", 0)
+                ),
                 "maximum_column_axial_stress_mpa": 1000
                 * max(axial.values())
                 / width**2,

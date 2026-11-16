@@ -23728,6 +23728,197 @@
       ]
     },
     {
+      "module": "structural_lib.design.is13920.frame",
+      "export_classification": "preview",
+      "declared_export_count": 7,
+      "classified_symbol_count": 7,
+      "symbols": [
+        {
+          "name": "DuctileFrameRequestV1",
+          "qualified_name": "structural_lib.design.is13920.frame.DuctileFrameRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.ductile_frame",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "DuctileFrameResultV1",
+          "qualified_name": "structural_lib.design.is13920.frame.DuctileFrameResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.ductile_frame",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_frame",
+          "qualified_name": "structural_lib.design.is13920.frame.check_frame",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.ductile_frame",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(request: 'DuctileFrameRequestV1') -> 'DuctileFrameResultV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "load_frame",
+          "qualified_name": "structural_lib.design.is13920.frame.load_frame",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.ductile_frame",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(value: 'DuctileFrameRequestV1 | Mapping[str, object] | str | bytes') -> 'DuctileFrameRequestV1'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_frame_bbs_csv",
+          "qualified_name": "structural_lib.design.is13920.frame.render_frame_bbs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.ductile_frame_outputs",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'DuctileFrameResultV1', *, current: 'DuctileFrameRequestV1 | None' = None) -> 'str | None'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_frame_html",
+          "qualified_name": "structural_lib.design.is13920.frame.render_frame_html",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.ductile_frame_outputs",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'DuctileFrameResultV1') -> 'str'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "render_frame_svg",
+          "qualified_name": "structural_lib.design.is13920.frame.render_frame_svg",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.ductile_frame_outputs",
+          "claim_disposition": "canonical",
+          "documentation": {
+            "role": "CANONICAL_WORKFLOW_OPERATION",
+            "obligations": [
+              "EXACT_SIGNATURE",
+              "COMPLETE_DOCSTRING",
+              "GENERATED_REFERENCE",
+              "REGISTERED_EXECUTABLE_EXAMPLE"
+            ],
+            "signature": "(result: 'DuctileFrameResultV1', *, current: 'DuctileFrameRequestV1 | None' = None) -> 'str | None'",
+            "docstring_sections": [
+              "examples",
+              "limitations",
+              "parameters",
+              "provenance",
+              "raises",
+              "returns"
+            ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        }
+      ]
+    },
+    {
       "module": "structural_lib",
       "export_classification": "preview",
       "declared_export_count": 489,

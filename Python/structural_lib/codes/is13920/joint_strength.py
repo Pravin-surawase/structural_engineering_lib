@@ -184,7 +184,10 @@ def _beam_reactions(
 
 def _column_axial(action: Mapping[str, Any]) -> dict[str, float]:
     upper = action["upper_axial_compression_kn"]
-    lower = upper + sum(action["beam_on_joint_downward_shear_kn"].values())
+    transfer = sum(action["beam_on_joint_downward_shear_kn"].values()) + action.get(
+        "orthogonal_downward_reaction_kn", 0
+    )
+    lower = upper + transfer
     if lower <= 0:
         raise JointStrengthDomainError(
             "The joint profile requires compression at both column ends."
@@ -335,7 +338,10 @@ def _direction_strength(
                 "column_axial_compression_kn": axial,
                 "signed_axial_balance_residual_kn": axial["lower"]
                 - axial["upper"]
-                - sum(elastic.values()),
+                - (
+                    sum(elastic.values())
+                    + action.get("orthogonal_downward_reaction_kn", 0)
+                ),
                 "maximum_axial_stress_mpa": 1000 * max(axial.values()) / width**2,
                 "beam_capacity_shear": beam_shears,
                 "column_capacity_shear": column_shears,
