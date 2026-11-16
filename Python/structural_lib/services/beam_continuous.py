@@ -279,6 +279,8 @@ def _coverage_issues(
         | BeamSectionCheckRequestV1
     ),
     stations: dict[str, BeamContinuousStationV1],
+    *,
+    require_all_uls_stations: bool = False,
 ) -> tuple[list[StructuralIssueV1], list[StructuralIssueV1]]:
     ultimate: list[StructuralIssueV1] = []
     service: list[StructuralIssueV1] = []
@@ -340,9 +342,10 @@ def _coverage_issues(
             )
             full_span = left_span and right_span and required_positions <= keys
             complete_spans |= full_span
-            if isinstance(request, BeamLayeredContinuousCheckRequestV1) and (
-                not full_span or set(needed) != set(stations)
-            ):
+            if (
+                require_all_uls_stations
+                or isinstance(request, BeamLayeredContinuousCheckRequestV1)
+            ) and (not full_span or set(needed) != set(stations)):
                 ultimate.append(
                     StructuralIssueV1(
                         "BEAM_MEMBER_COVERAGE_MISSING",
@@ -514,14 +517,22 @@ def _sections(
         )
         for face in Face
     }
+    return geometry, flexure, _shear_sections(request, flexure, request.link_spacing_mm)
+
+
+def _shear_sections(
+    request: _BeamStationCheckRequest,
+    flexure: dict[Face, OperationResult],
+    spacing_mm: float,
+) -> dict[Face, OperationResult]:
     links = SectionShearReinforcement(
         "vertical-link-legs",
         2 * math.pi * request.link_diameter_mm**2 / 4,
         request.link_fy_nmm2,
         90,
-        request.link_spacing_mm,
+        spacing_mm,
     )
-    shear = {
+    return {
         face: supplied_section_shear_capacity(
             SuppliedSectionShearRequest(
                 request.schema_version,
@@ -535,7 +546,6 @@ def _sections(
         for face, result in flexure.items()
         if "effective_depth_mm" in result.outputs
     }
-    return geometry, flexure, shear
 
 
 def _flexure_provision_ok(result: OperationResult) -> bool:
@@ -825,6 +835,8 @@ def check_section_beam(request: BeamSectionCheckRequestV1) -> BeamSectionCheckRe
 @overload
 def _check_station_beam(
     request: BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1,
+    *,
+    link_spacing_by_station: dict[float, float] | None = None,
 ) -> BeamContinuousCheckResultV1: ...
 
 
@@ -847,12 +859,27 @@ def _check_station_beam(
         | BeamCantileverCheckRequestV1
         | BeamSectionCheckRequestV1
     ),
+    *,
+    link_spacing_by_station: dict[float, float] | None = None,
 ) -> (
     BeamContinuousCheckResultV1 | BeamCantileverCheckResultV1 | BeamSectionCheckResultV1
 ):
     stale = request.analysis_revision != request.current_analysis_revision
     bars = _bar_positions(request)
     geometry, flexure, shear = (None, {}, {}) if stale else _sections(request, bars)
+    zoned_shear: dict[float, dict[Face, OperationResult]] = {}
+    if link_spacing_by_station and not stale:
+        by_pitch = {
+            pitch: (
+                shear
+                if pitch == request.link_spacing_mm
+                else _shear_sections(request, flexure, pitch)
+            )
+            for pitch in set(link_spacing_by_station.values())
+        }
+        zoned_shear = {
+            x: by_pitch[pitch] for x, pitch in link_spacing_by_station.items()
+        }
     layered = isinstance(request, BeamLayeredContinuousCheckRequestV1)
     end_web_capacity = (
         _positive_support_web_capacity(request, bars)
@@ -885,7 +912,7 @@ def _check_station_beam(
             stations[action.station_id].x_mm in centreline,
             faces.get(stations[action.station_id].x_mm),
             flexure,
-            shear,
+            zoned_shear.get(stations[action.station_id].x_mm, shear),
             end_web_capacity,
         )
         for action in sorted(
@@ -898,7 +925,9 @@ def _check_station_beam(
             ),
         )
     )
-    held, service = _coverage_issues(request, stations)
+    held, service = _coverage_issues(
+        request, stations, require_all_uls_stations=link_spacing_by_station is not None
+    )
     if layered and request.depth_mm > 750:
         held.append(
             StructuralIssueV1(

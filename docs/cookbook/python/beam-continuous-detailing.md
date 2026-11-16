@@ -11,7 +11,7 @@ tags: [beam, detailing, anchorage, bbs, is456]
 
 Use `beam.load_continuous_detailing` and `beam.check_continuous_detailing`
 with a two-span member, current supplied actions, continuous straight bars
-and a uniform link placement grid. The link input declares
+and a link placement grid. The link input declares
 its ordinary two-hook path and a fabrication source reference.
 
 Run the [worked example](../../../Python/examples/beam_continuous_detailing.py)
@@ -342,6 +342,36 @@ drawing uses the checked top bar paths and the BBS totals 92 pieces
 and 239.426 kg. This case uses ordinary detailing. Ductile beam
 lap locations and actual support obstructions need separate checks.
 [Independent top lap replay](../../verification/check_library_030_beam05_support_top_lap_reference.py)
+
+## Check varied link pitches in a rectangular cage
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-varied-links.json \
+  --case dense_required --output-dir output/beam05-varied-links
+```
+
+Supply `link_zones` with ordered bounds, spacing, and explicit start
+and end inclusion for each zone. The ordinary rectangular example uses
+four uninterrupted Ø20 corner bars and one fabricated Ø8 closed link
+shape. It places the link at 2,000 mm in the left zone and the link at
+6,000 mm in the middle zone. The signed actions at each transition are
+checked at both adjacent pitches.
+
+In the concentrated-load case, U2 reaches 219.368 kN shear at the
+interior support face. The 100 mm links provide 266.150 kN resistance
+there. The uniform 250 mm control provides 145.936 kN and fails under
+the same load. The drawing shows the pitch changes and one resolved
+section. The BBS has one link mark with 57 pieces at 1,598.230 mm each.
+The individual zone counts are 9, 40 and 8. Including four continuous
+bars, the total theoretical mass is 123.939 kg.
+
+The checked schedule requires the complete placement grid and signed
+rows at every declared member station for each ULS combination.
+Overpitch, conflicting ownership and excessive shear
+fail. Missing zone evidence, missing transition actions and stale
+actions hold. The supplied cage and support fit use nominal dimensions.
+[Independent varied-link replay](../../verification/check_library_030_beam05_varied_links_reference.py)
 
 ## Check a cutoff in the second span of a layered rectangle
 
