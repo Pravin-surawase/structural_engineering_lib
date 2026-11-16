@@ -905,6 +905,13 @@ def _check_bottom_lap(
             "lap_result": checked_lap.to_dict(),
             "stress_rows": stress_rows,
             "partner_rows": [row.to_dict() for row in partner_rows],
+            **(
+                {"web_only_anchor_moment_knm": web_capacity}
+                if isinstance(member, BeamLayeredContinuousCheckRequestV1)
+                and member.flange is not None
+                and member.flange.kind == "t_beam"
+                else {}
+            ),
         },
         failed + held,
         status,
@@ -939,8 +946,8 @@ def check_continuous_detailing(
     Limitations
     -----------
     Straight longitudinal bars and a uniform ordinary web link mark. One
-    first-span outer-layer bottom cutoff is supported. Rectangular
-    sections also admit one separated straight bottom tension lap.
+    first-span outer-layer bottom cutoff is supported. Rectangular and
+    symmetric T sections admit one separated straight outer-bottom tension lap.
 
     Provenance
     ----------
@@ -957,16 +964,29 @@ def check_continuous_detailing(
     lap_bounds = None
     source_hash = identity.input_hash
     layered = isinstance(request.member, BeamLayeredContinuousCheckRequestV1)
+    flange = (
+        request.member.flange
+        if isinstance(request.member, BeamLayeredContinuousCheckRequestV1)
+        else None
+    )
     if (
-        isinstance(request.member, BeamLayeredContinuousCheckRequestV1)
-        and request.member.flange is not None
-        and request.lap
+        request.lap
+        and flange is not None
+        and (
+            flange.kind != "t_beam"
+            or not math.isclose(
+                flange.left_overhang_mm,
+                flange.right_overhang_mm,
+                rel_tol=0,
+                abs_tol=1e-6,
+            )
+        )
     ):
         issues.append(
             StructuralIssueV1(
                 "BEAM.LAYERED_BAR_DETAIL_HELD",
                 "lap",
-                "The flanged web-cage profile needs separate checks for laps.",
+                "The layered lap profile covers rectangles and symmetric T web cages.",
             )
         )
         if status is EngineeringStatus.PASS:
@@ -1074,7 +1094,7 @@ def check_continuous_detailing(
         limitations=(
             "Only the supplied strength and anchorage rows and the declared physical layout are checked.",
             (
-                "Prismatic web cage with straight layers, one optional outer-layer bottom cutoff and one uniform two-hook web link. Rectangular cages also admit one separated straight bottom tension lap. Slab reinforcement and equilibrium torsion need separate evidence."
+                "Prismatic web cage with straight layers, one optional outer-layer bottom cutoff and one uniform two-hook web link. Rectangular and symmetric T cages admit one separated straight outer-bottom tension lap. Slab reinforcement and equilibrium torsion need separate evidence."
                 if layered
                 else "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark."
             ),
@@ -1330,6 +1350,12 @@ def render_continuous_detailing_svg(
         if isinstance(member, BeamLayeredContinuousCheckRequestV1)
         else {}
     )
+    lap_colors = (
+        {lap["bar_id"]: "#92400e", lap["partner_bar_id"]: "#0f766e"}
+        if "web_only_anchor_moment_knm" in lap
+        else {}
+    )
+    lap_lines = []
     bars = []
     termination = ""
     for item in geometry["paths"]:
@@ -1356,6 +1382,14 @@ def render_continuous_detailing_svg(
                 f'<text x="{x2:g}" y="-68" text-anchor="middle" font-size="112" '
                 f'fill="#92400e">{path_id} ends at {x2:g} mm</text>'
             )
+        elif item["bar_id"] in lap_colors:
+            color = lap_colors[item["bar_id"]]
+            first = item["bar_id"] == lap["bar_id"]
+            dash = "" if first else ' stroke-dasharray="42 22"'
+            lap_lines.append(
+                line + f'stroke="{color}" stroke-width="14"{dash}/>'
+                f'<circle cx="{x2 if first else x1:g}" cy="{y1:g}" r="18" fill="{color}"/>'
+            )
         else:
             bars.append(line + f'stroke="{color}" stroke-width="8"/>')
     identity = result.envelope.result_identity
@@ -1378,13 +1412,21 @@ def render_continuous_detailing_svg(
         + lap_band
         + "".join(bars)
         + termination
+        + "".join(lap_lines)
     )
     drawing_label = "elevation"
     if isinstance(member, BeamLayeredContinuousCheckRequestV1):
         drawing_label = "drawing"
         drawing_view = "0 0 1200 650"
+        lap_legend = (
+            '<text x="334" y="28" font-size="17" fill="#92400e">Lap-I · original</text>'
+            '<text x="500" y="28" font-size="17" fill="#0f766e">Lap-J · partner</text>'
+            if lap_colors
+            else ""
+        )
         panels = (
             '<text x="18" y="28" font-size="22">Member elevation</text>'
+            f"{lap_legend}"
             f'<svg x="0" y="44" width="1200" height="230" viewBox="{elevation_view}">'
             f"{elevation}</svg>"
         )
@@ -1425,6 +1467,7 @@ def render_continuous_detailing_svg(
                     panel_x=400 * index,
                     panel_width=400,
                     label=f"Section at {station:g} mm · {label}",
+                    lap_colors=lap_colors,
                 )
         else:
             panels += _section_panel(member, request.link_detail, geometry["paths"])
@@ -1445,6 +1488,7 @@ def _section_panel(
     panel_x: int = 0,
     panel_width: int = 1200,
     label: str = "Physical cross-section · web cage",
+    lap_colors: dict[str, str] | None = None,
 ) -> str:
     """Draw the web cage immediately to the right of the section station."""
     assert link is not None
@@ -1475,10 +1519,11 @@ def _section_panel(
             continue
         bar_id = html.escape(path["bar_id"], quote=True)
         mark = html.escape(path["bar_mark"])
+        color = (lap_colors or {}).get(path["bar_id"], "#1e40af")
         circles.append(
             f'<circle data-bar-id="{bar_id}" data-layer="{path["layer"]}" '
             f'cx="{point["section_x_from_left_mm"]:g}" cy="{point["section_y_from_top_mm"]:g}" '
-            f'r="{path["diameter_mm"] / 2:g}" fill="#1e40af"><title>{mark}</title></circle>'
+            f'r="{path["diameter_mm"] / 2:g}" fill="{color}"><title>{mark}</title></circle>'
         )
     station = f' data-station-mm="{station_mm:g}"' if station_mm is not None else ""
     return f"""<text x="{panel_x + 18}" y="302" font-size="22">{html.escape(label)}</text>
@@ -1735,15 +1780,38 @@ def _layered_lap_report(lap: dict[str, Any], arrangement: dict[str, Any]) -> str
         f"Required {pair['required_clear_mm']:g} mm.</p>"
         for pair in clearances
     )
+    stress_rows = lap["stress_rows"]
     rows = "".join(
         f"<tr><th>{html.escape(row['row_id'])}</th>"
         f"<td>{row['moment_knm']:g}</td><td>{row['shear_kn']:g}</td>"
         f"<td>{row['half_capacity_knm']:.3f}</td></tr>"
-        for row in lap["stress_rows"]
+        for row in stress_rows
     )
+    basis = ""
+    if "web_only_anchor_moment_knm" in lap and stress_rows:
+        governor = min(
+            stress_rows,
+            key=lambda row: (
+                -abs(row["moment_knm"]) / row["half_capacity_knm"],
+                row["row_id"],
+            ),
+        )
+        basis = (
+            f"<p>Governing lap moment {html.escape(governor['row_id'])} · "
+            f"{governor['moment_knm']:.3f} kN·m against "
+            f"{governor['half_capacity_knm']:.3f} kN·m.</p>"
+            "<p>Each transfer layout credits one lap piece. Sagging uses the compression flange. "
+            "Hogging and shear use the web.</p>"
+        )
+        web_capacity = lap["web_only_anchor_moment_knm"]
+        if web_capacity is not None:
+            basis += (
+                f"<p>Web-only moment resistance for positive support anchorage "
+                f"{web_capacity:.3f} kN·m.</p>"
+            )
     return (
         f"<p>Overlap from {lap['start_station_mm']:g} to {lap['end_station_mm']:g} mm.</p>"
-        f"{spacing}<h3>Concurrent ULS actions within the lap</h3>"
+        f"{spacing}{basis}<h3>Concurrent ULS actions within the lap</h3>"
         "<table><thead><tr><th>Row ID</th><th>Moment (kN·m)</th>"
         "<th>Shear (kN)</th><th>Half section resistance (kN·m)</th></tr></thead>"
         f"<tbody>{rows}</tbody></table>"

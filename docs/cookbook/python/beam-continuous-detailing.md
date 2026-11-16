@@ -249,3 +249,31 @@ The BBS assigns separate 3,310 and 6,910 mm cuts to the pieces and totals
 184.665 kg. Both failing controls withhold drawing and schedule.
 [Independent lap replay](../../verification/check_library_030_beam05_lap_reference.py)
 [IS 456 clauses 26.2.5 and 26.3.2](https://www.cracindia.in/admin/uploads/IS-456.pdf)
+
+## Check a separated lap in the symmetric T beam
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-t-lap-reference.json \
+  --case t_lap --output-dir output/beam05-t-lap
+```
+
+This bounded case is one straight, separated Ø20 `B1-3` lap in the outer
+bottom layer of the first clear span of a prismatic symmetric T web cage. It
+retains the two aligned inner bars, omits `B2-3` and uses uniform closed
+web links with zero torsion.
+
+The 1,300 mm overlap from 1,550 to 2,850 mm exceeds the 906.250 mm
+requirement. The pieces have 27.5 mm clear spacing against a 25 mm
+minimum. The physical and effective flange widths are both 1,000 mm.
+Sagging uses the monolithic effective flange. Hogging, shear, support
+anchorage and the closed links use the web. The report records concurrent
+U1/U2 lap actions and the governing moment at `U2:LAP-START`. The drawing
+shows the T outline, web link cage and the bar positions before, within
+and after the lap. The 49-piece BBS includes separate 3,310 mm and
+6,910 mm cuts for the lap pieces and totals 184.665 kg.
+
+The `short_overlap` and `congested_partner` controls fail (splice length and
+horizontal spacing respectively). `missing_lap_action` and `stale_analysis`
+hold, and all failed or held controls withhold the checked drawing and BBS.
+See the [independent replay](../../verification/check_library_030_beam05_t_lap_reference.py).
