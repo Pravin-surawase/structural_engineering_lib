@@ -349,3 +349,28 @@ piece alone to the right. The BBS includes the distinct 3,310 and
 Short overlap and congestion fail. Missing actions and stale analysis
 hold. These four controls keep diagnostics and withhold the checked
 drawing and BBS. [Independent replay](../../verification/check_library_030_beam05_span2_lap_reference.py)
+
+### Check the compression-bar restraint
+
+Use the revised specimen to obtain checked artifacts for this lap.
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-span2-lap-restraint-reference.json \
+  --case restrained_span2_lap --output-dir output/beam05-span2-lap-restrained
+```
+
+The 230 × 600 mm web keeps four continuous Ø20 bars seated at the
+ordinary closed link bends. Each compression layout has a single
+intermediate Ø16 bar within 75 mm of the neighbouring corner bars.
+Both lap pieces are present together in the sagging interval. The
+overlap clearances are checked on the physical section, and the
+restraint check uses the signed compression layouts and verified
+link geometry. The BBS has 49 pieces and weighs 172.035 kg.
+
+The original right-span cage remains a numerical control. Its report
+shows the lap calculation and holds the checked drawing and BBS because
+the credited compression bars lack verified restraint. The same check
+applies to the earlier layered rectangular, T-beam and L-beam lap
+replays. [IS 456 clauses 26.5.1.2 and 26.5.3.2](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf) ·
+[Independent restraint replay](../../verification/check_library_030_beam05_span2_lap_restraint_reference.py)

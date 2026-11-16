@@ -9,6 +9,7 @@ import pytest
 
 from structural_lib.design.is456 import beam
 from tests.integration.test_beam_t_lap_reference import (
+    _assert_legacy_lap_restraint_hold,
     _assert_rows_and_capacities,
     _assert_sections_and_bbs,
 )
@@ -34,6 +35,11 @@ def test_span2_lap_reference_all_outcomes(name: str) -> None:
     report = beam.render_continuous_detailing_html(result, current=request)
     drawing = beam.render_continuous_detailing_svg(result, current=request)
     schedule = beam.render_continuous_detailing_bbs_csv(result, current=request)
+
+    if expected["status"] == "PASS":
+        _assert_legacy_lap_restraint_hold(result, report, drawing, schedule)
+        _assert_rows_and_capacities(result.calculation, expected)
+        return
 
     assert result.engineering_status.value == expected["status"]
     assert {issue.code for issue in result.issues} >= set(

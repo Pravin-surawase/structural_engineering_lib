@@ -7,6 +7,7 @@ import html
 import io
 import math
 from dataclasses import replace
+from itertools import pairwise
 from typing import Any, Literal, Self
 
 from pydantic import Field, model_validator
@@ -54,6 +55,10 @@ from structural_lib.beam.semantics import (
     semantic_hash,
 )
 from structural_lib.beam.shear_torsion import TransverseLink
+from structural_lib.codes.is456.column.detailing import (
+    calculate_tie_spacing,
+    minimum_tie_diameter,
+)
 from structural_lib.construction import (
     BbsRequest,
     CuttingStockPolicy,
@@ -74,6 +79,7 @@ from structural_lib.core.result_contract import (
 from structural_lib.reporting.calculation_package import result_binding
 from structural_lib.services.beam_continuous import (
     BeamContinuousCheckResultV1,
+    BeamContinuousRowResultV1,
     _bar_positions,
     _check_row,
     _positive_support_web_capacity,
@@ -918,6 +924,21 @@ def _check_bottom_lap(
         if failed
         else EngineeringStatus.HOLD if held else EngineeringStatus.PASS
     )
+    restraint = None
+    if status is EngineeringStatus.PASS and layered and request.link_detail is not None:
+        original_rows = tuple(
+            row
+            for row in checked.rows
+            if original.start_station_mm <= row.station.x_mm <= original.end_station_mm
+        )
+        restraint = _lap_compression_restraint(
+            request,
+            (
+                ("upstream", checked.flexural_sections, original_rows),
+                ("downstream", flexure, partner_rows),
+            ),
+            (original, partner),
+        )
     return (
         (original, partner),
         {
@@ -930,6 +951,7 @@ def _check_bottom_lap(
             "lap_result": checked_lap.to_dict(),
             "stress_rows": stress_rows,
             "partner_rows": [row.to_dict() for row in partner_rows],
+            **({"compression_restraint": restraint} if restraint is not None else {}),
             **(
                 {"lap_direction": AnchorageDirection.DECREASING_X.value}
                 if reverse
@@ -945,6 +967,129 @@ def _check_bottom_lap(
         failed + held,
         status,
     )
+
+
+def _lap_compression_restraint(
+    request: BeamContinuousDetailingInputV1,
+    layouts: tuple[
+        tuple[str, dict[Face, OperationResult], tuple[BeamContinuousRowResultV1, ...]],
+        ...,
+    ],
+    lap_pieces: tuple[LongitudinalBarPath, LongitudinalBarPath],
+) -> dict[str, Any]:
+    """Verify compression restraint for the ordinary closed web link."""
+    member, link = request.member, request.link_detail
+    assert isinstance(member, BeamLayeredContinuousCheckRequestV1) and link is not None
+    original, partner = lap_pieces
+    existing = {bar.bar_id: bar for bar in member.bars}
+    existing[partner.bar_id] = existing[original.bar_id].model_copy(
+        update={"bar_id": partner.bar_id, "x_from_left_mm": partner.x_from_left_mm}
+    )
+    source = "IS 456:2000 clauses 26.5.1.2 and 26.5.3.2, including Amendment No. 1"
+    link_dia = member.link_diameter_mm
+    bend_radius = link.internal_bend_radius_mm
+    # The bend centre is one link diameter plus the inner radius from cover.
+    bend_inset = member.clear_cover_mm + link_dia + bend_radius
+    layouts_checked = []
+    for layout, capacities, rows in layouts:
+        for tension_face in (Face.BOTTOM, Face.TOP):
+            row_ids = [
+                row.action.row_id
+                for row in rows
+                if row.kind == "ULS"
+                and not row.diagnostic_only
+                and row.tension_face == tension_face.value
+            ]
+            if not row_ids:
+                continue
+            responses = capacities[tension_face].outputs["bar_responses"]
+            credited = sorted(
+                row["bar_id"] for row in responses if row["net_force_n"] > 0
+            )
+            if not credited:
+                continue
+            face = Face.TOP if tension_face is Face.BOTTOM else Face.BOTTOM
+            cage = [existing[row["bar_id"]] for row in responses if row["face"] == face]
+            outer = sorted(
+                (bar for bar in cage if bar.layer == 1),
+                key=lambda bar: bar.x_from_left_mm,
+            )
+            bend_y = bend_inset if face is Face.TOP else member.depth_mm - bend_inset
+            # At both ends of the outer row, use bars seated in the nominal
+            # 90-degree link bends as positive proof of two-direction restraint.
+            corners = [
+                bar.bar_id
+                for x in (bend_inset, member.width_mm - bend_inset)
+                for bar in outer
+                if math.isclose(bar.x_from_left_mm, x, rel_tol=0, abs_tol=1e-6)
+                and math.isclose(bar.y_from_top_mm, bend_y, rel_tol=0, abs_tol=1e-6)
+                and math.isclose(
+                    bar.diameter_mm / 2, bend_radius, rel_tol=0, abs_tol=1e-6
+                )
+            ]
+            gaps = (
+                [
+                    right.x_from_left_mm - left.x_from_left_mm
+                    for left, right in pairwise(outer)
+                ]
+                if len(outer) > 2
+                else []
+            )
+            outer_supported = (
+                2 <= len(outer) <= 3
+                and corners == [outer[0].bar_id, outer[-1].bar_id]
+                and all(
+                    math.isclose(bar.y_from_top_mm, bend_y, rel_tol=0, abs_tol=1e-6)
+                    for bar in outer
+                )
+                and all(gap <= 75 for gap in gaps)
+            )
+            inner = [bar for bar in cage if bar.layer > 1]
+            maximum_inner_dia = max((bar.diameter_mm for bar in inner), default=0)
+            inner_supported = all(
+                (
+                    bar.y_from_top_mm
+                    if face is Face.TOP
+                    else member.depth_mm - bar.y_from_top_mm
+                )
+                >= 3 * maximum_inner_dia
+                for bar in inner
+            )
+            active_diameters = [
+                existing[row["bar_id"]].diameter_mm for row in responses
+            ]
+            tie_pitch_limit = calculate_tie_spacing(
+                member.width_mm,
+                member.depth_mm,
+                min(active_diameters),
+            )
+            tie_diameter_limit = minimum_tie_diameter(max(active_diameters))
+            verified = (
+                outer_supported
+                and inner_supported
+                and set(credited) <= {bar.bar_id for bar in cage}
+                and member.link_spacing_mm <= tie_pitch_limit
+                and link_dia >= tie_diameter_limit
+            )
+            layouts_checked.append(
+                {
+                    "layout": layout,
+                    "compression_face": face.value,
+                    "row_ids": row_ids,
+                    "corner_bar_ids": corners,
+                    "compressed_bar_ids": credited,
+                    "intermediate_centre_gaps_mm": gaps,
+                    "unresolved_bar_ids": [] if verified else credited,
+                    "maximum_tie_pitch_mm": tie_pitch_limit,
+                    "minimum_tie_diameter_mm": tie_diameter_limit,
+                    "verified": verified,
+                }
+            )
+    return {
+        "source": source,
+        "layouts": layouts_checked,
+        "verified": all(layout["verified"] for layout in layouts_checked),
+    }
 
 
 def check_continuous_detailing(
@@ -1062,9 +1207,12 @@ def check_continuous_detailing(
             },
         )
     if status is EngineeringStatus.PASS:
+        restraint = data.get("lap", {}).get("compression_restraint")
         inputs = _physical_paths(request, source_hash, cutoff_bounds, lap_pieces)
         if inputs is None:
             status = EngineeringStatus.HOLD
+            if restraint is not None:
+                restraint["verified"] = False
             issues.append(
                 StructuralIssueV1(
                     "BEAM.DETAIL_LINK_BASIS_HELD",
@@ -1098,6 +1246,21 @@ def check_continuous_detailing(
                         item.code, item.field_or_location or "detail", item.message
                     )
                     for item in leaf.diagnostics
+                )
+            if restraint is not None and status is not EngineeringStatus.PASS:
+                restraint["verified"] = False
+            if (
+                status is EngineeringStatus.PASS
+                and restraint is not None
+                and not restraint["verified"]
+            ):
+                status = EngineeringStatus.HOLD
+                issues.append(
+                    StructuralIssueV1(
+                        "BEAM.LAP_COMPRESSION_RESTRAINT_HELD",
+                        "lap",
+                        "The closed link has not demonstrated effective lateral restraint for the credited compression bars in both transfer layouts.",
+                    )
                 )
             if status is EngineeringStatus.PASS:
                 splice = None
@@ -1886,6 +2049,13 @@ def _layered_lap_report(lap: dict[str, Any], arrangement: dict[str, Any]) -> str
                 f"<p>Web-only moment resistance for positive support anchorage "
                 f"{web_capacity:.3f} kN·m.</p>"
             )
+    restraint = lap.get("compression_restraint")
+    if restraint is not None:
+        state = "PASS" if restraint["verified"] else "HOLD"
+        basis += (
+            f"<p>Compression-bar restraint {state} for the signed transfer layouts. "
+            f"{html.escape(restraint['source'])}.</p>"
+        )
     return (
         f"<p>Overlap from {lap['start_station_mm']:g} to {lap['end_station_mm']:g} mm.</p>"
         f"{spacing}{basis}<h3>Concurrent ULS actions within the lap</h3>"

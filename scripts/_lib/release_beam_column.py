@@ -130,6 +130,9 @@ CHECKERS = tuple(
     "docs/verification/check_library_029_col07_corner_reference.py",
     "docs/verification/check_library_030_beam05_cutoff_reference.py",
     "docs/verification/check_library_030_beam05_lap_reference.py",
+    "docs/verification/check_library_030_beam05_t_lap_reference.py",
+    "docs/verification/check_library_030_beam05_span2_lap_reference.py",
+    "docs/verification/check_library_030_beam05_span2_lap_restraint_reference.py",
 )
 BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
@@ -141,6 +144,13 @@ BEAM05_LAYERED_CUTOFF_REFERENCE = (
     "docs/verification/library-030-beam05-layered-cutoff.json"
 )
 BEAM05_LAYERED_LAP_REFERENCE = "docs/verification/library-030-beam05-layered-lap.json"
+BEAM05_T_LAP_REFERENCE = "docs/verification/library-030-beam05-t-lap-reference.json"
+BEAM05_SPAN2_LAP_REFERENCE = (
+    "docs/verification/library-030-beam05-span2-lap-reference.json"
+)
+BEAM05_LAP_RESTRAINT_REFERENCE = (
+    "docs/verification/library-030-beam05-span2-lap-restraint-reference.json"
+)
 BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
@@ -178,6 +188,9 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_CUTOFF_REFERENCE,
                 repo / BEAM05_LAYERED_CUTOFF_REFERENCE,
                 repo / BEAM05_LAYERED_LAP_REFERENCE,
+                repo / BEAM05_T_LAP_REFERENCE,
+                repo / BEAM05_SPAN2_LAP_REFERENCE,
+                repo / BEAM05_LAP_RESTRAINT_REFERENCE,
                 repo / BEAM05_LAP_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
@@ -558,6 +571,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         (BEAM05_FLANGED_REFERENCE, "beam-flanged-detailing"),
         (BEAM05_LAYERED_CUTOFF_REFERENCE, "beam-layered-cutoff"),
         (BEAM05_LAYERED_LAP_REFERENCE, "beam-layered-lap"),
+        (BEAM05_LAP_RESTRAINT_REFERENCE, "beam-layered-lap-restraint"),
     ):
         for case, entry in json.loads((clone / reference).read_text())["cases"].items():
             label = f"{profile}-{case}"
@@ -574,7 +588,15 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             )
             result = json.loads(stdout)
             status = entry["expected"]["status"]
+            required_codes = set(entry["expected"].get("required_issue_codes", ()))
+            if reference == BEAM05_LAYERED_LAP_REFERENCE and status == "PASS":
+                # Retain the original specimen as a numerical control.
+                status = "HOLD"
+                required_codes.add("BEAM.LAP_COMPRESSION_RESTRAINT_HELD")
             assert result["envelope"]["engineering_status"] == status
+            assert required_codes <= {
+                issue["code"] for issue in result["envelope"]["issues"]
+            }
             assert result == json.loads((directory / "result.json").read_text())
             input_hash = result["envelope"]["result_identity"]["input_hash"]
             assert input_hash in (directory / "report.html").read_text()
@@ -588,8 +610,11 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                     assert 'data-view="section"' in drawing
                 if reference == BEAM05_LAYERED_CUTOFF_REFERENCE:
                     assert drawing.count('data-view="section"') == 2
-                if reference == BEAM05_LAYERED_LAP_REFERENCE:
+                if reference == BEAM05_LAP_RESTRAINT_REFERENCE:
                     assert drawing.count('data-view="section"') == 3
+                    assert result["calculation"]["lap"]["compression_restraint"][
+                        "verified"
+                    ]
     flow03 = json.loads((clone / FLOW03_BEAM_REFERENCE).read_text())
     for case, extra in (
         ("edited", ()),
