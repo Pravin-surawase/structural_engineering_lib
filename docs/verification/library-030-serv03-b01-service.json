@@ -1,0 +1,906 @@
+{
+  "fixture_version": "library-030-serv03-b01-service/v1",
+  "sources": [
+    "B01 public provided-bar replay in Python/tests/integration/test_api_entrypoints_is456.py",
+    "IS 456:2000 Cl. 23.2, Cl. 24.1, Annex C-2, C-3, C-4 and Annex F",
+    "Direct one-way strip adaptation using verified two-edge support and prescribed finite-age evidence"
+  ],
+  "published_b01_ultimate_control": {
+    "effective_span_mm": 3000,
+    "factored_area_load_kn_per_m2": 10,
+    "moment_knm_per_m": 11.25,
+    "required_main_steel_mm2_per_m": 260.726630425217
+  },
+  "cases": {
+    "b01_service_history": {
+      "request": {
+        "identity": {
+          "family_id": "slab",
+          "case_id": "B01-3000",
+          "member_id": "B01-STRIP"
+        },
+        "analysis_revision": "B01-3000-A1",
+        "reinforcement_revision": "B01-R1",
+        "effective_span_mm": 3000,
+        "transverse_panel_span_mm": 7500,
+        "support_edges": {
+          "x_min": "simple",
+          "x_max": "simple",
+          "y_min": "free",
+          "y_max": "free"
+        },
+        "section": {
+          "strip_width_mm": 1000,
+          "thickness_mm": 150,
+          "nominal_cover_mm": 20,
+          "fck_nmm2": 20,
+          "fy_nmm2": 415,
+          "maximum_aggregate_mm": 20,
+          "main_pitch_mm": 250,
+          "main_bars": [
+            {
+              "bar_id": "M1",
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M2",
+              "x_from_left_mm": 375,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M3",
+              "x_from_left_mm": 625,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M4",
+              "x_from_left_mm": 875,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            }
+          ],
+          "distribution": {
+            "pitch_mm": 250,
+            "diameter_mm": 8,
+            "y_from_top_mm": 116
+          }
+        },
+        "service_loads": {
+          "total": {
+            "combination_id": "B01-3000-total",
+            "action_row_id": "B01-3000-total-MID",
+            "analysis_revision": "B01-3000-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 7,
+            "midspan_moment_knm": 7.875,
+            "support_shear_kn": 10.5
+          },
+          "sustained": {
+            "combination_id": "B01-3000-sustained",
+            "action_row_id": "B01-3000-sustained-MID",
+            "analysis_revision": "B01-3000-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 4,
+            "midspan_moment_knm": 4.5,
+            "support_shear_kn": 6.0
+          }
+        },
+        "history": {
+          "loading_age_days": 28,
+          "finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "finish_added_load_kn_per_m2": 0,
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 150,
+          "axial_restraint": "free_shortening",
+          "shrinkage_basis": "uniform_through_depth",
+          "source_reference": "Prescribed finite-age input worksheet with a single gravity UDL sustained through finishes."
+        },
+        "exposure": "mild",
+        "crack_width_limit_mm": 0.3,
+        "elastic_witness_load_kn_per_m2": null,
+        "source_reference": "B01 periodic tributary strip, one-way action from two verified supported edges."
+      },
+      "expected": {
+        "status": "PASS",
+        "actions": {
+          "assessment_moment_knm": 7.875,
+          "sustained_moment_knm": 4.5,
+          "assessment_support_shear_kn": 10.5,
+          "sustained_support_shear_kn": 6.0
+        },
+        "section": {
+          "gross_inertia_mm4": 281250000.0,
+          "cracking_moment_knm": 11.739356881873894,
+          "main_steel_area_mm2": 314.1592653589793,
+          "cracked_at_assessment": false
+        },
+        "deflection": {
+          "limit_final_mm": 12.0,
+          "limit_after_finishes_mm": 8.571428571428571,
+          "midspan_mm": 1500.0,
+          "status": "PASS",
+          "method": "annex_c_2_3_4",
+          "initial_total_mm": 1.1739356881873895,
+          "initial_sustained_mm": 0.6708203932499369,
+          "at_finishes": {
+            "concrete_modulus_nmm2": 13975.424859373685,
+            "neutral_axis_mm": 29.329897303449897,
+            "cracked_inertia_mm4": 49560040.538741484,
+            "effective_inertia_mm4": 281250000.0,
+            "cracked": false,
+            "sustained_deflection_mm": 1.0733126291998991,
+            "shrinkage_curvature_per_mm": 2.406363143645761e-07,
+            "shrinkage_deflection_mm": 0.2707158536601481,
+            "total_deflection_mm": 1.3440284828600473
+          },
+          "at_assessment": {
+            "concrete_modulus_nmm2": 10163.94535227177,
+            "neutral_axis_mm": 33.613569166914544,
+            "cracked_inertia_mm4": 64287163.39167345,
+            "effective_inertia_mm4": 281250000.0,
+            "cracked": false,
+            "sustained_deflection_mm": 1.4758048651498612,
+            "shrinkage_curvature_per_mm": 5.293998916020673e-07,
+            "shrinkage_deflection_mm": 0.5955748780523257,
+            "total_deflection_mm": 2.574495038139639
+          },
+          "after_finishes_mm": 1.230466555279592
+        },
+        "crack": {
+          "status": "PASS",
+          "method": "uncracked_flexure",
+          "width_mm": 0.0,
+          "crack_limit_mm": 0.3
+        }
+      }
+    },
+    "cracked_width_control": {
+      "request": {
+        "identity": {
+          "family_id": "slab",
+          "case_id": "B01-3680",
+          "member_id": "B01-STRIP"
+        },
+        "analysis_revision": "B01-3680-A1",
+        "reinforcement_revision": "B01-R1",
+        "effective_span_mm": 3680,
+        "transverse_panel_span_mm": 7500,
+        "support_edges": {
+          "x_min": "simple",
+          "x_max": "simple",
+          "y_min": "free",
+          "y_max": "free"
+        },
+        "section": {
+          "strip_width_mm": 1000,
+          "thickness_mm": 150,
+          "nominal_cover_mm": 20,
+          "fck_nmm2": 20,
+          "fy_nmm2": 415,
+          "maximum_aggregate_mm": 20,
+          "main_pitch_mm": 250,
+          "main_bars": [
+            {
+              "bar_id": "M1",
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M2",
+              "x_from_left_mm": 375,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M3",
+              "x_from_left_mm": 625,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M4",
+              "x_from_left_mm": 875,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            }
+          ],
+          "distribution": {
+            "pitch_mm": 250,
+            "diameter_mm": 8,
+            "y_from_top_mm": 116
+          }
+        },
+        "service_loads": {
+          "total": {
+            "combination_id": "B01-3680-total",
+            "action_row_id": "B01-3680-total-MID",
+            "analysis_revision": "B01-3680-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 7,
+            "midspan_moment_knm": 11.8496,
+            "support_shear_kn": 12.88
+          },
+          "sustained": {
+            "combination_id": "B01-3680-sustained",
+            "action_row_id": "B01-3680-sustained-MID",
+            "analysis_revision": "B01-3680-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 4,
+            "midspan_moment_knm": 6.7712,
+            "support_shear_kn": 7.36
+          }
+        },
+        "history": {
+          "loading_age_days": 28,
+          "finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "finish_added_load_kn_per_m2": 0,
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 150,
+          "axial_restraint": "free_shortening",
+          "shrinkage_basis": "uniform_through_depth",
+          "source_reference": "Prescribed finite-age input worksheet with a single gravity UDL sustained through finishes."
+        },
+        "exposure": "mild",
+        "crack_width_limit_mm": 0.3,
+        "elastic_witness_load_kn_per_m2": null,
+        "source_reference": "B01 periodic tributary strip, one-way action from two verified supported edges."
+      },
+      "expected": {
+        "status": "PASS",
+        "actions": {
+          "assessment_moment_knm": 11.8496,
+          "sustained_moment_knm": 6.7712,
+          "assessment_support_shear_kn": 12.88,
+          "sustained_support_shear_kn": 7.36
+        },
+        "section": {
+          "gross_inertia_mm4": 281250000.0,
+          "cracking_moment_knm": 11.739356881873894,
+          "main_steel_area_mm2": 314.1592653589793,
+          "cracked_at_assessment": true
+        },
+        "deflection": {
+          "limit_final_mm": 14.72,
+          "limit_after_finishes_mm": 10.514285714285714,
+          "midspan_mm": 1840.0,
+          "status": "PASS",
+          "method": "annex_c_2_3_4",
+          "initial_total_mm": 10.093872654050553,
+          "initial_sustained_mm": 1.5188417016057245,
+          "at_finishes": {
+            "concrete_modulus_nmm2": 13975.424859373685,
+            "neutral_axis_mm": 29.329897303449897,
+            "cracked_inertia_mm4": 49560040.538741484,
+            "effective_inertia_mm4": 281250000.0,
+            "cracked": false,
+            "sustained_deflection_mm": 2.4301467225691598,
+            "shrinkage_curvature_per_mm": 2.406363143645761e-07,
+            "shrinkage_deflection_mm": 0.40734915295635443,
+            "total_deflection_mm": 2.837495875525514
+          },
+          "at_assessment": {
+            "concrete_modulus_nmm2": 10163.94535227177,
+            "neutral_axis_mm": 33.613569166914544,
+            "cracked_inertia_mm4": 64287163.39167345,
+            "effective_inertia_mm4": 281250000.0,
+            "cracked": false,
+            "sustained_deflection_mm": 3.3414517435325943,
+            "shrinkage_curvature_per_mm": 5.293998916020673e-07,
+            "shrinkage_deflection_mm": 0.8961681365039795,
+            "total_deflection_mm": 12.812650832481403
+          },
+          "after_finishes_mm": 9.975154956955889
+        },
+        "crack": {
+          "crack_limit_mm": 0.3,
+          "initial_elastic_steel_stress_nmm2": 322.2357434112203,
+          "assessment_elastic_steel_stress_nmm2": 327.5057402833745,
+          "assessment_elastic_steel_strain": 0.0016375287014168726,
+          "annex_f_strain_limit": 0.00166,
+          "status": "PASS",
+          "method": "annex_f_one_way_flexure",
+          "width_mm": 0.2808889526804271,
+          "governing_strip_position_mm": 0,
+          "surface_strain": 0.0020672516670211544,
+          "neutral_axis_mm": 29.73346594856994,
+          "nearest_steel_mm": 122.47548783981962,
+          "main_bar_cover_mm": 20.0
+        }
+      }
+    },
+    "longer_span": {
+      "request": {
+        "identity": {
+          "family_id": "slab",
+          "case_id": "B01-4500",
+          "member_id": "B01-STRIP"
+        },
+        "analysis_revision": "B01-4500-A1",
+        "reinforcement_revision": "B01-R1",
+        "effective_span_mm": 4500,
+        "transverse_panel_span_mm": 7500,
+        "support_edges": {
+          "x_min": "simple",
+          "x_max": "simple",
+          "y_min": "free",
+          "y_max": "free"
+        },
+        "section": {
+          "strip_width_mm": 1000,
+          "thickness_mm": 150,
+          "nominal_cover_mm": 20,
+          "fck_nmm2": 20,
+          "fy_nmm2": 415,
+          "maximum_aggregate_mm": 20,
+          "main_pitch_mm": 250,
+          "main_bars": [
+            {
+              "bar_id": "M1",
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M2",
+              "x_from_left_mm": 375,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M3",
+              "x_from_left_mm": 625,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M4",
+              "x_from_left_mm": 875,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            }
+          ],
+          "distribution": {
+            "pitch_mm": 250,
+            "diameter_mm": 8,
+            "y_from_top_mm": 116
+          }
+        },
+        "service_loads": {
+          "total": {
+            "combination_id": "B01-4500-total",
+            "action_row_id": "B01-4500-total-MID",
+            "analysis_revision": "B01-4500-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 7,
+            "midspan_moment_knm": 17.71875,
+            "support_shear_kn": 15.75
+          },
+          "sustained": {
+            "combination_id": "B01-4500-sustained",
+            "action_row_id": "B01-4500-sustained-MID",
+            "analysis_revision": "B01-4500-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 4,
+            "midspan_moment_knm": 10.125,
+            "support_shear_kn": 9.0
+          }
+        },
+        "history": {
+          "loading_age_days": 28,
+          "finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "finish_added_load_kn_per_m2": 0,
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 150,
+          "axial_restraint": "free_shortening",
+          "shrinkage_basis": "uniform_through_depth",
+          "source_reference": "Prescribed finite-age input worksheet with a single gravity UDL sustained through finishes."
+        },
+        "exposure": "mild",
+        "crack_width_limit_mm": 0.3,
+        "elastic_witness_load_kn_per_m2": 5.25,
+        "source_reference": "B01 periodic tributary strip, one-way action from two verified supported edges."
+      },
+      "expected": {
+        "status": "FAIL",
+        "actions": {
+          "assessment_moment_knm": 17.71875,
+          "sustained_moment_knm": 10.125,
+          "assessment_support_shear_kn": 15.75,
+          "sustained_support_shear_kn": 9.0
+        },
+        "section": {
+          "gross_inertia_mm4": 281250000.0,
+          "cracking_moment_knm": 11.739356881873894,
+          "main_steel_area_mm2": 314.1592653589793,
+          "cracked_at_assessment": true
+        },
+        "deflection": {
+          "limit_final_mm": 18.0,
+          "limit_after_finishes_mm": 12.857142857142858,
+          "midspan_mm": 2250.0,
+          "status": "FAIL",
+          "method": "elastic_lower_load_exceeds_final_limit",
+          "final_deflection_mm": null,
+          "elastic_witness": {
+            "load_kn_per_m2": 5.25,
+            "midspan_moment_knm": 13.2890625,
+            "support_shear_kn": 11.8125,
+            "tension_steel_stress_nmm2": 361.38020978983843,
+            "instantaneous_deflection_mm": 19.990960121998732,
+            "effective_inertia_mm4": 62708943.42674965
+          }
+        },
+        "crack": {
+          "crack_limit_mm": 0.3,
+          "initial_elastic_steel_stress_nmm2": 481.8402797197846,
+          "assessment_elastic_steel_stress_nmm2": 489.72052521992657,
+          "assessment_elastic_steel_strain": 0.002448602626099633,
+          "annex_f_strain_limit": 0.00166,
+          "status": "HOLD",
+          "method": "annex_f_strain_limit_exceeded",
+          "width_mm": null
+        }
+      }
+    },
+    "longer_span_without_witness": {
+      "request": {
+        "identity": {
+          "family_id": "slab",
+          "case_id": "B01-4500-NO-WITNESS",
+          "member_id": "B01-STRIP"
+        },
+        "analysis_revision": "B01-4500-A1",
+        "reinforcement_revision": "B01-R1",
+        "effective_span_mm": 4500,
+        "transverse_panel_span_mm": 7500,
+        "support_edges": {
+          "x_min": "simple",
+          "x_max": "simple",
+          "y_min": "free",
+          "y_max": "free"
+        },
+        "section": {
+          "strip_width_mm": 1000,
+          "thickness_mm": 150,
+          "nominal_cover_mm": 20,
+          "fck_nmm2": 20,
+          "fy_nmm2": 415,
+          "maximum_aggregate_mm": 20,
+          "main_pitch_mm": 250,
+          "main_bars": [
+            {
+              "bar_id": "M1",
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M2",
+              "x_from_left_mm": 375,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M3",
+              "x_from_left_mm": 625,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M4",
+              "x_from_left_mm": 875,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            }
+          ],
+          "distribution": {
+            "pitch_mm": 250,
+            "diameter_mm": 8,
+            "y_from_top_mm": 116
+          }
+        },
+        "service_loads": {
+          "total": {
+            "combination_id": "B01-4500-total",
+            "action_row_id": "B01-4500-total-MID",
+            "analysis_revision": "B01-4500-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 7,
+            "midspan_moment_knm": 17.71875,
+            "support_shear_kn": 15.75
+          },
+          "sustained": {
+            "combination_id": "B01-4500-sustained",
+            "action_row_id": "B01-4500-sustained-MID",
+            "analysis_revision": "B01-4500-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 4,
+            "midspan_moment_knm": 10.125,
+            "support_shear_kn": 9.0
+          }
+        },
+        "history": {
+          "loading_age_days": 28,
+          "finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "finish_added_load_kn_per_m2": 0,
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 150,
+          "axial_restraint": "free_shortening",
+          "shrinkage_basis": "uniform_through_depth",
+          "source_reference": "Prescribed finite-age input worksheet with a single gravity UDL sustained through finishes."
+        },
+        "exposure": "mild",
+        "crack_width_limit_mm": 0.3,
+        "elastic_witness_load_kn_per_m2": null,
+        "source_reference": "B01 periodic tributary strip, one-way action from two verified supported edges."
+      },
+      "expected": {
+        "status": "HOLD",
+        "actions": {
+          "assessment_moment_knm": 17.71875,
+          "sustained_moment_knm": 10.125,
+          "assessment_support_shear_kn": 15.75,
+          "sustained_support_shear_kn": 9.0
+        },
+        "section": {
+          "gross_inertia_mm4": 281250000.0,
+          "cracking_moment_knm": 11.739356881873894,
+          "main_steel_area_mm2": 314.1592653589793,
+          "cracked_at_assessment": true
+        },
+        "deflection": {
+          "limit_final_mm": 18.0,
+          "limit_after_finishes_mm": 12.857142857142858,
+          "midspan_mm": 2250.0,
+          "status": "HOLD",
+          "method": "outside_elastic_profile",
+          "final_deflection_mm": null
+        },
+        "crack": {
+          "crack_limit_mm": 0.3,
+          "initial_elastic_steel_stress_nmm2": 481.8402797197846,
+          "assessment_elastic_steel_stress_nmm2": 489.72052521992657,
+          "assessment_elastic_steel_strain": 0.002448602626099633,
+          "annex_f_strain_limit": 0.00166,
+          "status": "HOLD",
+          "method": "annex_f_strain_limit_exceeded",
+          "width_mm": null
+        }
+      }
+    },
+    "missing_history": {
+      "request": {
+        "identity": {
+          "family_id": "slab",
+          "case_id": "B01-3000",
+          "member_id": "B01-STRIP"
+        },
+        "analysis_revision": "B01-3000-A1",
+        "reinforcement_revision": "B01-R1",
+        "effective_span_mm": 3000,
+        "transverse_panel_span_mm": 7500,
+        "support_edges": {
+          "x_min": "simple",
+          "x_max": "simple",
+          "y_min": "free",
+          "y_max": "free"
+        },
+        "section": {
+          "strip_width_mm": 1000,
+          "thickness_mm": 150,
+          "nominal_cover_mm": 20,
+          "fck_nmm2": 20,
+          "fy_nmm2": 415,
+          "maximum_aggregate_mm": 20,
+          "main_pitch_mm": 250,
+          "main_bars": [
+            {
+              "bar_id": "M1",
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M2",
+              "x_from_left_mm": 375,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M3",
+              "x_from_left_mm": 625,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M4",
+              "x_from_left_mm": 875,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            }
+          ],
+          "distribution": {
+            "pitch_mm": 250,
+            "diameter_mm": 8,
+            "y_from_top_mm": 116
+          }
+        },
+        "service_loads": {
+          "total": {
+            "combination_id": "B01-3000-total",
+            "action_row_id": "B01-3000-total-MID",
+            "analysis_revision": "B01-3000-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 7,
+            "midspan_moment_knm": 7.875,
+            "support_shear_kn": 10.5
+          },
+          "sustained": {
+            "combination_id": "B01-3000-sustained",
+            "action_row_id": "B01-3000-sustained-MID",
+            "analysis_revision": "B01-3000-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 4,
+            "midspan_moment_knm": 4.5,
+            "support_shear_kn": 6.0
+          }
+        },
+        "exposure": "mild",
+        "crack_width_limit_mm": 0.3,
+        "elastic_witness_load_kn_per_m2": null,
+        "source_reference": "B01 periodic tributary strip, one-way action from two verified supported edges."
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "SLAB.SERVICE_HISTORY_HELD"
+      }
+    },
+    "stale_reinforcement": {
+      "request": {
+        "identity": {
+          "family_id": "slab",
+          "case_id": "B01-3000",
+          "member_id": "B01-STRIP"
+        },
+        "analysis_revision": "B01-3000-A1",
+        "reinforcement_revision": "B01-R1",
+        "effective_span_mm": 3000,
+        "transverse_panel_span_mm": 7500,
+        "support_edges": {
+          "x_min": "simple",
+          "x_max": "simple",
+          "y_min": "free",
+          "y_max": "free"
+        },
+        "section": {
+          "strip_width_mm": 1000,
+          "thickness_mm": 150,
+          "nominal_cover_mm": 20,
+          "fck_nmm2": 20,
+          "fy_nmm2": 415,
+          "maximum_aggregate_mm": 20,
+          "main_pitch_mm": 250,
+          "main_bars": [
+            {
+              "bar_id": "M1",
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M2",
+              "x_from_left_mm": 375,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M3",
+              "x_from_left_mm": 625,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M4",
+              "x_from_left_mm": 875,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            }
+          ],
+          "distribution": {
+            "pitch_mm": 250,
+            "diameter_mm": 8,
+            "y_from_top_mm": 116
+          }
+        },
+        "service_loads": {
+          "total": {
+            "combination_id": "B01-3000-total",
+            "action_row_id": "B01-3000-total-MID",
+            "analysis_revision": "B01-3000-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 7,
+            "midspan_moment_knm": 7.875,
+            "support_shear_kn": 10.5
+          },
+          "sustained": {
+            "combination_id": "B01-3000-sustained",
+            "action_row_id": "B01-3000-sustained-MID",
+            "analysis_revision": "B01-3000-A1",
+            "reinforcement_revision": "B01-R0",
+            "uniform_area_load_kn_per_m2": 4,
+            "midspan_moment_knm": 4.5,
+            "support_shear_kn": 6.0
+          }
+        },
+        "history": {
+          "loading_age_days": 28,
+          "finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "finish_added_load_kn_per_m2": 0,
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 150,
+          "axial_restraint": "free_shortening",
+          "shrinkage_basis": "uniform_through_depth",
+          "source_reference": "Prescribed finite-age input worksheet with a single gravity UDL sustained through finishes."
+        },
+        "exposure": "mild",
+        "crack_width_limit_mm": 0.3,
+        "elastic_witness_load_kn_per_m2": null,
+        "source_reference": "B01 periodic tributary strip, one-way action from two verified supported edges."
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "SLAB.SERVICE_REVISION_STALE"
+      }
+    },
+    "missing_support_evidence": {
+      "request": {
+        "identity": {
+          "family_id": "slab",
+          "case_id": "B01-4500",
+          "member_id": "B01-STRIP"
+        },
+        "analysis_revision": "B01-4500-A1",
+        "reinforcement_revision": "B01-R1",
+        "effective_span_mm": 4500,
+        "transverse_panel_span_mm": 7500,
+        "section": {
+          "strip_width_mm": 1000,
+          "thickness_mm": 150,
+          "nominal_cover_mm": 20,
+          "fck_nmm2": 20,
+          "fy_nmm2": 415,
+          "maximum_aggregate_mm": 20,
+          "main_pitch_mm": 250,
+          "main_bars": [
+            {
+              "bar_id": "M1",
+              "x_from_left_mm": 125,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M2",
+              "x_from_left_mm": 375,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M3",
+              "x_from_left_mm": 625,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            },
+            {
+              "bar_id": "M4",
+              "x_from_left_mm": 875,
+              "y_from_top_mm": 125,
+              "diameter_mm": 10
+            }
+          ],
+          "distribution": {
+            "pitch_mm": 250,
+            "diameter_mm": 8,
+            "y_from_top_mm": 116
+          }
+        },
+        "service_loads": {
+          "total": {
+            "combination_id": "B01-4500-total",
+            "action_row_id": "B01-4500-total-MID",
+            "analysis_revision": "B01-4500-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 7,
+            "midspan_moment_knm": 17.71875,
+            "support_shear_kn": 15.75
+          },
+          "sustained": {
+            "combination_id": "B01-4500-sustained",
+            "action_row_id": "B01-4500-sustained-MID",
+            "analysis_revision": "B01-4500-A1",
+            "reinforcement_revision": "B01-R1",
+            "uniform_area_load_kn_per_m2": 4,
+            "midspan_moment_knm": 10.125,
+            "support_shear_kn": 9.0
+          }
+        },
+        "history": {
+          "loading_age_days": 28,
+          "finishes": {
+            "age_days": 90,
+            "creep_coefficient": 0.6,
+            "shrinkage_strain": 0.0001
+          },
+          "assessment": {
+            "age_days": 365,
+            "creep_coefficient": 1.2,
+            "shrinkage_strain": 0.00022
+          },
+          "finish_added_load_kn_per_m2": 0,
+          "relative_humidity_percent": 60,
+          "notional_size_mm": 150,
+          "axial_restraint": "free_shortening",
+          "shrinkage_basis": "uniform_through_depth",
+          "source_reference": "Prescribed finite-age input worksheet with a single gravity UDL sustained through finishes."
+        },
+        "exposure": "mild",
+        "crack_width_limit_mm": 0.3,
+        "elastic_witness_load_kn_per_m2": 5.25,
+        "source_reference": "B01 periodic tributary strip, one-way action from two verified supported edges."
+      },
+      "expected": {
+        "status": "HOLD",
+        "issue": "SLAB.SERVICE_SUPPORT_HELD"
+      }
+    }
+  }
+}
