@@ -376,6 +376,95 @@ def test_imported_workbench_downloads_replay_one_checked_layout(client):
     assert check()["status"] == "HOLD"
 
 
+@pytest.mark.parametrize(
+    ("width", "depth", "fck", "moment", "expected"),
+    [
+        (350, 450, 25, 325, "HOLD"),  # Three compression bars at 114.5 mm
+        (271, 350, 20, 142, "PASS"),  # Three compression bars at exactly 75 mm
+        (271.1, 350, 20, 142, "HOLD"),  # Three compression bars at 75.05 mm
+        (321, 350, 20, 194, "HOLD"),  # Two adjacent unrestrained bars at 66.67 mm
+    ],
+)
+def test_quick_beam_requires_intermediate_compression_restraint(
+    client, width, depth, fck, moment, expected
+):
+    beam = {
+        "schema_version": "project-beam-design/v1",
+        "member_id": "B-WIDE",
+        "b_mm": width,
+        "D_mm": depth,
+        "d_mm": depth - 60.5,
+        "mu_knm": moment,
+        "vu_kn": 80,
+        "fck_nmm2": fck,
+        "fy_nmm2": 500,
+        "source_metadata": {
+            "span_mm": 6000,
+            "workbench_detailing": {
+                "clear_cover_mm": 40,
+                "stirrup_diameter_mm": 8,
+                "tension_bar_diameter_mm": 25,
+                "story": "Quick Beam",
+            },
+        },
+    }
+    response = client.post("/stream/batch-design", json=[beam])
+    assert response.status_code == 200
+    layout = next(
+        event["workbench"]
+        for line in response.text.splitlines()
+        if line.startswith("data: ") and "workbench" in (event := json.loads(line[6:]))
+    )
+    assert layout["status"] == expected
+    if expected == "HOLD":
+        assert (
+            "compression bars require intermediate lateral restraint"
+            in layout["reason"]
+        )
+        assert "checked_request" not in layout
+        assert "checked_layout_id" not in layout
+    else:
+        assert layout["asc_required_mm2"] > 0
+        assert {zone["compression"]["count"] for zone in layout["zones"]} == {3}
+        request = {key: layout[key] for key in ("checked_request", "checked_layout_id")}
+        response = client.post("/api/v1/export/bbs", json=request)
+        assert response.status_code == 200
+        assert response.headers["X-Checked-Layout-Id"] == layout["checked_layout_id"]
+
+
+def test_old_quick_beam_layout_with_unrestrained_compression_cannot_export(client):
+    # This request and ID passed on 4ae28fe9 before the restraint guard.
+    checked_request = {
+        "schema_version": "beam-design-input/v1",
+        "identity": {"member_id": "B-WIDE", "story": "Quick Beam", "case_id": "B-WIDE"},
+        "section": {"span_mm": 6000, "b_mm": 350, "D_mm": 450, "d_mm": 389.5},
+        "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+        "actions": {"mu_knm": 325, "vu_kn": 80, "tu_knm": 0},
+        "calculation_basis": {"d_dash_mm": 60.5, "asv_mm2": 100.53096491487338},
+        "detailing": {
+            "standard": "IS456",
+            "clear_cover_mm": 40,
+            "tension_bar_diameter_mm": 25,
+            "compression_bar_diameter_mm": 25,
+            "nominal_top_steel_ratio": 0.25,
+            "stirrup_diameter_mm": 8,
+            "stirrup_legs": 2,
+            "stirrup_spacing_support_mm": 250,
+            "stirrup_spacing_mid_mm": 250,
+        },
+        "source_provenance": "project-beam/v1:a4ea18ac7401394f2c5d5837e908bc4793295868346218931e026d5bd7f0cf97",
+    }
+    request = {
+        "checked_request": checked_request,
+        "checked_layout_id": "d290012f96fb926abddb42cab88e782b5cecce5a8f25cdd0e167193a8d879531",
+    }
+    for route in ("geometry/beam/full", "export/report", "export/dxf", "export/bbs"):
+        response = client.post(f"/api/v1/{route}", json=request)
+        assert response.status_code == 409
+        assert "X-Checked-Layout-Id" not in response.headers
+        assert "Content-Disposition" not in response.headers
+
+
 def test_project_summary_and_quantities_use_checked_layout(client):
     member = {
         "schema_version": "project-beam-design/v1",
