@@ -286,6 +286,33 @@ access checked. Apply ductile hook and confinement details under the
 separate seismic basis when applicable.
 [CPWD Specifications 2009, §5.3.3](https://cpwd.gov.in/Publication/speci_vol1.pdf)
 
+### Check the declared placement envelope
+
+```bash
+./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
+  --reference docs/verification/library-030-beam05-lap-placement-reference.json \
+  --case l_lap --output-dir output/beam05-l-lap-placement
+```
+
+The revised L and T cages use four continuous corner bars and one
+fully nested closed link. Both Ø8 link grids are nominally at 200 mm
+pitch and the nested links are offset by 60 mm. The request carries
+the project placement limits as `placement_envelope`. The L review
+checks all eight combinations of adverse bar row depths and uses only
+the exterior links for strength. Its lowest signed flexural capacities
+are 311.491 kN·m in sagging and 260.327 kN·m in hogging. Minimum link
+cover is 34.5 mm and the minimum lap is 1,280 mm.
+
+The report records the clearances, placement basis and adverse
+capacities. The drawing and BBS retain the nominal geometry, including
+the two link schedules of 41 pieces each. The full BBS totals 92 pieces
+and 249.352 kg. Check flange and support obstructions with the actual
+project details. A declared cage tolerance supports this review route.
+An explicit null holds the requested placement check for missing
+evidence. The bend interference case fails and the lost restraint case
+holds. All three controls withhold the checked drawing and BBS.
+[Independent placement replay](../../verification/check_library_030_beam05_lap_placement_reference.py)
+
 ## Check a cutoff in the second span of a layered rectangle
 
 ```bash

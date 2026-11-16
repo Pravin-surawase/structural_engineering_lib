@@ -35,7 +35,10 @@ def main() -> int:
         cases = json.loads(args.reference.read_text(encoding="utf-8"))["cases"]
         if args.case not in cases:
             parser.error(f"Unknown case {args.case}. Choices are {', '.join(cases)}.")
-        payload = cases[args.case]["request"]
+        case = cases[args.case]
+        payload = case["request"]
+        if "placement" in case:
+            payload = {**payload, "placement_envelope": case["placement"]}
     try:
         request = beam.load_continuous_detailing(payload)
     except beam.InputContractError as exc:

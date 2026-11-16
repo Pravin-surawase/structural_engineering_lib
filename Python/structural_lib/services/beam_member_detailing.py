@@ -8,7 +8,7 @@ import io
 import math
 from collections.abc import Iterable
 from dataclasses import replace
-from itertools import pairwise
+from itertools import pairwise, product
 from typing import Any, Literal, Self
 
 from pydantic import Field, model_validator
@@ -44,11 +44,15 @@ from structural_lib.beam.detailing import (
     check_laps_and_curtailment,
     check_reinforcement_arrangement,
 )
+from structural_lib.beam.lap_placement import (
+    LapPlacementEnvelope,
+    check_nested_lap_placement,
+)
 from structural_lib.beam.physical_torsion import (
     ClosedLinkDetailRequest,
     check_closed_link_detail,
 )
-from structural_lib.beam.reinforcement import Face
+from structural_lib.beam.reinforcement import BarPosition, Face
 from structural_lib.beam.semantics import (
     EngineeringState,
     ExecutionState,
@@ -159,6 +163,23 @@ class BeamSeparatedBottomLapV1(StrictPublicModel):
     placement_reference: Reference
 
 
+class BeamLapPlacementEnvelopeV1(StrictPublicModel):
+    """Declared tolerances for an unobstructed web cage with two link grids."""
+
+    source_reference: Reference
+    bar_axis_tolerance_mm: float = Field(ge=0, le=30)
+    bar_end_tolerance_mm: float = Field(ge=0, le=100)
+    cage_location_tolerance_mm: float = Field(ge=0, le=30)
+    link_station_tolerance_mm: float = Field(ge=0, le=50)
+    internal_bend_radius_tolerance_mm: float = Field(ge=0, le=20)
+    hook_plane_tolerance_mm: float = Field(ge=0, le=20)
+    hook_vertex_leg_tolerance_mm: float = Field(ge=0, le=30)
+    longitudinal_diameter_allowance_mm: float = Field(ge=0, le=10)
+    link_diameter_allowance_mm: float = Field(ge=0, le=5)
+    required_cover_mm: float = Field(gt=0, le=100)
+    concrete_placement_access_diameter_mm: float = Field(gt=0, le=200)
+
+
 class BeamContinuousDetailingInputV1(StrictPublicModel):
     """Two-span action and reinforcement check with a current ordinary link detail."""
 
@@ -171,6 +192,12 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
     stock_length_mm: float = Field(gt=0, le=18000)
     cutoff: BeamBottomCutoffV1 | None = None
     lap: BeamSeparatedBottomLapV1 | None = None
+    placement_envelope: BeamLapPlacementEnvelopeV1 | Literal["not_requested"] | None = (
+        Field(
+            default="not_requested",
+            exclude_if=lambda value: value == "not_requested",
+        )
+    )
 
     @model_validator(mode="after")
     def validate_identity(self) -> Self:
@@ -894,18 +921,7 @@ def _check_bottom_lap(
                 EngineeringStatus.FAIL,
             )
 
-    partner_positions = tuple(
-        (
-            replace(
-                item,
-                bar_id=lap.partner_bar_id,
-                x_from_left_mm=lap.partner_x_from_left_mm,
-            )
-            if item.bar_id == lap.bar_id
-            else item
-        )
-        for item in positions
-    )
+    partner_positions = _lap_partner_positions(positions, lap)
     geometry, flexure, shear = _sections(member, partner_positions)
     if geometry.engineering is not EngineeringState.PASS:
         issue = StructuralIssueV1(
@@ -1095,6 +1111,23 @@ def _check_bottom_lap(
     )
 
 
+def _lap_partner_positions(
+    positions: tuple[BarPosition, ...], lap: BeamSeparatedBottomLapV1
+) -> tuple[BarPosition, ...]:
+    return tuple(
+        (
+            replace(
+                bar,
+                bar_id=lap.partner_bar_id,
+                x_from_left_mm=lap.partner_x_from_left_mm,
+            )
+            if bar.bar_id == lap.bar_id
+            else bar
+        )
+        for bar in positions
+    )
+
+
 def _lap_compression_restraint(
     request: BeamContinuousDetailingInputV1,
     layouts: tuple[
@@ -1102,6 +1135,8 @@ def _lap_compression_restraint(
         ...,
     ],
     lap_pieces: tuple[LongitudinalBarPath, LongitudinalBarPath],
+    *,
+    placement_seats: dict[str, set[str]] | None = None,
 ) -> dict[str, Any]:
     """Verify compression restraint for the ordinary closed web link."""
     member, link = request.member, request.link_detail
@@ -1116,7 +1151,15 @@ def _lap_compression_restraint(
     bend_radius = link.internal_bend_radius_mm
     # The bend centre is one link diameter plus the inner radius from cover.
     bend_inset = member.clear_cover_mm + link_dia + bend_radius
-    if link.restraint_link is not None:
+    pitch = member.link_spacing_mm
+    depth_shift = 0.0
+    if placement_seats is not None:
+        seat_ids = placement_seats
+        basis = request.placement_envelope
+        assert isinstance(basis, BeamLapPlacementEnvelopeV1)
+        pitch += 2 * basis.link_station_tolerance_mm
+        depth_shift = basis.cage_location_tolerance_mm + basis.bar_axis_tolerance_mm
+    elif link.restraint_link is not None:
         inset = member.clear_cover_mm + link_dia / 2
         bend_axis_radius = bend_radius + link_dia / 2
         corner_sets = {
@@ -1206,7 +1249,7 @@ def _lap_compression_restraint(
                     if face is Face.TOP
                     else member.depth_mm - bar.y_from_top_mm
                 )
-                >= 3 * maximum_inner_dia
+                >= 3 * maximum_inner_dia + depth_shift
                 for bar in inner
             )
             active_diameters = [
@@ -1222,7 +1265,7 @@ def _lap_compression_restraint(
                 outer_supported
                 and inner_supported
                 and set(credited) <= {bar.bar_id for bar in cage}
-                and member.link_spacing_mm <= tie_pitch_limit
+                and pitch <= tie_pitch_limit
                 and link_dia >= tie_diameter_limit
             )
             layouts_checked.append(
@@ -1284,6 +1327,327 @@ def _rounded_link_seats(
     return seated
 
 
+def _check_lap_placement(
+    request: BeamContinuousDetailingInputV1,
+    checked: BeamContinuousCheckResultV1,
+    lap_pieces: tuple[LongitudinalBarPath, LongitudinalBarPath] | None,
+    lap: dict[str, Any],
+    link_requests: tuple[ClosedLinkDetailRequest, ...],
+) -> tuple[dict[str, Any], dict[str, Any] | None, list[StructuralIssueV1]]:
+    member, detail = request.member, request.link_detail
+    basis = request.placement_envelope
+    roles = {
+        (bar.face, bar.layer)
+        for bar in member.bars
+        if isinstance(bar, BeamSectionBarV1)
+    }
+    if not (
+        isinstance(basis, BeamLapPlacementEnvelopeV1)
+        and isinstance(member, BeamLayeredContinuousCheckRequestV1)
+        and roles == {("top", 1), ("bottom", 1), ("bottom", 2)}
+        and detail is not None
+        and detail.restraint_link is not None
+        and lap_pieces is not None
+        and len(link_requests) == 2
+    ):
+        return (
+            {"status": "HOLD", "issue": "placement_basis_missing"},
+            None,
+            [
+                StructuralIssueV1(
+                    "BEAM.LAP_PLACEMENT_EVIDENCE_HELD",
+                    "placement_envelope",
+                    "Supply placement limits for the layered lap with two checked link grids, one top row and two bottom rows.",
+                )
+            ],
+        )
+    outer, inner = link_requests
+    output = check_nested_lap_placement(
+        outer,
+        inner,
+        LapPlacementEnvelope(**basis.model_dump()),
+        hook_plane_offset_mm=detail.hook_plane_offset_mm,
+        hook_vertex_leg_mm=detail.hook_vertex_leg_mm,
+        restraint_station_offset_mm=detail.restraint_link.station_offset_mm,
+    )
+    output["source_reference"] = basis.source_reference
+    if output["status"] != "PASS":
+        interference = output["status"] == "FAIL"
+        return (
+            output,
+            None,
+            [
+                StructuralIssueV1(
+                    (
+                        "BEAM.LAP_PLACEMENT_INTERFERENCE"
+                        if interference
+                        else "BEAM.LAP_RESTRAINT_SECTOR_HELD"
+                    ),
+                    "placement_envelope",
+                    (
+                        "The declared tolerance crosses a fit, cover, hook or access limit."
+                        if interference
+                        else "The declared bar positions do not establish a supported bend seat throughout the placement range."
+                    ),
+                )
+            ],
+        )
+    end_move = basis.bar_end_tolerance_mm
+    overlap = lap["overlap_mm"] - 2 * end_move
+    output["minimum_overlap_mm"] = overlap
+    location_move = basis.bar_axis_tolerance_mm + basis.cage_location_tolerance_mm
+    lap_cover = min(
+        min(
+            piece.x_from_left_mm,
+            member.width_mm - piece.x_from_left_mm,
+            piece.y_from_top_mm,
+            member.depth_mm - piece.y_from_top_mm,
+        )
+        - location_move
+        - (piece.diameter_mm + basis.longitudinal_diameter_allowance_mm) / 2
+        for piece in lap_pieces
+    )
+    output["minimum_lap_cover_mm"] = lap_cover
+    if lap_cover < 2 * lap_pieces[0].diameter_mm:
+        output.update(status="FAIL", issue="placement_lap_cover")
+        return (
+            output,
+            None,
+            [
+                StructuralIssueV1(
+                    "BEAM.LAP_PLACEMENT_COVER_FAIL",
+                    "placement_envelope",
+                    "The declared placement range can reduce lap cover below two bar diameters.",
+                )
+            ],
+        )
+    required = lap["lap_result"]["outputs"]["splice_checks"][0]["required_length_mm"]
+    if overlap < required:
+        output.update(status="FAIL", issue="placement_overlap_short")
+        return (
+            output,
+            None,
+            [
+                StructuralIssueV1(
+                    "BEAM.LAP_PLACEMENT_LENGTH_FAIL",
+                    "placement_envelope.bar_end_tolerance_mm",
+                    "The minimum lap over the declared bar-end range is shorter than required.",
+                )
+            ],
+        )
+    seats = {name: set(ids) for name, ids in output["corner_bar_ids_by_grid"].items()}
+    worst, minimum_development, restraint, status, issues = _check_placement_strength(
+        request,
+        member,
+        basis,
+        checked.rows,
+        lap_pieces,
+        outer.arrangement.bars,
+        seats,
+    )
+    output.update(
+        worst_strength=worst,
+        minimum_straight_support_development_mm=minimum_development,
+        status=status.value,
+        issue="placement_strength_unresolved" if issues else None,
+    )
+    return output, restraint, issues
+
+
+def _check_placement_strength(
+    request: BeamContinuousDetailingInputV1,
+    member: BeamLayeredContinuousCheckRequestV1,
+    basis: BeamLapPlacementEnvelopeV1,
+    rows: tuple[BeamContinuousRowResultV1, ...],
+    lap_pieces: tuple[LongitudinalBarPath, LongitudinalBarPath],
+    bars: tuple[LongitudinalBarPath, ...],
+    seats: dict[str, set[str]],
+) -> tuple[
+    dict[str, Any],
+    float | None,
+    dict[str, Any] | None,
+    EngineeringStatus,
+    list[StructuralIssueV1],
+]:
+    lap = request.lap
+    assert lap is not None
+    end_move = basis.bar_end_tolerance_mm
+    depth_move = basis.cage_location_tolerance_mm + basis.bar_axis_tolerance_mm
+    extents = {
+        bar.bar_id: (bar.start_station_mm + end_move, bar.end_station_mm - end_move)
+        for bar in bars
+    }
+    overlap_start = max(part.start_station_mm for part in lap_pieces) - end_move
+    overlap_end = min(part.end_station_mm for part in lap_pieces) + end_move
+    member = member.model_copy(
+        update={
+            "link_spacing_mm": member.link_spacing_mm
+            + 2 * basis.link_station_tolerance_mm
+        }
+    )
+    positions = _bar_positions(member)
+    faces = _support_faces(member)
+    worst: dict[str, Any] = {}
+    development: list[float] = []
+    restraint = None
+    failed: list[StructuralIssueV1] = []
+    held: list[StructuralIssueV1] = []
+    for changes in product((-depth_move, depth_move), repeat=3):
+        shifts = dict(zip(("top-1", "bottom-1", "bottom-2"), changes, strict=True))
+        upstream = tuple(
+            replace(
+                bar,
+                y_from_top_mm=bar.y_from_top_mm
+                + shifts[f"{bar.face.value}-{bar.layer}"],
+            )
+            for bar in positions
+        )
+        downstream = _lap_partner_positions(upstream, lap)
+        layouts = []
+        for name, cage, piece in zip(
+            ("upstream", "downstream"), (upstream, downstream), lap_pieces, strict=True
+        ):
+            geometry, flexure, shear = _sections(member, cage)
+            if geometry.engineering is not EngineeringState.PASS:
+                issue = StructuralIssueV1(
+                    "BEAM.LAP_PLACEMENT_SECTION_FAIL",
+                    "placement_envelope",
+                    "The supplied section fails the adverse placement geometry check.",
+                )
+                return worst, None, None, EngineeringStatus.FAIL, [issue]
+            web = _positive_support_web_capacity(member, cage)
+            # Check both layouts at a row within the range of either piece's end.
+            # Anchorage always uses the shorter physical extent of each bar.
+            trial_rows = tuple(
+                _check_row(
+                    member,
+                    cage,
+                    row.action,
+                    row.station,
+                    row.kind,
+                    row.diagnostic_only,
+                    faces.get(row.station.x_mm),
+                    flexure,
+                    shear,
+                    web,
+                    bar_extents=extents,
+                )
+                for row in rows
+                if (
+                    row.kind == "ULS"
+                    and piece.start_station_mm - end_move
+                    <= row.station.x_mm
+                    <= piece.end_station_mm + end_move
+                )
+            )
+            row_failed, row_held = _row_issues(trial_rows, faces, layered=True)
+            failed.extend(row_failed)
+            held.extend(row_held)
+            actual_rows = [row for row in trial_rows if not row.diagnostic_only]
+            for row in actual_rows:
+                if row.anchorage is not None:
+                    development.extend(
+                        float(check["available_straight_length_mm"])
+                        for check in row.anchorage.outputs.get("checks", ())
+                    )
+                if overlap_start <= row.station.x_mm <= overlap_end and (
+                    row.tension_face is not Face.BOTTOM
+                    or row.flexure_utilization is None
+                    or row.flexure_utilization > 0.5 + 1e-12
+                ):
+                    failed.append(
+                        StructuralIssueV1(
+                            "BEAM.LAP_PLACEMENT_MOMENT_FAIL",
+                            f"actions.{row.action.row_id}",
+                            "The expanded lap region exceeds the tension-lap moment screen under the declared placement ranges.",
+                        )
+                    )
+            layouts.append((name, flexure, trial_rows))
+            _record_placement_strength(worst, shifts, actual_rows, flexure, shear)
+        trial_restraint = _lap_compression_restraint(
+            request, tuple(layouts), lap_pieces, placement_seats=seats
+        )
+        if not trial_restraint["verified"]:
+            held.append(
+                StructuralIssueV1(
+                    "BEAM.LAP_RESTRAINT_SECTOR_HELD",
+                    "placement_envelope",
+                    "The adverse placement case lacks restraint for a bar credited in compression.",
+                )
+            )
+        if restraint is None:
+            restraint = trial_restraint
+    if not development or set(worst) != {"top", "bottom"}:
+        held.append(
+            StructuralIssueV1(
+                "BEAM.LAP_PLACEMENT_ACTIONS_HELD",
+                "placement_envelope",
+                "The placement check requires signed rows in both bending directions and checked support development.",
+            )
+        )
+    status = (
+        EngineeringStatus.FAIL
+        if failed
+        else EngineeringStatus.HOLD if held else EngineeringStatus.PASS
+    )
+    unique_issues = list(dict.fromkeys(failed + held))
+    if restraint is not None:
+        restraint["verified"] = status is EngineeringStatus.PASS
+        restraint["minimum_between_link_grids_mm"] -= (
+            2 * basis.link_station_tolerance_mm
+            + basis.hook_plane_tolerance_mm
+            + basis.link_diameter_allowance_mm
+        )
+        restraint["placement_envelope_verified"] = status is EngineeringStatus.PASS
+    return worst, min(development, default=None), restraint, status, unique_issues
+
+
+def _record_placement_strength(
+    worst: dict[str, Any],
+    shifts: dict[str, float],
+    rows: list[BeamContinuousRowResultV1],
+    flexure: dict[Face, OperationResult],
+    shear: dict[Face, OperationResult],
+) -> None:
+    for face in Face:
+        active = [row for row in rows if row.tension_face is face]
+        if not active:
+            continue
+        moment = float(flexure[face].outputs["capacity_knm"])
+        force = float(shear[face].outputs["provided_capacity_kn"])
+        summary = worst.setdefault(face.value, {})
+        moment_row = min(
+            active, key=lambda row: (-abs(row.action.mu_knm), row.action.row_id)
+        )
+        shear_row = min(
+            active, key=lambda row: (-abs(row.action.vu_kn), row.action.row_id)
+        )
+        if abs(moment_row.action.mu_knm) > summary.get("moment_demand_knm", -1):
+            summary.update(
+                moment_demand_knm=abs(moment_row.action.mu_knm),
+                moment_row_id=moment_row.action.row_id,
+            )
+        if abs(shear_row.action.vu_kn) > summary.get("shear_demand_kn", -1):
+            summary.update(
+                shear_demand_kn=abs(shear_row.action.vu_kn),
+                shear_row_id=shear_row.action.row_id,
+            )
+        if moment < summary.get("capacity_knm", math.inf):
+            summary.update(capacity_knm=moment, flexure_row_shifts_mm=shifts)
+        if force < summary.get("shear_capacity_kn", math.inf):
+            summary.update(shear_capacity_kn=force, shear_row_shifts_mm=shifts)
+        summary["flexure_utilization"] = (
+            summary["moment_demand_knm"] / summary["capacity_knm"]
+            if summary["capacity_knm"]
+            else None
+        )
+        summary["shear_utilization"] = (
+            summary["shear_demand_kn"] / summary["shear_capacity_kn"]
+            if summary["shear_capacity_kn"]
+            else None
+        )
+
+
 def check_continuous_detailing(
     request: BeamContinuousDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -1332,6 +1696,7 @@ def check_continuous_detailing(
     cutoff_bounds = None
     lap_pieces = None
     source_hash = identity.input_hash
+    placement_requested = request.placement_envelope != "not_requested"
     layered = isinstance(request.member, BeamLayeredContinuousCheckRequestV1)
     flange = (
         request.member.flange
@@ -1382,7 +1747,7 @@ def check_continuous_detailing(
         lap_pieces, lap, lap_issues, status = _check_bottom_lap(request, checked)
         data["lap"] = lap
         issues.extend(lap_issues)
-    if request.cutoff or request.lap:
+    if request.cutoff or request.lap or placement_requested:
         source_hash = semantic_hash(
             "beam_detailing_source",
             {
@@ -1395,6 +1760,19 @@ def check_continuous_detailing(
                     request.link_detail.model_dump(mode="json", exclude_none=True)
                     if request.link_detail
                     else None
+                ),
+                **(
+                    {
+                        "placement_envelope": (
+                            request.placement_envelope.model_dump(mode="json")
+                            if isinstance(
+                                request.placement_envelope, BeamLapPlacementEnvelopeV1
+                            )
+                            else None
+                        )
+                    }
+                    if placement_requested
+                    else {}
                 ),
             },
         )
@@ -1441,6 +1819,20 @@ def check_continuous_detailing(
                     )
                     for item in leaf.diagnostics
                 )
+            if placement_requested and status is EngineeringStatus.PASS:
+                placement, placed_restraint, placement_issues = _check_lap_placement(
+                    request,
+                    checked,
+                    lap_pieces,
+                    data.get("lap", {}),
+                    link_requests,
+                )
+                data["placement"] = placement
+                status = EngineeringStatus(placement["status"])
+                issues.extend(placement_issues)
+                if placed_restraint is not None:
+                    restraint = placed_restraint
+                    data["lap"]["compression_restraint"] = restraint
             if restraint is not None and status is not EngineeringStatus.PASS:
                 restraint["verified"] = False
             if (
@@ -2184,6 +2576,8 @@ def render_continuous_detailing_html(
         strength = {"ultimate_status": "HOLD", "serviceability_status": "HOLD"}
         governance, cutoff_html, lap_html = "", "", ""
     bar_edit = result.calculation.get("bar_edit")
+    placement = result.calculation.get("placement") if current_match else None
+    placement_html = _lap_placement_report(placement) if placement else ""
     edit_html = ""
     if bar_edit:
         edit_html = (
@@ -2197,7 +2591,51 @@ def render_continuous_detailing_html(
 <p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
 <p>Supplied strength {strength["ultimate_status"]} · Serviceability {strength["serviceability_status"]}</p>
 <h2>Governing baseline action rows</h2><ul>{governance}</ul>
-{edit_html}{cutoff_html}{lap_html}{section_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+{edit_html}{cutoff_html}{lap_html}{section_html}{placement_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+
+
+def _lap_placement_report(placement: dict[str, Any]) -> str:
+    details = f"<h2>Placement envelope</h2><p>Placement {html.escape(placement['status'])}.</p>"
+    if "source_reference" in placement:
+        details += f"<p>{html.escape(placement['source_reference'])}</p>"
+    if "returns" in placement:
+        gap = min(
+            min(row)
+            for row in placement["minimum_horizontal_clearances_mm"].values()
+            if row
+        )
+        across, along = placement["minimum_clear_concrete_access_mm"]
+        clearance = min(
+            row["min_clearance_mm"] for row in placement["returns"].values()
+        )
+        details += (
+            f"<p>Minimum bend clearance {clearance:.3f} mm. "
+            f"Minimum horizontal bar clearance {gap:g} mm. "
+            f"Minimum vertical bar clearance {placement['minimum_vertical_clearance_mm']:g} mm.</p>"
+            f"<p>Minimum link-grid clearance {placement['minimum_grid_clearance_mm']:g} mm. "
+            f"Maximum perimeter pitch {placement['maximum_perimeter_pitch_mm']:g} mm. "
+            f"Minimum hook tail {placement['minimum_hook_tail_mm']:g} mm.</p>"
+            f"<p>Minimum link cover {placement['minimum_steel_cover_mm']:g} mm. "
+            f"Clear concrete access through the web cage {across:g} × {along:g} mm.</p>"
+        )
+    if placement["status"] == "PASS":
+        details += (
+            f"<p>Minimum lap {placement['minimum_overlap_mm']:g} mm. "
+            f"Minimum lap cover {placement['minimum_lap_cover_mm']:g} mm. "
+            f"Minimum straight support development {placement['minimum_straight_support_development_mm']:g} mm.</p>"
+            "<p>Assemble the link grids and straight bars on a jig. Check bar fit at the returns "
+            "and maintain the cover and layer clearances with cover blocks and spacers. "
+            "Check any support and flange obstructions against project geometry.</p>"
+            "<h3>Adverse placement capacities</h3><ul>"
+        )
+        for face, row in placement["worst_strength"].items():
+            details += (
+                f"<li>{html.escape(face)} tension · {row['capacity_knm']:.3f} kN·m at "
+                f"{html.escape(row['moment_row_id'])} · {row['shear_capacity_kn']:.3f} kN at "
+                f"{html.escape(row['shear_row_id'])}</li>"
+            )
+        details += "</ul>"
+    return details
 
 
 def _cutoff_section_report(cutoff: dict[str, Any]) -> str:
@@ -2283,9 +2721,12 @@ def _layered_lap_report(lap: dict[str, Any], arrangement: dict[str, Any]) -> str
             basis += (
                 f"<p>Clear spacing between link grids "
                 f"{restraint['minimum_between_link_grids_mm']:g} mm.</p>"
-                "<p>Checked on nominal dimensions. Verify the assembly and "
-                "placement tolerances for the project.</p>"
-                "<p>Closed link bend seats by grid.</p><ul>"
+                + (
+                    "<p>Checked with the declared placement limits.</p>"
+                    if restraint.get("placement_envelope_verified")
+                    else "<p>Checked on nominal dimensions. Verify the assembly and placement tolerances for the project.</p>"
+                )
+                + "<p>Closed link bend seats by grid.</p><ul>"
             )
             for name, bar_ids in restraint["corner_bar_ids_by_grid"].items():
                 basis += f"<li>{html.escape(name)} link · {html.escape(', '.join(bar_ids))}</li>"
