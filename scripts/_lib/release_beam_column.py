@@ -140,6 +140,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_030_beam05_rectangular_lap_placement_reference.py",
     "docs/verification/check_library_030_beam05_support_top_lap_reference.py",
     "docs/verification/check_library_030_beam05_varied_links_reference.py",
+    "docs/verification/check_library_030_beam05_haunch_reference.py",
 )
 BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
@@ -172,6 +173,7 @@ BEAM05_SUPPORT_TOP_LAP_REFERENCE = (
     "docs/verification/library-030-beam05-support-top-lap-reference.json"
 )
 BEAM05_VARIED_LINKS_REFERENCE = "docs/verification/library-030-beam05-varied-links.json"
+BEAM05_HAUNCH_REFERENCE = "docs/verification/library-030-beam05-haunch.json"
 BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
@@ -218,6 +220,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE,
                 repo / BEAM05_SUPPORT_TOP_LAP_REFERENCE,
                 repo / BEAM05_VARIED_LINKS_REFERENCE,
+                repo / BEAM05_HAUNCH_REFERENCE,
                 repo / BEAM05_LAP_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
@@ -440,6 +443,37 @@ def _check_varied_link_replay(
         )
 
 
+def _check_haunch_replay(expected: dict[str, Any], calculation: dict[str, Any]) -> None:
+    if expected["status"] != "PASS":
+        return
+    haunch = calculation["haunch"]
+    for actual, target in zip(haunch["rows"], expected["rows"], strict=True):
+        assert actual["row_id"] == target["row_id"]
+        for field in (
+            "shear_adjustment_kn",
+            "shear_capacity_kn",
+            "moment_capacity_knm",
+        ):
+            assert math.isclose(actual[field], target[field], abs_tol=1e-7)
+    for actual, target in zip(
+        haunch["bend_checks"], expected["bend_checks"], strict=True
+    ):
+        assert actual["node_id"] == target["node_id"]
+        assert actual["link_stations_mm"] == target["link_stations_mm"]
+    bbs = calculation["bbs"]["outputs"]["bbs"]
+    fields = {row["bar_mark"]: row for row in bbs["rows"]}
+    assert len(fields) == len(expected["bbs"]["rows"])
+    for cut in expected["bbs"]["rows"]:
+        row = fields[cut["bar_mark"]]
+        assert row["scheduled_bar_count"] == cut["quantity"]
+        assert math.isclose(
+            row["fabrication_cut_length_each_mm"], cut["cut_mm"], abs_tol=1e-7
+        )
+    assert math.isclose(
+        bbs["scheduled_steel_mass_kg"], expected["bbs"]["mass_kg"], abs_tol=1e-7
+    )
+
+
 def qualify(config: dict[str, Any]) -> dict[str, Any]:
     """Replay all selected references, tests and public drivers from installation."""
     import shutil
@@ -640,6 +674,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         (BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE, "beam-rectangular-lap-placement"),
         (BEAM05_SUPPORT_TOP_LAP_REFERENCE, "beam-support-top-lap"),
         (BEAM05_VARIED_LINKS_REFERENCE, "beam-varied-links"),
+        (BEAM05_HAUNCH_REFERENCE, "beam-haunch"),
     ):
         for case, entry in json.loads((clone / reference).read_text())["cases"].items():
             label = f"{profile}-{case}"
@@ -699,12 +734,19 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             assert (directory / "bbs.csv").is_file() == (status == "PASS")
             if reference == BEAM05_VARIED_LINKS_REFERENCE:
                 _check_varied_link_replay(entry["expected"], result["calculation"])
+            if reference == BEAM05_HAUNCH_REFERENCE:
+                _check_haunch_replay(entry["expected"], result["calculation"])
             if status == "PASS":
                 drawing = (directory / "member.svg").read_text()
                 assert input_hash in drawing
                 assert input_hash in (directory / "bbs.csv").read_text()
                 if reference == BEAM05_FLANGED_REFERENCE:
                     assert 'data-view="section"' in drawing
+                if reference == BEAM05_HAUNCH_REFERENCE:
+                    assert 'data-view="haunch-elevation"' in drawing
+                    assert drawing.count("data-link-station=") == len(
+                        entry["expected"]["link_checks"]
+                    )
                 if reference == BEAM05_LAYERED_CUTOFF_REFERENCE:
                     assert drawing.count('data-view="section"') == 2
                 if reference in (

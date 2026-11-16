@@ -644,6 +644,7 @@ def _check_row(
     end_web_capacity_knm: float | None = None,
     *,
     bar_extents: dict[str, tuple[float, float]] | None = None,
+    shear_demand_kn: float | None = None,
 ) -> BeamContinuousRowResultV1:
     if kind != "ULS" or not flexure:
         return BeamContinuousRowResultV1(action, station, kind, diagnostic)
@@ -662,7 +663,8 @@ def _check_row(
     m_cap = float(flexure[face].outputs["capacity_knm"])
     v_cap = float(shear[shear_face].outputs["provided_capacity_kn"])
     m_util = abs(action.mu_knm) / m_cap if m_cap > 0 else None
-    v_util = abs(action.vu_kn) / v_cap if v_cap > 0 else None
+    shear_demand = abs(action.vu_kn) if shear_demand_kn is None else shear_demand_kn
+    v_util = shear_demand / v_cap if v_cap > 0 else None
     passed = (
         _flexure_provision_ok(flexure[face])
         and shear[shear_face].engineering == EngineeringState.PASS
