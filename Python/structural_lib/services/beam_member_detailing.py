@@ -438,7 +438,7 @@ def _restraint_link_request(
     if not (
         request.lap is not None
         and isinstance(member, BeamLayeredContinuousCheckRequestV1)
-        and member.flange is not None
+        and (member.flange is not None or request.placement_envelope != "not_requested")
         and outer.cage.left_centre_x_mm < x1 < x2 < outer.cage.right_centre_x_mm
         and x2 - x1 > detail.hook_vertex_leg_mm
         and gap >= member.aggregate_size_mm + 5
@@ -2144,7 +2144,7 @@ def render_continuous_detailing_svg(
     reverse_lap = lap.get("lap_direction") == AnchorageDirection.DECREASING_X
     lap_colors = (
         {lap["bar_id"]: "#92400e", lap["partner_bar_id"]: "#0f766e"}
-        if reverse_lap or "web_only_anchor_moment_knm" in lap
+        if reverse_lap or "web_only_anchor_moment_knm" in lap or "placement" in data
         else {}
     )
     lap_lines = []

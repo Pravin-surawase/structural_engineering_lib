@@ -223,8 +223,8 @@ separate acceptance cases. [IS 456 clauses 26.2.5 and 26.3](https://wriddodoti.g
 
 ```bash
 ./scripts/python_runtime.sh Python/examples/beam_continuous_detailing.py \
-  --reference docs/verification/library-030-beam05-layered-lap.json \
-  --case layered_lap --output-dir output/beam05-layered-lap
+  --reference docs/verification/library-030-beam05-rectangular-lap-placement-reference.json \
+  --case rectangular_lap --output-dir output/beam05-layered-lap
 ```
 
 Use the same lap fields with the layered rectangular schema. Keep the lap
@@ -233,22 +233,28 @@ row. Both pieces are Ø20 in the outer bottom layer, with at least two bar
 diameters of clear concrete cover. The inner bottom bars stay in line
 over uninterrupted outer bars, as required by IS 456 clause 26.3.2(c).
 
-This specimen retains the published 300 × 600 mm section, spans, links and
-actions. It omits inner bar `B2-3` to keep both remaining inner bars aligned
-when the outer bar `B1-3` changes transverse position. Keeping `B2-3` in the
-original published cage gives FAIL for layer alignment.
+The specimen keeps the original 300 × 600 mm rectangular section, spans
+and actions. Four continuous corner bars are seated inside the exterior
+closed links. One fully nested link restrains the two additional top bars
+and the separated pieces of the intermediate bottom bar `B1-2`. Both
+inner bottom bars align with the continuous exterior bars. The two Ø8
+link grids use 200 mm nominal pitch and a 60 mm offset.
 
-The 1,300 mm overlap from 1,550 to 2,850 mm exceeds the 906.250 mm basic
-straight flexural-tension lap requirement. At a partner centre of 197.5 mm,
-the pair has 27.5 mm clear spacing against a 25 mm minimum. Moving the centre
-to 215 mm reduces the gap to 10 mm and fails the overlap spacing check.
+The nominal 1,300 mm lap runs from 1,550 to 2,850 mm. The declared limits
+leave at least 1,280 mm of overlap and 950 mm of straight support
+development against 906.25 mm required. The lowest adverse capacities
+are 300.106 kN·m in sagging, 260.327 kN·m in hogging and 186.351 kN in
+shear. The report records the signed rows and placement checks.
+The drawing shows the three lap sections and both link grids in elevation.
+The 92-piece BBS totals 249.352 kg.
 
-The report retains concurrent actions and the as-checked downstream
-anchorage. The drawing shows the cage before, within and after the lap.
-The BBS assigns separate 3,310 and 6,910 mm cuts to the pieces and totals
-184.665 kg. Both failing controls withhold drawing and schedule.
-[Independent lap replay](../../verification/check_library_030_beam05_lap_reference.py)
-[IS 456 clauses 26.2.5 and 26.3.2](https://www.cracindia.in/admin/uploads/IS-456.pdf)
+Short overlap, congestion and bend interference fail. Missing actions,
+stale analysis, lost bend restraint and missing placement evidence hold.
+Each control withholds the checked drawing and BBS. The original
+`layered_lap` remains a separate numerical control for unverified
+compression restraint.
+[Independent replay](../../verification/check_library_030_beam05_rectangular_lap_placement_reference.py)
+[IS 456 clauses 26.2.5 and 26.3.2](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf)
 
 ## Check a separated Ø20 lap in the right-flanged L and symmetric T beams
 

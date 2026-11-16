@@ -137,6 +137,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_030_beam05_span2_lap_restraint_reference.py",
     "docs/verification/check_library_030_beam05_flanged_lap_restraint_reference.py",
     "docs/verification/check_library_030_beam05_lap_placement_reference.py",
+    "docs/verification/check_library_030_beam05_rectangular_lap_placement_reference.py",
 )
 BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
@@ -161,6 +162,9 @@ BEAM05_FLANGED_LAP_RESTRAINT_REFERENCE = (
 )
 BEAM05_LAP_PLACEMENT_REFERENCE = (
     "docs/verification/library-030-beam05-lap-placement-reference.json"
+)
+BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE = (
+    "docs/verification/library-030-beam05-rectangular-lap-placement-reference.json"
 )
 BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
@@ -205,6 +209,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_LAP_RESTRAINT_REFERENCE,
                 repo / BEAM05_FLANGED_LAP_RESTRAINT_REFERENCE,
                 repo / BEAM05_LAP_PLACEMENT_REFERENCE,
+                repo / BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE,
                 repo / BEAM05_LAP_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
@@ -588,6 +593,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         (BEAM05_LAP_RESTRAINT_REFERENCE, "beam-layered-lap-restraint"),
         (BEAM05_FLANGED_LAP_RESTRAINT_REFERENCE, "beam-flanged-lap-nominal-review"),
         (BEAM05_LAP_PLACEMENT_REFERENCE, "beam-flanged-lap-placement"),
+        (BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE, "beam-rectangular-lap-placement"),
     ):
         for case, entry in json.loads((clone / reference).read_text())["cases"].items():
             label = f"{profile}-{case}"
@@ -610,7 +616,14 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 status = "HOLD"
                 required_codes.add("BEAM.LAP_COMPRESSION_RESTRAINT_HELD")
             assert result["envelope"]["engineering_status"] == status
-            if reference == BEAM05_LAP_PLACEMENT_REFERENCE:
+            if (
+                reference
+                in (
+                    BEAM05_LAP_PLACEMENT_REFERENCE,
+                    BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE,
+                )
+                and "issue" in entry["expected"]
+            ):
                 placement = result["calculation"]["placement"]
                 assert placement["status"] == status
                 assert placement["issue"] == entry["expected"]["issue"]
@@ -649,6 +662,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                     BEAM05_LAP_RESTRAINT_REFERENCE,
                     BEAM05_FLANGED_LAP_RESTRAINT_REFERENCE,
                     BEAM05_LAP_PLACEMENT_REFERENCE,
+                    BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE,
                 ):
                     assert drawing.count('data-view="section"') == 3
                     assert result["calculation"]["lap"]["compression_restraint"][
@@ -657,6 +671,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 if reference in (
                     BEAM05_FLANGED_LAP_RESTRAINT_REFERENCE,
                     BEAM05_LAP_PLACEMENT_REFERENCE,
+                    BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE,
                 ):
                     assert drawing.count('data-outline="restraint-link"') == 3
                     assert result["calculation"]["restraint_link_check"]["outputs"][
