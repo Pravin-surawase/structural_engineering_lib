@@ -2059,3 +2059,12 @@ The verification receipt SHA-256 is `69b4dece3916e923c1ee0b40b272417acea75cf41a9
 [Public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.2/public-install-verification.json) · [Artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.29.2/artifact-manifest.json)
 
 The patch integrates the Coding Lab repairs in [PR #1086](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1086).
+
+
+## v0.30.0 — Prepared candidate (unreleased; on hold)
+
+The candidate extends the beam, column, slab, serviceability and ductile
+frame workflows listed in the [delivery plan](../planning/beam-column-programme-delivery.md).
+S5 qualifies the exact wheel and source archive. The imported gravity and
+slender-column projects remain on HOLD pending the matched FLOW04 export.
+v0.29.2 remains the published release. This candidate is not tagged or published.

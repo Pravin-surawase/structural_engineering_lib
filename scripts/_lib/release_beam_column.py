@@ -191,6 +191,12 @@ FLOW03_LAYERED_EXAMPLE = "Python/examples/beam_layered_cage_edit.py"
 FLOW03_LAYERED_TEST = (
     "Python/tests/integration/test_beam_layered_cage_edit_reference.py"
 )
+WORKBENCH_TEST = "Python/tests/integration/test_workbench_beam_layout.py"
+SL04_SL05_TEST = "Python/tests/codes/is456/slab/test_built_in_coefficients.py"
+SL06_TEST = "Python/tests/integration/test_slab_supplied_actions.py"
+SL06_EXAMPLE = "Python/examples/slab_supplied_action_references.py"
+SL06_CHECKER = "docs/verification/check_library_030_sl06_reference.py"
+SL06_REFERENCE = "docs/verification/library-030-sl06-actions.json"
 DUCT01_REFERENCE = "docs/verification/library-030-duct01-interior-joint.json"
 DUCT01_CHECKER = "docs/verification/check_library_030_duct01_interior_reference.py"
 DUCT01_EXAMPLE = "Python/examples/ductile_interior_joint.py"
@@ -255,6 +261,12 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / FLOW03_LAYERED_REFERENCE,
                 repo / FLOW03_LAYERED_EXAMPLE,
                 repo / FLOW03_LAYERED_TEST,
+                repo / WORKBENCH_TEST,
+                repo / SL04_SL05_TEST,
+                repo / SL06_TEST,
+                repo / SL06_EXAMPLE,
+                repo / SL06_CHECKER,
+                repo / SL06_REFERENCE,
                 *(
                     repo / name
                     for name in (
@@ -682,6 +694,8 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     for checker in CHECKERS:
         run(Path(checker).stem, checker)
+    if version_at_least_030:
+        run(Path(SL06_CHECKER).stem, SL06_CHECKER)
     for profile, reference, example in (
         ("continuous", BEAM01_REFERENCE, "continuous_beam_check"),
         ("cantilever", BEAM02_REFERENCE, "cantilever_beam_check"),
@@ -784,7 +798,9 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         expected = (
             "HOLD"
             if entry["expected"] is None
-            else "FAIL" if case.endswith("tight_limit") else "PASS"
+            else "FAIL"
+            if case.endswith("tight_limit")
+            else "PASS"
         )
         assert result["envelope"]["engineering_status"] == expected
         assert result["calculation"]["long_term_status"] == "HOLD"
@@ -1412,6 +1428,9 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             *(
                 (
                     str(clone / FLOW03_LAYERED_TEST),
+                    str(clone / WORKBENCH_TEST),
+                    str(clone / SL04_SL05_TEST),
+                    str(clone / SL06_TEST),
                     str(clone / DUCT01_TEST),
                     str(clone / DUCT02_TEST),
                     str(clone / PROJECT03_TEST),

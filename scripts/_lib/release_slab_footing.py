@@ -13,6 +13,7 @@ from typing import Any
 
 SLAB_DIRECT_SERVICE_FIXTURE = "docs/verification/library-030-serv03-b01-service.json"
 SLAB_DIRECT_SERVICE_DRIVER = "slab_direct_service_reference.py"
+FLAT_SLAB_CONTROL_DRIVER = "slab_installed_controls_reference.py"
 
 EXAMPLES = {
     "slab_one_way_reference.py": ("baseline", "capacity-fail", "review-limit-fail"),
@@ -27,6 +28,13 @@ EXAMPLES = {
         "b04-capacity-fail",
     ),
 }
+FLAT_SLAB_CONTROL_CASES = (
+    "flat-regular-pass",
+    "flat-reinforcement-fail",
+    "flat-punching-fail",
+    "flat-opening-refusal",
+    "flat-exterior-refusal",
+)
 SLAB_DIRECT_SERVICE_CASES = (
     "b01_service_history",
     "cracked_width_control",
@@ -50,6 +58,7 @@ def input_paths(repo: Path, version: str) -> tuple[Path, ...]:
     return (
         *legacy,
         repo / "Python/examples" / SLAB_DIRECT_SERVICE_DRIVER,
+        repo / "Python/examples" / FLAT_SLAB_CONTROL_DRIVER,
         repo / SLAB_DIRECT_SERVICE_FIXTURE,
         repo / "docs/verification/check_library_030_serv03_b01_service_reference.py",
     )
@@ -182,6 +191,21 @@ def verify_slab_coefficients(cases: dict[str, dict]) -> None:
     assert overloaded["serviceability"] is None
     assert overloaded["load_envelope_status"] == load_boundary
     assert not overloaded["complete_engineering_design_approved"]
+
+
+def verify_flat_slab_controls(cases: dict[str, dict]) -> None:
+    regular = cases["flat-regular-pass"]["result"]
+    assert regular["status"] == "PASS"
+    near(regular["reinforcement"]["moments"]["x"], "total_static_moment_knm", 442.40625)
+    near(regular["punching"], "no_reinforcement_utilization", 0.6382120901359107)
+    assert cases["flat-reinforcement-fail"]["result"]["status"] == "FAIL"
+    punching = cases["flat-punching-fail"]["result"]
+    assert punching["status"] == "FAIL"
+    assert (
+        punching["punching"]["status"] == "punching_reinforcement_or_redesign_required"
+    )
+    assert "openings_present" in cases["flat-opening-refusal"]["rejection"]
+    assert "panel_location" in cases["flat-exterior-refusal"]["rejection"]
 
 
 def verify_footing(cases: dict[str, dict]) -> None:
@@ -330,11 +354,13 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
     fixture = drivers / Path(SLAB_DIRECT_SERVICE_FIXTURE).name
     if _has_direct_service(config["version"]):
         examples[SLAB_DIRECT_SERVICE_DRIVER] = SLAB_DIRECT_SERVICE_CASES
+        examples[FLAT_SLAB_CONTROL_DRIVER] = FLAT_SLAB_CONTROL_CASES
         shutil.copyfile(repo / SLAB_DIRECT_SERVICE_FIXTURE, fixture)
     verifiers = {
         "slab_one_way_reference.py": verify_slab,
         "isolated_footing_reference.py": verify_footing,
         "slab_coefficient_references.py": verify_slab_coefficients,
+        FLAT_SLAB_CONTROL_DRIVER: verify_flat_slab_controls,
     }
     records = {}
     for name, cases in examples.items():

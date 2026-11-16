@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.30.0] — Prepared candidate (unreleased; on hold)
+
 ### Added
 
 - Extend the bounded multilayer beam detailing cases to rectangular, T and L
