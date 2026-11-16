@@ -139,6 +139,7 @@ CHECKERS = tuple(
     "docs/verification/check_library_030_beam05_lap_placement_reference.py",
     "docs/verification/check_library_030_beam05_rectangular_lap_placement_reference.py",
     "docs/verification/check_library_030_beam05_support_top_lap_reference.py",
+    "docs/verification/check_library_030_beam05_varied_links_reference.py",
 )
 BEAM01_REFERENCE = "docs/verification/library-029-beam01-flow01.json"
 BEAM02_REFERENCE = "docs/verification/library-029-beam02-cantilever.json"
@@ -170,6 +171,7 @@ BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE = (
 BEAM05_SUPPORT_TOP_LAP_REFERENCE = (
     "docs/verification/library-030-beam05-support-top-lap-reference.json"
 )
+BEAM05_VARIED_LINKS_REFERENCE = "docs/verification/library-030-beam05-varied-links.json"
 BEAM05_LAP_REFERENCE = "docs/verification/library-029-beam05-lap.json"
 BEAM07_REFERENCE = "docs/verification/library-029-beam07-equilibrium-torsion.json"
 FLOW02_REFERENCE = "docs/verification/library-029-flow02-beam-catalogue.json"
@@ -215,6 +217,7 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / BEAM05_LAP_PLACEMENT_REFERENCE,
                 repo / BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE,
                 repo / BEAM05_SUPPORT_TOP_LAP_REFERENCE,
+                repo / BEAM05_VARIED_LINKS_REFERENCE,
                 repo / BEAM05_LAP_REFERENCE,
                 repo / BEAM07_REFERENCE,
                 repo / FLOW02_REFERENCE,
@@ -399,6 +402,42 @@ def qualify_consumer_journeys(
             if path.is_file()
         },
     }
+
+
+def _check_varied_link_replay(
+    expected: dict[str, Any], calculation: dict[str, Any]
+) -> None:
+    if expected.get("transitions"):
+        transitions = calculation["link_zones"]["transitions"]
+        for actual, target in zip(transitions, expected["transitions"], strict=True):
+            for key in ("station_mm", "row_id", "owner_zone_id", "shear_kn"):
+                assert actual[key] == target[key]
+            for side, reference in zip(
+                actual["adjacent"], target["adjacent"], strict=True
+            ):
+                assert side["zone_id"] == reference["zone_id"]
+                assert side["spacing_mm"] == reference["spacing_mm"]
+                assert math.isclose(
+                    side["capacity_kn"], reference["capacity_kn"], abs_tol=1e-7
+                )
+
+    if expected["status"] == "PASS":
+        output = calculation["bbs"]["outputs"]["bbs"]
+        for zone, target in zip(output["link_zones"], expected["zones"], strict=True):
+            assert zone["count"] == target["quantity"]
+            assert zone["stations_x_mm"] == target["stations_mm"]
+        (link,) = [row for row in output["rows"] if row["role"] == "transverse_link"]
+        assert link["scheduled_bar_count"] == expected["bbs"]["link_count"]
+        assert math.isclose(
+            link["fabrication_cut_length_each_mm"],
+            expected["bbs"]["link_cut_mm"],
+            abs_tol=1e-7,
+        )
+        assert math.isclose(
+            sum(row["theoretical_mass_kg"] for row in output["rows"]),
+            expected["bbs"]["mass_kg"],
+            abs_tol=1e-7,
+        )
 
 
 def qualify(config: dict[str, Any]) -> dict[str, Any]:
@@ -600,6 +639,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         (BEAM05_LAP_PLACEMENT_REFERENCE, "beam-flanged-lap-placement"),
         (BEAM05_RECTANGULAR_LAP_PLACEMENT_REFERENCE, "beam-rectangular-lap-placement"),
         (BEAM05_SUPPORT_TOP_LAP_REFERENCE, "beam-support-top-lap"),
+        (BEAM05_VARIED_LINKS_REFERENCE, "beam-varied-links"),
     ):
         for case, entry in json.loads((clone / reference).read_text())["cases"].items():
             label = f"{profile}-{case}"
@@ -657,6 +697,8 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             assert input_hash in (directory / "report.html").read_text()
             assert (directory / "member.svg").is_file() == (status == "PASS")
             assert (directory / "bbs.csv").is_file() == (status == "PASS")
+            if reference == BEAM05_VARIED_LINKS_REFERENCE:
+                _check_varied_link_replay(entry["expected"], result["calculation"])
             if status == "PASS":
                 drawing = (directory / "member.svg").read_text()
                 assert input_hash in drawing

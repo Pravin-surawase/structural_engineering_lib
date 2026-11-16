@@ -9,9 +9,9 @@ import math
 from collections.abc import Iterable
 from dataclasses import replace
 from itertools import pairwise, product
-from typing import Any, Literal, Self
+from typing import Annotated, Any, Literal, Self
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 from structural_lib.beam.bar_paths import (
     BarPathOutput,
@@ -87,11 +87,19 @@ from structural_lib.services.beam_continuous import (
     BeamContinuousRowResultV1,
     _bar_positions,
     _check_row,
+    _check_station_beam,
     _positive_support_web_capacity,
     _row_issues,
     _sections,
     _support_faces,
     check_continuous_beam,
+)
+from structural_lib.services.beam_link_zones import (
+    BeamLinkZoneV1,
+    ResolvedBeamLinkZone,
+    check_varied_link_strength,
+    resolve_beam_link_zones,
+    zone_transition_actions_issue,
 )
 from structural_lib.services.beam_support_lap import check_support_lap_continuity
 from structural_lib.services.canonical_family import (
@@ -199,6 +207,18 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
             exclude_if=lambda value: value == "not_requested",
         )
     )
+    link_zones: (
+        Annotated[tuple[BeamLinkZoneV1, ...], Field(min_length=2, max_length=12)]
+        | Literal["not_requested"]
+        | None
+    ) = Field(
+        default="not_requested", exclude_if=lambda value: value == "not_requested"
+    )
+
+    @field_validator("link_zones", mode="before")
+    @classmethod
+    def accept_link_zone_array(cls, value: object) -> object:
+        return tuple(value) if isinstance(value, list) else value
 
     @model_validator(mode="after")
     def validate_identity(self) -> Self:
@@ -212,6 +232,7 @@ def _physical_paths(
     source_hash: str,
     cutoff_bounds: tuple[float, float] | None,
     lap_pieces: tuple[LongitudinalBarPath, LongitudinalBarPath] | None,
+    zones: tuple[ResolvedBeamLinkZone, ...] = (),
 ) -> tuple[BarPathRequest, tuple[ClosedLinkDetailRequest, ...]] | None:
     member, detail = request.member, request.link_detail
     extent = member.straight_bars
@@ -221,12 +242,21 @@ def _physical_paths(
     intervals = (detail.last_station_mm - detail.first_station_mm) / spacing
     left, _, right = member.supports
     if (
-        not 1 <= round(intervals) <= 250
-        or not math.isclose(intervals, round(intervals), rel_tol=0, abs_tol=1e-8)
-        or detail.first_station_mm > left.right_face_mm
+        detail.first_station_mm > left.right_face_mm
         or detail.last_station_mm < right.left_face_mm
     ):
         return None
+    if zones:
+        stations = tuple(x for zone in zones for x in zone.stations_mm)
+    else:
+        if not 1 <= round(intervals) <= 250 or not math.isclose(
+            intervals, round(intervals), rel_tol=0, abs_tol=1e-8
+        ):
+            return None
+        stations = tuple(
+            detail.first_station_mm + index * spacing
+            for index in range(round(intervals) + 1)
+        )
     diameter = member.link_diameter_mm
     mark = f"{member.member_id}-L{diameter:g}"
     inset = member.clear_cover_mm + diameter / 2
@@ -313,7 +343,7 @@ def _physical_paths(
         for bar in bars
     ]
     outer_links = _link_grid(
-        member, detail, mark, x1, x2, round(intervals), {bar.bar_id for bar in bars}
+        member, detail, mark, x1, x2, stations, {bar.bar_id for bar in bars}
     )
     paths = BarPathRequest(
         WORKFLOW,
@@ -359,6 +389,32 @@ def _physical_paths(
     outer = ClosedLinkDetailRequest(
         paths, cage, link, arrangement, left.right_face_mm, right.left_face_mm
     )
+    if zones:
+        # Each neighbour verifies the single physical link at the shared
+        # boundary. Only the combined path list and BBS own that link.
+        by_station = dict(zip(stations, outer_links, strict=True))
+        return paths, tuple(
+            replace(
+                outer,
+                paths=replace(
+                    paths,
+                    paths=(
+                        *longitudinal,
+                        *(
+                            seed
+                            for x, seed in by_station.items()
+                            if zone.placement.start_station_x_mm - 1e-8
+                            <= x
+                            <= zone.placement.end_station_x_mm + 1e-8
+                        ),
+                    ),
+                ),
+                link=replace(link, spacing_mm=zone.placement.spacing_mm),
+                required_start_mm=zone.placement.start_station_x_mm,
+                required_end_mm=zone.placement.end_station_x_mm,
+            )
+            for zone in zones
+        )
     if detail.restraint_link is None:
         return paths, (outer,)
     extra = _restraint_link_request(request, outer, round(intervals))
@@ -377,10 +433,8 @@ def _link_grid(
     mark: str,
     x1: float,
     x2: float,
-    intervals: int,
+    stations: tuple[float, ...],
     used_ids: set[str],
-    *,
-    station_offset_mm: float = 0,
 ) -> tuple[BarPathSeed, ...]:
     diameter = member.link_diameter_mm
     inset = member.clear_cover_mm + diameter / 2
@@ -397,10 +451,8 @@ def _link_grid(
         (shift, x1, y1 + tail),
     )
     seeds = []
-    for index in range(intervals + 1):
-        station = detail.first_station_mm + index * member.link_spacing_mm
-        station += station_offset_mm
-        bar_id = f"{mark}-{index + 1}"
+    for index, station in enumerate(stations, 1):
+        bar_id = f"{mark}-{index}"
         while bar_id in used_ids:
             bar_id += "-link"
         used_ids.add(bar_id)
@@ -470,9 +522,11 @@ def _restraint_link_request(
         mark,
         x1,
         x2,
-        intervals,
+        tuple(
+            (detail.first_station_mm + index * member.link_spacing_mm) + offset
+            for index in range(intervals + 1)
+        ),
         {seed.bar_id for seed in outer.paths.paths},
-        station_offset_mm=offset,
     )
     paths = replace(
         outer.paths,
@@ -508,6 +562,7 @@ def _schedule(
     paths: OperationResult,
     details: tuple[ClosedLinkDetailRequest, ...],
     splice: SpliceRecord | None,
+    resolved_zones: tuple[ResolvedBeamLinkZone, ...] = (),
 ) -> OperationResult:
     data = paths.output_as("reinforcement_schedule", BarPathOutput)
     binding = result_binding(paths, "reinforcement_schedule")
@@ -550,7 +605,11 @@ def _schedule(
             ),
             7850,
             splice_records=(splice,) if splice else (),
-            link_zones=tuple(zones),
+            link_zones=(
+                tuple(zone.placement for zone in resolved_zones)
+                if resolved_zones
+                else tuple(zones)
+            ),
         )
     )
 
@@ -1829,6 +1888,61 @@ def _record_placement_strength(
         )
 
 
+def _varied_link_basis(
+    request: BeamContinuousDetailingInputV1,
+) -> tuple[tuple[ResolvedBeamLinkZone, ...], StructuralIssueV1 | None]:
+    member, detail = request.member, request.link_detail
+    if (
+        not isinstance(request.link_zones, tuple)
+        or not isinstance(member, BeamContinuousCheckRequestV1)
+        or len(member.bars) != 4
+        or member.depth_mm > 750
+        or detail is None
+        or detail.restraint_link is not None
+        or request.lap is not None
+        or request.cutoff is not None
+        or request.placement_envelope != "not_requested"
+    ):
+        return (), StructuralIssueV1(
+            "BEAM.LINK_ZONE_BASIS_HELD",
+            "link_zones",
+            "Varied links require the complete zone schedule for one ordinary rectangular cage with four uninterrupted corner bars and one closed link shape.",
+        )
+    # Verify the seated geometry of each bar at the rounded inside corner.
+    # A bar with the bend's inside radius can sit at its exact arc centre.
+    corner = (
+        member.clear_cover_mm + member.link_diameter_mm + detail.internal_bend_radius_mm
+    )
+    occupied = set()
+    for bar in member.bars:
+        left = bar.x_from_left_mm < member.width_mm / 2
+        top = bar.face == "top"
+        x = bar.x_from_left_mm if left else member.width_mm - bar.x_from_left_mm
+        y = bar.y_from_top_mm if top else member.depth_mm - bar.y_from_top_mm
+        clearance = (
+            detail.internal_bend_radius_mm
+            - bar.diameter_mm / 2
+            - math.hypot(corner - x, corner - y)
+        )
+        if x <= corner + 1e-9 and y <= corner + 1e-9 and -1e-9 <= clearance <= 1:
+            occupied.add((left, top))
+    if len(occupied) != 4:
+        return (), StructuralIssueV1(
+            "BEAM.LINK_ZONE_BASIS_HELD",
+            "member.bars",
+            "Verify one continuous longitudinal bar in each outside link bend.",
+        )
+    return resolve_beam_link_zones(
+        request.link_zones,
+        mark=f"{member.member_id}-L{member.link_diameter_mm:g}",
+        first_station_mm=detail.first_station_mm,
+        last_station_mm=detail.last_station_mm,
+        minimum_grid_separation_mm=(
+            detail.hook_plane_offset_mm + member.link_diameter_mm
+        ),
+    )
+
+
 def check_continuous_detailing(
     request: BeamContinuousDetailingInputV1,
 ) -> CanonicalFamilyResultV1[dict[str, Any]]:
@@ -1865,18 +1979,67 @@ def check_continuous_detailing(
     The ordinary layered rectangle with two checked link grids and declared
     placement limits also supports one first-span top tension lap near the
     interior support.
+    One straight rectangular four-corner cage can use declared link pitch
+    zones with a single ordinary closed link shape and signed transition rows.
 
     Provenance
     ----------
     Uses the checked supplied station actions, physical path and BBS owners.
     """
     require_request_type(request, BeamContinuousDetailingInputV1)
-    checked = check_continuous_beam(request.member)
+    member = request.member
+    varied_requested = request.link_zones != "not_requested"
+    zones: tuple[ResolvedBeamLinkZone, ...] = ()
+    basis_issue = None
+    if (
+        varied_requested
+        and member.analysis_revision == member.current_analysis_revision
+    ):
+        zones, basis_issue = _varied_link_basis(request)
+    if zones:
+        # At a shared station the larger adjacent pitch is the exact
+        # governing shear resistance for the same link shape and cage.
+        pitches = {
+            station.x_mm: max(
+                (
+                    zone.placement.spacing_mm
+                    for zone in zones
+                    if zone.placement.start_station_x_mm - 1e-8
+                    <= station.x_mm
+                    <= zone.placement.end_station_x_mm + 1e-8
+                ),
+                default=member.link_spacing_mm,
+            )
+            for station in member.stations
+        }
+        checked = _check_station_beam(member, link_spacing_by_station=pitches)
+    else:
+        checked = check_continuous_beam(member)
     identity = checked.result_envelope.result_identity
     assert identity is not None and identity.input_hash is not None
     data: dict[str, Any] = {"strength": checked.to_dict(), "paths": None, "bbs": None}
     issues = []
     status = EngineeringStatus(checked.ultimate_status)
+    if basis_issue is not None:
+        issues.append(basis_issue)
+        status = (
+            EngineeringStatus.FAIL
+            if basis_issue.code == "BEAM.LINK_ZONE_PLACEMENT_FAIL"
+            else EngineeringStatus.HOLD
+        )
+    if zones:
+        assert isinstance(member, BeamContinuousCheckRequestV1)
+        data["link_zones"], pitch_issues = check_varied_link_strength(checked, zones)
+        # No uniform shear capacities apply to the zoned member as a whole.
+        data["strength"]["shear_sections"] = {}
+        issues.extend(pitch_issues)
+        if pitch_issues:
+            status = EngineeringStatus.FAIL
+        transition_issue = zone_transition_actions_issue(member, zones)
+        if transition_issue is not None:
+            issues.append(transition_issue)
+            if status is EngineeringStatus.PASS:
+                status = EngineeringStatus.HOLD
     cutoff_bounds = None
     lap_pieces = None
     source_hash = identity.input_hash
@@ -1931,7 +2094,7 @@ def check_continuous_detailing(
         lap_pieces, lap, lap_issues, status = _check_lap(request, checked)
         data["lap"] = lap
         issues.extend(lap_issues)
-    if request.cutoff or request.lap or placement_requested:
+    if request.cutoff or request.lap or placement_requested or varied_requested:
         source_hash = semantic_hash(
             "beam_detailing_source",
             {
@@ -1958,11 +2121,20 @@ def check_continuous_detailing(
                     if placement_requested
                     else {}
                 ),
+                **(
+                    {
+                        "link_zones": [
+                            zone.model_dump(mode="json") for zone in request.link_zones
+                        ]
+                    }
+                    if isinstance(request.link_zones, tuple)
+                    else {}
+                ),
             },
         )
     if status is EngineeringStatus.PASS:
         restraint = data.get("lap", {}).get("compression_restraint")
-        inputs = _physical_paths(request, source_hash, cutoff_bounds, lap_pieces)
+        inputs = _physical_paths(request, source_hash, cutoff_bounds, lap_pieces, zones)
         if inputs is None:
             status = EngineeringStatus.HOLD
             if restraint is not None:
@@ -1984,7 +2156,12 @@ def check_continuous_detailing(
                 paths=paths.to_dict(),
                 link_check=links[0].to_dict(),
             )
-            if len(links) == 2:
+            if zones:
+                data["link_zones"]["shape_checks"] = {
+                    zone.placement.zone_id: leaf.to_dict()
+                    for zone, leaf in zip(zones, links, strict=True)
+                }
+            elif len(links) == 2:
                 data["restraint_link_check"] = links[1].to_dict()
             for leaf in (fit, paths, *links):
                 if (
@@ -2041,7 +2218,7 @@ def check_continuous_detailing(
                         (lap["start_station_mm"] + lap["end_station_mm"]) / 2,
                         data["lap"]["lap_result"]["result_id"],
                     )
-                schedule = _schedule(request, paths, link_requests, splice)
+                schedule = _schedule(request, paths, link_requests, splice, zones)
                 if schedule.engineering is EngineeringState.PASS:
                     data["bbs"] = schedule.to_dict()
                 else:
@@ -2074,7 +2251,11 @@ def check_continuous_detailing(
                 "Prismatic web cage with straight layers and one optional outer-layer bottom cutoff or lap. "
                 f"{lap_scope} Slab reinforcement and equilibrium torsion need separate evidence."
                 if layered
-                else "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark."
+                else (
+                    "Ordinary uninterrupted corner bars with one two-hook link mark on declared pitch zones."
+                    if varied_requested
+                    else "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark."
+                )
             ),
             "Unreported demand between stations, other splices, member serviceability, support connections and fabrication approval require separate evidence.",
         ),
@@ -2311,6 +2492,7 @@ def render_continuous_detailing_svg(
     assert isinstance(request, BeamContinuousDetailingInputV1)
     member = request.member
     geometry = data["paths"]["outputs"]["reinforcement_schedule"]
+    link_zones = data.get("link_zones", {}).get("zones", ())
     left, support, right = member.supports
     start, end = left.left_face_mm, right.right_face_mm
     depth = member.depth_mm
@@ -2401,9 +2583,29 @@ def render_continuous_detailing_svg(
             f'fill="#92400e">Overlap {lap_start:g} to {lap_end:g} mm</text>'
         )
     top = 180 if cutoff or lap else 40
+    elevation_depth = depth + (300 if link_zones else 140)
     elevation_view = (
-        f"{start - 40:g} {-top:g} {end - start + 80:g} {depth + 140 + top:g}"
+        f"{start - 40:g} {-top:g} {end - start + 80:g} {elevation_depth + top:g}"
     )
+    zone_lines = []
+    for zone in link_zones:
+        x1, x2 = zone["start_station_mm"], zone["end_station_mm"]
+        pitch = zone["spacing_mm"]
+        name = html.escape(zone["zone_id"], quote=True)
+        first, last = (
+            "inclusive" if zone[key] else "exclusive"
+            for key in ("include_start", "include_end")
+        )
+        font_size = min(112, (x2 - x1) / 14)
+        interval = f"{'[' if zone['include_start'] else '('}{x1:g}, {x2:g}{']' if zone['include_end'] else ')'}"
+        zone_lines.append(
+            f'<g data-link-zone="{name}" data-start-mm="{x1:g}" data-end-mm="{x2:g}" '
+            f'data-spacing-mm="{pitch:g}" data-start="{first}" data-end="{last}">'
+            f'<path d="M{x1:g} {depth + 130:g} v65 H{x2:g} v-65" '
+            'fill="none" stroke="#475569" stroke-width="6"/>'
+            f'<text x="{(x1 + x2) / 2:g}" y="{depth + 275:g}" text-anchor="middle" '
+            f'font-size="{font_size:g}" fill="#334155">{interval} mm · Ø{member.link_diameter_mm:g} @ {pitch:g} mm</text></g>'
+        )
     elevation = (
         f'<rect x="{start:g}" width="{end - start:g}" height="{depth:g}" fill="#f1f5f9" stroke="#0f172a"/>'
         + support_lines
@@ -2411,9 +2613,10 @@ def render_continuous_detailing_svg(
         + "".join(bars)
         + termination
         + "".join(lap_lines)
+        + "".join(zone_lines)
     )
     drawing_label = "elevation"
-    if isinstance(member, BeamLayeredContinuousCheckRequestV1):
+    if isinstance(member, BeamLayeredContinuousCheckRequestV1) or link_zones:
         drawing_label = "drawing"
         drawing_view = f"0 0 1200 {692 if section_note else 650}"
         lap_legend = (
@@ -2422,9 +2625,15 @@ def render_continuous_detailing_svg(
             if lap_colors
             else ""
         )
+        link_legend = (
+            '<text x="500" y="28" font-size="17" fill="#334155">'
+            f'{html.escape(link_zones[0]["bar_mark"])} · one closed link shape</text>'
+            if link_zones
+            else ""
+        )
         panels = (
             '<text x="18" y="28" font-size="22">Member elevation</text>'
-            f"{lap_legend}"
+            f"{lap_legend}{link_legend}"
             f'<svg x="0" y="44" width="1200" height="230" viewBox="{elevation_view}">'
             f"{elevation}</svg>{section_note}"
         )
@@ -2470,6 +2679,16 @@ def render_continuous_detailing_svg(
                     label=f"Section at {station:g} mm · {label}",
                     lap_colors=lap_colors,
                 )
+        elif link_zones:
+            panels += _section_panel(
+                member,
+                request.link_detail,
+                geometry["paths"],
+                label=(
+                    f"Cross-section · {member.width_mm:g} × {member.depth_mm:g} mm"
+                    f" · {member.clear_cover_mm:g} mm cover to links"
+                ),
+            )
         else:
             panels += _section_panel(member, request.link_detail, geometry["paths"])
     else:
@@ -2481,7 +2700,7 @@ def render_continuous_detailing_svg(
 
 
 def _section_panel(
-    member: BeamLayeredContinuousCheckRequestV1,
+    member: BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1,
     link: BeamOrdinaryLinkDetailV1 | None,
     paths: list[dict[str, Any]],
     *,
@@ -2494,7 +2713,11 @@ def _section_panel(
 ) -> str:
     """Draw the web cage at the selected side of the section station."""
     assert link is not None
-    flange = member.flange
+    flange = (
+        member.flange
+        if isinstance(member, BeamLayeredContinuousCheckRequestV1)
+        else None
+    )
     width, depth = member.width_mm, member.depth_mm
     left = flange.left_overhang_mm if flange else 0.0
     right = flange.right_overhang_mm if flange else 0.0
@@ -2766,6 +2989,11 @@ def render_continuous_detailing_html(
     bar_edit = result.calculation.get("bar_edit")
     placement = result.calculation.get("placement") if current_match else None
     placement_html = _lap_placement_report(placement) if placement else ""
+    zones = result.calculation.get("link_zones") if current_match else None
+    zone_html = _varied_link_report(zones) if zones else ""
+    governing_title = (
+        "Governing action rows" if zones else "Governing baseline action rows"
+    )
     edit_html = ""
     if bar_edit:
         edit_html = (
@@ -2778,8 +3006,48 @@ def render_continuous_detailing_html(
 <p>{status} · Qualified review required</p>
 <p>Input identity <code>{identity.input_hash if identity else ""}</code></p>
 <p>Supplied strength {strength["ultimate_status"]} · Serviceability {strength["serviceability_status"]}</p>
-<h2>Governing baseline action rows</h2><ul>{governance}</ul>
-{edit_html}{cutoff_html}{lap_html}{section_html}{placement_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+<h2>{governing_title}</h2><ul>{governance}</ul>
+{edit_html}{cutoff_html}{lap_html}{section_html}{placement_html}{zone_html}{svg}{report_bbs}<ul>{issues}{limits}</ul></html>"""
+
+
+def _varied_link_report(data: dict[str, Any]) -> str:
+    rows = []
+    for zone in data["zones"]:
+        limits = (
+            f"{'[' if zone['include_start'] else '('}{zone['start_station_mm']:g}, "
+            f"{zone['end_station_mm']:g}{']' if zone['include_end'] else ')'}"
+        )
+        evidence = ""
+        if "governing_row_id" in zone:
+            evidence = (
+                f"{html.escape(zone['governing_row_id'])} · "
+                f"{zone['governing_shear_kn']:.3f} kN / {zone['capacity_kn']:.3f} kN"
+            )
+        rows.append(
+            f"<tr><th>{html.escape(zone['zone_id'])}</th><td>{limits}</td>"
+            f"<td>{zone['spacing_mm']:g}</td><td>{zone['quantity']}</td>"
+            f"<td>{html.escape(zone['bar_mark'])}</td><td>{evidence}</td></tr>"
+        )
+    transitions = "".join(
+        f"<tr><th>{html.escape(row['row_id'])}</th><td>{row['station_mm']:g}</td>"
+        f"<td>{row['shear_kn']:.3f}</td><td>{html.escape(row['owner_zone_id'])}</td>"
+        f"<td>{html.escape(side['zone_id'])}</td><td>{side['spacing_mm']:g}</td>"
+        f"<td>{side['capacity_kn']:.3f}</td><td>{side['shear_ratio']:.3f}</td></tr>"
+        for row in data["transitions"]
+        for side in row["adjacent"]
+    )
+    return (
+        "<h2>Varied link zones</h2>"
+        f"<p>Maximum pitch {data['maximum_pitch_mm']:g} mm for shear and compression-bar restraint.</p>"
+        "<table><thead><tr><th>Zone</th><th>Owned interval (mm)</th>"
+        "<th>Pitch (mm)</th><th>Quantity</th><th>Bar mark</th><th>Governing shear</th>"
+        f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
+        "<h3>Checks at both sides of each transition</h3>"
+        "<table><thead><tr><th>Row ID</th><th>Station (mm)</th><th>Shear (kN)</th>"
+        "<th>Link owner</th><th>Checked zone</th><th>Pitch (mm)</th>"
+        "<th>Resistance (kN)</th><th>Utilization</th></tr></thead>"
+        f"<tbody>{transitions}</tbody></table>"
+    )
 
 
 def _lap_placement_report(placement: dict[str, Any]) -> str:
