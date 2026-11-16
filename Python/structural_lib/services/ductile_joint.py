@@ -142,7 +142,30 @@ class DuctileJointResultV1:
 def load_joint(
     value: Mapping[str, object] | str | bytes | DuctileJointRequestV1,
 ) -> DuctileJointRequestV1:
-    """Load a validated centred interior joint from JSON or a mapping."""
+    """Load a regular interior joint request.
+
+    Parameters
+    ----------
+    value : mapping, str, bytes or DuctileJointRequestV1
+        Request in the centred interior profile. Dimensions use mm.
+    Returns
+    -------
+    DuctileJointRequestV1
+        Validated geometry, action rows and supplied evidence.
+    Raises
+    ------
+    InputContractError
+        Invalid JSON or inputs outside the request contract.
+    Examples
+    --------
+    See Python/examples/ductile_interior_joint.py.
+    Limitations
+    -----------
+    Admits four centred equal-depth rectangular beams and a square column.
+    Provenance
+    ----------
+    DUCT01 interior-joint request v1.
+    """
     if isinstance(value, DuctileJointRequestV1):
         return model_validate_or_error(
             DuctileJointRequestV1, value.model_dump(mode="json")
@@ -316,7 +339,30 @@ def _checked_result(
 
 
 def check_joint(request: DuctileJointRequestV1) -> DuctileJointResultV1:
-    """Check every applicable family for the same physical joint and action revision."""
+    """Check the supplied joint in X+, X−, Y+ and Y−.
+
+    Parameters
+    ----------
+    request : DuctileJointRequestV1
+        Checked input contract with the caller's complete action inventory.
+    Returns
+    -------
+    DuctileJointResultV1
+        Directional capacities, cage evidence, issues and request identity.
+    Raises
+    ------
+    InputContractError
+        The request has the wrong type or contains invalid nested inputs.
+    Examples
+    --------
+    See Python/examples/ductile_interior_joint.py.
+    Limitations
+    -----------
+    Uses supplied actions and inflection positions for the local joint.
+    Provenance
+    ----------
+    IS 13920:2016 with Amendments 1 and 2 and IS 456:2000.
+    """
     require_request_type(request, DuctileJointRequestV1)
     # Snapshot and validate nested data, including Python-side mutable mappings.
     request = load_joint(request)
@@ -329,7 +375,7 @@ def check_joint(request: DuctileJointRequestV1) -> DuctileJointResultV1:
     }
     cage = check_joint_cage(physical)
     anchorage = _straight_anchorage(request)
-    calculation = {"placement": cage, "anchorage": anchorage}
+    calculation: dict[str, Any] = {"placement": cage, "anchorage": anchorage}
     checks = {
         "construction_fit": all(cage["fit_checks"].values()),
         "confinement": all(cage["confinement_checks"].values()),

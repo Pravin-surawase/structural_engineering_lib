@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from itertools import pairwise, product
 from typing import Any
 
@@ -16,7 +16,7 @@ def _area(diameter: float) -> float:
 
 
 def _distance_to_segment(
-    point: tuple[float, float], a: tuple[float, float], b: tuple[float, float]
+    point: Sequence[float], a: Sequence[float], b: Sequence[float]
 ) -> float:
     dx, dy = b[0] - a[0], b[1] - a[1]
     length_squared = dx**2 + dy**2
@@ -191,18 +191,13 @@ def check_joint_cage(request: Mapping[str, Any]) -> dict[str, Any]:
         "stem_xy_mm": [[left, middle - hoop_r], [width - left, middle - hoop_r]],
         "arc_end_xy_mm": [list(left_arc), [width - left_arc[0], left_arc[1]]],
         "tail_end_xy_mm": [list(left_tail), [width - left_tail[0], left_tail[1]]],
-        "cut_mm": width - 2.0 * left + 1.5 * math.pi * hoop_r + 2.0 * hoop_tail,
     }
-    y_tie = {
-        key: [[width - y, x] for x, y in points]
-        for key, points in x_tie.items()
-        if key.endswith("_xy_mm")
-    }
-    y_tie["cut_mm"] = x_tie["cut_mm"]
-    marks = {
+    y_tie = {key: [[width - y, x] for x, y in points] for key, points in x_tie.items()}
+    cross_tie_cut = width - 2.0 * left + 1.5 * math.pi * hoop_r + 2.0 * hoop_tail
+    marks: dict[str, dict[str, Any]] = {
         "C-H": {"plane_offset_mm": 0.0, "cut_mm": hoop_cut},
-        "C-TX": {"plane_offset_mm": -offset, **x_tie},
-        "C-TY": {"plane_offset_mm": offset, **y_tie},
+        "C-TX": {"plane_offset_mm": -offset, "cut_mm": cross_tie_cut, **x_tie},
+        "C-TY": {"plane_offset_mm": offset, "cut_mm": cross_tie_cut, **y_tie},
     }
 
     levels = (x_level, depth - x_level, y_level, depth - y_level)

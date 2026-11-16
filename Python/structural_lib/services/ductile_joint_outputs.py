@@ -73,7 +73,32 @@ def _tie_path(mark: str, tie: Mapping[str, Any]) -> str:
 def render_joint_svg(
     result: DuctileJointResultV1, *, current: DuctileJointRequestV1 | None = None
 ) -> str | None:
-    """Render the checked local joint plan and elevation, otherwise withhold it."""
+    """Render the checked local joint plan and both principal sections.
+
+    Parameters
+    ----------
+    result : DuctileJointResultV1
+        Captured joint calculation.
+    current : DuctileJointRequestV1 or None
+        Explicit current request used to verify the drawing identity.
+    Returns
+    -------
+    str or None
+        SVG for a current passing joint. Other dispositions yield None.
+    Raises
+    ------
+    AttributeError
+        The supplied result lacks the public joint result attributes.
+    Examples
+    --------
+    See Python/examples/ductile_interior_joint.py.
+    Limitations
+    -----------
+    Draws the joint cage and the checked local beam continuations.
+    Provenance
+    ----------
+    DUCT01 checked cage and action revision.
+    """
     if not _checked(result, current):
         return None
     request, data = _request(result), result.calculation
@@ -227,7 +252,32 @@ def render_joint_svg(
 def render_joint_bbs_csv(
     result: DuctileJointResultV1, *, current: DuctileJointRequestV1 | None = None
 ) -> str | None:
-    """Return only the checked local C-H/C-TX/C-TY fabrication schedule."""
+    """Render the checked joint hoop and cross-ties as CSV.
+
+    Parameters
+    ----------
+    result : DuctileJointResultV1
+        Captured joint calculation.
+    current : DuctileJointRequestV1 or None
+        Explicit current request used to verify the schedule identity.
+    Returns
+    -------
+    str or None
+        Schedule in mm and kg for a current passing joint.
+    Raises
+    ------
+    AttributeError
+        The supplied result lacks the public joint result attributes.
+    Examples
+    --------
+    See Python/examples/ductile_interior_joint.py.
+    Limitations
+    -----------
+    Schedules the checked local joint hoop and two cross-tie marks.
+    Provenance
+    ----------
+    DUCT01 checked cage and action revision.
+    """
     if not _checked(result, current):
         return None
     request, marks = (
@@ -293,7 +343,32 @@ def render_joint_bbs_csv(
 def render_joint_html(
     result: DuctileJointResultV1, *, current: DuctileJointRequestV1 | None = None
 ) -> str:
-    """Render diagnostics for every result and embed drawing evidence only when current."""
+    """Render the joint's governing checks and diagnostics.
+
+    Parameters
+    ----------
+    result : DuctileJointResultV1
+        Captured joint calculation.
+    current : DuctileJointRequestV1 or None
+        Explicit current request used to verify eligibility for the embedded SVG.
+    Returns
+    -------
+    str
+        HTML with the governing checks, issues and eligible drawing.
+    Raises
+    ------
+    AttributeError
+        The supplied result lacks the public joint result attributes.
+    Examples
+    --------
+    See Python/examples/ductile_interior_joint.py.
+    Limitations
+    -----------
+    Reports the evaluated joint and the supplied action basis.
+    Provenance
+    ----------
+    DUCT01 checked result, including the recorded IS 13920 amendment chain.
+    """
     request, data = _request(result), result.calculation
     governing = data.get("governing", {})
     anchor = data.get("anchorage", {})

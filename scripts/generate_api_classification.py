@@ -46,6 +46,7 @@ SURFACE_POLICY = (
     ("structural_lib.design.is456.isolated_footing", "preview"),
     ("structural_lib.design.is456.combined_footing", "preview"),
     ("structural_lib.design.is456.strap_footing", "preview"),
+    ("structural_lib.design.is13920.joint", "preview"),
     ("structural_lib", "preview"),
     ("structural_lib.services.api", "preview"),
     ("structural_lib.api", "compatibility"),
@@ -63,7 +64,9 @@ _HOLD_MODULE_PREFIXES = (
 )
 _CANONICAL_TASK_EXPORTS = frozenset({"design_beam_is456"})
 _CANONICAL_FACADE_MODULES = frozenset(
-    module for module, _classification in SURFACE_POLICY if ".design.is456." in module
+    module
+    for module, _classification in SURFACE_POLICY
+    if module.startswith("structural_lib.design.")
 )
 _CANONICAL_SUPPORT_EXPORTS = frozenset(
     {"EffectiveDepthBasisV1", "EffectiveDepthResolutionV1"}
