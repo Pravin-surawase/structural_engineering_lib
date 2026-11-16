@@ -210,7 +210,8 @@ def _assert_rows_and_capacities(calculation: dict, expected: dict) -> None:
         if "positive_support" in reference:
             source = (
                 partner[row_id]
-                if "B1-3-partner" in reference["positive_support"]["bottom_bar_ids"]
+                if lap["partner_bar_id"]
+                in reference["positive_support"]["bottom_bar_ids"]
                 else primary[row_id]
             )
             positive = source["positive_support_anchorage"]["outputs"]["checks"]
@@ -251,9 +252,13 @@ def _assert_sections_and_bbs(
     for bar_id, (start, end) in extents.items():
         assert float(lines[bar_id]["x1"]) == _approx(start, "length_mm")
         assert float(lines[bar_id]["x2"]) == _approx(end, "length_mm")
+    link_stations = sorted(
+        expected["drawing"]["link_stations_mm"]
+        + expected["drawing"].get("restraint_link_stations_mm", [])
+    )
     assert (
         sorted(float(lines[mark]["x1"]) for mark in lines.keys() - extents.keys())
-        == expected["drawing"]["link_stations_mm"]
+        == link_stations
     )
 
     panels = root.findall("{*}svg[@data-view='section']")
@@ -281,6 +286,19 @@ def _assert_sections_and_bbs(
             (left, top, right, bottom),
             abs=TOLERANCES["length_mm"],
         )
+        restraint_link = panel.find("{*}rect[@data-outline='restraint-link']")
+        if "restraint_link_centreline_bounds_mm" in expected["drawing"]:
+            assert restraint_link is not None
+            x, y, width, height = (
+                float(restraint_link.attrib[key])
+                for key in ("x", "y", "width", "height")
+            )
+            assert (x, y, x + width, y + height) == pytest.approx(
+                expected["drawing"]["restraint_link_centreline_bounds_mm"],
+                abs=TOLERANCES["length_mm"],
+            )
+        else:
+            assert restraint_link is None
         points = {
             point.attrib["data-bar-id"]: point.attrib
             for point in panel.findall("{*}circle")

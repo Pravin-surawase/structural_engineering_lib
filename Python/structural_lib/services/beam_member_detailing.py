@@ -6,6 +6,7 @@ import csv
 import html
 import io
 import math
+from collections.abc import Iterable
 from dataclasses import replace
 from itertools import pairwise
 from typing import Any, Literal, Self
@@ -110,8 +111,16 @@ from structural_lib.services.contracts.common import (
 WORKFLOW = "is456.beam.continuous-detailing/v1"
 
 
+class BeamRestraintLinkV1(StrictPublicModel):
+    """A narrower closed link on a staggered grid within the web cage."""
+
+    left_centre_x_mm: float = Field(gt=0)
+    right_centre_x_mm: float = Field(gt=0)
+    station_offset_mm: float = Field(gt=0)
+
+
 class BeamOrdinaryLinkDetailV1(StrictPublicModel):
-    """Actual placement interval and fabricated hook geometry for one link mark."""
+    """Actual placement interval and fabricated hook geometry for web links."""
 
     first_station_mm: float = Field(ge=-1500, le=30000)
     last_station_mm: float = Field(ge=0, le=32000)
@@ -119,6 +128,7 @@ class BeamOrdinaryLinkDetailV1(StrictPublicModel):
     hook_vertex_leg_mm: float = Field(gt=0, le=300)
     hook_plane_offset_mm: float = Field(gt=0, le=100)
     source_reference: Reference
+    restraint_link: BeamRestraintLinkV1 | None = None
 
 
 class BeamBottomCutoffV1(StrictPublicModel):
@@ -174,7 +184,7 @@ def _physical_paths(
     source_hash: str,
     cutoff_bounds: tuple[float, float] | None,
     lap_pieces: tuple[LongitudinalBarPath, LongitudinalBarPath] | None,
-) -> tuple[BarPathRequest, ClosedLinkDetailRequest] | None:
+) -> tuple[BarPathRequest, tuple[ClosedLinkDetailRequest, ...]] | None:
     member, detail = request.member, request.link_detail
     extent = member.straight_bars
     if detail is None or extent is None:
@@ -194,7 +204,6 @@ def _physical_paths(
     inset = member.clear_cover_mm + diameter / 2
     x1, x2 = inset, member.width_mm - inset
     y1, y2 = inset, member.depth_mm - inset
-    radius = detail.internal_bend_radius_mm + diameter / 2
     tail = detail.hook_vertex_leg_mm
     if not (
         left.left_face_mm + inset <= detail.first_station_mm
@@ -238,7 +247,7 @@ def _physical_paths(
             replace(original, bar_mark=f"{lap_mark}-{original.bar_mark}"),
             replace(partner, bar_mark=f"{lap_mark}-{partner.bar_mark}"),
         )
-    seeds = [
+    longitudinal = [
         BarPathSeed(
             bar.bar_id,
             bar.bar_mark,
@@ -269,7 +278,81 @@ def _physical_paths(
         )
         for bar in bars
     ]
-    shift = detail.hook_plane_offset_mm
+    outer_links = _link_grid(
+        member, detail, mark, x1, x2, round(intervals), {bar.bar_id for bar in bars}
+    )
+    paths = BarPathRequest(
+        WORKFLOW,
+        member.source_reference,
+        WORKFLOW,
+        member.member_id,
+        "both-spans",
+        source_hash,
+        member.reinforcement_revision,
+        MemberLocalCoordinateSystem(
+            "beam-local",
+            "member_station_x",
+            "section_x_from_left",
+            "section_y_from_top",
+        ),
+        left.left_face_mm,
+        right.right_face_mm,
+        member.width_mm,
+        member.depth_mm,
+        (*longitudinal, *outer_links),
+        (request.stock_length_mm,),
+    )
+    cage = LinkCage(
+        mark, diameter, x1, x2, y1, y2, detail.internal_bend_radius_mm, True
+    )
+    link = TransverseLink(
+        mark, diameter, 2, 2, spacing, member.link_fy_nmm2, True, x2 - x1, y2 - y1
+    )
+    arrangement = ReinforcementArrangementCheckRequest(
+        WORKFLOW,
+        member.member_id,
+        "both-spans",
+        member.reinforcement_revision,
+        member.width_mm,
+        member.depth_mm,
+        member.clear_cover_mm,
+        member.aggregate_size_mm,
+        bars,
+        (cage,),
+        (ReinforcementRole.TOP_LONGITUDINAL, ReinforcementRole.BOTTOM_LONGITUDINAL),
+        1e-6,
+    )
+    outer = ClosedLinkDetailRequest(
+        paths, cage, link, arrangement, left.right_face_mm, right.left_face_mm
+    )
+    if detail.restraint_link is None:
+        return paths, (outer,)
+    extra = _restraint_link_request(request, outer, round(intervals))
+    if extra is None:
+        return None
+    extra_links = (
+        seed for seed in extra.paths.paths if seed.role is BarPathRole.TRANSVERSE_LINK
+    )
+    combined = replace(paths, paths=(*paths.paths, *extra_links))
+    return combined, (outer, extra)
+
+
+def _link_grid(
+    member: BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1,
+    detail: BeamOrdinaryLinkDetailV1,
+    mark: str,
+    x1: float,
+    x2: float,
+    intervals: int,
+    used_ids: set[str],
+    *,
+    station_offset_mm: float = 0,
+) -> tuple[BarPathSeed, ...]:
+    diameter = member.link_diameter_mm
+    inset = member.clear_cover_mm + diameter / 2
+    y1, y2 = inset, member.depth_mm - inset
+    radius = detail.internal_bend_radius_mm + diameter / 2
+    tail, shift = detail.hook_vertex_leg_mm, detail.hook_plane_offset_mm
     vertices = (
         (0, x1 + tail, y1),
         (0, x1, y1),
@@ -279,9 +362,10 @@ def _physical_paths(
         (shift, x1, y1),
         (shift, x1, y1 + tail),
     )
-    used_ids = {bar.bar_id for bar in bars}
-    for index in range(round(intervals) + 1):
-        station = detail.first_station_mm + index * spacing
+    seeds = []
+    for index in range(intervals + 1):
+        station = detail.first_station_mm + index * member.link_spacing_mm
+        station += station_offset_mm
         bar_id = f"{mark}-{index + 1}"
         while bar_id in used_ids:
             bar_id += "-link"
@@ -309,62 +393,114 @@ def _physical_paths(
                 ),
             )
         )
-    paths = BarPathRequest(
-        WORKFLOW,
-        member.source_reference,
-        WORKFLOW,
-        member.member_id,
-        "both-spans",
-        source_hash,
-        member.reinforcement_revision,
-        MemberLocalCoordinateSystem(
-            "beam-local",
-            "member_station_x",
-            "section_x_from_left",
-            "section_y_from_top",
+    return tuple(seeds)
+
+
+def _restraint_link_request(
+    request: BeamContinuousDetailingInputV1,
+    outer: ClosedLinkDetailRequest,
+    intervals: int,
+) -> ClosedLinkDetailRequest | None:
+    member, detail = request.member, request.link_detail
+    assert detail is not None and detail.restraint_link is not None
+    inner = detail.restraint_link
+    x1, x2 = inner.left_centre_x_mm, inner.right_centre_x_mm
+    offset = inner.station_offset_mm
+    diameter = outer.link.diameter_mm
+    gap = _restraint_grid_clearance(member, detail, offset)
+    if not (
+        request.lap is not None
+        and isinstance(member, BeamLayeredContinuousCheckRequestV1)
+        and member.flange is not None
+        and outer.cage.left_centre_x_mm < x1 < x2 < outer.cage.right_centre_x_mm
+        and x2 - x1 > detail.hook_vertex_leg_mm
+        and gap >= member.aggregate_size_mm + 5
+        and detail.last_station_mm + offset + detail.hook_plane_offset_mm
+        <= outer.paths.member_end_x_mm - member.clear_cover_mm - diameter / 2
+    ):
+        return None
+    bars = tuple(bar for bar in outer.arrangement.bars if x1 < bar.x_from_left_mm < x2)
+    bound_ids = {bar.bar_id for bar in bars}
+    # A bar outside the supplementary cage must also clear its side legs.
+    if any(
+        min(abs(bar.x_from_left_mm - x) for x in (x1, x2))
+        < (bar.diameter_mm + diameter) / 2
+        for bar in outer.arrangement.bars
+        if bar.bar_id not in bound_ids
+    ):
+        return None
+    mark = f"{outer.link.link_id}-restraint"
+    seeds = _link_grid(
+        member,
+        detail,
+        mark,
+        x1,
+        x2,
+        intervals,
+        {seed.bar_id for seed in outer.paths.paths},
+        station_offset_mm=offset,
+    )
+    paths = replace(
+        outer.paths,
+        paths=(
+            *(seed for seed in outer.paths.paths if seed.bar_id in bound_ids),
+            *seeds,
         ),
-        left.left_face_mm,
-        right.right_face_mm,
-        member.width_mm,
-        member.depth_mm,
-        tuple(seeds),
-        (request.stock_length_mm,),
     )
-    cage = LinkCage(
-        mark, diameter, x1, x2, y1, y2, detail.internal_bend_radius_mm, True
+    cage = replace(outer.cage, link_id=mark, left_centre_x_mm=x1, right_centre_x_mm=x2)
+    return replace(
+        outer,
+        paths=paths,
+        cage=cage,
+        link=replace(outer.link, link_id=mark, centre_width_mm=x2 - x1),
+        arrangement=replace(outer.arrangement, bars=bars, links=(cage,)),
     )
-    link = TransverseLink(
-        mark, diameter, 2, 2, spacing, member.link_fy_nmm2, True, x2 - x1, y2 - y1
-    )
-    arrangement = ReinforcementArrangementCheckRequest(
-        WORKFLOW,
-        member.member_id,
-        "both-spans",
-        member.reinforcement_revision,
-        member.width_mm,
-        member.depth_mm,
-        member.clear_cover_mm,
-        member.aggregate_size_mm,
-        bars,
-        (cage,),
-        (ReinforcementRole.TOP_LONGITUDINAL, ReinforcementRole.BOTTOM_LONGITUDINAL),
-        1e-6,
-    )
-    return paths, ClosedLinkDetailRequest(
-        paths, cage, link, arrangement, left.right_face_mm, right.left_face_mm
+
+
+def _restraint_grid_clearance(
+    member: BeamContinuousCheckRequestV1 | BeamLayeredContinuousCheckRequestV1,
+    detail: BeamOrdinaryLinkDetailV1,
+    offset: float,
+) -> float:
+    return (
+        min(offset, member.link_spacing_mm - offset)
+        - detail.hook_plane_offset_mm
+        - member.link_diameter_mm
     )
 
 
 def _schedule(
     request: BeamContinuousDetailingInputV1,
     paths: OperationResult,
-    detail: ClosedLinkDetailRequest,
+    details: tuple[ClosedLinkDetailRequest, ...],
     splice: SpliceRecord | None,
 ) -> OperationResult:
     data = paths.output_as("reinforcement_schedule", BarPathOutput)
     binding = result_binding(paths, "reinforcement_schedule")
     link = request.link_detail
     assert link is not None
+    zones = [
+        LinkPlacementZone(
+            "both-spans",
+            details[0].link.link_id,
+            link.first_station_mm,
+            link.last_station_mm,
+            details[0].link.spacing_mm,
+            True,
+            True,
+        )
+    ]
+    if link.restraint_link is not None:
+        offset = link.restraint_link.station_offset_mm
+        zones.append(
+            replace(
+                zones[0],
+                zone_id="restraint-links",
+                bar_mark=details[1].link.link_id,
+                start_station_x_mm=link.first_station_mm + offset,
+                end_station_x_mm=link.last_station_mm + offset,
+            )
+        )
     return create_bbs(
         BbsRequest(
             WORKFLOW,
@@ -380,17 +516,7 @@ def _schedule(
             ),
             7850,
             splice_records=(splice,) if splice else (),
-            link_zones=(
-                LinkPlacementZone(
-                    "both-spans",
-                    detail.link.link_id,
-                    link.first_station_mm,
-                    link.last_station_mm,
-                    detail.link.spacing_mm,
-                    True,
-                    True,
-                ),
-            ),
+            link_zones=tuple(zones),
         )
     )
 
@@ -990,6 +1116,30 @@ def _lap_compression_restraint(
     bend_radius = link.internal_bend_radius_mm
     # The bend centre is one link diameter plus the inner radius from cover.
     bend_inset = member.clear_cover_mm + link_dia + bend_radius
+    if link.restraint_link is not None:
+        inset = member.clear_cover_mm + link_dia / 2
+        bend_axis_radius = bend_radius + link_dia / 2
+        corner_sets = {
+            "outer": (inset, member.width_mm - inset),
+            "restraint": (
+                link.restraint_link.left_centre_x_mm,
+                link.restraint_link.right_centre_x_mm,
+            ),
+        }
+        seat_ids = {
+            name: _rounded_link_seats(
+                existing.values(),
+                left,
+                right,
+                bend_inset,
+                member.depth_mm,
+                bend_axis_radius,
+                bend_radius,
+            )
+            for name, (left, right) in corner_sets.items()
+        }
+    else:
+        seat_ids = {}
     layouts_checked = []
     for layout, capacities, rows in layouts:
         for tension_face in (Face.BOTTOM, Face.TOP):
@@ -1044,6 +1194,10 @@ def _lap_compression_restraint(
                 )
                 and all(gap <= 75 for gap in gaps)
             )
+            if seat_ids:
+                seated = seat_ids["outer"] | seat_ids["restraint"]
+                corners = [bar.bar_id for bar in outer if bar.bar_id in seated]
+                outer_supported = bool(outer) and len(corners) == len(outer)
             inner = [bar for bar in cage if bar.layer > 1]
             maximum_inner_dia = max((bar.diameter_mm for bar in inner), default=0)
             inner_supported = all(
@@ -1089,7 +1243,45 @@ def _lap_compression_restraint(
         "source": source,
         "layouts": layouts_checked,
         "verified": all(layout["verified"] for layout in layouts_checked),
+        **(
+            {
+                "corner_bar_ids_by_grid": {
+                    name: sorted(ids) for name, ids in seat_ids.items()
+                },
+                "minimum_between_link_grids_mm": _restraint_grid_clearance(
+                    member, link, link.restraint_link.station_offset_mm
+                ),
+            }
+            if link.restraint_link is not None
+            else {}
+        ),
     }
+
+
+def _rounded_link_seats(
+    bars: Iterable[BeamSectionBarV1],
+    left_mm: float,
+    right_mm: float,
+    bend_inset_mm: float,
+    depth_mm: float,
+    bend_axis_radius_mm: float,
+    internal_radius_mm: float,
+) -> set[str]:
+    # A seat in this bounded double-link profile lies inside the bend sector
+    # with no more than 1 mm radial play, independent of the straight-leg gap.
+    seated = set()
+    for bar in bars:
+        centre_y = bend_inset_mm if bar.face == "top" else depth_mm - bend_inset_mm
+        dy = (bar.y_from_top_mm - centre_y) * (1 if bar.face == "top" else -1)
+        if bar.layer != 1 or dy > 0:
+            continue
+        for leg_x, side in ((left_mm, 1), (right_mm, -1)):
+            centre_x = leg_x + side * bend_axis_radius_mm
+            dx = (bar.x_from_left_mm - centre_x) * side
+            clearance = internal_radius_mm - bar.diameter_mm / 2 - math.hypot(dx, dy)
+            if dx < 0 and dy < 0 and -1e-6 <= clearance <= 1:
+                seated.add(bar.bar_id)
+    return seated
 
 
 def check_continuous_detailing(
@@ -1200,7 +1392,7 @@ def check_continuous_detailing(
                 ),
                 "lap": request.lap.model_dump(mode="json") if request.lap else None,
                 "link": (
-                    request.link_detail.model_dump(mode="json")
+                    request.link_detail.model_dump(mode="json", exclude_none=True)
                     if request.link_detail
                     else None
                 ),
@@ -1221,16 +1413,18 @@ def check_continuous_detailing(
                 )
             )
         else:
-            paths_request, link_request = inputs
-            fit = check_reinforcement_arrangement(link_request.arrangement)
+            paths_request, link_requests = inputs
+            fit = check_reinforcement_arrangement(link_requests[0].arrangement)
             paths = resolve_bar_paths(paths_request)
-            links = check_closed_link_detail(link_request)
+            links = tuple(check_closed_link_detail(detail) for detail in link_requests)
             data.update(
                 arrangement=fit.to_dict(),
                 paths=paths.to_dict(),
-                link_check=links.to_dict(),
+                link_check=links[0].to_dict(),
             )
-            for leaf in (fit, paths, links):
+            if len(links) == 2:
+                data["restraint_link_check"] = links[1].to_dict()
+            for leaf in (fit, paths, *links):
                 if (
                     leaf.execution is ExecutionState.COMPLETED
                     and leaf.engineering is EngineeringState.FAIL
@@ -1271,7 +1465,7 @@ def check_continuous_detailing(
                         (lap["start_station_mm"] + lap["end_station_mm"]) / 2,
                         data["lap"]["lap_result"]["result_id"],
                     )
-                schedule = _schedule(request, paths, link_request, splice)
+                schedule = _schedule(request, paths, link_requests, splice)
                 if schedule.engineering is EngineeringState.PASS:
                     data["bbs"] = schedule.to_dict()
                 else:
@@ -1297,7 +1491,7 @@ def check_continuous_detailing(
         limitations=(
             "Only the supplied strength and anchorage rows and the declared physical layout are checked.",
             (
-                "Prismatic web cage with straight layers, one optional outer-layer bottom cutoff and one uniform two-hook web link. "
+                "Prismatic web cage with straight layers and one optional outer-layer bottom cutoff or lap. "
                 f"{lap_scope} Slab reinforcement and equilibrium torsion need separate evidence."
                 if layered
                 else "Ordinary straight bars, one optional first-span bottom cutoff or separated bottom lap, and one uniform two-hook link mark."
@@ -1564,13 +1758,29 @@ def render_continuous_detailing_svg(
     lap_lines = []
     bars = []
     termination = ""
+    restraint_mark = (
+        f"{member.member_id}-L{member.link_diameter_mm:g}-restraint"
+        if request.link_detail and request.link_detail.restraint_link
+        else None
+    )
+    section_note = ""
+    if restraint_mark is not None:
+        detail = request.link_detail
+        assert detail is not None and detail.restraint_link is not None
+        section_note = (
+            '<text x="18" y="273" font-size="17" fill="#334155">'
+            f"Links @ {member.link_spacing_mm:g} mm · outer in grey · "
+            f"restraint in purple at +{detail.restraint_link.station_offset_mm:g} mm</text>"
+            '<text x="18" y="295" font-size="17" fill="#334155">'
+            "Link shapes are projected onto each bar section. See elevation for placement.</text>"
+        )
     for item in geometry["paths"]:
         path_id = html.escape(item["bar_id"], quote=True)
         segments = item["segments"]
         x1 = segments[0]["start"]["station_x_mm"]
         if item["role"] == "transverse_link":
             x2, y1, y2 = x1, member.clear_cover_mm, depth - member.clear_cover_mm
-            color = "#64748b"
+            color = "#7e22ce" if item["bar_mark"] == restraint_mark else "#64748b"
         else:
             x2 = segments[-1]["end"]["station_x_mm"]
             y1 = y2 = segments[0]["start"]["section_y_from_top_mm"]
@@ -1625,7 +1835,7 @@ def render_continuous_detailing_svg(
     drawing_label = "elevation"
     if isinstance(member, BeamLayeredContinuousCheckRequestV1):
         drawing_label = "drawing"
-        drawing_view = "0 0 1200 650"
+        drawing_view = f"0 0 1200 {692 if section_note else 650}"
         lap_legend = (
             '<text x="334" y="28" font-size="17" fill="#92400e">Lap-I · original</text>'
             '<text x="500" y="28" font-size="17" fill="#0f766e">Lap-J · partner</text>'
@@ -1636,7 +1846,7 @@ def render_continuous_detailing_svg(
             '<text x="18" y="28" font-size="22">Member elevation</text>'
             f"{lap_legend}"
             f'<svg x="0" y="44" width="1200" height="230" viewBox="{elevation_view}">'
-            f"{elevation}</svg>"
+            f"{elevation}</svg>{section_note}"
         )
         if cutoff:
             theoretical, cut_at = (
@@ -1747,12 +1957,25 @@ def _section_panel(
             f'r="{path["diameter_mm"] / 2:g}" fill="{color}"><title>{mark}</title></circle>'
         )
     station = f' data-station-mm="{station_mm:g}"' if station_mm is not None else ""
-    return f"""<text x="{panel_x + 18}" y="302" font-size="22">{html.escape(label)}</text>
-<svg data-view="section"{station} x="{panel_x}" y="318" width="{panel_width}" height="320"
+    inner_shape = ""
+    section_offset = 0
+    projection = ""
+    if link.restraint_link is not None:
+        inner = link.restraint_link
+        section_offset = 42
+        projection = ' data-link-display="projected"'
+        inner_shape = (
+            f'<rect data-outline="restraint-link"{projection} x="{inner.left_centre_x_mm:g}" '
+            f'y="{inset:g}" width="{inner.right_centre_x_mm - inner.left_centre_x_mm:g}" '
+            f'height="{depth - 2 * inset:g}" rx="{radius:g}" fill="none" '
+            f'stroke="#7e22ce" stroke-width="{member.link_diameter_mm:g}"/>'
+        )
+    return f"""<text x="{panel_x + 18}" y="{302 + section_offset}" font-size="22">{html.escape(label)}</text>
+<svg data-view="section"{station} x="{panel_x}" y="{318 + section_offset}" width="{panel_width}" height="320"
  viewBox="{-left - 35:g} -35 {width + left + right + 70:g} {depth + 70:g}">
 <path data-outline="concrete" d="{outline}" fill="#f1f5f9" stroke="#0f172a" stroke-width="3"/>
-<rect data-outline="web-link" x="{inset:g}" y="{inset:g}" width="{width - 2 * inset:g}"
- height="{depth - 2 * inset:g}" rx="{radius:g}" fill="none" stroke="#64748b" stroke-width="{member.link_diameter_mm:g}"/>
+<rect data-outline="web-link"{projection} x="{inset:g}" y="{inset:g}" width="{width - 2 * inset:g}"
+ height="{depth - 2 * inset:g}" rx="{radius:g}" fill="none" stroke="#64748b" stroke-width="{member.link_diameter_mm:g}"/>{inner_shape}
 {"".join(circles)}</svg>"""
 
 
@@ -2056,6 +2279,17 @@ def _layered_lap_report(lap: dict[str, Any], arrangement: dict[str, Any]) -> str
             f"<p>Compression-bar restraint {state} for the signed transfer layouts. "
             f"{html.escape(restraint['source'])}.</p>"
         )
+        if restraint.get("corner_bar_ids_by_grid"):
+            basis += (
+                f"<p>Clear spacing between link grids "
+                f"{restraint['minimum_between_link_grids_mm']:g} mm.</p>"
+                "<p>Checked on nominal dimensions. Verify the assembly and "
+                "placement tolerances for the project.</p>"
+                "<p>Closed link bend seats by grid.</p><ul>"
+            )
+            for name, bar_ids in restraint["corner_bar_ids_by_grid"].items():
+                basis += f"<li>{html.escape(name)} link · {html.escape(', '.join(bar_ids))}</li>"
+            basis += "</ul>"
     return (
         f"<p>Overlap from {lap['start_station_mm']:g} to {lap['end_station_mm']:g} mm.</p>"
         f"{spacing}{basis}<h3>Concurrent ULS actions within the lap</h3>"
