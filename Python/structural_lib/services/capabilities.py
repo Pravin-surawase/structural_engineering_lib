@@ -174,7 +174,7 @@ _CAPABILITIES = (
                 "load_continuous_detailing",
                 "check_continuous_detailing",
                 "is456-beam-continuous-detailing-input/v1",
-                "Two-span rectangular, T or L web cage with actual straight layers, uniform ordinary web links, checked elevation, section and BBS. The web cage admits one straight first-span outer-layer bottom cutoff. Rectangular and symmetric T cages also admit one separated straight outer-bottom tension lap.",
+                "Two-span rectangular, T or L web cage with actual straight layers, uniform ordinary web links, checked elevation, section and BBS. The web cage admits one straight first-span outer-layer bottom cutoff. Rectangular, symmetric T and right-flanged L cages also admit one separated straight outer-bottom tension lap.",
                 "docs/cookbook/python/beam-continuous-detailing.md",
                 "Python/examples/beam_continuous_detailing.py",
             ),
