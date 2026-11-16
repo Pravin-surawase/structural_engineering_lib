@@ -152,9 +152,12 @@ def exterior_beam_link_sections(data: Mapping[str, Any]) -> dict[str, Any]:
         radius = data["beam_link_centre_radius_mm"][plane]
         inset = data["beam_link_seat_inset_mm"][plane]
         edge = (data["column_width_mm"] - data["beam_width_mm"][plane]) / 2
-        z = data["beam_top_z_mm"][plane] - inset
+        depth_inset = data.get("beam_link_depth_seat_inset_mm", {}).get(plane, inset)
+        z = data["beam_top_z_mm"][plane] - depth_inset
         cover = min(axes[0] - edge - inset, z) - tie / 2 - tolerance - overage / 2
-        seat = radius - math.hypot(radius - inset, radius - inset) - (phi + tie) / 2
+        seat = (
+            radius - math.hypot(radius - inset, radius - depth_inset) - (phi + tie) / 2
+        )
         seat -= math.sqrt(2) * tolerance + overage
         spacing = min(b - a for a, b in pairwise(axes)) - phi - 2 * tolerance - overage
         middle_width = axes[2] - axes[1] + 2 * inset

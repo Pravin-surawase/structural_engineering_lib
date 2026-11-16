@@ -198,6 +198,11 @@ DUCT01_TEST = "Python/tests/integration/test_ductile_interior_joint_reference.py
 DUCT02_REFERENCE = "docs/verification/library-030-duct02-exterior-joint.json"
 DUCT02_CHECKER = "docs/verification/check_library_030_duct02_exterior_reference.py"
 DUCT02_TEST = "Python/tests/integration/test_ductile_exterior_joint_reference.py"
+PROJECT03_ACTIONS = "docs/verification/library-030-project03-frame-actions.json"
+PROJECT03_REFERENCE = "docs/verification/library-030-project03-ductile-frame.json"
+PROJECT03_CHECKER = "docs/verification/check_library_030_project03_frame_reference.py"
+PROJECT03_EXAMPLE = "Python/examples/ductile_frame_cut.py"
+PROJECT03_TEST = "Python/tests/integration/test_ductile_frame_cut_reference.py"
 FLOW04_REFERENCE = "docs/verification/library-029-flow04-paired-intake.json"
 SEC02_REFERENCE = "docs/verification/library-029-sec02-column-interaction.json"
 SEC03_REFERENCE = "docs/verification/library-029-sec03-column-service.json"
@@ -263,6 +268,13 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                         DUCT02_CHECKER,
                         DUCT02_TEST,
                         "docs/verification/_duct02_cage_reference.py",
+                        PROJECT03_ACTIONS,
+                        PROJECT03_REFERENCE,
+                        PROJECT03_CHECKER,
+                        PROJECT03_EXAMPLE,
+                        PROJECT03_TEST,
+                        "docs/verification/_project03_frame_statics.py",
+                        "docs/verification/_project03_member_reference.py",
                     )
                 ),
                 repo / FLOW04_REFERENCE,
@@ -634,7 +646,11 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     def run(label: str, script: str, *args: str, expected_code: int = 0) -> str:
         command = [sys.executable, "-I"]
-        if script in CHECKERS or script in (DUCT01_CHECKER, DUCT02_CHECKER):
+        if script in CHECKERS or script in (
+            DUCT01_CHECKER,
+            DUCT02_CHECKER,
+            PROJECT03_CHECKER,
+        ):
             # -I deliberately excludes the script directory. These arithmetic
             # drivers share sibling helpers; expose only their copied folder.
             command.extend(
@@ -1047,6 +1063,47 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             assert (directory / "report.html").is_file()
             assert (directory / "joint.svg").is_file() == (expected == "PASS")
             assert (directory / "bbs.csv").is_file() == (expected == "PASS")
+        run("project03-independent-reference", PROJECT03_CHECKER)
+        document = json.loads((clone / PROJECT03_REFERENCE).read_text(encoding="utf-8"))
+        source = (clone / PROJECT03_ACTIONS).read_text(encoding="utf-8")
+        for name, control in {"baseline": None, **document["controls"]}.items():
+            packet = json.loads(source)
+            if control is not None:
+                parent = packet
+                for key in control["path"][:-1]:
+                    parent = parent[key]
+                key = control["path"][-1]
+                if control["operation"] == "delete":
+                    del parent[key]
+                else:
+                    parent[key] = control["value"]
+            label = f"ductile-frame-cut-{name}"
+            input_file = output / f"{label}-input.json"
+            input_file.write_text(json.dumps(packet), encoding="utf-8")
+            directory = output / label
+            result = json.loads(
+                run(
+                    label,
+                    PROJECT03_EXAMPLE,
+                    "--request",
+                    str(input_file),
+                    "--output-dir",
+                    str(directory),
+                )
+            )
+            expected = document["expected"] if control is None else control["expected"]
+            passing = expected["status"] == "PASS"
+            assert result["workflow_id"] == "PROJECT03_DUCTILE_FRAME_CUT"
+            assert result["envelope"]["engineering_status"] == expected["status"]
+            assert (directory / "report.html").is_file()
+            assert (directory / "frame.svg").is_file() == passing
+            assert (directory / "bbs.csv").is_file() == passing
+            if passing:
+                marks = result["calculation"]["artifact_reconciliation"]
+                assert (
+                    marks["unique_cut_piece_count"]
+                    == expected["artifact_reconciliation"]["unique_cut_piece_count"]
+                )
     for option, expected in (
         ((), "COMPLETE_FOR_DECLARED_ROWS"),
         (("--alternate-units",), "COMPLETE_FOR_DECLARED_ROWS"),
@@ -1357,6 +1414,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                     str(clone / FLOW03_LAYERED_TEST),
                     str(clone / DUCT01_TEST),
                     str(clone / DUCT02_TEST),
+                    str(clone / PROJECT03_TEST),
                 )
                 if version_at_least_030
                 else ()

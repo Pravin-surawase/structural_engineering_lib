@@ -163,6 +163,17 @@ def render_joint_svg(
         f'data-closure-ramp-mm="{hook_ramp:g}" stroke="#17706d" stroke-width="5" stroke-dasharray="3 3">'
         f"<title>C-H closure ramp · rise {hoop_rise:g} mm over {hook_ramp:g} mm</title></line>"
     )
+    if "local_centreline_xyz_mm" in marks["C-H"]:
+        closed = marks["C-H"]
+        points = " ".join(
+            f"{x:g},{y:g}" for x, y, _ in closed["local_centreline_xyz_mm"]
+        )
+        bends = " ".join(f"{value:g}" for value in closed["closure_offset_angles_deg"])
+        hoop = (
+            f'<polyline data-bar-mark="C-H" data-closure-bends-deg="{bends}" '
+            f'data-bend-radius-mm="{bend_radius:g}" points="{points}" fill="none" '
+            'stroke="#17706d" stroke-width="3"><title>C-H rounded closure</title></polyline>'
+        )
     ties = _tie_path("C-TX", marks["C-TX"]) + _tie_path("C-TY", marks["C-TY"])
     x_hoop, y_hoop = (
         placement["beam_hoop_sections"]["X"],

@@ -8,6 +8,8 @@ from collections.abc import Mapping, Sequence
 from itertools import pairwise, product
 from typing import Any
 
+from structural_lib.codes.is13920.exterior_joint_cage import _closed, _offset_angle
+
 __all__ = ["check_joint_cage"]
 
 
@@ -180,6 +182,31 @@ def check_joint_cage(request: Mapping[str, Any]) -> dict[str, Any]:
         - ramp
     )
 
+    hoop_path: dict[str, Any] = {}
+    if request.get("column_hook_offset_radiused"):
+        turn = _offset_angle(ramp, raised_hook, hoop_r)
+        if turn is None or ramp >= chord:
+            return _false_result(
+                "column hoop closure cannot fit with the declared bend radius"
+            )
+        path, hoop_cut = _closed(
+            "C-H",
+            inner,
+            width - inner,
+            inner,
+            width - inner,
+            hoop_r,
+            hoop_tail,
+            ramp,
+            raised_hook,
+            turn,
+            hoop_dia,
+        )
+        hoop_path = {
+            "local_centreline_xyz_mm": path.points,
+            "closure_offset_angles_deg": [math.degrees(turn), -math.degrees(turn)],
+        }
+
     middle, left = width / 2.0, col_edge + 5.0
     left_arc = (left - hoop_r / math.sqrt(2.0), middle + hoop_r / math.sqrt(2.0))
     left_tail = (
@@ -195,7 +222,7 @@ def check_joint_cage(request: Mapping[str, Any]) -> dict[str, Any]:
     y_tie = {key: [[width - y, x] for x, y in points] for key, points in x_tie.items()}
     cross_tie_cut = width - 2.0 * left + 1.5 * math.pi * hoop_r + 2.0 * hoop_tail
     marks: dict[str, dict[str, Any]] = {
-        "C-H": {"plane_offset_mm": 0.0, "cut_mm": hoop_cut},
+        "C-H": {"plane_offset_mm": 0.0, "cut_mm": hoop_cut, **hoop_path},
         "C-TX": {"plane_offset_mm": -offset, "cut_mm": cross_tie_cut, **x_tie},
         "C-TY": {"plane_offset_mm": offset, "cut_mm": cross_tie_cut, **y_tie},
     }
@@ -370,10 +397,11 @@ def check_joint_cage(request: Mapping[str, Any]) -> dict[str, Any]:
     outer_rail_cover = (
         min(beam_across) - beam_outline - beam_inset - beam_link_dia / 2.0
     )
+    depth_inset = request.get("beam_link_depth_seat_inset_mm") or beam_inset
     beam_corner_clear = (
         beam_r
         - (beam_dia + beam_link_dia) / 2.0
-        - math.sqrt(2.0) * abs(beam_r - beam_inset)
+        - math.hypot(beam_r - beam_inset, beam_r - depth_inset)
     )
     min_row_clear = (
         min(b - a for a, b in pairwise(beam_across))
@@ -388,7 +416,7 @@ def check_joint_cage(request: Mapping[str, Any]) -> dict[str, Any]:
     )
     beam_hoops: dict[str, dict[str, Any]] = {}
     for plane, level in (("X", x_level), ("Y", y_level)):
-        top = level - beam_inset
+        top = level - depth_inset
         beam_hoops[plane] = {
             "outer_across_axis_bounds_mm": [
                 beam_across[0] - beam_inset,

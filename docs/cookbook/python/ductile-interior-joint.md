@@ -69,3 +69,36 @@ sequencing and temporary supports require separate project evidence.
 
 The same Python example and export guard apply to the versioned exterior
 request. [Independent exterior reference](../../verification/library-030-duct02-exterior-joint.json)
+
+## Check a common two-joint frame cut
+
+Use `structural_lib.design.is13920.frame` to check PROJECT03 from one
+signed action revision. The frame has one shared beam, an interior
+joint at its west face, an exterior joint at its east face and four
+admitted column legs. Supply the global end forces and couples for
+every beam interval and leg. The five cut boundary beams contribute
+actions. Their own design and schedules remain outside this review.
+
+```python
+from pathlib import Path
+
+from structural_lib.design.is13920 import frame
+
+source = Path("docs/verification/library-030-project03-frame-actions.json")
+request = frame.load_frame(source.read_bytes())
+result = frame.check_frame(request)
+report_html = frame.render_frame_html(result)
+drawing_svg = frame.render_frame_svg(result, current=request)
+bbs_csv = frame.render_frame_bbs_csv(result, current=request)
+```
+
+The calculation resolves the complete joint axial transfer before
+passing each directional row to the local joint checks. The drawing
+and bar bending schedule require PASS and an explicit current request.
+The common beam's longitudinal bars appear once even though their
+paths cross both joint views. The schedule records the local checked
+cuts for design review. Site installation, temporary supports and
+the boundary anchorage cage require separate evidence.
+
+[Command-line example](../../../Python/examples/ductile_frame_cut.py) ·
+[Independent frame reference](../../verification/library-030-project03-ductile-frame.json)

@@ -29,6 +29,7 @@ class JointActionRowV1(StrictPublicModel):
     combination_id: _Id
     upper_axial_compression_kn: _PositiveLoad
     beam_on_joint_downward_shear_kn: dict[_BeamSide, _Load]
+    orthogonal_downward_reaction_kn: _Load = 0
     analysis_column_shear_magnitude_kn: Annotated[float, Field(ge=0, le=10000)]
 
     @model_validator(mode="after")
@@ -81,6 +82,7 @@ class DuctileJointRequestV1(StrictPublicModel):
     beam_link_mm: Literal[8, 10, 12]
     beam_link_centre_radius_mm: _SmallDimension
     beam_link_seat_inset_mm: _SmallDimension
+    beam_link_depth_seat_inset_mm: _SmallDimension | None = None
     beam_first_link_mm: _SmallDimension
     beam_inner_link_offset_mm: _SmallDimension
     beam_pitch_mm: _SmallDimension
@@ -89,6 +91,7 @@ class DuctileJointRequestV1(StrictPublicModel):
     column_link_centre_radius_mm: _SmallDimension
     column_hook_tail_mm: _SmallDimension
     column_hook_rise_mm: _SmallDimension
+    column_hook_offset_radiused: bool = False
     column_hook_ramp_length_mm: _SmallDimension
     cross_tie_station_offset_mm: _SmallDimension
     joint_hoop_centres_mm: Annotated[
@@ -179,6 +182,7 @@ class ExteriorJointActionRowV1(StrictPublicModel):
     combination_id: _Id
     upper_axial_compression_kn: _PositiveLoad
     beam_on_joint_downward_shear_kn: dict[_BeamSide, _Load]
+    orthogonal_downward_reaction_kn: _Load = 0
     analysis_column_shear_magnitude_kn: Annotated[float, Field(ge=0, le=10000)]
     beam_axial_kn: Literal[0]
     sway: Literal["+", "-"]
@@ -237,6 +241,9 @@ class DuctileExteriorJointRequestV1(StrictPublicModel):
     beam_inner_link_offset_mm: _SmallDimension
     beam_link_centre_radius_mm: dict[_Plane, _SmallDimension]
     beam_link_seat_inset_mm: dict[_Plane, _SmallDimension]
+    beam_link_depth_seat_inset_mm: dict[_Plane, _SmallDimension] = Field(
+        default_factory=dict
+    )
     beam_link_hook_tail_mm: _SmallDimension
     column_fck_mpa: Literal[30]
     beam_fck_mpa: Literal[30]

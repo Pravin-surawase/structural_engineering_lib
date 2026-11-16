@@ -27,6 +27,13 @@ from _project03_member_reference import (
     BAR_AXES_MM,
     BAR_LEVELS_MM,
     BEAM_HOOP_RADIUS_MM,
+    BEAM_CLOSURE_RUN_MM,
+    BEAM_CLOSURE_RISE_MM,
+    BEAM_HOOP_TAIL_MM,
+    CENTRE_FILL,
+    WEST_CLEAR_SPAN_MM,
+    WEST_EMBEDMENT_MM,
+    WEST_SUPPORT_DEPTH_MM,
     SIDE_SEAT_INSET_MM,
     TOP_SEAT_INSET_MM,
     WIDTH_MM,
@@ -109,7 +116,19 @@ def source_packet(*, overload=False):
         for name, action in actions.items()
     }
     return {
+        "schema_version": "ductile-frame-cut/v1",
         "project_id": "PROJECT03",
+        "applicability_reference": "Declared regular two-joint IS 13920 open frame cut.",
+        "detailing": {
+            "center_fill_mm": CENTRE_FILL,
+            "beam_closure_run_mm": BEAM_CLOSURE_RUN_MM,
+            "beam_closure_rise_mm": BEAM_CLOSURE_RISE_MM,
+            "beam_link_hook_tail_mm": BEAM_HOOP_TAIL_MM,
+            "west_clear_span_mm": WEST_CLEAR_SPAN_MM,
+            "west_development_mm": WEST_EMBEDMENT_MM,
+            "west_support_depth_mm": WEST_SUPPORT_DEPTH_MM,
+            "stock_length_mm": 12000,
+        },
         "action_revision": REVISION,
         "current_action_revision": REVISION,
         "required_combinations": {

@@ -5042,7 +5042,27 @@
       "direction": "Y-"
     }
   },
+  "applicability_reference": "Declared regular two-joint IS 13920 open frame cut.",
   "current_action_revision": "PROJECT03-CUT-R1",
+  "detailing": {
+    "beam_closure_rise_mm": 14,
+    "beam_closure_run_mm": 50,
+    "beam_link_hook_tail_mm": 85,
+    "center_fill_mm": {
+      "BX12-M": [
+        2135,
+        2165
+      ],
+      "BX12-O": [
+        2118,
+        2182
+      ]
+    },
+    "stock_length_mm": 12000,
+    "west_clear_span_mm": 4000,
+    "west_development_mm": 1100,
+    "west_support_depth_mm": 1200
+  },
   "joint_geometry": {
     "J1": {
       "action_revision": "PROJECT03-CUT-R1",
@@ -5285,5 +5305,6 @@
       "P03-Y--1",
       "P03-Y--2"
     ]
-  }
+  },
+  "schema_version": "ductile-frame-cut/v1"
 }

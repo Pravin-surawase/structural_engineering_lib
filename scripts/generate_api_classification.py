@@ -47,6 +47,7 @@ SURFACE_POLICY = (
     ("structural_lib.design.is456.combined_footing", "preview"),
     ("structural_lib.design.is456.strap_footing", "preview"),
     ("structural_lib.design.is13920.joint", "preview"),
+    ("structural_lib.design.is13920.frame", "preview"),
     ("structural_lib", "preview"),
     ("structural_lib.services.api", "preview"),
     ("structural_lib.api", "compatibility"),
