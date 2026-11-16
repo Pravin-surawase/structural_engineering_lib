@@ -2,31 +2,22 @@
 
 ## Supported versions
 
-StructLib is an Alpha project. Security fixes are prepared on the current
-`main` branch and, when separately authorized, published in a new immutable
-version. Older tags and prereleases are not rebuilt or silently replaced.
-
-| Version | Security status |
-|---|---|
-| Current `main` | Receives security fixes and required checks |
-| `0.24.0a1` | Immutable public Alpha; evaluate with its exact published evidence |
-| Earlier versions | No routine security updates |
-
-This policy is not a stable-API promise, a release authorization, or an
-engineering-use approval.
+Security fixes are prepared on the current `main` branch. Published versions
+remain immutable, and fixes are distributed through a separately authorized
+release. Earlier versions do not receive routine security updates. See the
+[current release record](docs/getting-started/release-status.md) for the public
+version and its verification evidence.
 
 ## Report a vulnerability privately
 
-Use GitHub's private vulnerability-reporting flow for this repository:
+Open the repository's [security advisories page](https://github.com/Pravin-surawase/structural_engineering_lib/security/advisories).
+If **Report a vulnerability** is available, submit the affected version or
+commit, package origin, reproduction steps, impact, and any proposed mitigation
+through that private form.
 
-1. Open the repository's **Security** tab.
-2. Choose **Advisories** and **Report a vulnerability**.
-3. Include the affected version or commit, package origin, reproduction steps,
-   impact, and any proposed mitigation.
-
-Do not disclose an unpatched vulnerability in a public issue. If private
-reporting is unavailable, open a public issue containing no exploit details and
-ask the maintainer to enable a private channel.
+If the private form is unavailable, open an issue only to ask the maintainer
+for a private contact. Keep the affected components, reproduction steps, and
+all other vulnerability details out of the public issue.
 
 No response or remediation time is promised. The maintainer will validate the
 report, preserve attribution when requested, and publish only through the

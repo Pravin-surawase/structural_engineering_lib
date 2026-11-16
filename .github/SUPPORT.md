@@ -14,8 +14,8 @@ Include the interface you used, package version, input values or a minimal CSV,
 what you expected, and relevant output or screenshots.
 
 Use the **Bug Report** form when the documented workflow produces an incorrect
-or broken result. Security vulnerabilities must follow
-[SECURITY.md](SECURITY.md) and must not be filed publicly.
+or broken result. Follow the [security policy](../SECURITY.md) for vulnerability
+reports and keep vulnerability details out of public issues.
 
 ## Troubleshooting
 
