@@ -123,8 +123,15 @@ def test_capability_and_semantic_contract_state_the_decision_ceiling() -> None:
     )
     holds = " ".join(slab.held_cases)
 
-    assert "slab-specific route" in holds
-    assert "service steel stress or strain" in holds
+    direct = next(
+        profile
+        for profile in slab.python_profiles
+        if profile.workflow_id == "is456.slab.direct-service/v1"
+    )
+    assert direct.operation == "check_direct_service"
+    assert "simply supported one-metre slab strip" in direct.supported_case
+    assert "Direct deflection and crack width for continuous or two-way slabs" in holds
+    assert "load history and current positioned reinforcement evidence" in holds
     assert "one caller-selected factored UDL" in holds
     assert "never automatically designs slab shear reinforcement" in holds
 

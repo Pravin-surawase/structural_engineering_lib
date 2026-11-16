@@ -180,10 +180,6 @@ EXACT_FLOAT_COMPARISON_CONTRACTS: dict[str, dict[str, str]] = {
         "rationale": "Preserve the exact constitutive origin before sign-dependent interpolation.",
         "test": "Python/tests/unit/test_coverage_boost_is456.py::test_steel_stress_5point_zero_strain_returns_zero",
     },
-    "slab/two_way_complete.py:design_two_way_slab_panel": {
-        "rationale": "Zero is produced by an exact enum factor for corners where torsion is not required.",
-        "test": "Python/tests/codes/is456/slab/test_extended_workflows.py::test_free_to_lift_simple_support_has_no_restrained_corner_torsion",
-    },
 }
 
 # Advisory checks (warnings, not failures in --warn mode)

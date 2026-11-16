@@ -837,9 +837,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         expected = (
             "HOLD"
             if entry["expected"] is None
-            else "FAIL"
-            if case.endswith("tight_limit")
-            else "PASS"
+            else "FAIL" if case.endswith("tight_limit") else "PASS"
         )
         assert result["envelope"]["engineering_status"] == expected
         assert result["calculation"]["long_term_status"] == "HOLD"
