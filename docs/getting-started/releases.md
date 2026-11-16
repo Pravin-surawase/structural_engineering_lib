@@ -2063,8 +2063,34 @@ The patch integrates the Coding Lab repairs in [PR #1086](https://github.com/Pra
 
 ## v0.30.0 — Prepared candidate (unreleased; on hold)
 
-The candidate extends the beam, column, slab, serviceability and ductile
-frame workflows listed in the [delivery plan](../planning/beam-column-programme-delivery.md).
-S5 qualifies the exact wheel and source archive. The imported gravity and
-slender-column projects remain on HOLD pending the matched FLOW04 export.
-v0.29.2 remains the published release. This candidate is not tagged or published.
+The qualified software was integrated in [PR #1116](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1116).
+The [delivery plan](../planning/beam-column-programme-delivery.md) and
+[changelog](../../CHANGELOG.md#0300--prepared-candidate-unreleased-on-hold)
+describe the complete candidate scope.
+
+- BEAM05 covers bounded rectangular, T and L multilayer cutoffs and laps,
+  varied link pitch, an interior-support haunch and a physical T-flange
+  cage. Checked reports, drawings and bar bending schedules share the
+  same reinforcement. The original lap cages without compression-bar
+  restraint evidence receive HOLD and withhold the checked drawing and
+  schedule.
+- COL07 covers mixed-bar, slender and circular laps, circular single-plane
+  shear and rectangular two-plane shear. The ordinary tied cage checks
+  corner bar positions, link engagement and clear spacing.
+- SL06 checks supplied B02 and B04 actions through both coefficient routes.
+  SERV02 and SERV03 extend direct beam and slab serviceability. The exact
+  archive replays include the regular-interior flat slab and its refusals.
+- FLOW03 rechecks an edited two-layer cage. DUCT01 and DUCT02 cover regular
+  interior and exterior joints in the bounded PROJECT03 frame. PROJECT03
+  provides design-review outputs and reconciles member and joint bar marks.
+
+Both archives passed all 20 installed profiles, including 971 beam and column
+tests, 25 slab and footing scenarios, and all 39 retained Coding Lab findings
+per archive. The exact wheel passed all 29 installed acceptance cases.
+The [retained artifact record](../verification/library-0300-release-artifacts.json)
+binds those results to the archive hashes and reviewed source.
+
+FLOW04 and the imported PROJECT01 and PROJECT02 workflows remain on HOLD
+pending a matched native ETABS export. PROJECT03 site insertion, temporary
+supports and boundary anchorage still require project evidence.
+v0.29.2 remains the published release.
