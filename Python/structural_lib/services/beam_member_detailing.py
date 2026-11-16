@@ -116,7 +116,7 @@ class BeamOrdinaryLinkDetailV1(StrictPublicModel):
 
 
 class BeamBottomCutoffV1(StrictPublicModel):
-    """One straight bottom bar terminating in the first clear span."""
+    """One straight bottom bar with a theoretical and physical termination."""
 
     bar_id: Identifier
     theoretical_station_id: Identifier
@@ -166,7 +166,7 @@ class BeamContinuousDetailingInputV1(StrictPublicModel):
 def _physical_paths(
     request: BeamContinuousDetailingInputV1,
     source_hash: str,
-    cutoff_end_mm: float | None,
+    cutoff_bounds: tuple[float, float] | None,
     lap_bounds: tuple[float, float] | None,
 ) -> tuple[BarPathRequest, ClosedLinkDetailRequest] | None:
     member, detail = request.member, request.link_detail
@@ -213,13 +213,12 @@ def _physical_paths(
             bar.layer if isinstance(bar, BeamSectionBarV1) else 1,
             bar.x_from_left_mm,
             bar.y_from_top_mm,
-            extent.start_mm,
-            (
-                cutoff_end_mm
-                if cutoff_end_mm is not None
+            *(
+                cutoff_bounds
+                if cutoff_bounds is not None
                 and request.cutoff
                 and bar.bar_id == request.cutoff.bar_id
-                else extent.end_mm
+                else (extent.start_mm, extent.end_mm)
             ),
             0.87 * member.fy_nmm2,
         )
@@ -402,7 +401,12 @@ def _schedule(
 def _check_bottom_cutoff(
     request: BeamContinuousDetailingInputV1,
     checked: BeamContinuousCheckResultV1,
-) -> tuple[float | None, dict[str, Any], list[StructuralIssueV1], EngineeringStatus]:
+) -> tuple[
+    tuple[float, float] | None,
+    dict[str, Any],
+    list[StructuralIssueV1],
+    EngineeringStatus,
+]:
     member, cutoff = request.member, request.cutoff
     assert cutoff is not None
     stations = {station.station_id: station for station in member.stations}
@@ -411,7 +415,7 @@ def _check_bottom_cutoff(
     bar = next((bar for bar in member.bars if bar.bar_id == cutoff.bar_id), None)
     extent = member.straight_bars
     layered = isinstance(member, BeamLayeredContinuousCheckRequestV1)
-    left, middle, _ = member.supports
+    left, middle, right = member.supports
     if not (
         extent
         and theoretical
@@ -420,14 +424,33 @@ def _check_bottom_cutoff(
         and bar.face == "bottom"
         and (not isinstance(bar, BeamSectionBarV1) or bar.layer == 1)
         and theoretical.side == end.side == "CONTINUOUS"
-        and left.right_face_mm < theoretical.x_mm < end.x_mm < middle.left_face_mm
+        and (
+            left.right_face_mm < theoretical.x_mm < end.x_mm < middle.left_face_mm
+            or (
+                isinstance(member, BeamLayeredContinuousCheckRequestV1)
+                and member.flange is None
+                and middle.right_face_mm
+                < end.x_mm
+                < theoretical.x_mm
+                < right.left_face_mm
+            )
+        )
     ):
         issue = StructuralIssueV1(
             "BEAM.CUTOFF_BASIS_HELD",
             "cutoff",
-            "Identify an outer-layer bottom bar and two ordered continuous stations in the first clear span.",
+            "Identify an outer-layer bottom bar and ordered cutoff stations toward the interior support. The second clear span requires a layered rectangular cage.",
         )
         return None, {}, [issue], EngineeringStatus.HOLD
+
+    reverse = end.x_mm < theoretical.x_mm
+    direction = (
+        AnchorageDirection.DECREASING_X if reverse else AnchorageDirection.INCREASING_X
+    )
+    retained_extent = (
+        (end.x_mm, extent.end_mm) if reverse else (extent.start_mm, end.x_mm)
+    )
+    affected_side = -1 if reverse else 1
 
     expected = {
         (combo.combination_id, station.station_id)
@@ -493,7 +516,8 @@ def _check_bottom_cutoff(
             web_capacity,
         )
         for row in checked.rows
-        if row.kind == "ULS" and row.station.x_mm >= theoretical.x_mm
+        if row.kind == "ULS"
+        and affected_side * (row.station.x_mm - theoretical.x_mm) >= 0
     )
     failed, held = _row_issues(reduced_rows, faces, layered=layered)
     bottom = flexure[Face.BOTTOM].outputs
@@ -538,7 +562,7 @@ def _check_bottom_cutoff(
                 "The termination shear exceeds two-thirds of the permitted reduced-section resistance.",
             )
         )
-    extension = end.x_mm - theoretical.x_mm
+    extension = abs(end.x_mm - theoretical.x_mm)
     required_extension = max(d, 12 * bar.diameter_mm)
     anchor = check_anchorage(
         AnchorageCheckRequest(
@@ -550,9 +574,8 @@ def _check_bottom_cutoff(
                     bar.bar_id,
                     theoretical.station_id,
                     AnchorageLocation.DISCONTINUITY,
-                    AnchorageDirection.INCREASING_X,
-                    extent.start_mm,
-                    end.x_mm,
+                    direction,
+                    *retained_extent,
                     theoretical.x_mm,
                     None,
                     None,
@@ -592,7 +615,7 @@ def _check_bottom_cutoff(
             )
         )
     return (
-        end.x_mm,
+        retained_extent,
         {
             "bar_id": bar.bar_id,
             "theoretical_station_mm": theoretical.x_mm,
@@ -612,6 +635,7 @@ def _check_bottom_cutoff(
             "termination_rows": shear_rows,
             "reduced_section_rows": [row.to_dict() for row in reduced_rows],
             "anchorage": anchor.to_dict(),
+            **({"cutoff_direction": direction.value} if reverse else {}),
         },
         failed + held,
         (
@@ -945,9 +969,10 @@ def check_continuous_detailing(
     Limitations
     -----------
     Straight longitudinal bars and a uniform ordinary web link mark. One
-    first-span outer-layer bottom cutoff is supported. Rectangular, symmetric
-    T and right-flanged L sections admit one separated straight outer-bottom
-    tension lap.
+    first-span outer-layer bottom cutoff is supported. Layered rectangular
+    cages also admit a second-span cutoff toward the interior support.
+    Rectangular, symmetric T and right-flanged L sections admit one
+    separated straight outer-bottom tension lap.
 
     Provenance
     ----------
@@ -960,7 +985,7 @@ def check_continuous_detailing(
     data: dict[str, Any] = {"strength": checked.to_dict(), "paths": None, "bbs": None}
     issues = []
     status = EngineeringStatus(checked.ultimate_status)
-    cutoff_end = None
+    cutoff_bounds = None
     lap_bounds = None
     source_hash = identity.input_hash
     layered = isinstance(request.member, BeamLayeredContinuousCheckRequestV1)
@@ -1004,7 +1029,7 @@ def check_continuous_detailing(
             )
         )
     elif status is EngineeringStatus.PASS and request.cutoff is not None:
-        cutoff_end, cutoff, cutoff_issues, status = _check_bottom_cutoff(
+        cutoff_bounds, cutoff, cutoff_issues, status = _check_bottom_cutoff(
             request, checked
         )
         data["cutoff"] = cutoff
@@ -1030,7 +1055,7 @@ def check_continuous_detailing(
             },
         )
     if status is EngineeringStatus.PASS:
-        inputs = _physical_paths(request, source_hash, cutoff_end, lap_bounds)
+        inputs = _physical_paths(request, source_hash, cutoff_bounds, lap_bounds)
         if inputs is None:
             status = EngineeringStatus.HOLD
             issues.append(
@@ -1354,6 +1379,7 @@ def render_continuous_detailing_svg(
         if isinstance(member, BeamLayeredContinuousCheckRequestV1)
         else {}
     )
+    reverse_cutoff = cutoff.get("cutoff_direction") == AnchorageDirection.DECREASING_X
     lap = (
         data.get("lap", {})
         if isinstance(member, BeamLayeredContinuousCheckRequestV1)
@@ -1384,12 +1410,13 @@ def render_continuous_detailing_svg(
         )
         if item["bar_id"] == cutoff.get("bar_id"):
             # Bars in the same layer overlap in elevation. Draw the cut bar last.
+            cut_x = x1 if reverse_cutoff else x2
             termination = (
                 line + 'stroke="#b45309" stroke-width="14"/>'
-                f'<path d="M{x2:g} -35 V{y2:g}" stroke="#b45309" stroke-width="7" stroke-dasharray="24 15"/>'
-                f'<circle cx="{x2:g}" cy="{y2:g}" r="23" fill="#b45309"/>'
-                f'<text x="{x2:g}" y="-68" text-anchor="middle" font-size="112" '
-                f'fill="#92400e">{path_id} ends at {x2:g} mm</text>'
+                f'<path d="M{cut_x:g} -35 V{y2:g}" stroke="#b45309" stroke-width="7" stroke-dasharray="24 15"/>'
+                f'<circle cx="{cut_x:g}" cy="{y2:g}" r="23" fill="#b45309"/>'
+                f'<text x="{cut_x:g}" y="-68" text-anchor="middle" font-size="112" '
+                f'fill="#92400e">{path_id} ends at {cut_x:g} mm</text>'
             )
         elif item["bar_id"] in lap_colors:
             color = lap_colors[item["bar_id"]]
@@ -1440,26 +1467,28 @@ def render_continuous_detailing_svg(
             f"{elevation}</svg>"
         )
         if cutoff:
-            before, after = (
+            theoretical, cut_at = (
                 cutoff["theoretical_station_mm"],
                 cutoff["termination_station_mm"],
             )
+            cut_side = "before" if reverse_cutoff else "after"
             panels += _section_panel(
                 member,
                 request.link_detail,
                 geometry["paths"],
-                station_mm=before,
+                station_mm=theoretical,
                 panel_width=600,
-                label=f"Section at {before:g} mm · before termination",
+                label=f"Section at {theoretical:g} mm · before termination",
             )
             panels += _section_panel(
                 member,
                 request.link_detail,
                 geometry["paths"],
-                station_mm=after,
+                station_mm=cut_at,
+                at_left_limit=reverse_cutoff,
                 panel_x=600,
                 panel_width=600,
-                label=f"Section just after {after:g} mm · continuing cage",
+                label=f"Section just {cut_side} {cut_at:g} mm · continuing cage",
             )
         elif lap:
             views = (
@@ -1494,12 +1523,13 @@ def _section_panel(
     paths: list[dict[str, Any]],
     *,
     station_mm: float | None = None,
+    at_left_limit: bool = False,
     panel_x: int = 0,
     panel_width: int = 1200,
     label: str = "Physical cross-section · web cage",
     lap_colors: dict[str, str] | None = None,
 ) -> str:
-    """Draw the web cage immediately to the right of the section station."""
+    """Draw the web cage at the selected side of the section station."""
     assert link is not None
     flange = member.flange
     width, depth = member.width_mm, member.depth_mm
@@ -1525,10 +1555,16 @@ def _section_panel(
             continue
         segments = path["segments"]
         point = segments[0]["start"]
-        if station_mm is not None and not (
-            point["station_x_mm"] <= station_mm < segments[-1]["end"]["station_x_mm"]
-        ):
-            continue
+        if station_mm is not None:
+            start_mm = point["station_x_mm"]
+            end_mm = segments[-1]["end"]["station_x_mm"]
+            present = (
+                start_mm < station_mm <= end_mm
+                if at_left_limit
+                else start_mm <= station_mm < end_mm
+            )
+            if not present:
+                continue
         bar_id = html.escape(path["bar_id"], quote=True)
         mark = html.escape(path["bar_mark"])
         color = (lap_colors or {}).get(path["bar_id"], "#1e40af")
@@ -1706,6 +1742,11 @@ def render_continuous_detailing_html(
             f"<p>Termination shear limit {cutoff['termination_shear_limit_kn']:.3f} kN.</p>"
             f"<ul>{rows}</ul>"
         )
+        if cutoff.get("cutoff_direction") == AnchorageDirection.DECREASING_X:
+            cutoff_html += (
+                f"<p>Development from {cutoff['theoretical_station_mm']:g} mm "
+                "toward decreasing x.</p>"
+            )
         if isinstance(request, BeamContinuousDetailingInputV1) and isinstance(
             request.member, BeamLayeredContinuousCheckRequestV1
         ):
