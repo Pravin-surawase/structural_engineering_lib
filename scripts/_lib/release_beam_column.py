@@ -225,6 +225,35 @@ COL07_CIRCULAR_REFERENCE = "docs/verification/library-029-col07-circular-member.
 COL07_SLENDER_REFERENCE = "docs/verification/library-029-col07-slender-member.json"
 COL07_SPLICE_REFERENCE = "docs/verification/library-029-col07-contact-splice.json"
 COL07_CORNER_REFERENCE = "docs/verification/library-029-col07-corner-splice.json"
+COL07_030_REFERENCES = tuple(
+    f"docs/verification/library-030-col07-{name}.json"
+    for name in (
+        "mixed-splice",
+        "two-plane-shear",
+        "circular-shear",
+        "slender-lap-reference",
+        "circular-lap-reference",
+    )
+)
+COL07_030_CHECKERS = tuple(
+    f"docs/verification/check_library_030_col07_{name}_reference.py"
+    for name in (
+        "mixed_splice",
+        "two_plane_shear",
+        "circular_shear",
+        "slender_lap",
+        "circular_lap",
+    )
+)
+COL07_030_TESTS = tuple(
+    f"Python/tests/integration/test_{name}.py"
+    for name in (
+        "column_mixed_contact_splice",
+        "circular_column_shear",
+        "column_slender_contact_splice",
+        "circular_column_contact_lap",
+    )
+)
 
 
 def input_paths(repo: Path) -> tuple[Path, ...]:
@@ -305,6 +334,14 @@ def input_paths(repo: Path) -> tuple[Path, ...]:
                 repo / COL07_CIRCULAR_REFERENCE,
                 repo / COL07_SPLICE_REFERENCE,
                 repo / COL07_CORNER_REFERENCE,
+                *(
+                    repo / name
+                    for name in (
+                        *COL07_030_REFERENCES,
+                        *COL07_030_CHECKERS,
+                        *COL07_030_TESTS,
+                    )
+                ),
                 repo / "docs/verification/replay_library_027_members.py",
                 repo / "docs/verification/replay_library_027_t_member.py",
                 repo / "Python/examples/sample_beam_design.csv",
@@ -658,7 +695,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
 
     def run(label: str, script: str, *args: str, expected_code: int = 0) -> str:
         command = [sys.executable, "-I"]
-        if script in CHECKERS or script in (
+        if script in (*CHECKERS, *COL07_030_CHECKERS) or script in (
             DUCT01_CHECKER,
             DUCT02_CHECKER,
             PROJECT03_CHECKER,
@@ -696,6 +733,8 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
         run(Path(checker).stem, checker)
     if version_at_least_030:
         run(Path(SL06_CHECKER).stem, SL06_CHECKER)
+        for checker in COL07_030_CHECKERS:
+            run(Path(checker).stem, checker)
     for profile, reference, example in (
         ("continuous", BEAM01_REFERENCE, "continuous_beam_check"),
         ("cantilever", BEAM02_REFERENCE, "cantilever_beam_check"),
@@ -1348,10 +1387,19 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                 member["envelope"]["engineering_status"] == entry["expected"]["status"]
             )
             input_hash = member["envelope"]["result_identity"]["input_hash"]
-            assert input_hash in (directory / "report.html").read_text()
-            drawing = (directory / "member.svg").read_text()
-            assert input_hash in drawing
-            ElementTree.fromstring(drawing)
+            report = (directory / "report.html").read_text()
+            assert input_hash in report
+            drawing = directory / "member.svg"
+            if (
+                version_at_least_030
+                and entry["expected"].get("issue") == "COLUMN.COMBINED_SHEAR"
+            ):
+                assert not drawing.exists()
+                assert "Checked drawing withheld" in report
+            else:
+                svg = drawing.read_text()
+                assert input_hash in svg
+                ElementTree.fromstring(svg)
             bbs = directory / "bbs.csv"
             assert bbs.is_file() == entry["expected"].get(
                 "bbs_available", entry["expected"]["status"] == "PASS"
@@ -1431,6 +1479,7 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
                     str(clone / WORKBENCH_TEST),
                     str(clone / SL04_SL05_TEST),
                     str(clone / SL06_TEST),
+                    *(str(clone / name) for name in COL07_030_TESTS),
                     str(clone / DUCT01_TEST),
                     str(clone / DUCT02_TEST),
                     str(clone / PROJECT03_TEST),
