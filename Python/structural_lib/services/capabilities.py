@@ -406,11 +406,11 @@ _CAPABILITIES = (
             "common oriented two-way beam/wall-supported panels with built-in bounded "
             "IS 456 coefficient lookup/interpolation or reviewed external coefficients, "
             "strip distribution, corner torsion, provided-bar checks, span/depth "
-            "serviceability carriers, and ordinary one-way shear. The Python supplied-action set retains each checked UDL row and the governing row per check."
+            "serviceability carriers, and ordinary one-way shear. The Python supplied-action set retains each checked UDL row and the governing row per check. "
+            "A separate Python profile calculates direct finite-age deflection and flexural crack width for the regular, simply supported one-way tributary strip."
         ),
         held_cases=(
-            "Direct deflection remains held until a slab-specific route validates explicit service-action combinations, load duration, reinforcement positions, cracking/effective inertia, creep and shrinkage against independent slab benchmarks.",
-            "Crack width remains held until explicit bar geometry, cover, neutral-axis depth, exposure limit and service steel stress or strain are validated for supported slab strips and panels.",
+            "Direct deflection and crack width for continuous or two-way slabs require separate qualification. The direct one-way strip requires physical support, load history and current positioned reinforcement evidence.",
             "Single-row routes consume one caller-selected factored UDL or a declared coefficient-method action basis. Supplied-action sets compare declared rows. Concentrated loads, openings, irregular panels and load generation remain out of scope.",
             "Ordinary one-way concrete shear is checked for beam/wall-supported UDL panels; when capacity is exceeded the result requires increased depth or separate engineering and never automatically designs slab shear reinforcement.",
             "Flat/drop/ribbed slabs, column strips, column-supported punching and FEM require a separately approved extension.",
@@ -426,6 +426,16 @@ _CAPABILITIES = (
                 "Declared ULS rows for continuous one-way strips or oriented two-way panels, with checked steel, concrete shear, reviewed span/depth and per-check governing rows.",
                 "docs/cookbook/python/slab-supplied-actions.md",
                 "Python/examples/slab_supplied_action_references.py",
+            ),
+            IS456PythonProfile(
+                "is456.slab.direct-service/v1",
+                "structural_lib.design.is456.slab",
+                "load_direct_service",
+                "check_direct_service",
+                "is456-slab-direct-service-input/v1",
+                "One simply supported one-metre slab strip with positioned bars, supplied unfactored UDLs and finite-age deflection and flexural crack width.",
+                "docs/cookbook/python/slab-direct-service.md",
+                "Python/examples/slab_direct_service_reference.py",
             ),
         ),
     ),

@@ -11,6 +11,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
+SLAB_DIRECT_SERVICE_FIXTURE = "docs/verification/library-030-serv03-b01-service.json"
+SLAB_DIRECT_SERVICE_DRIVER = "slab_direct_service_reference.py"
+
 EXAMPLES = {
     "slab_one_way_reference.py": ("baseline", "capacity-fail", "review-limit-fail"),
     "isolated_footing_reference.py": ("baseline", "transfer-fail", "assumption-hold"),
@@ -24,12 +27,31 @@ EXAMPLES = {
         "b04-capacity-fail",
     ),
 }
+SLAB_DIRECT_SERVICE_CASES = (
+    "b01_service_history",
+    "cracked_width_control",
+    "longer_span",
+    "longer_span_without_witness",
+    "missing_history",
+    "stale_reinforcement",
+    "missing_support_evidence",
+)
 
 
-def input_paths(repo: Path) -> tuple[Path, ...]:
+def _has_direct_service(version: str) -> bool:
+    major, minor, _ = version.split(".", maxsplit=2)
+    return (int(major), int(minor)) >= (0, 30)
+
+
+def input_paths(repo: Path, version: str) -> tuple[Path, ...]:
+    legacy = (Path(__file__), *(repo / "Python/examples" / name for name in EXAMPLES))
+    if not _has_direct_service(version):
+        return legacy
     return (
-        Path(__file__),
-        *(repo / "Python/examples" / name for name in EXAMPLES),
+        *legacy,
+        repo / "Python/examples" / SLAB_DIRECT_SERVICE_DRIVER,
+        repo / SLAB_DIRECT_SERVICE_FIXTURE,
+        repo / "docs/verification/check_library_030_serv03_b01_service_reference.py",
     )
 
 
@@ -253,25 +275,78 @@ def verify_footing(cases: dict[str, dict]) -> None:
     )
 
 
+def _verify_service_values(actual: object, expected: object, path: str) -> None:
+    if isinstance(expected, dict):
+        assert isinstance(actual, dict), path
+        for field, value in expected.items():
+            _verify_service_values(actual[field], value, f"{path}.{field}")
+    elif type(expected) in (float, int):
+        assert type(actual) in (float, int), path
+        assert math.isclose(actual, expected, rel_tol=1e-9, abs_tol=1e-12), path
+    else:
+        assert type(actual) is type(expected) and actual == expected, path
+
+
+def verify_slab_direct_service(cases: dict[str, dict], reference: dict) -> None:
+    expected_cases = reference["cases"]
+    assert set(cases) == set(expected_cases)
+    for name, case in cases.items():
+        assert case["case"] == name
+        result = case["result"]
+        expected = expected_cases[name]["expected"]
+        envelope = result["envelope"]
+        assert result["workflow_id"] == "is456.slab.direct-service/v1"
+        assert envelope["engineering_status"] == expected["status"]
+        assert envelope["result_identity"]["input_hash"]
+        assert (
+            result["request"]["section"] == expected_cases[name]["request"]["section"]
+        )
+        assert (
+            result["request"]["service_loads"]
+            == expected_cases[name]["request"]["service_loads"]
+        )
+        if "issue" in expected:
+            assert expected["issue"] in {issue["code"] for issue in envelope["issues"]}
+            assert envelope["calculation_status"] == "NOT_EVALUATED"
+            assert not result["calculation"]
+            if expected["issue"] == "SLAB.SERVICE_REVISION_STALE":
+                assert envelope["freshness_status"] == "STALE"
+        else:
+            assert envelope["calculation_status"] == "COMPLETED"
+            _verify_service_values(
+                result["calculation"],
+                {key: value for key, value in expected.items() if key != "status"},
+                name,
+            )
+
+
 def qualify(config: dict[str, Any]) -> dict[str, Any]:
     """Copy the public drivers to a neutral directory and retain their results."""
     repo = Path(config["repo"])
     output = Path(config["output"])
     drivers = Path.cwd() / "slab-footing-drivers"
     drivers.mkdir()
+    examples = EXAMPLES.copy()
+    fixture = drivers / Path(SLAB_DIRECT_SERVICE_FIXTURE).name
+    if _has_direct_service(config["version"]):
+        examples[SLAB_DIRECT_SERVICE_DRIVER] = SLAB_DIRECT_SERVICE_CASES
+        shutil.copyfile(repo / SLAB_DIRECT_SERVICE_FIXTURE, fixture)
     verifiers = {
         "slab_one_way_reference.py": verify_slab,
         "isolated_footing_reference.py": verify_footing,
         "slab_coefficient_references.py": verify_slab_coefficients,
     }
     records = {}
-    for name, cases in EXAMPLES.items():
+    for name, cases in examples.items():
         driver = drivers / name
         shutil.copyfile(repo / "Python/examples" / name, driver)
+        fixture_arg = (
+            ["--fixture", str(fixture)] if name == SLAB_DIRECT_SERVICE_DRIVER else []
+        )
         observed = {}
         for case in cases:
             completed = subprocess.run(
-                [sys.executable, "-I", str(driver), "--case", case],
+                [sys.executable, "-I", str(driver), "--case", case, *fixture_arg],
                 cwd=drivers,
                 capture_output=True,
                 text=True,
@@ -282,7 +357,12 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             payload = json.loads(completed.stdout)
             assert payload["case"] == case
             observed[case] = payload
-        verifiers[name](observed)
+        if fixture_arg:
+            verify_slab_direct_service(
+                observed, json.loads(fixture.read_text(encoding="utf-8"))
+            )
+        else:
+            verifiers[name](observed)
         filename = f"{driver.stem}.json"
         evidence = output / filename
         evidence.write_text(json.dumps(observed, indent=2, allow_nan=False) + "\n")
@@ -292,4 +372,8 @@ def qualify(config: dict[str, Any]) -> dict[str, Any]:
             "evidence": filename,
             "evidence_sha256": hashlib.sha256(evidence.read_bytes()).hexdigest(),
         }
+        if fixture_arg:
+            records[name]["fixture_sha256"] = hashlib.sha256(
+                fixture.read_bytes()
+            ).hexdigest()
     return records

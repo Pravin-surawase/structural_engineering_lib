@@ -294,7 +294,10 @@ def qualify_artifacts(
         from .release_slab_footing import input_paths
 
         evidence["verification_inputs_sha256"].update(
-            {str(path.relative_to(repo)): sha256(path) for path in input_paths(repo)}
+            {
+                str(path.relative_to(repo)): sha256(path)
+                for path in input_paths(repo, version)
+            }
         )
 
     def save() -> None:

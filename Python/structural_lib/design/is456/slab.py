@@ -58,8 +58,16 @@ from structural_lib.services.slab_api import (
     design_continuous_one_way_slab_builtin_is456,
     design_two_way_slab_panel_builtin_is456,
 )
+from structural_lib.services.slab_direct_service import (
+    SlabDirectServiceInputV1,
+    check_direct_service,
+    load_direct_service,
+)
 
 __all__ = [
+    "SlabDirectServiceInputV1",
+    "check_direct_service",
+    "load_direct_service",
     "ContinuousOneWaySlabActionSetInputV1",
     "TwoWaySlabActionSetInputV1",
     "SlabActionCheckV1",
@@ -758,7 +766,8 @@ def _result(
         engineering_status=EngineeringStatus.PASS if passed else EngineeringStatus.FAIL,
         limitations=(
             "One caller-selected factored load boundary; load combinations and envelopes are not generated.",
-            "Direct deflection, crack-width calculation, and automatic slab shear reinforcement remain held.",
+            "This route uses reviewed span/depth evidence. The separate direct-service route serves the supported one-way strip.",
+            "Automatic slab shear reinforcement remains held.",
         ),
         assumptions=(
             "All topology, coefficient-table route, bars, and reviewed serviceability evidence are explicit.",
