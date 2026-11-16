@@ -12,8 +12,8 @@
 
 | Release | Current state |
 |---|---|
-| **Current** | [0.29.2 is published and verified](../getting-started/releases.md#v0292-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
-| **Next** | Continue the remaining 0.30.0 cases in the [beam and column delivery plan](beam-column-programme-delivery.md). |
+| **Current** | [0.30.0 is published and verified](../getting-started/releases.md#v0300-published-and-verified). All 20 installed profiles, six public archive downloads and the clean PyPI installation passed. |
+| **Next** | Rebind [draft FLOW04 #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117) to the released baseline. Carry matched signed actions into member design and checked outputs before qualifying PROJECT01 and PROJECT02. |
 
 ## Merged development work — qualified serializer integration
 
