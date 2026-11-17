@@ -597,11 +597,15 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
                 f"traces[{leaf.leaf_id}]",
                 "Build trace substitutions from the unchanged qualified leaf result.",
             )
-    current = (
+    missing_required_cost = (
+        "cost" in profile.required_section_ids and request.cost is None
+    )
+    engineering_evidence_current = (
         member.qualified
         and all(_binding_current(item) for item in bindings)
         and all(item.qualified for item in leaves)
     )
+    current = engineering_evidence_current and not missing_required_cost
     member_actions = sorted(
         (
             item
@@ -621,19 +625,24 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
         and bool(member_actions)
         and member_actions[-1].action is HumanActionKind.APPROVED
     )
+    source_identities = tuple(item.result_id for item in bindings)
     sections = tuple(
-        RenderSection(
-            section_id,
-            tuple(item.result_id for item in bindings),
-            {
-                "inputs": "effective_inputs_and_assumptions",
-                "calculations": "leaf_traces",
-                "reinforcement": "resolved_paths_and_bbs",
-                "quantities": "construction_quantities",
-                "cost": "dated_direct_cost",
-                "drawings": "drawing_views",
-                "signatures": "recorded_human_actions",
-            }.get(section_id, "declared_semantic_section"),
+        (
+            RenderSection("cost", (), "unavailable")
+            if section_id == "cost" and missing_required_cost
+            else RenderSection(
+                section_id,
+                source_identities,
+                {
+                    "inputs": "effective_inputs_and_assumptions",
+                    "calculations": "leaf_traces",
+                    "reinforcement": "resolved_paths_and_bbs",
+                    "quantities": "construction_quantities",
+                    "cost": "dated_direct_cost",
+                    "drawings": "drawing_views",
+                    "signatures": "recorded_human_actions",
+                }.get(section_id, "declared_semantic_section"),
+            )
         )
         for section_id in profile.required_section_ids
     )
@@ -681,14 +690,25 @@ def create_calculation_package(request: CalculationPackageRequest) -> OperationR
             {"calculation_package": output},
             provenance=_provenance(),
         )
-    diagnostics = (
-        _error(
-            "PACKAGE.EVIDENCE_INCOMPLETE",
-            "The semantic package is a draft because required engineering evidence is incomplete or stale.",
-            "dependency_bindings,leaves",
-            "Refresh every required result and qualified member leaf before issue.",
-        ),
-    )
+    diagnostics: list[Diagnostic] = []
+    if missing_required_cost:
+        diagnostics.append(
+            _error(
+                "PACKAGE.COST_REQUIRED",
+                "The package profile requires cost evidence before issue.",
+                "cost",
+                "Supply the current AO20 cost result and its exact binding.",
+            )
+        )
+    if not engineering_evidence_current:
+        diagnostics.append(
+            _error(
+                "PACKAGE.EVIDENCE_INCOMPLETE",
+                "The semantic package is a draft because required engineering evidence is incomplete or stale.",
+                "dependency_bindings,leaves",
+                "Refresh every required result and qualified member leaf before issue.",
+            )
+        )
     freshness = (
         FreshnessState.STALE
         if any(item.freshness is FreshnessState.STALE for item in bindings)
