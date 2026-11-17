@@ -142,7 +142,15 @@ def project_beam_report(result: Any) -> dict[str, Any]:
             flexure_method = "Singly reinforced"
         else:
             flexure_method = "Flexure check failed"
+    primary_tension_face = (
+        source["request"]["actions"].get("primary_tension_face")
+        if canonical
+        else retained.get("primary_tension_face")
+    )
     flexure_values = {
+        "primary_tension_face": (
+            primary_tension_face if primary_tension_face in ("TOP", "BOTTOM") else None
+        ),
         "ast_required": flexure.Ast_required,
         "asc_required": asc_required,
         "ast_provided": None,

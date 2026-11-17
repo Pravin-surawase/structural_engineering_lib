@@ -63,7 +63,7 @@ class _DesignFixture:
 # =============================================================================
 
 
-def _design_for_report(fy_nmm2, mu_knm, vu_kn):
+def _design_for_report(fy_nmm2, mu_knm, vu_kn, primary_tension_face=None):
     return beam.design(
         beam.input(
             member_id="QA-B1",
@@ -79,6 +79,7 @@ def _design_for_report(fy_nmm2, mu_knm, vu_kn):
             fy_transverse_nmm2=415,
             mu_knm=mu_knm,
             vu_kn=vu_kn,
+            primary_tension_face=primary_tension_face,
             asv_mm2=2 * math.pi * 10**2 / 4,
             ast_mm2_for_shear=1130.973355,
         )
@@ -115,6 +116,24 @@ def test_detailed_flexure_report_projects_the_calculated_branch(fy_nmm2, ratio, 
     assert ("Singly reinforced</strong>" in trace) is not above_limit
     assert "OVER_REINFORCED" not in trace
     assert "Required compression steel" in report.to_html()
+
+
+@pytest.mark.parametrize("primary_tension_face", ["TOP", "BOTTOM", None])
+def test_detailed_flexure_report_preserves_the_supplied_tension_face(
+    primary_tension_face,
+):
+    pytest.importorskip("jinja2")
+    result = _design_for_report(415, 100, 93.75, primary_tension_face)
+    report = generate_calculation_report(result)
+    assert (
+        report.to_dict()["results"]["flexure"]["primary_tension_face"]
+        == primary_tension_face
+    )
+
+    html = generate_html_report(result, template="detailed")
+    trace = html.split('id="flexure">', 1)[1].split("</section>", 1)[0]
+    assert "Primary tension face" in trace
+    assert f"<strong>{primary_tension_face or 'Unavailable'}</strong>" in trace
 
 
 @pytest.mark.parametrize("vu_kn, required_kn", [(93.75, 31.26442632), (30, 0)])

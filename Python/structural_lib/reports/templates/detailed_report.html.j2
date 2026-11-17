@@ -481,6 +481,10 @@
                     <td class="unit">kN·m</td>
                 </tr>
                 <tr>
+                    <td>Primary tension face</td>
+                    <td colspan="2"><strong>{{ results.flexure.get('primary_tension_face') or 'Unavailable' }}</strong></td>
+                </tr>
+                <tr>
                     <td>Section Type</td>
                     <td colspan="2"><strong>{{ results.flexure.get('design_method') or results.flexure.get('section_type') or 'Unavailable' }}</strong></td>
                 </tr>

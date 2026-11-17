@@ -23,9 +23,11 @@ IS 456 reinforced-concrete design library (Python package).
 - Check regular interior and exterior ductile joints and the bounded
   PROJECT03 frame cut from one compatible, signed action revision.
 
-The 0.30.0 source is an unpublished candidate. Installed 0.29.2 remains the
-published baseline. The imported gravity and slender-column project cases
-need a matched native beam and column action export.
+StructLib 0.30.0 is published and verified on
+[PyPI](https://pypi.org/project/structural-lib-is456/0.30.0/) and
+[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.30.0).
+The imported gravity and slender-column project cases remain on hold until
+matched native beam and column actions reach member design and checked outputs.
 
 ## Introduced in v0.29.2
 
