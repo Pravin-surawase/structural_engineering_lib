@@ -16,7 +16,7 @@ REFERENCE = (
     Path(__file__).resolve().parents[3]
     / "docs/verification/library-030-flow03-two-layer-edit.json"
 )
-SHA256 = "1258a69caa7de21eec0080451f6bb613179a038cae01676245fe70f09f43929b"
+SHA256 = "ae0e080203bb8c92873a68b3bdd1525e19c1a7869d26a058ca024cc3d705e6f7"
 FIXTURE = json.loads(REFERENCE.read_text(encoding="utf-8"))
 CASES = FIXTURE["cases"]
 ISSUES = {
@@ -148,7 +148,7 @@ def _verify_artifacts(result, expected):
     assert request.member.analysis_revision in report
     assert "Governing signed flexure row <code>U2:B1" in report
     assert "Governing acceptance shear row <code>U2:BF1" in report
-    assert "Concrete consolidation opening 63 mm" in report
+    assert "Concrete consolidation opening 61 mm" in report
 
     identity = result.envelope.result_identity.input_hash
     geometry = result.calculation["paths"]
@@ -256,6 +256,9 @@ def test_two_layer_edit_and_outputs_match_frozen_cage():
     base = beam.check_continuous_detailing(base_request)
     assert base.engineering_status.value == "PASS"
     _verify_checks(base, FIXTURE["base_expected"])
+    assert base.calculation["layered_cage"]["placement"]["outer_corner_checks"]["T1-1"][
+        "signed_seating_coordinates_mm"
+    ] == pytest.approx([1, 3])
     _verify_artifacts(base, FIXTURE["base_expected"])
     case = CASES["edited"]
     result = beam.recheck_continuous_bar_edit(
@@ -281,6 +284,40 @@ def test_two_layer_edit_and_outputs_match_frozen_cage():
     )
     assert "HOLD · stale result" in beam.render_continuous_detailing_html(
         base, current=result.request
+    )
+
+
+@pytest.mark.parametrize(
+    ("link_bound_tolerance_mm", "expected_clearance_mm"),
+    ((1, -0.9350288425444024), (4, -5.177669529663688)),
+)
+def test_historical_corner_axes_fail_and_withhold_checked_artifacts(
+    link_bound_tolerance_mm, expected_clearance_mm
+):
+    """The former axes must not pass once hoop geometry is fully coupled."""
+    raw = deepcopy(FIXTURE["base_request"])
+    for bar in raw["member"]["bars"]:
+        if bar["bar_id"] in {"T1-1", "B1-1", "B2-1"}:
+            bar["x_from_left_mm"] = 64
+        elif bar["bar_id"] in {"T1-2", "B1-3", "B2-2"}:
+            bar["x_from_left_mm"] = 236
+    placement = deepcopy(FIXTURE["placement"])
+    placement["link_bound_tolerance_mm"] = link_bound_tolerance_mm
+    raw["layered_cage"] = {
+        "placement": placement,
+        "cross_tie": FIXTURE["cross_tie"],
+        "service": _request({}).layered_cage.service.model_dump(mode="json"),
+    }
+    result = beam.check_continuous_detailing(beam.load_continuous_detailing(raw))
+    assert result.engineering_status.value == "FAIL"
+    assert "BEAM.EDIT_CORNER_RESTRAINT" in {issue.code for issue in result.issues}
+    corners = result.calculation["layered_cage"]["placement"]["outer_corner_checks"]
+    assert min(
+        item["min_radial_clearance_mm"] for item in corners.values()
+    ) == pytest.approx(expected_clearance_mm, abs=1e-12)
+    assert beam.render_continuous_detailing_svg(result, current=result.request) is None
+    assert (
+        beam.render_continuous_detailing_bbs_csv(result, current=result.request) is None
     )
 
 

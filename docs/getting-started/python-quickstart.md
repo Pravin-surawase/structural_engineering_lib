@@ -186,21 +186,23 @@ synthetic generator. Repository examples are intentionally not bundled in the
 installed wheel.
 
 ```bash
-git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
+git clone --branch v0.30.0 --single-branch https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
 python3 -m pip install "structural-lib-is456==0.30.0"
-cd Python
-python3 examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500
+python3 -m structural_lib install-preflight
+python3 Python/examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500 --skip-dxf
 ```
-This will create:
-- `beams_synthetic_500.csv`
-- `results.json`
-- `schedule.csv`
-- `drawings.dxf` (requires `ezdxf`)
 
-To skip DXF (faster):
+Run from the repository root with the virtual environment active. The base
+install produces `beams_synthetic_500.csv`, `results.json` and `schedule.csv`.
+
+For DXF output, install the matching optional extra and use a separate output
+directory.
+
 ```bash
-python3 examples/full_pipeline_synthetic.py --count 500 --skip-dxf
+python3 -m pip install "structural-lib-is456[dxf]==0.30.0"
+python3 -m structural_lib install-preflight
+python3 Python/examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500_dxf
 ```
 
 ## 5) Use the CLI (CSV -> JSON -> BBS/DXF)

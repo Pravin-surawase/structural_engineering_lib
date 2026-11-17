@@ -79,13 +79,13 @@ def placed_candidate():
         )
     ]
     bars = []
-    for bar, x in zip(member["bars"][:2], (64, 236), strict=True):
+    for bar, x in zip(member["bars"][:2], (66, 234), strict=True):
         bars.append(dict(bar, x_from_left_mm=x, y_from_top_mm=64))
     # The cross-tie has a permanent top engagement bar in the physical companion.
     bars.append(dict(bars[0], bar_id="T1-3", x_from_left_mm=150))
     for layer, row in enumerate(layers, start=1):
         assert len(row["x_from_left_mm"]) == (3 if layer == 1 else 2)
-        xs = (64, 150, 236) if layer == 1 else (64, 236)
+        xs = (66, 150, 234) if layer == 1 else (66, 234)
         for i, x in enumerate(xs, 1):
             bars.append(
                 {
@@ -203,25 +203,48 @@ def worst_case_arrangement(request, placement, cross_tie):
     link_dia = member["link_diameter_mm"]
     max_link_dia = link_dia + placement["link_diameter_allowance_mm"]
     radius = link["internal_bend_radius_mm"]
-    centre_radius = radius + link_dia / 2
-    corner_centres = (
-        (x1 + centre_radius, y1 + centre_radius, -1, -1),
-        (x2 - centre_radius, y1 + centre_radius, 1, -1),
-        (x1 + centre_radius, y2 - centre_radius, -1, 1),
-        (x2 - centre_radius, y2 - centre_radius, 1, 1),
+    nominal_centre_radius = radius + link_dia / 2
+    nominal_corners = (
+        (x1, y1, -1, -1),
+        (x2, y1, 1, -1),
+        (x1, y2, -1, 1),
+        (x2, y2, 1, 1),
     )
     corners = {}
-    for mark, (cx, cy, sx, sy) in zip(CORNERS, corner_centres, strict=True):
+    for mark, (bx, by, sx, sy) in zip(CORNERS, nominal_corners, strict=True):
         x, y, dia, _ = bars[mark]
-        dx, dy = (x - cx) * sx, (y - cy) * sy
+        radial_values = []
+        seat_x_values = []
+        seat_y_values = []
+        for realised_radius in (radius - bend_tol, radius + bend_tol):
+            for hoop_dia in (link_dia, max_link_dia):
+                offset = realised_radius + hoop_dia / 2
+                for bound_error in (-bound_tol, bound_tol):
+                    cx = bx - sx * (offset + bound_error)
+                    cy = by - sy * (offset + bound_error)
+                    for bar_error in (-mesh, mesh):
+                        sx_distance = (x - cx) * sx + bar_error
+                        sy_distance = (y - cy) * sy + bar_error
+                        seat_x_values.append(sx_distance)
+                        seat_y_values.append(sy_distance)
+                        radial_values.append(
+                            realised_radius
+                            - (dia + dia_allowance) / 2
+                            - math.hypot(max(0, sx_distance), max(0, sy_distance))
+                        )
+        seating_x, seating_y = min(seat_x_values), min(seat_y_values)
+        radial = min(radial_values)
         corners[mark] = {
             "axis_mm": [x, y],
-            "bend_centre_mm": [cx, cy],
-            "min_radial_clearance_mm": radius
-            - bend_tol
-            - (dia + dia_allowance) / 2
-            - math.hypot(max(0, dx + mesh), max(0, dy + mesh)),
-            "seated_through_tolerance": min(dx, dy) > mesh,
+            "bend_centre_mm": [
+                bx - sx * nominal_centre_radius,
+                by - sy * nominal_centre_radius,
+            ],
+            "min_radial_clearance_mm": radial,
+            "signed_seating_coordinates_mm": [seating_x, seating_y],
+            "seated_through_tolerance": radius - bend_tol > 0
+            and min(seating_x, seating_y) > 0
+            and radial >= 0,
         }
     horizontal = {}
     for face, layer in (("top", 1), ("bottom", 1), ("bottom", 2)):
@@ -265,7 +288,8 @@ def worst_case_arrangement(request, placement, cross_tie):
         "max_pitch_under_tolerance_mm": member["link_spacing_mm"]
         + 2 * placement["link_station_tolerance_mm"],
         "restraint_pitch_limit_mm": pitch_limit,
-        "hoop_finished_straight_tail_mm": link["hook_vertex_leg_mm"] - centre_radius,
+        "hoop_finished_straight_tail_mm": link["hook_vertex_leg_mm"]
+        - nominal_centre_radius,
         "lift_envelope_width_mm": x2 - x1 + max_link_dia + 2 * (cage_tol + bound_tol),
         "lift_envelope_height_mm": y2 - y1 + max_link_dia + 2 * (cage_tol + bound_tol),
     }
@@ -537,7 +561,7 @@ def fixture():
     base = placed_candidate()
     good = {"bar_id": "B2-2", "diameter_mm": 20}
     empty = {"bar_id": "T1-1", "diameter_mm": 20, "x_from_left_mm": 92}
-    congested = {"bar_id": "B2-2", "diameter_mm": 20, "x_from_left_mm": 95}
+    congested = {"bar_id": "B2-2", "diameter_mm": 20, "x_from_left_mm": 97}
     narrow = dict(PLACEMENT, form_opening_width_mm=205)
     accepted = apply_edit(base, good, "edited")
     baseline_expected = checked_targets(base, PLACEMENT, CROSS_TIE)

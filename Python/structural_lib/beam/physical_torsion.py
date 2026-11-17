@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from itertools import pairwise
 
 from structural_lib.codes.is456.beam.detailing import (
     check_min_spacing,
@@ -933,7 +934,20 @@ def check_torsion_support_transfer(
                 provenance=provenance,
             )
         stations = solved.outputs["stations"]
-        moment = max(abs(r["m3_nmm"]) for r in stations) / 1e6
+        peak_moment_nmm = max(abs(row["m3_nmm"]) for row in stations)
+        # Point loads have two rows at the same coordinate. Between distinct
+        # adjacent coordinates the shear is linear, so integrate to its zero.
+        for start, end in pairwise(stations):
+            length_mm = end["x_mm"] - start["x_mm"]
+            start_shear_n, end_shear_n = start["v2_n"], end["v2_n"]
+            if length_mm <= 0 or start_shear_n * end_shear_n >= 0:
+                continue
+            distance_to_peak_mm = (
+                length_mm * start_shear_n / (start_shear_n - end_shear_n)
+            )
+            extremum_nmm = start["m3_nmm"] + start_shear_n * distance_to_peak_mm / 2
+            peak_moment_nmm = max(peak_moment_nmm, abs(extremum_nmm))
+        moment = peak_moment_nmm / 1e6
         shear = max(abs(r["v2_n"]) for r in stations) / 1000
         section = support.receiver_section
         geometry = evaluate_geometry(
