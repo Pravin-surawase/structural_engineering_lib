@@ -62,6 +62,7 @@ from structural_lib.reporting import (
     HumanActionKind,
     ResultBinding,
     create_calculation_package,
+    result_binding,
 )
 
 
@@ -950,6 +951,79 @@ def test_stale_package_is_visible_draft_and_cannot_activate_approval() -> None:
     assert result.diagnostics[0].code == "PACKAGE.EVIDENCE_INCOMPLETE"
 
 
+def test_required_cost_keeps_package_draft_until_exact_evidence_is_present() -> None:
+    request = _package_request()
+    approved = replace(request.human_actions[0], action=HumanActionKind.APPROVED)
+    unpriced_request = replace(request, human_actions=(approved,))
+    priced_request = replace(
+        unpriced_request,
+        package_profile=replace(
+            request.package_profile,
+            required_section_ids=(
+                *request.package_profile.required_section_ids,
+                "cost",
+            ),
+        ),
+    )
+
+    missing = create_calculation_package(priced_request)
+    draft = missing.outputs["calculation_package"]
+    assert missing.completeness == "partial"
+    assert draft["issue_state"] == "draft"
+    assert draft["active_approval"] is False
+    assert draft["cost"] is None
+    (diagnostic,) = missing.diagnostics
+    assert diagnostic.code == "PACKAGE.COST_REQUIRED"
+    assert next(
+        item for item in draft["render_sections"] if item["section_id"] == "cost"
+    ) == {
+        "section_id": "cost",
+        "source_identities": [],
+        "semantic_payload_kind": "unavailable",
+    }
+
+    unpriced = create_calculation_package(unpriced_request).outputs[
+        "calculation_package"
+    ]
+    assert unpriced["issue_state"] == "issue_ready"
+    assert unpriced["active_approval"] is True
+    assert all(item["section_id"] != "cost" for item in unpriced["render_sections"])
+
+    quantity = request.quantities
+    cost_result = estimate_construction_cost(
+        ConstructionCostRequest(
+            "PROFILE-1",
+            quantity.project_basis_id,
+            quantity.member_id,
+            quantity.detail_revision_id,
+            request.quantity_binding.result_id,
+            request.quantity_binding.output_payload_id,
+            quantity,
+            _rate_profile(),
+        )
+    )
+    cost = cost_result.output_as("cost", ConstructionCostOutput)
+    binding = result_binding(cost_result, "cost")
+    priced = create_calculation_package(
+        replace(priced_request, cost=cost, cost_binding=binding)
+    ).outputs["calculation_package"]
+    assert priced["issue_state"] == "issue_ready"
+    assert priced["active_approval"] is True
+    assert priced["cost"] == cost_result.outputs["cost"]
+    assert (
+        next(
+            item for item in priced["render_sections"] if item["section_id"] == "cost"
+        )["semantic_payload_kind"]
+        == "dated_direct_cost"
+    )
+
+    binding_only = create_calculation_package(
+        replace(priced_request, cost_binding=binding)
+    )
+    assert binding_only.execution == "rejected_input"
+    assert binding_only.diagnostics[0].code == "PACKAGE.COST_BINDING"
+
+
 def test_package_rejects_detached_payload_and_changed_trace_values() -> None:
     request = _package_request()
     detached = create_calculation_package(
@@ -968,14 +1042,20 @@ def test_package_rejects_detached_payload_and_changed_trace_values() -> None:
     assert mismatched.diagnostics[0].code == "PACKAGE.TRACE_VALUE"
 
 
-def test_package_rejects_cost_from_another_project_basis() -> None:
+@pytest.mark.parametrize(
+    ("project_basis_id", "quantity_result_id"),
+    [("other-project", "quantity-result-1"), ("project-basis-1", "other-quantity")],
+)
+def test_package_rejects_cost_from_another_dependency_chain(
+    project_basis_id: str, quantity_result_id: str
+) -> None:
     request = _package_request()
     cost = ConstructionCostOutput(
         "PROFILE-1",
-        "other-project",
+        project_basis_id,
         "B1",
         "detail-r1",
-        request.quantity_binding.result_id,
+        quantity_result_id,
         "RATES-1",
         "rates-r1",
         "INR",
@@ -1003,6 +1083,7 @@ def test_package_rejects_cost_from_another_project_basis() -> None:
         )
     )
 
+    assert result.execution == "rejected_input"
     assert result.diagnostics[0].code == "PACKAGE.IDENTITY_CONFLICT"
 
 
