@@ -9,7 +9,7 @@
 
 ## Current State
 
-Current source metadata: 0.30.0.
+Current source metadata: 0.30.1.
 
 **0.30.0 is published and verified.** The [release status](../getting-started/release-status.md)
 and [publication receipt](../getting-started/releases.md#v0300-published-and-verified)

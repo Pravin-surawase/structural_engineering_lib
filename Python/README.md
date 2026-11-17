@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.30.0 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.30.1 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,14 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.30.0
+## Prepared patch
+
+The unpublished patch corrects edited beam-cage clearance, torsion receiver
+peak checks, the one-way slab creep limit, and the tension face shown in beam
+reports. Paired ETABS CSV import refuses conflicting explicit member IDs.
+Calculation packages that require cost evidence stay in draft when it is absent.
+
+## Scope added in v0.30.0
 
 - Verify bounded rectangular, T and L reinforcement cutoffs and laps,
   varied links, variable-depth beams and a physical T-flange detail.

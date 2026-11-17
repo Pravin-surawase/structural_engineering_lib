@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.30.1] — Prepared candidate (unreleased; on hold)
+
+### Fixed
+
+- Check edited beam cages over the admitted hoop placement tolerances. Withhold
+  checked drawings and schedules when the longitudinal bars clash with the hoop.
+- Check the torsion receiver's exact moment peak between point loads, including
+  cases where a station grid misses the governing demand.
+- Hold creep-dependent one-way slab results above the initial sustained
+  compression limit while retaining valid immediate displacement.
+- Show the checked tension face in beam calculation reports.
+- Reject paired ETABS CSV rows with conflicting explicit member IDs. Keep the
+  label and story fallback where a source ID is absent.
+- Keep calculation packages in draft with inactive approval when their profile
+  requires cost evidence and the evidence is missing.
+- Bind live beam WebSocket replies and cleanup to their originating connection.
+- Lead installation and examples with the published Python library and
+  document the optional DXF installation.
+
 ## [0.30.0] — 2026-11-17
 
 ### Added

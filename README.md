@@ -25,8 +25,8 @@ optional ways to use the same library.
 
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
-> **v0.30.0 is a normal software release of the audited supported scope.**
-> The qualified wheel and source archive are published and verified.
+> **v0.30.1 is a normal software release of the audited supported scope.**
+> The 0.30.1 candidate is unpublished. The verified public release is 0.30.0.
 > This describes the version format and scope. Publication state and verified
 > artifact identities are recorded in the [release ledger](docs/getting-started/releases.md)
 > and matching registry/release assets. Support is case-qualified; complete IS 456 coverage

@@ -2136,3 +2136,14 @@ verification receipt SHA-256 is `de6c92b268fd4096bdc1308698b17d3ca95125c8746fd3e
 The matched FLOW04 source evidence remains in [draft PR #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117).
 PROJECT01 and PROJECT02 remain on HOLD pending member design and checked-output
 integration. PROJECT03 remains qualified for the bounded design-review workflow.
+
+## v0.30.1 — Prepared candidate (unreleased; on hold)
+
+The 0.30.1 candidate is not tagged or published. The verified public release is
+v0.30.0. The [changelog](../../CHANGELOG.md) lists the patch scope. It includes
+the beam and slab corrections, strict ETABS CSV identity check, library-first
+onboarding, required calculation-package cost gate, and connection ownership
+for the live beam WebSocket.
+
+The patch requires qualification of the exact versioned wheel and source
+archive before a publication decision.
