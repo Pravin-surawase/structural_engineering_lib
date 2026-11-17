@@ -39,7 +39,7 @@
           "face": "top",
           "layer": 1,
           "diameter_mm": 20,
-          "x_from_left_mm": 64,
+          "x_from_left_mm": 66,
           "y_from_top_mm": 64
         },
         {
@@ -47,7 +47,7 @@
           "face": "top",
           "layer": 1,
           "diameter_mm": 20,
-          "x_from_left_mm": 236,
+          "x_from_left_mm": 234,
           "y_from_top_mm": 64
         },
         {
@@ -63,7 +63,7 @@
           "face": "bottom",
           "layer": 1,
           "diameter_mm": 20,
-          "x_from_left_mm": 64,
+          "x_from_left_mm": 66,
           "y_from_top_mm": 536
         },
         {
@@ -79,7 +79,7 @@
           "face": "bottom",
           "layer": 1,
           "diameter_mm": 20,
-          "x_from_left_mm": 236,
+          "x_from_left_mm": 234,
           "y_from_top_mm": 536
         },
         {
@@ -87,7 +87,7 @@
           "face": "bottom",
           "layer": 2,
           "diameter_mm": 16,
-          "x_from_left_mm": 64,
+          "x_from_left_mm": 66,
           "y_from_top_mm": 464
         },
         {
@@ -95,7 +95,7 @@
           "face": "bottom",
           "layer": 2,
           "diameter_mm": 16,
-          "x_from_left_mm": 236,
+          "x_from_left_mm": 234,
           "y_from_top_mm": 464
         }
       ],
@@ -633,64 +633,80 @@
       "outer_corner_checks": {
         "T1-1": {
           "axis_mm": [
-            64,
+            66,
             64
           ],
           "bend_centre_mm": [
             70.0,
             70.0
           ],
-          "min_radial_clearance_mm": 0.6005050633883346,
+          "min_radial_clearance_mm": 0.39628156308979534,
+          "signed_seating_coordinates_mm": [
+            1.0,
+            3.0
+          ],
           "seated_through_tolerance": true
         },
         "T1-2": {
           "axis_mm": [
-            236,
+            234,
             64
           ],
           "bend_centre_mm": [
             230.0,
             70.0
           ],
-          "min_radial_clearance_mm": 0.6005050633883346,
+          "min_radial_clearance_mm": 0.39628156308979534,
+          "signed_seating_coordinates_mm": [
+            1.0,
+            3.0
+          ],
           "seated_through_tolerance": true
         },
         "B1-1": {
           "axis_mm": [
-            64,
+            66,
             536
           ],
           "bend_centre_mm": [
             70.0,
             530.0
           ],
-          "min_radial_clearance_mm": 0.6005050633883346,
+          "min_radial_clearance_mm": 0.39628156308979534,
+          "signed_seating_coordinates_mm": [
+            1.0,
+            3.0
+          ],
           "seated_through_tolerance": true
         },
         "B1-3": {
           "axis_mm": [
-            236,
+            234,
             536
           ],
           "bend_centre_mm": [
             230.0,
             530.0
           ],
-          "min_radial_clearance_mm": 0.6005050633883346,
+          "min_radial_clearance_mm": 0.39628156308979534,
+          "signed_seating_coordinates_mm": [
+            1.0,
+            3.0
+          ],
           "seated_through_tolerance": true
         }
       },
       "worst_horizontal_clearance_mm": {
         "top-1": [
-          63.0,
-          63.0
+          61.0,
+          61.0
         ],
         "bottom-1": [
-          63.0,
-          63.0
+          61.0,
+          61.0
         ],
         "bottom-2": [
-          153.0
+          149.0
         ]
       },
       "worst_vertical_clearance_mm": 51.0,
@@ -703,21 +719,21 @@
       "lift_envelope_width_mm": 233.0,
       "lift_envelope_height_mm": 533.0,
       "cross_tie": {
-        "restraint_corner_span_mm": 172,
+        "restraint_corner_span_mm": 168,
         "restraint_span_limit_mm": 384,
         "maximum_untied_spacing_each_side_mm": 75,
         "middle_bar_spacing_each_side_mm": [
-          86,
-          86
+          84,
+          84
         ],
         "hook_min_clearance_to_engaged_steel_mm": 1.0857864376269049,
         "envelope_clearance_to_other_bars_mm": 18.32462781419723,
         "minimum_cover_mm": 34.0,
         "minimum_tail_mm": 62,
         "minimum_grid_clearance_mm": 30,
-        "consolidation_lane_width_mm": 63.0,
+        "consolidation_lane_width_mm": 61.0,
         "consolidation_lane_length_mm": 121,
-        "consolidation_opening_mm": 63.0
+        "consolidation_opening_mm": 61.0
       }
     },
     "placement_limit_section_rechecks": [
@@ -775,13 +791,13 @@
     "drawing": {
       "section_centres_and_diameters": {
         "T1-1": [
-          64,
+          66,
           64,
           20,
           1
         ],
         "T1-2": [
-          236,
+          234,
           64,
           20,
           1
@@ -793,7 +809,7 @@
           1
         ],
         "B1-1": [
-          64,
+          66,
           536,
           20,
           1
@@ -805,19 +821,19 @@
           1
         ],
         "B1-3": [
-          236,
+          234,
           536,
           20,
           1
         ],
         "B2-1": [
-          64,
+          66,
           464,
           16,
           2
         ],
         "B2-2": [
-          236,
+          234,
           464,
           16,
           2
@@ -1046,7 +1062,7 @@
             "face": "top",
             "layer": 1,
             "diameter_mm": 20,
-            "x_from_left_mm": 64,
+            "x_from_left_mm": 66,
             "y_from_top_mm": 64
           },
           {
@@ -1054,7 +1070,7 @@
             "face": "top",
             "layer": 1,
             "diameter_mm": 20,
-            "x_from_left_mm": 236,
+            "x_from_left_mm": 234,
             "y_from_top_mm": 64
           },
           {
@@ -1070,7 +1086,7 @@
             "face": "bottom",
             "layer": 1,
             "diameter_mm": 20,
-            "x_from_left_mm": 64,
+            "x_from_left_mm": 66,
             "y_from_top_mm": 536
           },
           {
@@ -1086,7 +1102,7 @@
             "face": "bottom",
             "layer": 1,
             "diameter_mm": 20,
-            "x_from_left_mm": 236,
+            "x_from_left_mm": 234,
             "y_from_top_mm": 536
           },
           {
@@ -1094,7 +1110,7 @@
             "face": "bottom",
             "layer": 2,
             "diameter_mm": 16,
-            "x_from_left_mm": 64,
+            "x_from_left_mm": 66,
             "y_from_top_mm": 464
           },
           {
@@ -1102,7 +1118,7 @@
             "face": "bottom",
             "layer": 2,
             "diameter_mm": 20,
-            "x_from_left_mm": 236,
+            "x_from_left_mm": 234,
             "y_from_top_mm": 464
           }
         ],
@@ -1599,64 +1615,80 @@
           "outer_corner_checks": {
             "T1-1": {
               "axis_mm": [
-                64,
+                66,
                 64
               ],
               "bend_centre_mm": [
                 70.0,
                 70.0
               ],
-              "min_radial_clearance_mm": 0.6005050633883346,
+              "min_radial_clearance_mm": 0.39628156308979534,
+              "signed_seating_coordinates_mm": [
+                1.0,
+                3.0
+              ],
               "seated_through_tolerance": true
             },
             "T1-2": {
               "axis_mm": [
-                236,
+                234,
                 64
               ],
               "bend_centre_mm": [
                 230.0,
                 70.0
               ],
-              "min_radial_clearance_mm": 0.6005050633883346,
+              "min_radial_clearance_mm": 0.39628156308979534,
+              "signed_seating_coordinates_mm": [
+                1.0,
+                3.0
+              ],
               "seated_through_tolerance": true
             },
             "B1-1": {
               "axis_mm": [
-                64,
+                66,
                 536
               ],
               "bend_centre_mm": [
                 70.0,
                 530.0
               ],
-              "min_radial_clearance_mm": 0.6005050633883346,
+              "min_radial_clearance_mm": 0.39628156308979534,
+              "signed_seating_coordinates_mm": [
+                1.0,
+                3.0
+              ],
               "seated_through_tolerance": true
             },
             "B1-3": {
               "axis_mm": [
-                236,
+                234,
                 536
               ],
               "bend_centre_mm": [
                 230.0,
                 530.0
               ],
-              "min_radial_clearance_mm": 0.6005050633883346,
+              "min_radial_clearance_mm": 0.39628156308979534,
+              "signed_seating_coordinates_mm": [
+                1.0,
+                3.0
+              ],
               "seated_through_tolerance": true
             }
           },
           "worst_horizontal_clearance_mm": {
             "top-1": [
-              63.0,
-              63.0
+              61.0,
+              61.0
             ],
             "bottom-1": [
-              63.0,
-              63.0
+              61.0,
+              61.0
             ],
             "bottom-2": [
-              151.0
+              147.0
             ]
           },
           "worst_vertical_clearance_mm": 49.0,
@@ -1669,21 +1701,21 @@
           "lift_envelope_width_mm": 233.0,
           "lift_envelope_height_mm": 533.0,
           "cross_tie": {
-            "restraint_corner_span_mm": 172,
+            "restraint_corner_span_mm": 168,
             "restraint_span_limit_mm": 384,
             "maximum_untied_spacing_each_side_mm": 75,
             "middle_bar_spacing_each_side_mm": [
-              86,
-              86
+              84,
+              84
             ],
             "hook_min_clearance_to_engaged_steel_mm": 1.0857864376269049,
             "envelope_clearance_to_other_bars_mm": 18.32462781419723,
             "minimum_cover_mm": 34.0,
             "minimum_tail_mm": 62,
             "minimum_grid_clearance_mm": 30,
-            "consolidation_lane_width_mm": 63.0,
+            "consolidation_lane_width_mm": 61.0,
             "consolidation_lane_length_mm": 121,
-            "consolidation_opening_mm": 63.0
+            "consolidation_opening_mm": 61.0
           }
         },
         "placement_limit_section_rechecks": [
@@ -1741,13 +1773,13 @@
         "drawing": {
           "section_centres_and_diameters": {
             "T1-1": [
-              64,
+              66,
               64,
               20,
               1
             ],
             "T1-2": [
-              236,
+              234,
               64,
               20,
               1
@@ -1759,7 +1791,7 @@
               1
             ],
             "B1-1": [
-              64,
+              66,
               536,
               20,
               1
@@ -1771,19 +1803,19 @@
               1
             ],
             "B1-3": [
-              236,
+              234,
               536,
               20,
               1
             ],
             "B2-1": [
-              64,
+              66,
               464,
               16,
               2
             ],
             "B2-2": [
-              236,
+              234,
               464,
               20,
               2
@@ -2013,7 +2045,7 @@
       "edit": {
         "bar_id": "B2-2",
         "diameter_mm": 20,
-        "x_from_left_mm": 95
+        "x_from_left_mm": 97
       },
       "analysis_basis": "fixed_supplied_actions",
       "expected": {

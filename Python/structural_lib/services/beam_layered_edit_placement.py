@@ -94,7 +94,13 @@ def _corner_checks(
     limits: BeamLayeredCagePlacementV1,
 ) -> dict[str, Any]:
     x1, y1, x2, y2 = bounds
-    centre_offset = radius + link_diameter / 2
+    minimum_radius = radius - limits.bend_radius_tolerance_mm
+    maximum_radius = radius + limits.bend_radius_tolerance_mm
+    maximum_link_diameter = link_diameter + limits.link_diameter_allowance_mm
+    nominal_centre_offset = radius + link_diameter / 2
+    relative_tolerance = limits.link_bound_tolerance_mm + limits.bar_axis_tolerance_mm
+    minimum_seating_offset = minimum_radius + link_diameter / 2 - relative_tolerance
+    maximum_radial_offset = maximum_link_diameter / 2 + relative_tolerance
     checked = {}
     for bar, side_x, side_y in (
         (outer_top[0], -1, -1),
@@ -103,21 +109,33 @@ def _corner_checks(
         (outer_bottom[-1], 1, 1),
     ):
         x, y = bar.x_from_left_mm, bar.y_from_top_mm
-        cx = (x1 if side_x < 0 else x2) - side_x * centre_offset
-        cy = (y1 if side_y < 0 else y2) - side_y * centre_offset
-        dx, dy = (x - cx) * side_x, (y - cy) * side_y
-        tolerance = limits.bar_axis_tolerance_mm
-        radial_clearance = (
-            radius
-            - limits.bend_radius_tolerance_mm
-            - (bar.diameter_mm + limits.bar_diameter_allowance_mm) / 2
-            - math.hypot(max(0.0, dx + tolerance), max(0.0, dy + tolerance))
+        bound_x = x1 if side_x < 0 else x2
+        bound_y = y1 if side_y < 0 else y2
+        signed_x, signed_y = (x - bound_x) * side_x, (y - bound_y) * side_y
+        seating_x = signed_x + minimum_seating_offset
+        seating_y = signed_y + minimum_seating_offset
+        bar_radius = (bar.diameter_mm + limits.bar_diameter_allowance_mm) / 2
+        # At the adverse bound and bar position, clearance is concave in the
+        # realised radius. The same radius sets the bend centre and clearance.
+        radial_clearance = min(
+            realised_radius
+            - bar_radius
+            - math.hypot(
+                max(0.0, signed_x + maximum_radial_offset + realised_radius),
+                max(0.0, signed_y + maximum_radial_offset + realised_radius),
+            )
+            for realised_radius in (minimum_radius, maximum_radius)
         )
         checked[bar.bar_id] = {
             "axis_mm": [x, y],
-            "bend_centre_mm": [cx, cy],
+            "bend_centre_mm": [
+                bound_x - side_x * nominal_centre_offset,
+                bound_y - side_y * nominal_centre_offset,
+            ],
             "min_radial_clearance_mm": radial_clearance,
-            "seated_through_tolerance": min(dx, dy) > tolerance
+            "signed_seating_coordinates_mm": [seating_x, seating_y],
+            "seated_through_tolerance": minimum_radius > 0
+            and min(seating_x, seating_y) > 0
             and radial_clearance >= 0,
         }
     return checked
