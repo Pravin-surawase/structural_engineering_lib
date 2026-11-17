@@ -11,7 +11,7 @@ tags: []
 
 **Type:** Guide
 **Audience:** Developers
-**Status:** Production Ready
+**Status:** Pre-1.0 Beta, supported cases
 **Importance:** Critical
 **Created:** 2026-01-15
 **Last Updated:** 2026-01-15
@@ -34,17 +34,21 @@ tags: []
 
 ### What is structural_engineering_lib?
 
-A **Python library for structural engineering calculations** following IS 456:2000 (Indian Standard Code). It provides:
+StructLib is a Python library for supported reinforced-concrete calculations under IS 456:2000.
+Use the [API chooser](../reference/api-levels.md) to select a calculation and the
+[current release record](../getting-started/release-status.md) to check its published scope.
+Bind examples and integrations to the selected release or source commit.
 
-- ✅ **29 public functions** for beam design, analysis, and detailing
-- ✅ **Type-safe API** with comprehensive validation
-- ✅ **Production-ready** (2700+ tests, 84%+ coverage)
-- ✅ **Multiple interfaces** (Python API, React UI, FastAPI REST, CLI)
-- ✅ **Extensible architecture** for custom modules
+- Canonical family facades and maintained compatibility routes
+- Typed requests and results with route-specific validation
+- Verification evidence tied to the supported release cases
+- Optional CLI, FastAPI and React consumers
 
 ### What Can You Build?
 
-**Use this library as a foundation to create:**
+Build tools around the documented IS 456 calculation profiles.
+New design codes, engineering rules and application adapters each require
+their own implementation and validation. The table lists possible uses.
 
 | Application Type | Examples |
 |-----------------|----------|
@@ -61,8 +65,8 @@ A **Python library for structural engineering calculations** following IS 456:20
 | Benefit | Description |
 |---------|-------------|
 | **Save Time** | Don't reinvent beam design calculations |
-| **Production-Ready** | 2700+ tests, proven in real projects |
-| **Well-Documented** | Every function has examples + docs |
+| **Verification** | Review the selected release's supported cases and verification record |
+| **API navigation** | Use the API chooser, maintained references and runnable examples |
 | **Extensible** | Add features without modifying core |
 | **Multi-Interface** | Python API, React UI, FastAPI, CLI |
 
@@ -207,7 +211,8 @@ Qualified review and professional approval remain separate from these checks.
 
 ### API Surface
 
-**29 public functions organized by purpose:**
+Choose the [public API by task](../reference/api-levels.md). This table
+summarizes compatibility helpers. Prefer canonical family facades for new callers.
 
 | Category | Functions | Purpose |
 |----------|-----------|---------|
@@ -303,6 +308,11 @@ result_dict = result.as_dict()
 
 ## Integration Patterns
 
+The integration and extension sketches illustrate ways to consume the library.
+Confirm signatures in the [API chooser](../reference/api-levels.md) and start
+from the [maintained runnable examples](../../Python/examples/README.md) for
+the selected release. A new engineering method requires separate verification.
+
 ### Pattern 1: Simple Script
 
 **Use case:** Quick calculations
@@ -396,7 +406,7 @@ print(f"Processed {len(results)} beams")
 The V3 stack uses React 19 + React Three Fiber for the frontend and FastAPI for the backend:
 
 ```python
-# fastapi_app/routers/design.py (already implemented)
+# Illustrative FastAPI wrapper. Check the current route contract.
 from fastapi import APIRouter
 from structural_lib.services.api import design_beam_is456
 
@@ -420,7 +430,7 @@ async def design_beam(request: BeamDesignRequest):
 ```
 
 ```typescript
-// react_app/src/hooks/useLiveDesign.ts (already implemented)
+// Illustrative React usage. Check the current hook contract.
 // React frontend calls FastAPI backend
 const { result, isLoading } = useLiveDesign(beamParams);
 ```
@@ -918,9 +928,9 @@ def design_with_logging(beam_id, **kwargs):
 
 ### Continue Learning
 
-1. **Explore Examples** → [Integration Examples](integration-examples.md) - 10+ real-world patterns
+1. **Explore Examples** → [Integration Examples](integration-examples.md) - Consumer patterns with prerequisites
 2. **Understand Extension** → [Extension Guide](extension-guide.md) - How to add features
-3. **Check API** → [API Reference](../reference/api.md) - All 29 functions documented
+3. **Check API** → [API Reference](../reference/api.md) - Public signatures, inputs and supported cases
 4. **Read Architecture** → [Project Overview](../architecture/project-overview.md) - System design
 
 ### Build Your First Project
