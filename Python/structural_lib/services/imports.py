@@ -433,17 +433,21 @@ def _read_rows(path: Path) -> tuple[bytes, list[str], list[list[str]]]:
     return raw, [value.strip() for value in parsed[0]], parsed[1:]
 
 
+def _source_member_id(values: dict[str, str]) -> str:
+    member = (values.get("beam_id") or values.get("label") or "").strip()
+    story = values.get("story", "").strip()
+    return f"{member}_{story}" if member and story else member
+
+
 def _source_record_id(
     role: Literal["geometry", "forces", "combined"],
     source_row_number: int,
     values: dict[str, str],
     adapter: InputAdapter,
 ) -> str:
-    member = (values.get("beam_id") or values.get("label") or "").strip()
-    story = values.get("story", "").strip()
-    if not member:
+    member_id = _source_member_id(values)
+    if not member_id:
         return f"{role}:row:{source_row_number}"
-    member_id = f"{member}_{story}" if story else member
     if role in {"geometry", "combined"} or isinstance(adapter, GenericCSVAdapter):
         return member_id
     case = values.get("case_id", "").strip()
@@ -704,6 +708,52 @@ def _artifact_ledger(
     return artifact, rows, issues
 
 
+def _check_etabs_source_ids(
+    geometry_rows: list[ImportRowLedgerV1],
+    force_rows: list[ImportRowLedgerV1],
+) -> list[ImportIssueV1]:
+    """Reject conflicting IDs on physical force rows before station reduction."""
+    geometry_ids = {
+        row.source_record_id: field.parsed_value
+        for row in geometry_rows
+        if row.exclusion_reason is None
+        for field in row.fields
+        if field.canonical_field == "unique_name" and field.parsed_value
+    }
+    if not geometry_ids:
+        return []
+
+    issues: list[ImportIssueV1] = []
+    for index, row in enumerate(force_rows):
+        values = {
+            field.canonical_field: field.parsed_value
+            for field in row.fields
+            if field.canonical_field is not None and isinstance(field.parsed_value, str)
+        }
+        member_id = _source_member_id(values)
+        force_id = values.get("unique_name")
+        geometry_id = geometry_ids.get(member_id)
+        if not force_id or not geometry_id or force_id == geometry_id:
+            continue
+        code = ImportIssueCode.SOURCE_ID_MISMATCH
+        force_rows[index] = row.model_copy(
+            update={"status": ImportStatus.BLOCKED, "issue_codes": (code,)}
+        )
+        issues.append(
+            ImportIssueV1(
+                code=code,
+                path=f"forces.rows[{row.source_row_number}].unique_name",
+                message=(
+                    f"Force source ID {force_id!r} conflicts with geometry "
+                    f"source ID {geometry_id!r} for member {member_id!r}"
+                ),
+                artifact_role="forces",
+                source_row_number=row.source_row_number,
+            )
+        )
+    return issues
+
+
 def parse_single_csv_lossless(
     combined_csv: Path | str,
     *,
@@ -898,8 +948,10 @@ def parse_dual_csv_lossless(
         adapter=adapter,
         artifact_name=forces_artifact_name,
     )
-    rows = geometry_rows + force_rows
     issues = list(selection_issues) + geometry_issues + force_issues
+    if isinstance(adapter, ETABSAdapter) and not issues:
+        issues.extend(_check_etabs_source_ids(geometry_rows, force_rows))
+    rows = geometry_rows + force_rows
     batch: BeamBatchInput | None = None
     beams: list[BeamGeometry] = []
     forces: list[BeamForces] = []

@@ -392,6 +392,60 @@ def test_non_generic_adapter_blocks_without_explicit_project_defaults(
     }
 
 
+@pytest.mark.parametrize(
+    ("geometry_id", "force_ids", "blocked"),
+    [
+        ("101", ("101", " 101 "), False),
+        ("101", ("", ""), False),
+        ("", ("101", "101"), False),
+        ("101", ("101", "202"), True),
+    ],
+)
+def test_etabs_lossless_import_checks_explicit_ids_on_each_force_row(
+    tmp_path: Path,
+    geometry_id: str,
+    force_ids: tuple[str, str],
+    blocked: bool,
+) -> None:
+    geometry_csv = tmp_path / "geometry.csv"
+    forces_csv = tmp_path / "forces.csv"
+    _write_csv(
+        geometry_csv,
+        "Story,Label,UniqueName,ObjType,AnalSect,XI,YI,ZI,XJ,YJ,ZJ\n"
+        f"Ground,B1,{geometry_id},Beam,B300X500,0,0,0,5,0,0",
+    )
+    _write_csv(
+        forces_csv,
+        "Story,Label,Unique Name,Output Case,Station,M3,V2\n"
+        f"Ground,B1,{force_ids[0]},ULS,0,100,50\n"
+        f"Ground,B1,{force_ids[1]},ULS,1,80,40",
+    )
+
+    result = parse_dual_csv_lossless(
+        geometry_csv,
+        forces_csv,
+        format_hint="etabs",
+        defaults=DesignDefaults(fck_mpa=25, fy_mpa=500, cover_mm=40),
+    )
+
+    assert result.ledger.totals.source_rows == 3
+    if blocked:
+        assert result.status is ImportStatus.BLOCKED
+        assert result.batch is None
+        assert result.ledger.totals.blocked_rows == 1
+        assert result.ledger.totals.matched_records == 0
+        (issue,) = result.issues
+        assert issue.code is ImportIssueCode.SOURCE_ID_MISMATCH
+        assert issue.path == "forces.rows[3].unique_name"
+        assert result.ledger.rows[-1].issue_codes == (issue.code,)
+    else:
+        assert result.status is ImportStatus.ACCEPTED
+        assert result.batch is not None
+        (force,) = result.batch.forces
+        assert force.station_count == 2
+        assert force.mu_knm == 100
+
+
 def test_etabs_lossless_import_ledgers_malformed_force_without_substitution(
     tmp_path: Path,
 ) -> None:

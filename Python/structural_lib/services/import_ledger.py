@@ -48,6 +48,7 @@ class ImportIssueCode(StrEnum):
     MALFORMED_NUMBER = "import.malformed_number"
     NON_FINITE_NUMBER = "import.non_finite_number"
     DUPLICATE_RECORD_ID = "import.duplicate_record_id"
+    SOURCE_ID_MISMATCH = "import.source_id_mismatch"
     ADAPTER_PARSE_ERROR = "import.adapter_parse_error"
     ADAPTER_ROW_LOSS = "import.adapter_row_loss"
     UNMATCHED_GEOMETRY = "import.unmatched_geometry"
