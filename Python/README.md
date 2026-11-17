@@ -12,9 +12,9 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## Prepared patch
+## Patch changes
 
-The unpublished patch corrects edited beam-cage clearance, torsion receiver
+This patch corrects edited beam-cage clearance, torsion receiver
 peak checks, the one-way slab creep limit, and the tension face shown in beam
 reports. Paired ETABS CSV import refuses conflicting explicit member IDs.
 Calculation packages that require cost evidence stay in draft when it is absent.
