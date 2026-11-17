@@ -77,6 +77,52 @@ def test_frozen_primary_actions_and_signed_receiver_transfer(workflow):
             assert check[owner]["engineering"] == "pass"
 
 
+@pytest.mark.parametrize(
+    ("sampled_moment_knm", "exact_peak_knm", "expected_status"),
+    (
+        (138.225, 138.241333333333, "pass"),
+        (138.245, 138.261333333333, "fail"),
+    ),
+)
+def test_receiver_governing_moment_is_independent_of_station_grid(
+    sampled_moment_knm, exact_peak_knm, expected_status
+):
+    primary_load = (sampled_moment_knm - 16.875) / 1.75
+    workflow = EXAMPLE["run_workflow"](
+        load_n_per_mm=primary_load, torsion_eccentricity_mm=60 / primary_load
+    )
+    request = request_for(workflow, "support_transfer", b.TorsionSupportTransferRequest)
+    for intervals in (30, 60):
+        supports = tuple(
+            replace(
+                support,
+                receiver_analysis=replace(
+                    support.receiver_analysis, station_intervals=intervals
+                ),
+            )
+            for support in request.supports
+        )
+        result = b.check_torsion_support_transfer(replace(request, supports=supports))
+        assert result.engineering == expected_status
+        checks = result.outputs["checks"]
+        assert len(checks) == 2
+        for check in checks:
+            assert check["receiver_moment_knm"] == pytest.approx(
+                exact_peak_knm, abs=1e-6, rel=0
+            )
+            assert check["receiver_flexure"]["engineering"] == expected_status
+            stations = check["receiver_analysis"]["outputs"]["stations"]
+            for station_mm, point_load_kn in (
+                (1400, 1.25 * primary_load - 0.75),
+                (1600, 1.25 * primary_load + 0.75),
+            ):
+                left, right = (row for row in stations if row["x_mm"] == station_mm)
+                assert (left["side"], right["side"]) == ("left", "right")
+                assert (right["v2_n"] - left["v2_n"]) / 1000 == pytest.approx(
+                    -point_load_kn, abs=1e-6, rel=0
+                )
+
+
 @pytest.mark.parametrize("kind", ("concrete", "link_grade"))
 def test_receiver_retains_unsupported_shear_and_cannot_pass(workflow, kind):
     request = request_for(workflow, "support_transfer", b.TorsionSupportTransferRequest)
