@@ -1,0 +1,78 @@
+{
+  "a40_evidence_scope": "Source and ordinary transport only; the safeguarded special replay was not attempted or substituted.",
+  "a40_special_reconnect_inflight_replay": "NOT_RUN",
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.31.0-py3-none-any.whl",
+      "sha256": "cf85ee0fd9b4368619ad67d1e33f4056413038857a5c2988f4bfc0d3af9d4cd4",
+      "size_bytes": 1606099
+    },
+    {
+      "filename": "structural_lib_is456-0.31.0.tar.gz",
+      "sha256": "235b81ffc352b7e32e26998a8ec9cf1c6aa80ab3310afc955cf7f7d197760f90",
+      "size_bytes": 1370412
+    }
+  ],
+  "decision": "ACCEPT",
+  "hosted_checks": {
+    "required_pr_checks": {
+      "head_sha": "07e1449aef93483c1da64e9b671c326019a48709",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44288061714"
+    },
+    "weekly_verification": {
+      "head_sha": "07e1449aef93483c1da64e9b671c326019a48709",
+      "status": "PASS",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44288057712"
+    }
+  },
+  "hosted_checks_observed_at_utc": "2026-11-18T11:29:27Z",
+  "integration_requirement": "Preserve reviewed ancestry, qualified Python tree and exact archive bytes. Only the bounded publication metadata packet may follow this review.",
+  "local_verification": {
+    "artifact_record": "docs/verification/library-0310-release-artifacts.json",
+    "artifact_record_sha256": "3a5aeb90d600fd8ce7b426a63b43a8f2c1a21f97f9bd4e1e3b7febc6ef6ce8a6",
+    "beam_column_tests_per_archive": {
+      "sdist": 980,
+      "wheel": 980
+    },
+    "build_head": "a8c5c6fdf50ee61cd5ab7f47cd75963f1323a08e",
+    "distribution_inputs_changed_after_build": false,
+    "focused_intake_controls_per_archive": {
+      "sdist": 56,
+      "wheel": 56
+    },
+    "installed_wheel_uat_cases": 29,
+    "offline_broker_controls_per_archive": {
+      "sdist": 3,
+      "wheel": 3
+    },
+    "qualification_receipt_sha256": "5b66b7e47ce8620ea35a9f35583f5332d493a780ce1082bb1c9ef60b5dba8704",
+    "qualified_installed_profiles": 20,
+    "slab_footing_cases_per_archive": {
+      "sdist": 25,
+      "wheel": 25
+    },
+    "source_merge_sha": "87bbade0c812e74c5c14ccf465651eb25e91d9f7"
+  },
+  "professional_approval": false,
+  "qualified_structural_engineering_review": false,
+  "review_scope": "Independent software review verified source fixes including broker terminal handoff, exact archives, installed qualification, generated compatibility evidence, project HOLDs and actual exact-head hosted checks. The required-span input correction uses the pre-1.0 minor-version policy. No new footing feature or caller API is included.",
+  "reviewed_candidate": {
+    "head_sha": "07e1449aef93483c1da64e9b671c326019a48709",
+    "python_tree_sha": "d2203c207fd7ee1fb7cf65dd17f29ea58e6aa708",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ],
+    "tag": "v0.31.0",
+    "tree_sha": "875126e2e1022d001ed3473ed0f17f224ae53b20",
+    "version": "0.31.0"
+  },
+  "reviewer": {
+    "identity": "/root/exact_candidate_review",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-18T11:26:25Z"
+  },
+  "schema_version": "exact-candidate-review-receipt/v1"
+}

@@ -2152,3 +2152,22 @@ The owner authorized completion of the fixes and the sensible release on
 and source-archive qualification, required hosted/cross-platform checks and
 review of the final results. The safeguarded A40 special replay remains NOT_RUN;
 its source fix and ordinary transport evidence are recorded separately.
+
+## v0.31.0 — Release authorized (2026-11-18)
+
+The owner authorized the completed corrections and the appropriate release.
+The required-span compatibility correction selects 0.31.0 under the pre-1.0
+minor-version policy. Independent exact-candidate review and the required PR
+and cross-platform Weekly checks passed on `07e1449aef93483c1da64e9b671c326019a48709`.
+
+The retained wheel and source archive passed all 20 installed profiles, with
+980 beam/column tests, 25 slab/footing scenarios and 56 focused intake controls
+per archive, plus three offline broker return/error/timeout controls per archive.
+Exact-wheel UAT passed 29 cases. The committed qualification and
+review records bind the exact archive hashes and unchanged Python tree.
+TestPyPI must verify this retained pair before production publication.
+
+A40 has source and ordinary transport evidence; its safeguarded special replay
+remains NOT_RUN. PROJECT01/02 remain HOLD, PROJECT03 retains site evidence
+requirements, and FLOW04 stays excluded. No new footing or caller API is
+included. Software qualification does not confer professional approval.
