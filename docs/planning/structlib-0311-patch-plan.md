@@ -6,17 +6,17 @@
 **Importance:** High
 **Created:** 2026-11-18
 **Last Updated:** 2026-11-18
-**Abstract:** S0 scope selection and S1–S5 plan for the 0.31.1 continuous slab correction.
+**Abstract:** S0 scope, frozen S1 evidence and S2–S5 plan for the 0.31.1 continuous slab correction.
 
 ---
 
 ## Planning status
 
-The S0 planning review is complete. The recommended 0.31.1 scope centers on the
-continuous one-way slab false pass. Issue discovery may continue. Review new
-evidence before changing the selected scope, and record its workflow, source
-or artifact identity, observed effect and verification status. S1–S5 are
-planned work.
+S0 and S1 planning are complete. The 0.31.1 scope centers on the continuous
+one-way slab false pass. S1 froze the exact fixture inputs, numerical
+expectations and release timing baseline. S2–S5 remain planned. As issue
+discovery continues, review new evidence before changing scope. Record its
+workflow, source or artifact identity, observed effect and verification status.
 
 Use the [library adoption and maintenance guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128)
 to choose evidence for affected user journeys. The
@@ -98,11 +98,31 @@ line load separately. [Calculation owner](https://github.com/Pravin-surawase/str
 | Supplied-coefficient B02 challenge at the same widths | Width-invariant per-metre results and deficient positive steel at all widths. Preserve the physical strip line load and the submitted width. |
 | Existing cookbook and applicability controls | Cookbook remains `PASS`, sufficiently reinforced control passes at all three widths, and existing coefficient selection, provenance, rejection behavior and diagnostics remain valid. |
 
-The built-in fixture's 1,000 mm software reference is **11.25 kN·m/m**
-positive moment, **13.20 kN·m/m** negative moment, **285.921 mm²/m**
-required positive steel, **170.391 mm²/m** supplied and **17.6625 kN/m**
-shear. Freeze the independent dimensional check and comparison tolerances
-in S1. These are fixture expectations for the repair.
+The [frozen slab cases](../verification/library-0311-s1-continuous-slab.json)
+capture the exact cookbook payload, challenge overrides, published-wheel
+observations and S2 acceptance values. The deficient built-in case must
+return `FAIL` with positive `area_passed=false` at all three widths. At
+each width the expected values include **11.25 kN·m/m** positive moment,
+**13.20 kN·m/m** negative moment, **285.920793 mm²/m** governing positive
+steel, **170.391466 mm²/m** supplied and **17.6625 kN/m** shear.
+
+| Width | Deficient on 0.31.0 | Deficient in S2 | Cookbook on 0.31.0 | Cookbook in S2 |
+| ---: | --- | --- | --- | --- |
+| 500 mm | `PASS` | `FAIL` | Not run | `PASS` |
+| 1,000 mm | `FAIL` | `FAIL` | `PASS` | `PASS` |
+| 2,000 mm | `FAIL` | `FAIL` | Not run | `PASS` |
+
+On the one-metre basis, positive moment is `(10.5/12 + 3.75/10) × 3²`,
+negative moment magnitude is `(10.5/10 + 3.75/9) × 3²`, and end shear is
+`(0.4 × 10.5 + 0.45 × 3.75) × 3`. A T8 bar every 295 mm provides
+`(π × 8² / 4) × (1,000 / 295)` mm²/m. With effective depth 115 mm,
+these actions give a shear stress of **0.153586957 N/mm²** and a tension
+steel percentage of **0.148166492%**. Physical line loads are **7.125,
+14.25 and 28.5 kN/m** at the three widths. Solving section equilibrium on
+the one-metre basis reproduced the 1,000 mm wheel steel values and supplied
+the candidate negative steel and limiting moment expectations. The JSON
+also records absolute comparison tolerances and the fields to check for
+width invariance. These values define software regression acceptance.
 
 ## Other confirmed issues and release observations
 
@@ -206,24 +226,43 @@ operation and execution conditions.
 
 ## Release timing baseline and targets
 
-Figures below come from the final successful 0.31.0 hosted sequence on
-18 November 2026. The final Weekly run began at 16:13:21 IST. The clean PyPI
-installation was verified at 17:29:15 IST, **1h15m54s** later. This interval
-excludes earlier qualification attempts and local candidate preparation.
+The baseline spans **1h15m54s** from creation of the final Weekly run at
+16:13:21 IST to clean public-install verification at 17:29:15 IST on
+18 November 2026. Earlier qualification attempts and local candidate
+preparation are outside this measured interval. All table times are UTC
+on 18 November. Workflow durations run from creation to completion,
+including any queue time.
 
-| Checkpoint | Observed duration | Evidence |
-| --- | ---: | --- |
-| Exact-head PR validation | 1m38s | [PR gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44288061714) |
-| Final cross-platform Weekly verification | 41m06s | [Weekly run](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44288057712) |
-| Full Python suite with branch coverage within Weekly | 36m33s | [Weekly workflow and threshold](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.0/.github/workflows/nightly.yml#L57-L62) |
-| Weekly completion to TestPyPI workflow start | 20m05s | [TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44297424623) |
-| TestPyPI workflow | 1m19s | [TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44297424623) |
-| TestPyPI completion to production workflow start | 4m57s | [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44298365078) |
-| Production workflow | 1m47s | [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44298365078) |
-| Production completion to fresh public install verification | 6m40s | [Public install receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.0/public-install-verification.json) |
+| Checkpoint | UTC time or interval | Duration | Evidence |
+| --- | --- | ---: | --- |
+| Exact-head PR validation | 10:43:22–10:45:00 | 1m38s | [PR gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44288061714) |
+| Final Weekly verification | 10:43:21–11:24:27 | 41m06s | [Weekly run](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44288057712) |
+| Full Python suite with branch coverage within Weekly | 10:45:08–11:21:41 | 36m33s | [Weekly jobs](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44288057712) |
+| Weekly completion to TestPyPI workflow creation | 11:24:27–11:44:32 | 20m05s | [TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44297424623) |
+| TestPyPI workflow | 11:44:32–11:45:51 | 1m19s | [TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44297424623) |
+| TestPyPI completion to production workflow creation | 11:45:51–11:50:48 | 4m57s | [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44298365078) |
+| Production workflow | 11:50:48–11:52:35 | 1m47s | [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44298365078) |
+| Production completion to fresh public-install verification | 11:52:35–11:59:15 | 6m40s | [Public install receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.0/public-install-verification.json) |
 
-The exact-head PR check ran alongside Weekly, so adding the two runtimes would
-overstate the critical path. The earlier [Windows broker failure](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44280286349)
+The exact-head PR check ran alongside Weekly on `07e1449a`. TestPyPI and
+production ran on the merged release head `16c6b660`. Within the 20m05s
+between Weekly and TestPyPI, review was recorded at 11:26:25 and owner
+authorization became effective at 11:29:27. The authorization commit's
+required PR workflow finished at 11:36:54, the PR merged at 11:38:50, and
+TestPyPI was created 5m42s after merge. These timestamps measure elapsed
+time between milestones. The records do not quantify hands-on work.
+[Review receipt](../verification/library-0310-exact-candidate-review.json) ·
+[Authorization receipt](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.0/docs/verification/release-publication-authorization.json) ·
+[Final PR workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44295893819) ·
+[Release PR](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1123)
+
+Weekly completion to production workflow completion took **28m08s**.
+GitHub published the release at 11:52:31. From that timestamp to clean
+public-install verification took **6m44s**.
+[GitHub release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.0) ·
+[Public install receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.0/public-install-verification.json)
+
+The earlier [Windows broker failure](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44280286349)
 exposed a real defect and required fresh evidence. The three generated-content
 failures were avoidable preflight rework.
 [Façade failure 1](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44043674410) ·
@@ -258,13 +297,21 @@ targets for later release-process improvement:
 
 ### S1 — Freeze the slab cases and expectations
 
-- Rebind to the verified implementation base and confirm the existing Lab
-  replay on the released package. Freeze exact fixture inputs, source
-  basis, units, expected positive and negative demands, shear values and
-  tolerances for both coefficient routes.
-- Record the deficient and passing width controls, built-in coefficient
-  provenance, existing B02 benchmark and the capacity-exceeded diagnostic
-  control. Preserve the original release timing receipts for comparison.
+- Frozen on the published 0.31.0 source. The
+  [case record](../verification/library-0311-s1-continuous-slab.json)
+  binds the saved Lab replay and the unchanged cookbook to exact inputs
+  and per-metre expectations at 500, 1,000 and 2,000 mm.
+- The supplied-coefficient B02 companion freezes the same three widths
+  with deficient positive steel. Retain the original B02 benchmark and
+  applicability checks. The overload control preserves the capacity
+  diagnostic in physical-strip kN·m. The companions are planned candidate
+  checks.
+- The [release timing baseline](#release-timing-baseline-and-targets)
+  records the hosted timings and source receipts. Use the same checkpoints
+  in 0.31.1 and capture the candidate and archive identities, review and
+  authorization timestamps, dispatch intervals, and retry reasons.
+- This stage used the saved replay and checked fixture arithmetic. The S2
+  implementation and its product regression tests remain pending.
 
 ### S2 — Repair the shared units and protect the entry points
 
