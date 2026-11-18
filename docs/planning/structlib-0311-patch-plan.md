@@ -6,7 +6,7 @@
 **Importance:** High
 **Created:** 2026-11-18
 **Last Updated:** 2026-11-18
-**Abstract:** Bounded 0.31.0 audit and next-patch plan for setup diagnostics, release guidance and release-cycle efficiency.
+**Abstract:** Bounded 0.31.0 audit and next-patch plan for setup, user and AI usability, Coding Lab findings and release efficiency.
 
 ---
 
@@ -17,6 +17,12 @@ fixes collected so far. Add new findings with their affected workflow, source
 or artifact identity, observed impact and verification status. S0 will select
 the patch scope after discovery and review. The later stages describe how to
 implement and qualify the selected work.
+
+Use the [library adoption and maintenance guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128)
+to choose evidence for affected user journeys. The
+[element workflow guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1127)
+provides release-pinned examples and explains their outcomes. Both guides
+are in separate drafts. The issue register and S0 selection govern patch scope.
 
 ## Baseline and scope
 
@@ -57,13 +63,31 @@ installation control. The audit did not execute the generated install command.
 
 ## Lab reconciliation and evidence boundaries
 
-- **Coding Lab.** R02-A23's required cost evidence and R02-A49/A50's span,
-  force-format and station-identity findings have release fixes and applicable
-  archive evidence. R02-A40's ordinary WebSocket transport repair passed.
-  Its safeguarded reconnect-during-in-flight replay remains `NOT_RUN` and
-  may be tracked as a separate acceptance check. Retain the previous controls
-  as regression inputs. [Release changes](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.0) ·
-  [Exact archive evidence](../verification/library-0310-release-artifacts.json)
+### Coding Lab review through R02-A53
+
+Reconciled the current queue and its recent source-bound packets against the
+published 0.31.0 tag on 18 November 2026. The late static packets were pinned
+to `ca4d6c72c373461490afa2f271cd3e45508c4368`. The review added follow-up
+dispositions and reuse suggestions. It found no additional confirmed patch
+defect within those scoped packets.
+
+| Lab item | Evidence and plan disposition |
+| --- | --- |
+| R02-A23 | The required-cost evidence repair shipped. Keep the missing-cost draft and inactive-approval behavior as an existing regression control. |
+| R02-A49 and R02-A50 | The named strict span, ETABS pairing, mixed force-format and equivalent numeric station findings have release fixes. Keep those controls and the unsupported-action-column controls. The separate A50-F02 station-contract proposal supplies reference cases for future work on the station model. |
+| R02-A40 | Ordinary WebSocket transport passed. The safeguarded reconnect-during-in-flight scenario remains `NOT_RUN`. Keep it as an open evidence item. A separately scoped replay may change that disposition. |
+| R02-A51 | The lab proposed binding snapshot row identity, concurrent actions, verified axes and analysis revision to the section request. Keep the signed-row and missing-evidence controls with FLOW04 and future caller integration. A new snapshot-to-section API needs its own scope decision. |
+| R02-A52 and R02-A53 | Static catalogue reviews found no outcome-changing defect. Reuse proposed rank, budget, stale-analysis and withheld-selection controls if an admitted change touches the corresponding catalogue path. Those proposal fixtures were unexecuted in the lab review. |
+
+The release archive record covers 53 focused intake regressions and
+three original frozen controls on each exact archive. Preserve a new lab
+item's ID, exact target, observed effect and evidence state during discovery.
+Rebind historical observations before nominating them as patch repairs.
+[Release changes](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.0) ·
+[Exact archive evidence](../verification/library-0310-release-artifacts.json)
+
+### Other evidence and scope
+
 - **Maintenance Lab.** The dependency wording and preflight interpretation
   were checked again against the released code and metadata. The historical
   ML-012 proposal targeted earlier 0.30.0 publication prose. The 0.31.0 PyPI
@@ -81,11 +105,32 @@ installation control. The audit did not execute the generated install command.
   future consumer. [Receiver check](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.0/Python/structural_lib/beam/physical_torsion.py#L936-L951) ·
   [T-flange demand](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.0/Python/structural_lib/beam/t_flange.py#L555-L588)
 - **Scope.** FLOW04 and PROJECT01/02 remain open on their programme path.
-  PROJECT03 retains its site-evidence gate. Any new footing capability or
-  snapshot-to-section API belongs to a separate scope decision. Use the
-  existing case definitions and review boundaries.
+  PROJECT03 retains its site-evidence gate. New footing capabilities belong
+  to separate scope decisions. Use the existing case definitions and review
+  boundaries.
   [Programme plan](beam-column-programme-delivery.md) ·
   [Exact candidate review](../verification/library-0310-exact-candidate-review.json)
+
+## First-use and AI acceptance
+
+Use one public beam journey for a small pilot. On a clean install of 0.31.0,
+the maintained beam recipe returned `PASS`. Removing its required width
+`section.b_mm` returned structured `REQUIRED_FIELD_MISSING` for that path.
+This gives a pinned baseline for the published recipe and for the pilot.
+[Beam recipe](../cookbook/python/beam-design.md) ·
+[Generated family contracts](../reference/family-facade-contracts.md)
+
+| Audience or workflow | Observe and record |
+| --- | --- |
+| First-time Python user | Starting from one release-aligned page, install the version it names, confirm the package origin and run the documented example. Capture the command and result and any step that needed help outside the page. |
+| AI-assisted developer or recurring job | Provide the same version, recipe, contract and fixture. The caller identifies the documented entry point and uses the stated units. The valid fixture returns `PASS`. The missing-width fixture returns the field diagnostic and the caller asks for the missing input. Record the actual result separately from the assistant's explanation. |
+| Contributor or upgrader | When the change affects contributor setup, a fresh checkout and the documented focused check should reproduce the change. When it affects existing inputs or APIs, record the old and new behavior and the smallest migration example. |
+
+The AI pilot uses the public recipe and its generated contract in a
+disposable environment. Keep broader AI tooling, new generated surfaces and
+additional element capabilities on separately selected work. The existing
+[beam tool manifest](../reference/beam-tool-manifest.md) defines its own
+operation and execution conditions.
 
 ## Release timing baseline and targets
 
@@ -130,14 +175,83 @@ Proposed timing targets for the next patch:
 
 ## S0–S5 next-patch plan
 
-| Stage | Work | Exit evidence |
-| --- | --- | --- |
-| **S0 — Bind scope and ownership** | When discovery is complete, recheck the published baseline, reconcile new evidence and decide which SETUP, DOC and REL items belong in the patch. Confirm ownership of #1125 and capture the sequencing decision on #1117 before an integration write. | Record the selected items, deferred items and exact baseline. Recheck historical findings against the selected baseline before admitting them. |
-| **S1 — Freeze reproducers and timing controls** | Preserve the two installed-wheel setup probes, partial/full extra and plain/JSON controls, spaced interpreter paths, and the original timing receipts. Profile Weekly's slowest tests and coverage overhead before selecting a parallel runner design. Record comparable runner and dependency identities. | Positive and negative controls have expected results. The timing baseline records CI and handoff stages independently. |
-| **S2 — Fix setup and current guidance** | Repair the preflight dependency mapping and command formatting. Update dependency and installation guidance in the same packet. Reconcile #1125 and validate the live 0.31.0 guidance after integration. | Focused tests pass through the public CLI. The advertised registry version, docs pins and migration guidance agree. |
-| **S3 — Remove release rework** | Apply the existing release-generation and checking sequence before artifact qualification. Stage the appropriate artifact record before generating the compatibility ledger. Prepare the S5 handoff packet early. If profiling supports it, trial balanced hosted Python shards with FastAPI and React work scheduled independently. | Generated checks pass before CI. A shadow comparison proves the same selected test IDs, successful required jobs and combined coverage with the 85% gate. A missing or failed shard must still prevent a pass. |
-| **S4 — Freeze one candidate** | Review the affected paths together. Verify generated docs, source-bound CLI diagnostics and any shadow CI results. Recheck covered files and publication text before building. Keep A40 special replay status explicit unless a safeguarded run produces new evidence. | Source review fixes the build input tree and the allowed post-review metadata scope. The supported engineering cases and publication gates remain as specified in the existing policy. |
-| **S5 — Qualify and hand off the exact pair** | Build a single wheel and sdist from the frozen payload and retain both hashes. Regenerate dependent release evidence against the retained record and check it locally. Run existing installed qualification and acceptance profiles, the S2 CLI controls, exact-head required CI and required cross-platform Weekly. Obtain independent review of the exact candidate. With the owner's authorization for the exact release, verify the same bytes on TestPyPI before production publication. Verify PyPI/GitHub readback and a fresh PyPI install. Record publication and synchronize the Current Release and install guidance once the public check passes. | Candidate sign-off binds source, archive pair, gates, scope and timing. Publication requires its own owner authorization. Close the patch after the public receipt, guidance and actual elapsed intervals are recorded. |
+### S0 — Select scope after discovery
+
+- Recheck the published baseline and reconcile new items with the Coding Lab
+  and Maintenance Lab evidence. List the confirmed setup and documentation
+  repair candidates, small usability changes or evidence checks, and later
+  proposals. Select patch scope after reviewing those lists.
+- Reuse the release guidance work in #1125. Check the integration order for
+  FLOW04 #1117 and compare affected paths before a shared-path write. Use
+  #1127 and #1128 as references pending their own integration decisions.
+- Record the selected and deferred items, the exact baseline and the owner of
+  each selected outcome. Carry the A40 special replay as `NOT_RUN` unless
+  new safeguarded evidence is recorded.
+
+### S1 — Freeze the examples, failures and timing baseline
+
+- Retain the installed-wheel setup probes for partial and full extras,
+  plain and JSON preflight, and spaced interpreter paths. For first-use
+  work, freeze the public recipe and its valid and missing-width inputs.
+  Include another engineering outcome only where the changed guide claims it.
+- Preserve original hosted timing receipts. Profile the Python coverage
+  job before choosing a faster execution layout. Record the comparable
+  runner, dependencies and exact test inventory.
+- Record each expected outcome and evidence owner. Keep release runtime,
+  review and dispatch intervals separate.
+
+### S2 — Repair setup and the first-run instructions
+
+- Implement the selected preflight repairs and update installation and
+  dependency wording. Demonstrate that the reported repair command targets
+  the actual interpreter and that a partial install reports the right
+  availability.
+- Reuse the published-version and CSV migration changes from #1125 in their
+  authorized sequence. When the guidance reaches its public entry page,
+  follow it from a clean environment and capture package version, origin
+  and the first result. Label source-only examples where they are linked.
+- Accept the affected work when the CLI controls pass and the documented
+  install pin, migration and result agree with the tested package.
+
+### S3 — Trial the usability and release improvements
+
+- If selected in S0, run the one-recipe AI pilot using the same version and
+  contract as the human first run. Retain the valid result and the
+  missing-input diagnostic. The contributor onboarding check applies when
+  contributor instructions change.
+- Run the existing documentation generators and checks before hosted
+  validation when their inputs are ready. Stage the retained artifact record
+  before generating its compatibility-ledger entries. Prepare the S5
+  handoff fields early.
+- Trial hosted Python shards only when profiling supports the split.
+  Compare the same test IDs and combined branch coverage, keep the 85% gate,
+  and check that a missing or failed shard rejects the result.
+
+### S4 — Review and freeze one candidate
+
+- Review the affected workflow from install instructions to the API, result,
+  diagnostic and upgrade path. Capture the entry point, expected behavior,
+  migration impact and verification in the PR.
+- Verify generated references, selected source-bound CLI controls and any
+  shadow CI results. Use the already qualified Lab controls for the affected
+  paths. Record any separately held evidence, including the A40 distinction.
+- Bind the exact build inputs and allowed post-review publication metadata.
+  Confirm the candidate contains the selected work.
+
+### S5 — Qualify the exact archives and prepare the release
+
+- Retain one wheel and sdist from the frozen payload. Generate dependent
+  evidence against the retained record and check it locally. Run the
+  existing required installed qualification, exact-head hosted checks and
+  cross-platform Weekly, with the selected setup and first-use controls.
+  Bind independent review to the exact candidate and archive hashes.
+- With separate owner authorization, verify the retained bytes on TestPyPI
+  before production. Verify PyPI and GitHub readback and a fresh PyPI
+  install. After the public receipt passes, align the Current Release and
+  install guidance and replay the affected public first run.
+- Close with the evidence for the selected work, publication receipt if
+  authorized, and measured gate, handoff and retry times. The adoption
+  evidence belongs in the existing handoff for changes that affect it.
 
 Use the existing Git and release checks for this patch. Preserve qualified
 engineering scope, exact artifact identity, independent candidate review,
