@@ -22,6 +22,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from structural_lib.core.models import DesignDefaults
+from structural_lib.services.adapters import ETABSAdapter
 from structural_lib.services.import_ledger import (
     ImportRowLedgerV1,
     ImportStatus,
@@ -854,16 +855,23 @@ def build_etabs_canonical_snapshot_v1(
             for issue in import_result.issues
         )
 
-    force_fields = {
-        field.canonical_field
+    force_columns = {
+        field.canonical_field: field.raw_header
         for row in import_result.ledger.rows
         if row.artifact_role == "forces"
         for field in row.fields
         if field.canonical_field is not None
     }
-    raw_station_export = {"case_id", "station", "m3", "v2"} <= force_fields
-    source_envelope_export = bool({"mu_max", "vu_max"} & force_fields)
-    if raw_station_export:
+    force_format = ETABSAdapter.classify_force_columns(force_columns)
+    if force_format == "mixed":
+        ambiguities.append(
+            _ambiguity(
+                "etabs.force_export_shape_mixed",
+                "forces.headers",
+                "Raw station components and precomputed extrema have competing force bases",
+            )
+        )
+    elif force_format == "raw":
         if result_identity.kind == "SOURCE_ENVELOPE":
             ambiguities.append(
                 _ambiguity(
@@ -883,7 +891,7 @@ def build_etabs_canonical_snapshot_v1(
                     "Raw station rows use the maintained independent-extrema envelope basis",
                 )
             )
-    elif source_envelope_export:
+    elif force_format == "precomputed":
         if result_identity.kind != "SOURCE_ENVELOPE":
             ambiguities.append(
                 _ambiguity(
@@ -1030,7 +1038,7 @@ def build_etabs_canonical_snapshot_v1(
                 )
             )
             continue
-        if raw_station_export:
+        if force_format == "raw":
             case_id = _field_value(row, "case_id")
             if case_id != result_identity.name:
                 _replace_row(

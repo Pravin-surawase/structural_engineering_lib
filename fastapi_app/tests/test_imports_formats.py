@@ -176,9 +176,9 @@ def test_invalid_source_depth_returns_no_importable_beams(client):
         "/api/v1/import/csv/text",
         params={
             "csv_text": (
-                "beam_id,b_mm,D_mm,d_mm,fck,fy,cover_mm,mu_knm,vu_kn\n"
-                "B1,300,500,470,25,500,40,100,70\n"
-                "B2,300,500,500,25,500,40,100,70\n"
+                "beam_id,b_mm,D_mm,d_mm,fck,fy,cover_mm,span_mm,mu_knm,vu_kn\n"
+                "B1,300,500,470,25,500,40,5000,100,70\n"
+                "B2,300,500,500,25,500,40,5000,100,70\n"
             ),
             "format_hint": "generic",
             "fck_mpa": 25,
