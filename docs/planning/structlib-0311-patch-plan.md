@@ -6,18 +6,18 @@
 **Importance:** High
 **Created:** 2026-11-18
 **Last Updated:** 2026-11-18
-**Abstract:** S0 scope, frozen S1 cases, S2 source repair and S3–S5 plan for the 0.31.1 continuous slab correction.
+**Abstract:** 0.31.1 slab scope, source verification, migration guidance and release handoff.
 
 ---
 
 ## Planning status
 
-S0 and S1 planning and S2 source verification are complete. The 0.31.1
-scope centers on the continuous one-way slab false pass. S1 froze the exact
-fixture inputs, numerical expectations and release timing baseline. S3–S5
-remain planned. As issue discovery continues, review new evidence before
-changing scope. Record its workflow, source or artifact identity, observed
-effect and verification status.
+S0–S3 are complete on the draft branch. The 0.31.1 scope centers on
+the continuous one-way slab false pass. The frozen cases, verified source
+repair, migration guidance and release handoff are ready for S4 review and
+S5 archive qualification. As issue discovery continues, review new evidence
+before changing scope. Record its workflow, source or artifact identity,
+observed effect and verification status.
 
 Use the [library adoption and maintenance guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128)
 to choose evidence for affected user journeys. The
@@ -70,10 +70,9 @@ Coding Lab and Maintenance Lab handoffs.
 | Remaining Lab and programme proposals | Retain the A40 special replay status, A51 caller binding and A52/A53 catalogue controls under their own evidence and scope. Keep FLOW04, new footing topologies and other element extensions in their programme lanes. |
 
 The proposed scope is bound to the published `v0.31.0` commit above.
-FLOW04 #1117 and release guidance #1125 remain open draft paths. Recheck
-their SHAs, affected paths and sequencing before establishing an
-implementation candidate. The linked planning and documentation drafts
-can be reviewed separately.
+FLOW04 #1117 and release guidance #1125 remain separate drafts. Recheck their
+SHAs, affected paths and sequencing before selecting an integration base.
+The linked planning and documentation drafts can be reviewed separately.
 
 ## SLAB-01 evidence and acceptance
 
@@ -331,12 +330,46 @@ targets for later release-process improvement:
 
 ### S3 — Prepare the affected guidance and release handoff
 
-- Explain which continuous slab results need rerunning and show the checked
-  example's expected result. Reconcile #1125 in the existing integration
-  order for the public install and CSV guidance.
-- Run the existing generated-reference checks when their inputs are ready.
-  Stage the retained artifact record before generating its ledger entries.
-  Prepare the handoff fields and record gate and review timestamps.
+- The [continuous slab cookbook](../cookbook/python/slab-continuous-one-way.md#rerun-affected-0310-results)
+  names the 0.31.0 results to rerun and includes the corrected `FAIL` example
+  at all three widths. The [Unreleased note](../../CHANGELOG.md#unreleased)
+  carries the same rerun scope.
+- [Draft #1125](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1125)
+  at `8ec9d8d784236e8e0fe75d14f2b68b0c6bb2baa6` correctly scopes the CSV
+  change to strict Generic CSV import. Put a finite positive span in the
+  combined file or in the geometry file of a paired import. Its examples
+  use `span_mm` or `Span (mm)` for 4,200 mm and `Span_m` or `Span (m)`
+  for 4.2 m. The ledger records 4,200 mm for either input. The direct
+  low-level adapter still uses a 5 m visualization placeholder when the
+  span header is absent. Strict import requires explicit source geometry.
+  Reuse the #1125 guidance in the integration order and verify the public
+  pins again after integration.
+- The [release handoff](#0311-release-handoff) records what S4 and S5 must bind
+  and the timestamps to collect. Stage the real retained artifact record
+  before generating dependent ledger entries during qualification.
+
+#### 0.31.1 release handoff
+
+The proposed version is `0.31.1`. The S2 source evidence is pinned to
+`c141b3ce28e838fb500aed8fa55b2d92f5c6335a`. S4 will record the reviewed
+candidate after checking the integration base. Archive identities, release
+authority and publication receipts are pending. [S2 source gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44350501845)
+
+| Checkpoint | Record when it happens |
+| --- | --- |
+| Candidate freeze and retention | Record freeze time in UTC, base and candidate head/tree, Python tree, source build-input and package payload digests, and retained wheel and sdist filenames, byte counts and SHA-256 hashes. Link the artifact record and installed checks for the frozen cases. |
+| Required checks | For the exact head, record PR gate and Weekly run IDs, attempt, result and creation, start and completion times. Record Python coverage step start and completion inside Weekly. |
+| Independent review and authorization | Link the reviewed head and artifact-bound receipt and its `reviewed_at_utc`. Record the owner instruction and effective `authorized_at_utc` for the exact version, tag and permitted targets. |
+| Integration and TestPyPI | Record final required-check completion, merged SHA and `mergedAt`. Bind the retained draft release ID. Record TestPyPI run ID and creation, start, completion and same-byte readback times. |
+| Production and public verification | Record the production run ID and creation, start and completion times, PyPI and GitHub hash readbacks, GitHub `published_at` and the clean PyPI install receipt's `verified_at_utc`. |
+| Retries | Record the reason, affected candidate or archive identities, workflow attempt and which evidence was rerun. |
+
+Compare the successful sequence with the [0.31.0 timing baseline](#release-timing-baseline-and-targets).
+Measure workflow execution and queue time from run timestamps, review and
+authorization from receipts, and dispatch wait between steps. Compute the
+critical path without adding overlapping PR and Weekly runs. Keep failed
+attempts visible so retries can be compared separately. The handoff follows
+the [retained-artifact release procedure](../getting-started/releases.md#retained-artifact-publication-procedure--29-october-2026).
 
 ### S4 — Review and freeze one candidate
 

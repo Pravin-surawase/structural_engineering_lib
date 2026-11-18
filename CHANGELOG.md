@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Use one consistent per-metre basis for continuous one-way slab moments,
+  steel demand and shear with built-in or supplied coefficients. Rerun saved
+  0.31.0 checks with a strip width other than 1,000 mm or an unconfirmed width.
+  A narrower strip could previously return a false `PASS`. See the
+  [continuous slab rerun guide](docs/cookbook/python/slab-continuous-one-way.md#rerun-affected-0310-results).
+
 ## [0.31.0] — 2026-11-18
 
 ### Changed
