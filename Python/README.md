@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.30.1 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.31.0 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,12 +12,20 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## Patch changes
+## Corrections and intake migration in v0.31.0
 
-This patch corrects edited beam-cage clearance, torsion receiver
+This release corrects edited beam-cage clearance, torsion receiver
 peak checks, the one-way slab creep limit, and the tension face shown in beam
 reports. Paired ETABS CSV import refuses conflicting explicit member IDs.
 Calculation packages that require cost evidence stay in draft when it is absent.
+
+Strict Generic CSV imports now require an explicit finite positive span:
+`span_mm` / `Span (mm)` accepts millimetres, and `Span_m` / `Span (m)` accepts
+metres. Missing or blank span blocks intake instead of creating a 5 m member;
+metre values normalize to mm in the ledger. This previously optional input is
+why the correction release uses a minor version. ETABS intake rejects mixed
+raw/precomputed force formats, equivalent-station collisions and cross-file
+label/story aliases before exposing a batch or snapshot design request.
 
 ## Scope added in v0.30.0
 

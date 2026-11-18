@@ -2137,13 +2137,18 @@ The matched FLOW04 source evidence remains in [draft PR #1117](https://github.co
 PROJECT01 and PROJECT02 remain on HOLD pending member design and checked-output
 integration. PROJECT03 remains qualified for the bounded design-review workflow.
 
-## v0.30.1 — Prepared candidate (unreleased; on hold)
+## v0.31.0 — Prepared candidate (unreleased; qualification pending)
 
-The 0.30.1 candidate is not tagged or published. The verified public release is
-v0.30.0. The [changelog](../../CHANGELOG.md) lists the patch scope. It includes
-the beam and slab corrections, strict ETABS CSV identity check, library-first
-onboarding, required calculation-package cost gate, and connection ownership
-for the live beam WebSocket.
+This candidate combines the corrections prepared after v0.30.0 with strict
+ETABS force-format/station/member identity safeguards and Generic span fixes.
+Strict Generic input now requires explicit span instead of manufacturing 5 m
+geometry, so the documented pre-1.0 compatibility change uses a minor version.
+Existing CSVs must supply a finite positive span. No new eccentric-footing or
+snapshot-to-section caller API is included. The public baseline at preparation
+is v0.30.0; the earlier prepared 0.30.1 archives are retained historical evidence.
 
-The patch requires qualification of the exact versioned wheel and source
-archive before a publication decision.
+The owner authorized completion of the fixes and the sensible release on
+18 November 2026. Publication remains conditional on exact replacement wheel
+and source-archive qualification, required hosted/cross-platform checks and
+review of the final results. The safeguarded A40 special replay remains NOT_RUN;
+its source fix and ordinary transport evidence are recorded separately.

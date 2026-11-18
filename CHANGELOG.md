@@ -4,22 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Fixed
+## [0.31.0] — Prepared candidate (unreleased; qualification pending)
 
-- Reject ETABS force tables that combine raw station components with
-  precomputed extrema before creating a batch or snapshot design request.
-  Preserve raw signed actions and station provenance, precomputed envelope
-  behavior, and the blocked source rows with explicit header diagnostics.
-- Compare raw ETABS station identity by member, exact case and finite numeric
-  station. Block equivalent-spelling collisions before reducing forces while
-  retaining original rows, tokens and actions; keep distinct nearby stations.
-- Reject aliased ETABS label/story joins across geometry and force artifacts
-  while preserving public IDs. Require explicit spans for strict Generic CSV
-  intake, normalize metre spans to mm in its ledger, and reject malformed
-  supplied spans instead of creating a 5 m member.
+### Changed
 
-
-## [0.30.1] — Prepared candidate (unreleased; on hold)
+- Strict Generic CSV imports require an explicit finite positive span. Add
+  `span_mm` / `Span (mm)`, or a supported metre alias such as `Span_m`, to
+  existing files. Missing or blank span no longer creates a 5 m member.
+  This input-contract correction uses a minor version under the pre-1.0 policy.
+  The low-level direct adapter retains a visualization placeholder only when
+  no span header is supplied; it is not source geometry for checked exports.
 
 ### Fixed
 
@@ -37,6 +31,25 @@ All notable changes to this project will be documented in this file.
 - Bind live beam WebSocket replies and cleanup to their originating connection.
 - Lead installation and examples with the published Python library and
   document the optional DXF installation.
+- Reject ETABS force tables that combine raw station components with
+  precomputed extrema before creating a batch or snapshot design request.
+  Preserve raw signed actions and station provenance, precomputed envelope
+  behavior, and the blocked source rows with explicit header diagnostics.
+- Compare raw ETABS station identity by member, exact case and finite numeric
+  station. Block equivalent-spelling collisions before reducing forces while
+  retaining original rows, tokens and actions; keep distinct nearby stations.
+- Reject aliased ETABS label/story joins across geometry and force artifacts
+  while preserving public IDs. Require explicit spans for strict Generic CSV
+  intake, normalize metre spans to mm in its ledger, and reject malformed
+  supplied spans instead of creating a 5 m member.
+
+### Qualification scope
+
+- Retain PROJECT01 and PROJECT02 HOLD and PROJECT03 site-evidence requirements.
+  No eccentric-footing or new snapshot-to-section caller API is added.
+- The WebSocket ownership repair has source and ordinary transport evidence.
+  The safeguarded reconnect-during-in-flight replay remains NOT_RUN and is not
+  claimed as passed.
 
 ## [0.30.0] — 2026-11-17
 
