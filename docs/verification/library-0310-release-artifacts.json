@@ -1,0 +1,1067 @@
+{
+  "a40": {
+    "limitation": "Safeguarded replay was not attempted or substituted; ordinary tests do not establish this result.",
+    "ordinary_transport": "PASS",
+    "router_sha256": "8b1f8e099a1824c4a42a5943be349a0d34fd95b5d5f82b353456d269993dceb9",
+    "special_reconnect_inflight_replay": "NOT_RUN"
+  },
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.31.0-py3-none-any.whl",
+      "sha256": "dec0d86577a265b0c3fbde751984b8c9b24a33fff71287e98bad0a25ff88cb42",
+      "size_bytes": 1606027
+    },
+    {
+      "filename": "structural_lib_is456-0.31.0.tar.gz",
+      "sha256": "63aaa99c7ce882c341df0e2922d926333a54b0521d04eddf06f9ace067e58ced",
+      "size_bytes": 1370280
+    }
+  ],
+  "build_head": "197879357e6e084b941491cce564ef077c2dc36a",
+  "coding_lab_replays": {
+    "archives": {
+      "sdist": {
+        "archive": {
+          "filename": "structural_lib_is456-0.31.0.tar.gz",
+          "sha256": "63aaa99c7ce882c341df0e2922d926333a54b0521d04eddf06f9ace067e58ced",
+          "size_bytes": 1370280
+        },
+        "original_f01_controls": 3,
+        "receipt_sha256": "05f23c9faee8396e24b856555d5844703ef22bf1959737536522bd87cb4cf610",
+        "regression_cases": 53,
+        "runner_receipt_sha256": "350766098873ac569b85741730124e0a0cbb9e059d67dda28f60af19fbdef891",
+        "status": "PASS"
+      },
+      "wheel": {
+        "archive": {
+          "filename": "structural_lib_is456-0.31.0-py3-none-any.whl",
+          "sha256": "dec0d86577a265b0c3fbde751984b8c9b24a33fff71287e98bad0a25ff88cb42",
+          "size_bytes": 1606027
+        },
+        "original_f01_controls": 3,
+        "receipt_sha256": "b8a97376d201290f26abf5536d2b3ce3af9d529574b2c933ae75f3833ff35dc4",
+        "regression_cases": 53,
+        "runner_receipt_sha256": "8b96edd483dc76b9d79288fcb405f1e2d01b5d8dacbf89a4c52f847d600a36d3",
+        "status": "PASS"
+      }
+    },
+    "control_inputs_manifest_sha256": "b8efa8c66fe116201e3e52e594afba17c60ed27a26fda4e816300ab991643883",
+    "harness_sha256": "5da572a9e6d3a5fdfa4c19aaa223d11c7d6ad31dbe71a412753fcc26113b772f",
+    "scope": "53 focused intake regressions and three original frozen F01 controls on each exact installed archive; ordinary admission, no engineering acceptance",
+    "shared_runner_sha256": "b6b0ad5a55bdc5d4a656bee6254e26aa9aec3b79520f77ef75fc0f57cdc798ec",
+    "status": "PASS"
+  },
+  "installed_wheel_uat": {
+    "advertised_entry_points": {
+      "cli_entry_count": 15,
+      "entries": [
+        {
+          "acceptance": [
+            "installed_origin_check"
+          ],
+          "classification": "inspection",
+          "command": "install-preflight",
+          "id": "cli.install-preflight"
+        },
+        {
+          "acceptance": [
+            "capability_contract_test"
+          ],
+          "classification": "inspection",
+          "command": "capabilities",
+          "id": "cli.capabilities"
+        },
+        {
+          "acceptance": [
+            "test_cli_emits_same_versioned_bundle_from_json_request"
+          ],
+          "classification": "calculation_entry",
+          "command": "gravity-v1",
+          "id": "cli.gravity-v1"
+        },
+        {
+          "acceptance": [
+            "test_cli_requires_preview_hash_and_matches_python_result"
+          ],
+          "classification": "calculation_entry",
+          "command": "excel-v1",
+          "id": "cli.excel-v1"
+        },
+        {
+          "acceptance": [
+            "test_canonical_cli_preserves_result_and_problem_contracts"
+          ],
+          "classification": "calculation_entry",
+          "command": "beam-v1",
+          "id": "cli.beam-v1"
+        },
+        {
+          "acceptance": [
+            "cli_design_valid",
+            "cli_design_malformed_only",
+            "cli_design_mixed_validity",
+            "cli_design_empty",
+            "cli_design_missing_depth_basis",
+            "cli_design_non_finite",
+            "cli_design_unknown_field",
+            "cli_design_duplicate_identity",
+            "cli_design_ambiguous_format"
+          ],
+          "classification": "calculation_entry",
+          "command": "design",
+          "id": "cli.design"
+        },
+        {
+          "acceptance": [
+            "cli_design_downstream_consumers"
+          ],
+          "classification": "result_consumer",
+          "command": "bbs",
+          "id": "cli.bbs"
+        },
+        {
+          "acceptance": [
+            "cli_design_downstream_consumers"
+          ],
+          "classification": "result_consumer",
+          "command": "detail",
+          "id": "cli.detail"
+        },
+        {
+          "acceptance": [
+            "cli_design_downstream_consumers",
+            "dxf_optional_extra_contract"
+          ],
+          "classification": "result_consumer",
+          "command": "dxf",
+          "id": "cli.dxf"
+        },
+        {
+          "acceptance": [
+            "cli_validation_contract_test"
+          ],
+          "classification": "inspection",
+          "command": "validate",
+          "id": "cli.validate"
+        },
+        {
+          "acceptance": [
+            "bbs_dxf_consistency_contract_test"
+          ],
+          "classification": "inspection",
+          "command": "mark-diff",
+          "id": "cli.mark-diff"
+        },
+        {
+          "acceptance": [
+            "advisory_preview_contract_test"
+          ],
+          "classification": "compatibility",
+          "command": "smart",
+          "id": "cli.smart"
+        },
+        {
+          "acceptance": [
+            "release_verify_cli_job_flow"
+          ],
+          "classification": "calculation_entry",
+          "command": "job",
+          "id": "cli.job"
+        },
+        {
+          "acceptance": [
+            "release_verify_cli_job_flow"
+          ],
+          "classification": "result_consumer",
+          "command": "report",
+          "id": "cli.report"
+        },
+        {
+          "acceptance": [
+            "release_verify_cli_job_flow"
+          ],
+          "classification": "result_consumer",
+          "command": "critical",
+          "id": "cli.critical"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.canonical_beam.design",
+          "cookbook_path": "docs/cookbook/python/beam-design.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.beam.design/v1",
+          "journey_id": "is456.beam.design/v1",
+          "module": "structural_lib.design.is456.beam",
+          "request_contract": "beam-design-input/v1",
+          "result_contract": "beam-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.codes.is456.beam.torsion.design_torsion",
+          "cookbook_path": "docs/cookbook/python/torsion-design.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.torsion.design/v1",
+          "journey_id": "is456.torsion.design/v1",
+          "module": "structural_lib.design.is456.torsion",
+          "request_contract": "torsion-design-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.column_api.design_column_is456",
+          "cookbook_path": "docs/cookbook/python/column-supplied-steel-check.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.column.supplied-steel-check/v1",
+          "journey_id": "is456.column.supplied-steel-check/v1",
+          "module": "structural_lib.design.is456.column",
+          "request_contract": "column-supplied-steel-check-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.slab_api.design_complete_one_way_slab_is456",
+          "cookbook_path": "docs/cookbook/python/slab-one-way.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.slab.one-way/v1",
+          "journey_id": "is456.slab.one-way/v1",
+          "module": "structural_lib.design.is456.slab",
+          "request_contract": "one-way-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.slab_api.design_continuous_one_way_slab_builtin_is456",
+          "cookbook_path": "docs/cookbook/python/slab-continuous-one-way.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.slab.continuous-one-way/v1",
+          "journey_id": "is456.slab.continuous-one-way/v1",
+          "module": "structural_lib.design.is456.slab",
+          "request_contract": "continuous-one-way-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.slab_api.design_two_way_slab_panel_builtin_is456",
+          "cookbook_path": "docs/cookbook/python/slab-two-way.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.slab.two-way/v1",
+          "journey_id": "is456.slab.two-way/v1",
+          "module": "structural_lib.design.is456.slab",
+          "request_contract": "two-way-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.wall_api.design_braced_wall_is456",
+          "cookbook_path": "docs/cookbook/python/wall-braced-axial.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.wall.braced-axial/v1",
+          "journey_id": "is456.wall.braced-axial/v1",
+          "module": "structural_lib.design.is456.wall",
+          "request_contract": "braced-wall-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.staircase_api.design_straight_flight_staircase_is456",
+          "cookbook_path": "docs/cookbook/python/staircase-straight-flight.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.staircase.straight-flight/v1",
+          "journey_id": "is456.staircase.straight-flight/v1",
+          "module": "structural_lib.design.is456.staircase",
+          "request_contract": "straight-flight-staircase-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.deep_beam_api.design_simply_supported_deep_beam_is456",
+          "cookbook_path": "docs/cookbook/python/deep-beam-simply-supported.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.deep-beam.simply-supported/v1",
+          "journey_id": "is456.deep-beam.simply-supported/v1",
+          "module": "structural_lib.design.is456.deep_beam",
+          "request_contract": "simply-supported-deep-beam-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.flat_slab_api.design_regular_interior_flat_slab_is456",
+          "cookbook_path": "docs/cookbook/python/flat-slab-regular-interior.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.flat-slab.regular-interior/v1",
+          "journey_id": "is456.flat-slab.regular-interior/v1",
+          "module": "structural_lib.design.is456.flat_slab",
+          "request_contract": "regular-interior-flat-slab-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.footing_api.design_concentric_isolated_footing_is456",
+          "cookbook_path": "docs/cookbook/python/isolated-footing-concentric.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.isolated-footing.concentric/v1",
+          "journey_id": "is456.isolated-footing.concentric/v1",
+          "module": "structural_lib.design.is456.isolated_footing",
+          "request_contract": "concentric-isolated-footing-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.combined_footing_api.design_symmetric_combined_footing_is456",
+          "cookbook_path": "docs/cookbook/python/combined-footing-symmetric.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.combined-footing.symmetric/v1",
+          "journey_id": "is456.combined-footing.symmetric/v1",
+          "module": "structural_lib.design.is456.combined_footing",
+          "request_contract": "symmetric-combined-footing-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        },
+        {
+          "acceptance": [
+            "r0_exact_wheel_recipe",
+            "r0_strict_field_contract_audit",
+            "r0_finite_json_consumer"
+          ],
+          "classification": "calculation_entry",
+          "compatibility_owner": "structural_lib.services.strap_footing_api.design_property_line_strap_footing_is456",
+          "cookbook_path": "docs/cookbook/python/strap-footing-property-line.md",
+          "error_contract": "input-issue/v1 + structural-problem/v1",
+          "id": "python.is456.strap-footing.property-line/v1",
+          "journey_id": "is456.strap-footing.property-line/v1",
+          "module": "structural_lib.design.is456.strap_footing",
+          "request_contract": "property-line-strap-footing-input/v1",
+          "result_contract": "family-design-result/v1 + structural-result-envelope/v2"
+        }
+      ],
+      "entry_count": 28,
+      "family_facade_entry_count": 13,
+      "schema_version": "advertised-entry-point-inventory/v2",
+      "sha256": "a406089f632a81c3caa5bba5fd590915dfe0ee089fbb4a5457bfcbf045b2e3b4"
+    },
+    "case_count": 29,
+    "cases": [
+      {
+        "detail": {
+          "overall_status": "PASS"
+        },
+        "expected": "VALID_COMPLETED",
+        "id": "complete_canonical_row",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "rows": 1
+        },
+        "expected": "ACCEPTED_WITH_LEDGER",
+        "id": "named_adapter_alias",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_UNKNOWN_FIELD"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "unknown_calculation_header",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_REQUIRED_FIELD"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "missing_required_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_INVALID_MEMBER_ID"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "empty_required_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_INVALID_NUMBER"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "malformed_numeric_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_NON_FINITE"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "non_finite_value",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue_codes": [
+            "PROJECT_BEAM_DEPTH_CONFLICT"
+          ]
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "conflicting_depth_basis",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "blocked": 2
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "duplicate_member_identity",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "vu_kn": 0.0
+        },
+        "expected": "VALID_COMPLETED",
+        "id": "explicit_valid_zero",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "overall_status": "BLOCKED"
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "empty_batch",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "candidates": [
+            "etabs",
+            "generic"
+          ]
+        },
+        "expected": "BLOCKED_WITH_CANDIDATES",
+        "id": "ambiguous_adapter",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "blocked_rows": 1
+        },
+        "expected": "BLOCKED_AND_ACCOUNTED",
+        "id": "invalid_import_row",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "issue": "import.adapter_row_loss"
+        },
+        "expected": "BLOCKED_AND_ACCOUNTED",
+        "id": "adapter_row_loss_guard",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "unmatched": 2
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "unmatched_geometry_force",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "blocked": true
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "column_missing_materials",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "status": "HOLD"
+        },
+        "expected": "HOLD",
+        "id": "assumed_footing_basis",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "status": "FAIL"
+        },
+        "expected": "FAIL",
+        "id": "insufficient_footing_dowels",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "beam": "PASS",
+          "slab_review_required": true
+        },
+        "expected": "PASS_REVIEW_REQUIRED",
+        "id": "safe_result_review_boundary",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "beams": 1,
+          "diagnostics_stream": "stderr",
+          "stderr_lines": 3
+        },
+        "expected": "VALID_BEAMS_ENVELOPE",
+        "id": "cli_design_valid",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.malformed_number] combined.rows[2].width_mm: Field 'width_mm' is not a valid number"
+        },
+        "expected": "BLOCKED_NO_OUTPUT",
+        "id": "cli_design_malformed_only",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.malformed_number] combined.rows[3].width_mm: Field 'width_mm' is not a valid number"
+        },
+        "expected": "BLOCKED_NO_PARTIAL_PASS",
+        "id": "cli_design_mixed_validity",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.adapter_row_loss] adapter.output: Adapter returned no usable geometry or force records"
+        },
+        "expected": "BLOCKED_NO_OUTPUT",
+        "id": "cli_design_empty",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [CLI_DESIGN_REQUIRED_DEPTH_BASIS] rows[2].d_mm: Supply d_mm or tension_bar_diameter_mm with explicit cover and stirrup diameter."
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_missing_depth_basis",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [CLI_DESIGN_MALFORMED_JSON] $: Non-finite JSON number 'NaN' is not accepted"
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_non_finite",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [CLI_DESIGN_UNKNOWN_FIELD] rows[2].mystery: Every CLI input field must belong to the versioned contract."
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_unknown_field",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.duplicate_record_id] combined.rows[3].source_record_id: Duplicate source record identity 'B1_S1'"
+        },
+        "expected": "BLOCKED_NOT_EVALUATED",
+        "id": "cli_design_duplicate_identity",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "return_code": 2,
+          "stderr": "Error: [import.ambiguous_format] format_hint: Automatic detection requires exactly one adapter; candidates=['etabs', 'generic']"
+        },
+        "expected": "BLOCKED_WITH_CANDIDATES",
+        "id": "cli_design_ambiguous_format",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "bbs": true,
+          "detail": true,
+          "dxf_exercised": false
+        },
+        "expected": "VALID_CONSUMERS",
+        "id": "cli_design_downstream_consumers",
+        "status": "PASS"
+      }
+    ],
+    "library_content_identity": "4ea449756851d1f1ff241db7b8d0da549aaf4ee6d125730b794570d81d007bad",
+    "matrix_schema_version": "release-negative-uat/v1",
+    "matrix_sha256": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
+    "package_origin": "/private/var/folders/25/chdtyb255m7fjtqwz5gbbyg80000gn/T/s5_base_sbpmh1ae/venv/lib/python3.11/site-packages/structural_lib/__init__.py",
+    "package_version": "0.31.0",
+    "professional_approval": false,
+    "public_examples": {
+      "maintained_beam_service": true,
+      "python_readme_batch": true
+    },
+    "qualified_review_required": true,
+    "schema_version": "exact-wheel-uat-receipt/v1",
+    "status": "PASS"
+  },
+  "package_file_count": 416,
+  "package_payload_sha256": "8dee09b08d7a2d8d80dc1735645be970c3df01a15447d825a9f481b5c00a918a",
+  "professional_approval": false,
+  "python_tree_sha": "506778f18f786bd5789065a699192fc5a8995206",
+  "qualification": {
+    "beam_column_tests_per_archive": {
+      "sdist": 980,
+      "wheel": 980
+    },
+    "profiles": {
+      "base": "PASS",
+      "baseline": "PASS",
+      "beam-column-sdist": "PASS",
+      "beam-column-wheel": "PASS",
+      "cad": "PASS",
+      "dev": "PASS",
+      "docs": "PASS",
+      "dxf": "PASS",
+      "etabs": "PASS",
+      "examples": "PASS",
+      "exports": "PASS",
+      "pdf": "PASS",
+      "pmm": "PASS",
+      "render": "PASS",
+      "report": "PASS",
+      "sdist": "PASS",
+      "slab-footing-sdist": "PASS",
+      "slab-footing-wheel": "PASS",
+      "transport": "PASS",
+      "validation": "PASS"
+    },
+    "receipt_sha256": "240aecd25ecc50fc81996de8caa54c72b2d400466ed5c55c8c294744a652c2b3",
+    "slab_footing_cases_per_archive": {
+      "sdist": 25,
+      "wheel": 25
+    },
+    "status": "PASS",
+    "verification_inputs_sha256": {
+      "Python/examples/beam_comparator_reference.py": "cab79c39822940083361a55507236837f1b677eddb76bb5f4150306b23e15ceb",
+      "Python/examples/beam_continuous_detailing.py": "f6e181d4a5b7eb7b50cdce3e97575579042f33d536fce4260d030d0f3b3faf4f",
+      "Python/examples/beam_finite_service_history.py": "6ae27f93d8c689878a30fc725e1055cd251ba00990349de38abedee19825b7ad",
+      "Python/examples/beam_instantaneous_service.py": "597a89b14a13d6b0601b4e4cb6c567bbe8cd92d18c9cf6a14ea5a8d137d8aa68",
+      "Python/examples/beam_layered_cage_edit.py": "6556109903cd6f7f0c6e2b7b60ab39f96227f99d62140d15bec1d567bae142e6",
+      "Python/examples/beam_section_catalogue.py": "46d06b063931f4c143c6d8b030a97a00b7def7813be9a4291c6759a1adc2aceb",
+      "Python/examples/beam_section_closure.py": "962f804b10440baf870760193928d0b42e14e458c3e8a1db910f60240c07cb87",
+      "Python/examples/canonical_workflows.py": "70303af2d06463bbd91dcd638455a6e3b783a482a4bb25b5428bbcf240a03ade",
+      "Python/examples/cantilever_beam_check.py": "c29ea9d08736fd69ad34d79cd87a944718541ab594eda22e3279ce8f0c7b7ef5",
+      "Python/examples/circular_column_detailing.py": "4e1db3df10220ce60ebfaff82fdcc6c5782f8cf8f4f3ec4e884a9add74c17d97",
+      "Python/examples/circular_column_member.py": "80755ae530863838d06efd16d4e71ba863a3e51429135a3f164decba8842930a",
+      "Python/examples/column_catalogue_selection.py": "bc1875202fe89b9c7b15356d479134cc9031a303c1b5943a538299e2a34829a8",
+      "Python/examples/column_interaction_slice.py": "ad664e0ac94ff7e1262e199393487d2daf5f75cd72916f1c45f38ac1e8849018",
+      "Python/examples/column_member_detailing.py": "f42ef24bac7d250f8d93d523457c63a515ad8097e8aec95e3a3228715c9c9067",
+      "Python/examples/column_service_section.py": "bab3cfed4a9486d2a6797102071eae567c6f55a91468220dd2d7ee88e67763df",
+      "Python/examples/complete_member_workflow.py": "b9ea8ff810914763137a028b0c5b4bf45f3c46c0180911dd786523e9e16c690a",
+      "Python/examples/continuous_beam_check.py": "781f2216a3d5d2f5e07dad991bc839c02eb3644308a238b53c93d12eeaccda22",
+      "Python/examples/ductile_frame_cut.py": "a5067cf78cfb1cea4b67da0e32364963bb35c17bd6c8621348ca0cf0be6c240e",
+      "Python/examples/ductile_interior_joint.py": "d4e8a09d81b8a1ee018224b9df136fe81b907d4b3815293bdd97e79a44354e8d",
+      "Python/examples/etabs_paired_forces.py": "b037e57d044bfeadb8cd763535511afdc6e3417081476fc7ebbae89df38e0e69",
+      "Python/examples/four_corner_column_member.py": "7a5ac455f0d4a23fa432a794cf2d7ea9bac7c26c964347e162faa482f84ce32c",
+      "Python/examples/full_pipeline_synthetic.py": "7fbee57ed0bbc1ac26ea271ae2a6f0c2d2fd57c5e2599179af51276bf08e73a8",
+      "Python/examples/isolated_footing_reference.py": "f23270b7e04508893a9157bbca05c7ac47000aad396d321a99b2815ed19b9e6e",
+      "Python/examples/layered_column_section.py": "60bd0e17a90c4ca64feffc9cd5aa6922d9014c08c9c39c93bd7a453f94e8bea1",
+      "Python/examples/physical_torsion_member.py": "9d80581d6f89873cfb73392b57de9c6b949c51cedc9d8538d52fa3b7485ac79b",
+      "Python/examples/positioned_rectangular_column_member.py": "86813e449117f39aca9dcf2ea72daf1e02af748d068427950b859f94bd044486",
+      "Python/examples/sample_beam_design.csv": "e6e019df018ea37f2b0a3c37feb2c2604db1961b6fbf117f1b01dca115a2e993",
+      "Python/examples/signed_beam_section_check.py": "e0998d73afccc9589b37522c51f19cfc41bff5f00368167c468e1d84230cfdc7",
+      "Python/examples/slab_coefficient_references.py": "495518e3e12be42aa84c0442e7e8a8c04f77b37b9fbf9b44c34efafefdba074f",
+      "Python/examples/slab_direct_service_reference.py": "dfe4ad54d49949c251518d132c73eda37595a5e82634d29af157446bca2e9e4b",
+      "Python/examples/slab_installed_controls_reference.py": "6549cee659034f3880eb856d827c3f1f65f9eef1c290f61bf08be5cd33c9c699",
+      "Python/examples/slab_one_way_reference.py": "f37ff9bb6103ae57e7c92226e1e3841b29f2c28fc73fc60744cbefe2a9232541",
+      "Python/examples/slab_supplied_action_references.py": "36f7a5c36214395b88ee0a2d8c8cfc98c2163f57ceeb7dc56ffb29c5b207feb0",
+      "Python/examples/slender_rectangular_column_member.py": "02a633571d1d1ed711351a3dd87f4d833a2b306a42e45674b9016c5737266d20",
+      "Python/examples/t_beam_member.py": "d4283585939daae5ce89f7f5f49b41a0247f91784df8755694ee2bb91a3c8efe",
+      "Python/examples/tied_rectangular_column_member.py": "699013fee9016d6e8fd6bc22372e108a6fae933215f714af4577b52e9e77d50c",
+      "Python/examples/torsion_station_reference.py": "1582651c9423764be660dcc86096109789a2d322467af36222d89b499d38ce5f",
+      "Python/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "Python/tests/codes/is456/slab/test_built_in_coefficients.py": "a4bb7eadc21424327b449b593686d0306ac9bc65c2b056f566fd645dadec79dc",
+      "Python/tests/data/benchmark_vectors/family_review_inputs.json": "3e7d55400cdfbc940a10a3202c13ce53a3aafe192480283029d4631076f59661",
+      "Python/tests/data/benchmark_vectors/family_review_reference.json": "0e02c42ac3f237deb5a0dde53738081cbd9d47e4dac583a9a6854efbae8d5645",
+      "Python/tests/data/benchmark_vectors/flanged_branch_reference.json": "627fe3714b942a4891ca6031c16c7b9fa3d1e94e9d67baf9aaa508197a6045ae",
+      "Python/tests/integration/__init__.py": "eb524fbb292ded7e99ccc49499e59a72f09d78b9faea5d791e309906312669a2",
+      "Python/tests/integration/test_beam_comparator_example.py": "c75041e3fdc73059b8d3b1ef5c6f04f94c883d3ed6112759c049f74063b2e0af",
+      "Python/tests/integration/test_beam_continuous_detailing.py": "02e11bbcb88e9e84bec7c66a14728ea7764d126c98cae65276f4c02de80d6681",
+      "Python/tests/integration/test_beam_edge_torsion.py": "86810727baf10c9be6232765fe70f1bd3e56fdfb902333f8ad203bbbb0ac0204",
+      "Python/tests/integration/test_beam_finite_service_history.py": "c750e73822a8baff5204fde41a528919f3106e119abcda1448eb8990d0b2d018",
+      "Python/tests/integration/test_beam_instantaneous_service.py": "0d9ecdf44cf99c97dc6c2a94e6ede546ce7770354f11760a1fcf4cf19422946a",
+      "Python/tests/integration/test_beam_l_lap_reference.py": "c57e75e328a5665356dc3d729566417a9a097db9ba964558027da1a7ca27b2eb",
+      "Python/tests/integration/test_beam_layered_cage_edit_reference.py": "8b275589b87ed164490ce0f3ae1d5a80d3b0ac8ecd7aa2b801bde03c920d7022",
+      "Python/tests/integration/test_beam_physical_flange_reference.py": "6d0e05545ad6e94d8caaf634da441015859f33fbfb9ff5cf032ee0620428cc02",
+      "Python/tests/integration/test_beam_primary_route_torsion.py": "c067e320ee91067e500295c0bc7a3e6b3b993675d090c04778b07eff504ff43f",
+      "Python/tests/integration/test_beam_section_catalogue.py": "251e248c5980a4ccfc1e452d9ab874456bca2d26b6fec14db535acddae836403",
+      "Python/tests/integration/test_beam_section_closure.py": "0bf9e4278a918f34852f5ab1b8b6b306c5d2dfd573728ba06146e863bcf93230",
+      "Python/tests/integration/test_beam_span2_lap_reference.py": "d145b131457aa34057692c64268ca3167dc0943afec0a07fa908fa2a54fe4d0e",
+      "Python/tests/integration/test_beam_t_lap_reference.py": "65ee149ff6201b81ab1d67bc45051fe5f48c868ff4411743f55b252af7744d12",
+      "Python/tests/integration/test_beam_unequal_service_history.py": "37de9059a936f5b498eb28996b8af1f86100f6bd8499156f69dced81494992d4",
+      "Python/tests/integration/test_cantilever_beam_check.py": "97f19b029e40ee572823b55984fba3d65ae4d3269d408c33808531b9ad08bbae",
+      "Python/tests/integration/test_circular_column_contact_lap.py": "e867f7fa0b8c357be0c38727293fceee5c514c70307c6e514234f0c677b7b789",
+      "Python/tests/integration/test_circular_column_detailing.py": "3ae23309f75f5521ecb1c6ea3fa9a64878c2b8908ae1567d06493bd1a47debd4",
+      "Python/tests/integration/test_circular_column_member.py": "e0033c3fad5995a0684d0feb3ff9c9e1c3167085b78326916bfdfd04d03a01ae",
+      "Python/tests/integration/test_circular_column_shear.py": "bddc296d9e441d43ff1f5879670eb9fdc930b961d94010ac7d9e8c8d9d88cef3",
+      "Python/tests/integration/test_column_candidate_search.py": "3a23178f243bf537295c0ac2fb19956957dab8ff0192536201e79b18b41adff5",
+      "Python/tests/integration/test_column_contact_splice.py": "42a3a23fce4f84daa42edde45470d709d6cb20d2cb0abfad66a500ca407a5191",
+      "Python/tests/integration/test_column_interaction_slice.py": "49e5b21c66c34b4a7e4f289241191a70c0a1e76af5db06a9c74b353c58da94bd",
+      "Python/tests/integration/test_column_member_detailing.py": "23ecb979c8e87032d64c6f815aff1eb726da0c8ade41bbd90358a3f724b03acf",
+      "Python/tests/integration/test_column_mixed_contact_splice.py": "6058ea22564e95bc071fc60256eca7882a3f9b8afe66c9adfa0f6690e47db63e",
+      "Python/tests/integration/test_column_result_transport.py": "b03290b34016e4fde5fc7f20be87775be8660b617b6ef1efda853f19f1acd37d",
+      "Python/tests/integration/test_column_service_section.py": "dc603224b4c5b5668619ebc3b58644893cbb7c76b2686a6d62cc8b76e0842ea5",
+      "Python/tests/integration/test_column_slender_contact_splice.py": "c10d1582d75e30ecee146e808520a8516057794b24e10b4ba6ffc8e56ec2c829",
+      "Python/tests/integration/test_complete_member_workflow.py": "7d583f05b38d409f49c832536dcf5dbd984f4c4652f51382c5abc273cfb00f4b",
+      "Python/tests/integration/test_continuous_beam_check.py": "6552e9dc04dac0f9d5922c6dab6f05fcb90eedfac6c28bf9f5e1297e8c14a0ac",
+      "Python/tests/integration/test_ductile_exterior_joint_reference.py": "de8981a9548de5cd001acf954a473dcf4c7b456503bde90b26524dd2ec587b3e",
+      "Python/tests/integration/test_ductile_frame_cut_reference.py": "3d410b68228c9754a89d0110bcf78c9a5f049098fc45ff9559ac06932c73676d",
+      "Python/tests/integration/test_ductile_interior_joint_reference.py": "f814b5875bf5f4a4b4da0779a028315c344c3d54317a2cb07f75039ae96f8580",
+      "Python/tests/integration/test_etabs_paired_forces.py": "fb5e426c9be937d7f955141b765d3aeddf8a360da043de63a8cfa98753b4bb8d",
+      "Python/tests/integration/test_flanged_branch_equilibrium.py": "4505ee6a26568e021f81418d5ccb4aa976ea8792113897eaa45d6a1e36955c25",
+      "Python/tests/integration/test_flexure_edges_additional.py": "1b04aa5d3a3f8f84be80b0b4498ee7b99ec276153871eb1e64c36fce7e89878b",
+      "Python/tests/integration/test_four_corner_column_member.py": "64c43a5d228675a550bea35a5d419248cc0eea18c2fad8a27a721df4f313083c",
+      "Python/tests/integration/test_layered_column_section.py": "e6a924f068f8724d1cf5bdf08b191cb90bd2f1ffe296a296b15e4716531e1d65",
+      "Python/tests/integration/test_physical_torsion_member.py": "f8abc77ff3b8a3220d140a18bf2cf8f383d9c77fd7e2c3a2a9f3b71104a374df",
+      "Python/tests/integration/test_positioned_rectangular_column_member.py": "6530892888553dd79057bb871cb453e4519594f206be9b57dbbb5564e36ee513",
+      "Python/tests/integration/test_release_027_consumer_repairs.py": "4afa9a05bf36c68c95f9a84e958a6008d03c96fde7b34d4da4efcfd3020bd792",
+      "Python/tests/integration/test_signed_beam_section_check.py": "fb250832942c4c5262e4cf692c2624bc8911e02608435039bb7543178375dba4",
+      "Python/tests/integration/test_slab_supplied_actions.py": "67a605c0356f090ba74eb1926101cf5415daee8c5141a5d74f1aad24e006fe61",
+      "Python/tests/integration/test_slender_rectangular_column_member.py": "560f1d33e6693f871af1634723429507f9032d66f6bbca5a9b7413c93224fccd",
+      "Python/tests/integration/test_t_beam_member.py": "6befe689609667e31d972b6c469ba11c8e2b900e2fb488f134f76bd68e5683ef",
+      "Python/tests/integration/test_tied_rectangular_column_member.py": "3909994f747dc34621464b7d06ee7980e367f6ed61b09456dd8acc0168a0bb79",
+      "Python/tests/integration/test_torsion_corner_geometry.py": "fe91d0067e538764df69b6895e90f3a55341ec80c9b86fb1c809b1c5b3cda564",
+      "Python/tests/integration/test_torsional_serviceability.py": "fce1ab5a95855c15ba3174934aa7fd85b13e223c6f1a253620e1e2dea109e603",
+      "Python/tests/integration/test_workbench_beam_layout.py": "6907801dae2b2e71f99eb0952c219692fd475236369d06f368db6c77a1410c7b",
+      "Python/tests/performance/test_benchmarks.py": "727ae26d69b7423fe682a8d48b3cd2ad6f790a882afc073df02cff85c85e0b75",
+      "Python/tests/test_calculation_report.py": "6c19dc61da882ed9143082ba5560cd151d96c332cc9b51ef0beccd86c51a7b14",
+      "Python/tests/test_public_examples.py": "0a7fd92dcfca8397277b50f36b2f5a9cb7ff241874cdb90e217cedbae16cd003",
+      "Python/tests/unit/test_structural_engineering_wp07.py": "6ddd96e00beeeb65057f583a2e3e272285025fc46859567afaddb4c4a5213d6e",
+      "Python/tests/unit/test_structural_engineering_wp08.py": "f9ccc41863e4fb275b62e0f6abd35c7ba1be889171d05bba8ea9933b0dbca95d",
+      "contracts/structural-engineering/conformance/wp01-per-bar-vectors.json": "fe86d0a0025af230bd3983eaf90c194d7d6c7cbe8b33683d5dd3e0fe42a15143",
+      "docs/developers/platform-guide.md": "0616f9c043c683382562b680a61bba1f0288fbc7f86613e1797119fd487a1c8e",
+      "docs/getting-started/beginners-guide.md": "23c192c25d1151619ff30ee670296d75dd21d59fce4b2d083cb07d6a930c5e59",
+      "docs/getting-started/colab-workflow.md": "e44e8b0d8d8490e25aeda09647a8ba02d616d7d8822e534625818c5c21c57341",
+      "docs/getting-started/python-quickstart.md": "564071ca88054374314869b6f6d4c86ad8f3f1fc94dfd6e36ac2b4c676d3bad2",
+      "docs/reference/api.md": "8d4acf30ee0ce41a8deb01c3228497abcdd5f9395a027ab6ed1e42e678b81eb4",
+      "docs/verification/_duct01_cage_reference.py": "e57149e1ba677c6e6ae4eaeb5251e71501496252832ca6fe7ded0ba3cc5a9e78",
+      "docs/verification/_duct01_section_reference.py": "bff9d869019e66e06fb6a9e334cb10d26fe1e129b90b13f89e05fb3889fefa5c",
+      "docs/verification/_duct02_cage_reference.py": "c31fd487775f6f05e37f0dce41ee7bdf70ba6e625f9af1b7bf358b09e6426157",
+      "docs/verification/_project03_frame_statics.py": "eea7f0b67ccc5064df2bbbb250b27a58df08234b654050659edcecaef3013bc8",
+      "docs/verification/_project03_member_reference.py": "05e771b7d4881541f3f1c73766a505535f417247837e89d37a7aa41a8821f220",
+      "docs/verification/check_library_027_beam_section_reference.py": "2d09815e8823d10dffd1d74a600f489276effda33408a6c50e43ede153fee1b5",
+      "docs/verification/check_library_027_four_corner_reference.py": "6213569f9ab1ccb4972ac1803885e44269850058e6db21af555a207e1d35048d",
+      "docs/verification/check_library_027_references.py": "6a624e73c0d4a0f19bec7fb812bac3e57f3bad4fd2ee486086f83da9a61f6470",
+      "docs/verification/check_library_027_t_beam_reference.py": "42147f0b9e270830cf0a67fcf22382afc48e6453fecdef03073d61e90baa4f9c",
+      "docs/verification/check_library_027_torsion_physical_reference.py": "0a2c2f85384a61fef29bc2b8dee3ef16d357298d704b034d9cdb04f8d7b8647a",
+      "docs/verification/check_library_027_torsion_reference.py": "fd94269a61df8b85c7341a4834a6b1e816016ae6ec9921a5856a5548cfa2f49a",
+      "docs/verification/check_library_027_torsion_serviceability_reference.py": "1b8aced4c2a314d283ef2a45c56f558705c8c7f6d39fd532ce15fae1043ad23c",
+      "docs/verification/check_library_029_beam01_reference.py": "e56c0155fef1005bea3ec595d36555a40073ca573e7f246f66b91ecc8f52e3b5",
+      "docs/verification/check_library_029_beam02_reference.py": "f2e8169bd056591857d726e03e65eb89835b517d2735bc9ce18cf88e911853e0",
+      "docs/verification/check_library_029_beam05_cutoff_reference.py": "77a647f84eef965b1796f94773c23bb779a13dd30e51f0a5e0d26c612c1d9989",
+      "docs/verification/check_library_029_beam05_flanged_reference.py": "6c59d3310317775539ab3f242433535079e24d06cfff43a74f2f3f9204b967bc",
+      "docs/verification/check_library_029_beam05_lap_reference.py": "5f210e01b0a7599c93a0e98fa652923a2c315ff806bd469cf2f506d730ee1181",
+      "docs/verification/check_library_029_beam05_reference.py": "635603a082634c4055cdab00368f0733d59cf8b96dddb6302a565199b9c4a789",
+      "docs/verification/check_library_029_beam07_reference.py": "0a0f48c73f0c5cae1db15af8200cbea406937844fbab5870f53533a338f4810a",
+      "docs/verification/check_library_029_beam_sections_reference.py": "264a88acd68cba3ddad32d3da33b52c013f046826b4d73cab196d61d33869481",
+      "docs/verification/check_library_029_col02_reference.py": "3d9e56bd5ae946d76c46828967d4be5edf9b87e553fbd1f8ae51f09989feba20",
+      "docs/verification/check_library_029_col03_reference.py": "0e9bf6733f30ceccdd0d64f13ed26671f7cf1535105ce0f8f091ce8f9355d37b",
+      "docs/verification/check_library_029_col04_reference.py": "ebbdf76b1d26c76f315a658848769fd4b1c87daf4d70060c3fa64e0920669c42",
+      "docs/verification/check_library_029_col05_reference.py": "f7638ddbd01f19b31b9398035166ce33bb0942fad775280b8abcd801644db65b",
+      "docs/verification/check_library_029_col06_reference.py": "9ff07a032794a0c254bc7fb5bc6d4edabaecb2a359fb40607d497e5e81e1cfd9",
+      "docs/verification/check_library_029_col07_circular_reference.py": "98137dc2db138d0c8c2a91668d791ffbdefbbd8f4dc7f08983f61e6a42d534a9",
+      "docs/verification/check_library_029_col07_corner_reference.py": "cf95bf3e7707724eee94d0ee83ae93a5a779350f955fd350cabaa05a0bd14379",
+      "docs/verification/check_library_029_col07_mixed_reference.py": "92494da28af5efe12ed6a96177a84b757fa363550ba6f4659dd13b3ad28f999f",
+      "docs/verification/check_library_029_col07_reference.py": "42fd499ca3208909e2517865b98fc5d63b83382ea0c8fa0364382b7e4f9408e1",
+      "docs/verification/check_library_029_col07_slender_reference.py": "0df25f8b9c2b4e2805b5ed6d1b3eb80e47e393a2ff02014798b5295ccd156527",
+      "docs/verification/check_library_029_col07_splice_reference.py": "47b2935998878450b1963a44ea11747dbe77767455dafe3719a9bac4fc3962e5",
+      "docs/verification/check_library_029_flow02_reference.py": "63f9d3f1b8f2e69d148147f092184f733e2f7821bc4b4c7172a390989b8b92cf",
+      "docs/verification/check_library_029_flow03_beam_reference.py": "84cf98a5293c01fae5e5cebca4dc206df86fae469bb557916a8ae6e22983725e",
+      "docs/verification/check_library_029_flow04_reference.py": "71f7701c76b82c560cafb23191a4d48554510d65347d75b1a5cccd4d35427d89",
+      "docs/verification/check_library_029_sec02_reference.py": "182d61812b753803e0cdceb7fa9762a132541b7cce6b61d775409f2142061e0c",
+      "docs/verification/check_library_029_sec03_reference.py": "ced52438fbbf2ffb634a523dc3ca5896aae07ee77c0db2bb9ab021b872902678",
+      "docs/verification/check_library_029_serv01_reference.py": "0fcf8ec24df5c42a9b0e6e86198b065ce2d080bb2ca6d7406a272e8aeda8cb17",
+      "docs/verification/check_library_029_serv02_reference.py": "1993ec9e4021b11319c200263678e4dc2782ebc297cc289cb89076b331d51b40",
+      "docs/verification/check_library_030_beam05_cutoff_reference.py": "142a30500e190c0ca969d0d1dd9f8ee478175ac4724da519e5dd72d715501645",
+      "docs/verification/check_library_030_beam05_flanged_lap_restraint_reference.py": "a2cbd6a4a39ec55d935155e6d58fef73aec0f3a5495ff9909a253cb616776c96",
+      "docs/verification/check_library_030_beam05_haunch_reference.py": "53bfb060bf64f6d45f16f6310701ee2d7511530825b88cb9bb2ce86918ed2e32",
+      "docs/verification/check_library_030_beam05_l_lap_reference.py": "7826027fff37e14cb0b07e560a126914416e285fb0e876ee6136a50280d58e9c",
+      "docs/verification/check_library_030_beam05_lap_placement_reference.py": "644dd0bc5130d0c2b9f7020274a295877a9d7f8d136b68b113ae53629928e25a",
+      "docs/verification/check_library_030_beam05_lap_reference.py": "fcc83e2ed22404da64849abf79c8d7f556a32b1f6aea0655b4ffb6daff7cd693",
+      "docs/verification/check_library_030_beam05_physical_flange_reference.py": "64e9d2c8a7de4132076dd819fb90d77b60b0227681c303ae1dad934f8addf973",
+      "docs/verification/check_library_030_beam05_rectangular_lap_placement_reference.py": "4e04dc6001dab365f3d6ce631e447859e1a27a1342e083516ad3cee102597ce5",
+      "docs/verification/check_library_030_beam05_span2_lap_reference.py": "2d694c5295a38a72a4a61a84ce414c9e4c2b7cc9aca2cb4faa991366357e52e6",
+      "docs/verification/check_library_030_beam05_span2_lap_restraint_reference.py": "3f17722a5f40734d79431279004afb7e99a599cb83ee3536ebc80967c2ba1e74",
+      "docs/verification/check_library_030_beam05_support_top_lap_reference.py": "36e0c271ebf1c5d84b7d69d1827c6c02e2f297e548fae625de6b70b93863e90b",
+      "docs/verification/check_library_030_beam05_t_lap_reference.py": "3d13490a4e6f6a92df3bc0238be73b108148831d8735e8097f8a125f4dfb94ba",
+      "docs/verification/check_library_030_beam05_varied_links_reference.py": "fe27508c63e918d1c24b3de2a3798a882a0a1b4ed5336005b95f74abe779e493",
+      "docs/verification/check_library_030_col07_circular_lap_reference.py": "6a7023e2787705536d50315893c7aba4645d33a562b1f0454b4cf507877babb8",
+      "docs/verification/check_library_030_col07_circular_shear_reference.py": "ec72a39c53271358ac30ef886c5895949b4e281cf74c7444a43a552dc57b4920",
+      "docs/verification/check_library_030_col07_mixed_splice_reference.py": "90da85afb6aa40f001d984b69a4f7a16eaea298176f67e6de45526472e311b91",
+      "docs/verification/check_library_030_col07_slender_lap_reference.py": "047d158ae93d330d2a7494ae160e94b1c49964f8cd90a7a7b13fcaa83984797d",
+      "docs/verification/check_library_030_col07_two_plane_shear_reference.py": "2917ebec75a62587d064ba1c3d9e10c7d1f19235b2a455d5ce46833a467e4929",
+      "docs/verification/check_library_030_duct01_interior_reference.py": "39109518f179c268a4b7e3bf277d821fecb9d18d112bfd017c93cd4215dc8558",
+      "docs/verification/check_library_030_duct02_exterior_reference.py": "15cbac2c77eec169f182466737494f22b1d906196893cb32dad60fd1193de754",
+      "docs/verification/check_library_030_flow03_two_layer_reference.py": "69ea05a866d5f4f9af041fd475da1963c4e3a4c27adda70a1f55b78a47ac4c5f",
+      "docs/verification/check_library_030_project03_frame_reference.py": "a057ff25f48e2559ead8c0baadcb7ec76cb737832493678a2212c27211a7420b",
+      "docs/verification/check_library_030_serv02_unequal_span_reference.py": "1954cb180e91a17d2e34025407abcd4359135477cec73558e5a06491d3850007",
+      "docs/verification/check_library_030_serv03_b01_service_reference.py": "372bf347ce79de5c328ed89f5a3e0a843540c5f7d4468595888b754fd201d5ac",
+      "docs/verification/check_library_030_sl06_reference.py": "7fd1d02e939b17ec0d7fbbfad396f698a1261eac522b76ef37fea4408f864d46",
+      "docs/verification/library-027-beam-section-closure.json": "109ca89db76bf164248cc1982e71a16720d8adbf20d5a10205ddd84ca6295f7e",
+      "docs/verification/library-027-column-section-boundary.json": "29dcd2b5dcccd2db48c90acae7a4feb9a97fbc3789d991dc68db3431e3f3c456",
+      "docs/verification/library-027-column-section-extension.json": "473bf4264f34b1bf6b71511026529eaf9cbfcfd21e4060964bedec5a6b3037b2",
+      "docs/verification/library-027-comparator-baseline.json": "dbdb7eeabf1dfd508a051860d3b491dd135fb82f9f58e47cb8919eff85c5614f",
+      "docs/verification/library-027-comparator-reference.json": "b80c97de9328dc3e98bcbaa53887be499d8424e483dbb7c990a5dec0b2cee088",
+      "docs/verification/library-027-four-corner-column.json": "d67bec6cc8fc77d0a9365ee8ce01ed4d5f1555b841647b04533d2ee0389e81a2",
+      "docs/verification/library-027-member-replay.json": "589c4d5a43cc56c02251e9a827f5ee3b51d3123129d9310eaa383ba8ac6bf6b6",
+      "docs/verification/library-027-t-beam-member.json": "754eee3e3262a95a113df2ce54cb391994577da4d4c95ea0c8b58e3f0209bbfb",
+      "docs/verification/library-027-t-beam-qualification.json": "e0f9a70f21f3f09d41ab4ea2cba2aa307cf9ac0765bb5a30e43078d796378129",
+      "docs/verification/library-027-torsion-physical.json": "c168fab43e567834dbda6c65bb266854015ffe32237753e7039e49f516a879c3",
+      "docs/verification/library-027-torsion-serviceability.json": "bed83a0b97a9d9d3f4b22a9df2b67242c144a75cff0c3d83c54b2e7313a88837",
+      "docs/verification/library-027-torsion-station.json": "6b514ec7284e381be0752ea7786645ced7f3be0570412212471237071ec1a1f0",
+      "docs/verification/library-029-beam01-flow01.json": "34642f6961db9b08d5100f2289716e4159cf8a3da88d08984a64ab92885eb364",
+      "docs/verification/library-029-beam02-cantilever.json": "04e103e673838db56a0f297e7b688872be0c6caa3b4545035b943ca4a5f15e06",
+      "docs/verification/library-029-beam03-beam04-sections.json": "de65f3af5352f518026cd4855d8acfb300fe6b2aef7e2ba2ea9b8e39a2b68567",
+      "docs/verification/library-029-beam05-cutoff.json": "4f76d8e25d319e868bd5291f8c66e1bd2391dde21aef9ee8414f8b60cfb55b75",
+      "docs/verification/library-029-beam05-flanged-detailing.json": "42add020e3e563c0c4e15451d003b2f4e385d4864a19e29938f442a60667d3f3",
+      "docs/verification/library-029-beam05-lap.json": "d810a3a972fd6124d891e9218bb4b0e469a508b5a953337b054d1ab6fc13a66c",
+      "docs/verification/library-029-beam05-member-detailing.json": "fdfbe124119a70246310bf72f382740693a1e0984674cc3fd4fa8ce9994019a9",
+      "docs/verification/library-029-beam07-equilibrium-torsion.json": "db3a7fb62a2fdf2094967020b7ac4daaf72ca8cb6ea527a29e09519929934341",
+      "docs/verification/library-029-col02-rectangular-column.json": "8e5da107f0a49622a90e69f02d6fe329d285488b5daca5415e31f6c31ab828a9",
+      "docs/verification/library-029-col03-mixed-column.json": "a57a2836cac6c2b45ae49e513f9a1802139eb61a38358c3bb4005a62761a7431",
+      "docs/verification/library-029-col04-slender-column.json": "e0bba4cf6925382a0732d4d6bbb7db1e0cc61ef328527bbf49a396a85a9feab8",
+      "docs/verification/library-029-col05-circular-column.json": "699f39fed024d950e375752e5c305f1bcc6e2f487960e6663d7b9988f69f4524",
+      "docs/verification/library-029-col06-column-catalogue.json": "cb13c332a049a28610816f659539ae4a7bcf568cd96891daed34665dcb5b5f7f",
+      "docs/verification/library-029-col07-circular-member.json": "df501010d71601f36d9486f70dd4a5cda9ef2ba195229be883ef7f9c7c9f9107",
+      "docs/verification/library-029-col07-column-member.json": "37659e214e31856ff756df68ea392be9cc8fcba80994ed8172312df02022ef08",
+      "docs/verification/library-029-col07-contact-splice.json": "cc62d3f894f07c4e4ec95c5667d4e55285e12da907d550416e892541fbf7276d",
+      "docs/verification/library-029-col07-corner-splice.json": "fdf822dcdc0515b393ae480802000057c140dd489dbacd593e9c1652fedcb38c",
+      "docs/verification/library-029-col07-mixed-member.json": "39c5e591ba33fdfdd4b922b12b28c5ea7de82d0363be8edee1dc42513d954601",
+      "docs/verification/library-029-col07-slender-member.json": "3d2871c091b25e351de20045ec11ea6fd966eb5d3a575ac9ec293ddc0845ce55",
+      "docs/verification/library-029-flow02-beam-catalogue.json": "36fb4bdb03b6c48004e0269ce614d2725966957ed9732e82d0c1425d08318adb",
+      "docs/verification/library-029-flow03-beam-edit.json": "e9395bc87ac654d8f1f76d25e07ee6df74c19cbb352c3c9ad61e52cf54ce0bca",
+      "docs/verification/library-029-flow04-paired-intake.json": "b455e6757361984a7043d9c049ed5fc3486295650c67783c4c2c60333eb5b2c4",
+      "docs/verification/library-029-sec02-column-interaction.json": "d95fe1dfe50b7bc979176b92eec88f33fe5ea9ebd8403024fc578545fdbd3e2a",
+      "docs/verification/library-029-sec03-column-service.json": "7a57c5a3d3e188d9b4898a6748470190ec66b3b799f6c5414aa0695c6717c073",
+      "docs/verification/library-029-serv01-beam-service.json": "20f01dc32189dbdc326c5f832c185810fba1d5de6a1e09094123036a3edf1e7c",
+      "docs/verification/library-029-serv02-beam-history.json": "314ffccd80a110ef2c8ea1b9b8118b94868cf3013fc62b8b198aec574ee4e32b",
+      "docs/verification/library-030-beam05-flanged-lap-restraint-reference.json": "2c14a36ac2dd2a0a9a4cf321aa50da54c5c7d66f1de5d7ba6b20bd0a1b546f07",
+      "docs/verification/library-030-beam05-haunch.json": "fe2b416d67f011d962e17f7baec55cd8abfd683e430f7d9d4a54098f813ba5ac",
+      "docs/verification/library-030-beam05-l-lap-reference.json": "072f3b45c263fcbb05841726295e217bb09e648ba215d2b259e2c3f4b09703a0",
+      "docs/verification/library-030-beam05-lap-placement-reference.json": "fa7f06829923cccc26aae6669be692ff326d7b8ab059fa9166b38d7909bd777b",
+      "docs/verification/library-030-beam05-layered-cutoff.json": "76ecbaf8e6bb3246d545d76a15eabaee9191c03b15813607abfb64f9246f884f",
+      "docs/verification/library-030-beam05-layered-lap.json": "93e876601793838aa2e50737e961b4fa1cbd652bd46d9d9bbc9e7206326e9d85",
+      "docs/verification/library-030-beam05-physical-flange.json": "2168766fbdd95d8657e8274172b2dd8c3318fb083fa35640f10cf2b69db7cf3e",
+      "docs/verification/library-030-beam05-rectangular-lap-placement-reference.json": "3736cf58b4f457d3bdb36a27be20730c5256ac5ea9bf2ddc92faeda7eaa9a649",
+      "docs/verification/library-030-beam05-span2-lap-reference.json": "234a223be34bf889c64e66c267ed60c121e677b6f26ddf7ddba8c51324318fe9",
+      "docs/verification/library-030-beam05-span2-lap-restraint-reference.json": "c0b199bea8f40dd71883e5c8c9df25e5da676d7921e46b20ff3d35a71c0cb16d",
+      "docs/verification/library-030-beam05-support-top-lap-reference.json": "82a07e7f2b958df4c1e041667039d7e2d50a16d4b1f68130463d78853168e0df",
+      "docs/verification/library-030-beam05-t-lap-reference.json": "aa42d95069449f3df30edd60cb715896b9faa89cf2ed5f55b4d2ed54c58bc011",
+      "docs/verification/library-030-beam05-varied-links.json": "e7265425ad6b50e09dfdd12d44c59f3b2d447b32a6bd99076b63bf7356f04787",
+      "docs/verification/library-030-col07-circular-lap-reference.json": "203471e3e149699773eb7e1e671109df696fa135fe124236eace77d45d9ccb8d",
+      "docs/verification/library-030-col07-circular-shear.json": "c85427343377511bbf916bc99089bb97feb9f2e1db0df056284519ac414c5b7d",
+      "docs/verification/library-030-col07-mixed-splice.json": "0760492e7d821d10a124c7a9540d3fa4aaa495199b097c9c0dfc5e47d47cec3b",
+      "docs/verification/library-030-col07-slender-lap-reference.json": "ac0a2f7fae135405dc7f6c9509748a2fd0bc70abdae0d90120be5947316c83a2",
+      "docs/verification/library-030-col07-two-plane-shear.json": "c2c75547a6618baa5c30619737cdad437b77f66f1195c86512350b40bcb7d83b",
+      "docs/verification/library-030-duct01-interior-joint.json": "a9699400a04cb96b1a1959d2bcc7c0d1d82b24485abc6e08bc380ee4a0639243",
+      "docs/verification/library-030-duct02-exterior-joint.json": "9fc1616905adc149aafab40c34a314df90e3810bcbdb5c72ce4bc472eb18da2a",
+      "docs/verification/library-030-flow03-two-layer-edit.json": "ae0e080203bb8c92873a68b3bdd1525e19c1a7869d26a058ca024cc3d705e6f7",
+      "docs/verification/library-030-project03-ductile-frame.json": "53d3ad26d89439686eb9cd05a5b43c5970dc9ecde986b8f9dbac7d5fa23d94be",
+      "docs/verification/library-030-project03-frame-actions.json": "9f629396e1d0e5e400c3561b602005183bac0307a8098ce17c641f9f41541ae5",
+      "docs/verification/library-030-serv02-unequal-span.json": "b9c61eba1a54318fac4dfc79ca2ec389344ad5b7682017e1feb197db9c1d6c25",
+      "docs/verification/library-030-serv03-b01-service.json": "1f52e7e3616267bc6a0345fd775d6b08dcc472b4242f888c3fccfd356a2f7a7f",
+      "docs/verification/library-030-sl06-actions.json": "25c6b33c34b86fe1e5092d6eefae9ae149dcdabb09cfc993638b90b9e1c97e0f",
+      "docs/verification/replay_library_027_members.py": "328ea667c4a242f843dbb88415aecad2ad665bcf66a74fb8a31ec50370b397cd",
+      "docs/verification/replay_library_027_t_member.py": "0bf8a5dcb43718663482877b77a437e30283bf6728f95403fd2d5a804f97eb2a",
+      "scripts/_lib/release_beam_column.py": "e8d2d12f9a86e23059155491fbe8af12077d557231ca229d65c8346a22c8521b",
+      "scripts/_lib/release_qualification.py": "af231e39ebbb83d15fe28e875e65cde533ebe04391a83be3565b5aea978fb6af",
+      "scripts/_lib/release_qualification_probe.py": "b5f986d006901dea0c6d004f70a755531bcbfc60bad300164ca64b64e5280ee6",
+      "scripts/_lib/release_slab_footing.py": "24553953be59765f14af89bf5799458e87a9811f0d02d5599ab8a78b0f7090e3",
+      "scripts/dxf_render.py": "89b7807b38870cd7f96f47e42e2606081ecc79e5852cb4bf532686ebbcc961cb",
+      "scripts/external_cli_test.py": "4ce5b5fbd203458801a5317e1cf81c3e71fa5eb2de217907daab363fd9a50e85",
+      "scripts/verify_canonical_transport_artifact.py": "9de713e97a2b73c7981e2ccb6f56a120f5478d9ae793bdfaf9fef1b2bfad4196",
+      "scripts/verify_lib_pro_012_s0_artifact.py": "e4cb644b417bea59e02c8b96c232ea646e7c58e34b9f5a81b808d5db2b451a88",
+      "scripts/verify_lib_pro_013_f0_family_artifact.py": "c425bd27fd8b16c62f901990bb941359e7f1fdd2e30491feef458dd91462cf64"
+    }
+  },
+  "qualified_base_sbom": {
+    "bomFormat": "CycloneDX",
+    "components": [
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "3f7b347782ab7e4cf4c798496ae3a82787d9f21ec12676a9c564355eeef8daa8"
+          }
+        ],
+        "name": "pydantic",
+        "purl": "pkg:pypi/pydantic@2.14.3",
+        "type": "library",
+        "version": "2.14.3"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "c813ada7a651193acda85b6bc1cf12abd4b37cd25c7c6a75d7183512cc374969"
+          }
+        ],
+        "name": "pydantic_core",
+        "purl": "pkg:pypi/pydantic_core@2.50.4",
+        "type": "library",
+        "version": "2.50.4"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
+          }
+        ],
+        "name": "annotated-types",
+        "purl": "pkg:pypi/annotated-types@0.8.0",
+        "type": "library",
+        "version": "0.8.0"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+          }
+        ],
+        "name": "typing_extensions",
+        "purl": "pkg:pypi/typing_extensions@4.16.0",
+        "type": "library",
+        "version": "4.16.0"
+      },
+      {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "bc210535442b39e1bf2805e0c7a17dfd6a4ace760c84c7f7d16245d23a6b1c39"
+          }
+        ],
+        "name": "typing-inspection",
+        "purl": "pkg:pypi/typing-inspection@0.4.5",
+        "type": "library",
+        "version": "0.4.5"
+      }
+    ],
+    "metadata": {
+      "component": {
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "dec0d86577a265b0c3fbde751984b8c9b24a33fff71287e98bad0a25ff88cb42"
+          }
+        ],
+        "name": "structural-lib-is456",
+        "purl": "pkg:pypi/structural-lib-is456@0.31.0",
+        "type": "library",
+        "version": "0.31.0"
+      }
+    },
+    "properties": [
+      {
+        "name": "structlib:evidence-scope",
+        "value": "Qualified base installation dependencies. Additional profiles are qualified separately."
+      }
+    ],
+    "specVersion": "1.6",
+    "version": 1
+  },
+  "qualified_review_required": true,
+  "s5_merge_sha": "114c3a3f5d1bb2235693f9f794dbe84735869054",
+  "s5_reviewed_head": "197879357e6e084b941491cce564ef077c2dc36a",
+  "schema_version": "qualified-release-artifacts/v1",
+  "source_build_inputs_sha256": {
+    "Python/LICENSE": "0c91bb1e93e3b9691835e161bbb54c647d43c75cc6d3f5c6b0cf0a472c844208",
+    "Python/MANIFEST.in": "b703d2df94d48815b9660e1eae7473d32c051dd5bb57bc623775a0890f3773c3",
+    "Python/README.md": "a5d1a1fe3a80c725fc70c2c5a1daef6e58aa5488e020fc5867c8b99b998327ed",
+    "Python/pyproject.toml": "944f37dfaddd88e9c3be3a8169184dda2be6972c8175544fcf621067f1c744f8"
+  },
+  "source_validation": {
+    "checked_head_sha": "197879357e6e084b941491cce564ef077c2dc36a",
+    "fastapi_deselected": 6,
+    "fastapi_passed": 650,
+    "preflight_log_sha256": "df0f797075227dc1f9e43a59dbeda83b1c4841c993691466699b87d5abb1eeb7",
+    "python_deselected": 6,
+    "python_passed": 9899,
+    "python_skipped": 4,
+    "react_build": "PASS",
+    "required_pr_gate": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44268638210"
+  },
+  "version": "0.31.0"
+}
