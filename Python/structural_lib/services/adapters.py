@@ -1754,6 +1754,14 @@ class GenericCSVAdapter(InputAdapter):
         "cover_mm": ["Cover (mm)", "cover_mm", "Cover"],
     }
 
+    @staticmethod
+    def span_scale_to_mm(header: str) -> float:
+        """Resolve the explicit unit carried by a recognized span alias."""
+        lower = header.lower()
+        return (
+            1000.0 if ("_m" in lower or "(m)" in lower) and "_mm" not in lower else 1.0
+        )
+
     def can_handle(self, source: Path | str) -> bool:
         """Check if source is a generic/Excel CSV file.
 
@@ -1933,17 +1941,13 @@ class GenericCSVAdapter(InputAdapter):
                     span_mm = 5000.0  # Default 5m span
                     if span_col:
                         span_val = row.get(span_col, "")
-                        if span_val and str(span_val).strip():
-                            try:
-                                span_mm = float(span_val)
-                                # Convert from meters to mm if column name indicates meters
-                                span_col_lower = span_col.lower()
-                                if (
-                                    "_m" in span_col_lower or "(m)" in span_col_lower
-                                ) and "_mm" not in span_col_lower:
-                                    span_mm = span_mm * 1000.0
-                            except ValueError:
-                                pass
+                        if not span_val or not str(span_val).strip():
+                            raise ValueError("Supplied span must be nonblank")
+                        span_mm = float(span_val) * self.span_scale_to_mm(span_col)
+                        if not math.isfinite(span_mm) or span_mm <= 0:
+                            raise ValueError(
+                                "Supplied span must be finite and positive"
+                            )
 
                     # Placeholder coordinates based on span
                     point1 = Point3D(x=0.0, y=0.0, z=0.0)

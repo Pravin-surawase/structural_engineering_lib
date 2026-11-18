@@ -228,7 +228,7 @@ def test_malformed_or_non_finite_force_blocks_without_zero_substitution(
     forces_csv = tmp_path / "forces.csv"
     _write_csv(
         geometry_csv,
-        "BeamID,b (mm),D (mm),fck,fy,Cover (mm)\nB1,300,500,25,500,40",
+        "BeamID,b (mm),D (mm),fck,fy,Cover (mm),Span (mm)\nB1,300,500,25,500,40,5000",
     )
     _write_csv(
         forces_csv,

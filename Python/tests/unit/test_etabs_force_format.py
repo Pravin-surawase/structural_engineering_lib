@@ -347,3 +347,57 @@ def test_invalid_station_is_refused_with_original_token(
     )
     snapshot = _snapshot(geometry, forces, model)
     assert snapshot.status is ETABSSnapshotStatus.BLOCKED and not snapshot.beam_requests
+
+
+@pytest.mark.parametrize("force_unique", [None, "101", "202"])
+def test_joined_member_alias_cannot_bind_another_label_story(
+    tmp_path: Path, force_unique: str | None
+) -> None:
+    geometry, forces, model = _files(tmp_path, "M3,V2", "-120,-75")
+    geometry.write_text(
+        "Story,Label,UniqueName,ObjType,AnalSect,XI,YI,ZI,XJ,YJ,ZJ\n"
+        "C,A_B,101,Beam,B300X500,0,0,0,5,0,0\n",
+        encoding="utf-8",
+    )
+    forces.write_text(
+        "Story,Label,"
+        + ("UniqueName," if force_unique else "")
+        + "Output Case,Station,M3,V2\nB_C,A,"
+        + (force_unique + "," if force_unique else "")
+        + "ULS-1,2,-120,-75\n",
+        encoding="utf-8",
+    )
+    result = parse_dual_csv_lossless(
+        geometry, forces, format_hint="etabs", defaults=_defaults()
+    )
+    assert result.status is ImportStatus.BLOCKED and result.batch is None
+    (issue,) = result.issues
+    assert issue.code is ImportIssueCode.SOURCE_ID_MISMATCH
+    assert issue.path.endswith("unique_name" if force_unique == "202" else "beam_id")
+    assert result.ledger.rows[-1].source_record_id == "A_B_C:ULS-1:2"
+    snapshot = _snapshot(geometry, forces, model)
+    assert snapshot.status is ETABSSnapshotStatus.BLOCKED
+    assert snapshot.snapshot is None and not snapshot.beam_requests
+
+
+@pytest.mark.parametrize(("label", "story"), [("A_B", "C"), ("A", "B_C")])
+def test_matching_underscore_member_keeps_legacy_public_id(
+    tmp_path: Path, label: str, story: str
+) -> None:
+    geometry, forces, model = _files(
+        tmp_path, "Output Case,Station,M3,V2", "ULS-1,2,-120,-75"
+    )
+    geometry.write_text(
+        geometry.read_text(encoding="utf-8").replace("L1,B1", f"{story},{label}"),
+        encoding="utf-8",
+    )
+    forces.write_text(
+        forces.read_text(encoding="utf-8").replace("L1,B1", f"{story},{label}"),
+        encoding="utf-8",
+    )
+    result = parse_dual_csv_lossless(
+        geometry, forces, format_hint="etabs", defaults=_defaults()
+    )
+    assert result.status is ImportStatus.ACCEPTED and result.batch is not None
+    assert result.batch.beams[0].id == result.batch.forces[0].id == "A_B_C"
+    assert _snapshot(geometry, forces, model).status is ETABSSnapshotStatus.ACCEPTED

@@ -65,6 +65,10 @@ reduction, with its original station token, signed actions and row identity
 retained in the lossless ledger. Element, step and station-side qualifiers
 require a separately supported profile.
 
+Geometry and force rows must match the exact trimmed label and story pair.
+Public IDs retain the legacy underscore spelling, but that spelling alone
+cannot bind different pairs such as `(A_B, C)` and `(A, B_C)`.
+
 #### Optional Columns
 
 | Column | Aliases | Description | Units | Default |
@@ -203,8 +207,17 @@ Simplified format for custom data or manual entry.
 | `fck_nmm2` / `fck` | Concrete strength | N/mm² |
 | `fy_nmm2` / `fy` | Steel yield strength | N/mm² |
 | `cover_mm` / `Cover (mm)` | Explicit clear cover basis | mm |
+| `span_mm` / `Span (mm)` | Explicit positive member span; `Span_m` / `Span (m)` accept metres | mm after normalization |
 
-`story`, `span_mm`, exposure, support, and notes may be retained when present.
+Strict single/paired imports require a finite positive span. Missing or blank
+spans cannot create a calculable batch with guessed member geometry. Metre
+aliases retain their raw values and normalize the ledger's `span_mm` to mm.
+The direct low-level `GenericCSVAdapter` retains its legacy 5 m visualization
+placeholder when span is absent; that placeholder is not source geometry and
+must not be used for geometry-dependent design or checked exports. Malformed
+supplied spans reject instead of silently becoming 5 m.
+
+`story`, exposure, support, and notes may be retained when present.
 Optional explicit effective depth is a calculation input: `d_mm`, `d (mm)`, `d`,
 `eff_d`, `effective_depth_mm` and `Effective Depth` map to `SectionProperties.d_mm`.
 Its `effective_depth_mm` property uses that value when supplied; otherwise it
