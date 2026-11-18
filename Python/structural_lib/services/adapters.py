@@ -35,7 +35,7 @@ import math
 from abc import ABC, abstractmethod
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 from structural_lib.core.models import (
     BeamForces,
@@ -187,6 +187,25 @@ class ETABSAdapter(InputAdapter):
     def __init__(self) -> None:
         """Initialize ETABS adapter."""
         self._column_cache: dict[str, dict[str, str]] = {}
+
+    @staticmethod
+    def classify_force_columns(
+        columns: Mapping[str, str],
+    ) -> Literal["raw", "precomputed", "mixed", "unknown"]:
+        """Choose one force basis without discarding competing source columns."""
+        raw_columns = {columns[key] for key in ("m3", "v2") if key in columns}
+        precomputed_columns = {
+            columns[key] for key in ("mu_max", "mu_min", "vu_max") if key in columns
+        }
+        # Legacy Mu/Vu aliases denote precomputed values in the direct adapter.
+        # A shared physical alias alone does not introduce a second force basis.
+        if raw_columns - precomputed_columns and precomputed_columns:
+            return "mixed"
+        if "mu_max" in columns or "vu_max" in columns:
+            return "precomputed"
+        if "m3" in columns and "v2" in columns:
+            return "raw"
+        return "unknown"
 
     def can_handle(self, source: Path | str) -> bool:
         """Check if source is a valid ETABS CSV.
@@ -498,19 +517,19 @@ class ETABSAdapter(InputAdapter):
             headers = reader.fieldnames or []
             column_map = self._build_column_map(headers, self.FORCES_COLUMNS)
 
-            # Detect format: VBA envelope vs raw ETABS
-            is_vba_envelope = "mu_max" in column_map or "vu_max" in column_map
-            is_raw_etabs = "m3" in column_map and "v2" in column_map
+            force_format = self.classify_force_columns(column_map)
+            if force_format == "mixed":
+                raise ValueError(
+                    "Conflicting ETABS force formats: raw station components and "
+                    "precomputed extrema must be supplied in separate artifacts. "
+                    f"Source headers: {headers}"
+                )
+            is_vba_envelope = force_format == "precomputed"
 
             if is_vba_envelope:
                 # VBA envelope format - pre-computed envelope values
                 required = ["beam_id"]
-                # mu_max or vu_max must exist (at least one)
-                if "mu_max" not in column_map and "vu_max" not in column_map:
-                    raise ValueError(
-                        "VBA envelope format requires Mu_max_kNm or Vu_max_kN column"
-                    )
-            elif is_raw_etabs:
+            elif force_format == "raw":
                 # Raw ETABS format with station data
                 required = ["beam_id", "case_id", "station", "m3", "v2"]
             else:
@@ -1735,6 +1754,14 @@ class GenericCSVAdapter(InputAdapter):
         "cover_mm": ["Cover (mm)", "cover_mm", "Cover"],
     }
 
+    @staticmethod
+    def span_scale_to_mm(header: str) -> float:
+        """Resolve the explicit unit carried by a recognized span alias."""
+        lower = header.lower()
+        return (
+            1000.0 if ("_m" in lower or "(m)" in lower) and "_mm" not in lower else 1.0
+        )
+
     def can_handle(self, source: Path | str) -> bool:
         """Check if source is a generic/Excel CSV file.
 
@@ -1914,17 +1941,13 @@ class GenericCSVAdapter(InputAdapter):
                     span_mm = 5000.0  # Default 5m span
                     if span_col:
                         span_val = row.get(span_col, "")
-                        if span_val and str(span_val).strip():
-                            try:
-                                span_mm = float(span_val)
-                                # Convert from meters to mm if column name indicates meters
-                                span_col_lower = span_col.lower()
-                                if (
-                                    "_m" in span_col_lower or "(m)" in span_col_lower
-                                ) and "_mm" not in span_col_lower:
-                                    span_mm = span_mm * 1000.0
-                            except ValueError:
-                                pass
+                        if not span_val or not str(span_val).strip():
+                            raise ValueError("Supplied span must be nonblank")
+                        span_mm = float(span_val) * self.span_scale_to_mm(span_col)
+                        if not math.isfinite(span_mm) or span_mm <= 0:
+                            raise ValueError(
+                                "Supplied span must be finite and positive"
+                            )
 
                     # Placeholder coordinates based on span
                     point1 = Point3D(x=0.0, y=0.0, z=0.0)
