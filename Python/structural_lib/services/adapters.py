@@ -35,7 +35,7 @@ import math
 from abc import ABC, abstractmethod
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 from structural_lib.core.models import (
     BeamForces,
@@ -187,6 +187,25 @@ class ETABSAdapter(InputAdapter):
     def __init__(self) -> None:
         """Initialize ETABS adapter."""
         self._column_cache: dict[str, dict[str, str]] = {}
+
+    @staticmethod
+    def classify_force_columns(
+        columns: Mapping[str, str],
+    ) -> Literal["raw", "precomputed", "mixed", "unknown"]:
+        """Choose one force basis without discarding competing source columns."""
+        raw_columns = {columns[key] for key in ("m3", "v2") if key in columns}
+        precomputed_columns = {
+            columns[key] for key in ("mu_max", "mu_min", "vu_max") if key in columns
+        }
+        # Legacy Mu/Vu aliases denote precomputed values in the direct adapter.
+        # A shared physical alias alone does not introduce a second force basis.
+        if raw_columns - precomputed_columns and precomputed_columns:
+            return "mixed"
+        if "mu_max" in columns or "vu_max" in columns:
+            return "precomputed"
+        if "m3" in columns and "v2" in columns:
+            return "raw"
+        return "unknown"
 
     def can_handle(self, source: Path | str) -> bool:
         """Check if source is a valid ETABS CSV.
@@ -498,19 +517,19 @@ class ETABSAdapter(InputAdapter):
             headers = reader.fieldnames or []
             column_map = self._build_column_map(headers, self.FORCES_COLUMNS)
 
-            # Detect format: VBA envelope vs raw ETABS
-            is_vba_envelope = "mu_max" in column_map or "vu_max" in column_map
-            is_raw_etabs = "m3" in column_map and "v2" in column_map
+            force_format = self.classify_force_columns(column_map)
+            if force_format == "mixed":
+                raise ValueError(
+                    "Conflicting ETABS force formats: raw station components and "
+                    "precomputed extrema must be supplied in separate artifacts. "
+                    f"Source headers: {headers}"
+                )
+            is_vba_envelope = force_format == "precomputed"
 
             if is_vba_envelope:
                 # VBA envelope format - pre-computed envelope values
                 required = ["beam_id"]
-                # mu_max or vu_max must exist (at least one)
-                if "mu_max" not in column_map and "vu_max" not in column_map:
-                    raise ValueError(
-                        "VBA envelope format requires Mu_max_kNm or Vu_max_kN column"
-                    )
-            elif is_raw_etabs:
+            elif force_format == "raw":
                 # Raw ETABS format with station data
                 required = ["beam_id", "case_id", "station", "m3", "v2"]
             else:

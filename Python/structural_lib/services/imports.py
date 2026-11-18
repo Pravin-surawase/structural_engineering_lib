@@ -539,6 +539,31 @@ def _artifact_ledger(
         )
 
     available = {field for field in canonical if field is not None}
+    if (
+        role == "forces"
+        and isinstance(adapter, ETABSAdapter)
+        and adapter.classify_force_columns(
+            {
+                field: header
+                for field, header in zip(canonical, headers, strict=True)
+                if field
+            }
+        )
+        == "mixed"
+    ):
+        header_block_codes.add(ImportIssueCode.CONFLICTING_HEADER)
+        issues.append(
+            ImportIssueV1(
+                code=ImportIssueCode.CONFLICTING_HEADER,
+                path="forces.headers",
+                message=(
+                    "Conflicting ETABS force formats: raw station components and "
+                    "precomputed extrema must be supplied in separate artifacts. "
+                    f"Source headers: {headers}"
+                ),
+                artifact_role=role,
+            )
+        )
     required = _required_fields(adapter, role, available)
     for field in sorted(required - available):
         header_block_codes.add(ImportIssueCode.MISSING_REQUIRED_HEADER)

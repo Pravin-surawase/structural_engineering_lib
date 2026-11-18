@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Reject ETABS force tables that combine raw station components with
+  precomputed extrema before creating a batch or snapshot design request.
+  Preserve raw signed actions and station provenance, precomputed envelope
+  behavior, and the blocked source rows with explicit header diagnostics.
+
 ## [0.30.0] — 2026-11-17
 
 ### Added
