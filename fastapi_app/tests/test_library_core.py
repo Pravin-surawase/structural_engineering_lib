@@ -328,10 +328,11 @@ def _two_way_slab_payload(**overrides):
     return payload
 
 
-def test_continuous_one_way_slab_endpoint_returns_b02_actions(client):
+@pytest.mark.parametrize("strip_width_mm", (500, 1000, 2000))
+def test_continuous_one_way_slab_endpoint_returns_b02_actions(client, strip_width_mm):
     response = client.post(
         "/api/v1/design/slab/one-way/continuous",
-        json=_continuous_slab_payload(),
+        json=_continuous_slab_payload(strip_width_mm=strip_width_mm),
     )
     assert response.status_code == 200, response.json()
     data = _unwrap(response)
@@ -342,7 +343,11 @@ def test_continuous_one_way_slab_endpoint_returns_b02_actions(client):
     assert data["flexure"]["negative_support"][
         "factored_moment_knm_per_m"
     ] == pytest.approx(12.825)
+    assert data["flexure"]["input"]["geometry"]["strip_width_mm"] == strip_width_mm
+    assert data["flexure"]["factored_shear_kn_per_m"] == pytest.approx(17.1)
     assert data["flexure"]["coefficient_correctness_verified_by_library"] is False
+    assert data["positive_reinforcement"]["area_passed"] is True
+    assert data["shear"]["tau_v_n_per_mm2"] == pytest.approx(17.1 / 115)
     assert data["shear"]["punching_shear_disposition"].startswith("not_applicable")
 
 
@@ -396,8 +401,12 @@ def test_two_way_endpoint_rejects_topology_coefficient_mismatch(client):
     assert response.status_code == 422
 
 
-def test_builtin_continuous_endpoint_resolves_tables_12_and_13(client):
-    payload = _continuous_slab_payload()
+@pytest.mark.parametrize("strip_width_mm", (500, 1000, 2000))
+def test_builtin_continuous_endpoint_resolves_tables_12_and_13(client, strip_width_mm):
+    payload = _continuous_slab_payload(
+        strip_width_mm=strip_width_mm,
+        positive_bar_spacing_mm=295,
+    )
     for field in (
         "factored_area_load_kn_per_m2",
         "positive_moment_coefficient",
@@ -425,7 +434,14 @@ def test_builtin_continuous_endpoint_resolves_tables_12_and_13(client):
     data = _unwrap(response)
     assert data["load_envelope_status"] == _SINGLE_SUPPLIED_SLAB_ACTION
     assert data["flexure"]["input"]["coefficients"]["table_id"] == "IS456_TABLE_12_13"
+    assert data["flexure"]["input"]["geometry"]["strip_width_mm"] == strip_width_mm
+    assert data["flexure"]["positive_midspan"]["factored_moment_knm_per_m"] == (
+        pytest.approx(10.6875)
+    )
+    assert data["flexure"]["factored_shear_kn_per_m"] == pytest.approx(17.1)
     assert data["flexure"]["coefficient_correctness_verified_by_library"] is True
+    assert data["positive_reinforcement"]["area_passed"] is False
+    assert data["shear"]["tau_v_n_per_mm2"] == pytest.approx(17.1 / 115)
 
 
 def test_builtin_two_way_endpoint_resolves_table_26_case_4(client):

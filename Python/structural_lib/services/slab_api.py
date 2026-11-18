@@ -337,7 +337,6 @@ def _check_continuous_one_way_slab_strength(
     d_mm = request.d_mm
     fy_n_per_mm2 = request.fy_n_per_mm2
     fck_n_per_mm2 = request.fck_n_per_mm2
-    strip_width_mm = request.geometry.strip_width_mm or 1000.0
     positive = check_slab_reinforcement_region(
         region_id="continuous_positive_midspan",
         required_for_moment_mm2_per_m=(flexure.positive_midspan.ast_required_mm2_per_m),
@@ -363,10 +362,11 @@ def _check_continuous_one_way_slab_strength(
         effective_depth_mm=d_mm,
         fy_n_per_mm2=fy_n_per_mm2,
     )
+    # Force and supplied steel are both totals for a one-metre strip.
     shear = check_solid_slab_one_way_shear(
         SlabShearInput(
             factored_shear_kn=flexure.factored_shear_kn_per_m,
-            strip_width_mm=strip_width_mm,
+            strip_width_mm=1000.0,
             effective_depth_mm=d_mm,
             overall_depth_mm=thickness_mm,
             fck_n_per_mm2=fck_n_per_mm2,
