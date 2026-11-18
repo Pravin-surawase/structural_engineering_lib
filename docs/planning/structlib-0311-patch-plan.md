@@ -6,17 +6,17 @@
 **Importance:** High
 **Created:** 2026-11-18
 **Last Updated:** 2026-11-18
-**Abstract:** Bounded 0.31.0 audit and next-patch plan for setup, user and AI usability, Coding Lab findings and release efficiency.
+**Abstract:** S0 scope selection and S1–S5 plan for the 0.31.1 continuous slab correction.
 
 ---
 
 ## Planning status
 
-Issue discovery is open. This working draft records the evidence and proposed
-fixes collected so far. Add new findings with their affected workflow, source
-or artifact identity, observed impact and verification status. S0 will select
-the patch scope after discovery and review. The later stages describe how to
-implement and qualify the selected work.
+The S0 planning review is complete. The recommended 0.31.1 scope centers on the
+continuous one-way slab false pass. Issue discovery may continue. Review new
+evidence before changing the selected scope, and record its workflow, source
+or artifact identity, observed effect and verification status. S1–S5 are
+planned work.
 
 Use the [library adoption and maintenance guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128)
 to choose evidence for affected user journeys. The
@@ -29,14 +29,82 @@ are in separate drafts. The issue register and S0 selection govern patch scope.
 Proposed patch **0.31.1** starts from published **0.31.0** at
 `16c6b660a03cdfe4942e7e50d2141e4824cf5a24`. PyPI and GitHub publish the same
 qualified archive hashes, and the public receipt records a fresh installation.
-The audit covered installation diagnostics, release-facing maintenance,
-selected Coding Lab and independent comparison findings, and actual hosted
-release timing. It confirmed two setup defects and operational release problems.
-The scoped review found no new confirmed engineering calculation defect.
+The initial audit covered installation diagnostics, release-facing
+maintenance and hosted timing. The S0 review adds the subsequently
+reproduced continuous slab verdict defect and reconciles it with the
+Coding Lab and Maintenance Lab handoffs.
 [Published package](https://pypi.org/project/structural-lib-is456/0.31.0/) ·
 [Public install receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.0/public-install-verification.json)
 
-## Confirmed issues and proposed fixes so far
+## S0 scope decision
+
+### Include in 0.31.1
+
+- **SLAB-01 is the release blocker.** Correct the physical-strip and
+  per-metre basis mismatch for the supported continuous one-way slab
+  workflow. Carry the correction through the shared calculation and
+  shear owners, the public built-in façade, the supplied-coefficient
+  service and the affected HTTP paths. Limit the correction to continuous
+  one-way slab cases. Add the focused regressions and a release note telling
+  users of affected 0.31.0 results to rerun the continuous slab check with
+  the corrected release.
+- **DOC-01 follows the existing public-guidance work.** Reuse #1125 in its
+  authorized integration order. Verify the install pin and status against
+  the actual published package. Carry the slab correction and its affected
+  scope into the 0.31.1 release notes and publication closeout.
+- **Use the existing release checks and record their timing.** Apply the
+  generated-reference check in order and prepare the verified artifact
+  handoff fields early. These are the immediate parts of REL-02 and REL-03.
+  Record gate, review, dispatch and retry time with the existing receipts.
+
+### Defer or validate separately
+
+| Item | Disposition and reason |
+| --- | --- |
+| FOOT-01 — isolated footing minimum steel | High-priority follow-up. The Lab reports 810.00 mm² per direction at 830 kN and 764.22 mm² at 900 kN against the same 810 mm² gross-area floor. Tagged flexure only applies that floor after an effective-depth percentage screen, and its percentage feeds preliminary shear. The checked detailing path has its own gross-area check. Both reported service calls had calculation `PASS` and overall `HOLD`. Obtain the exact fixtures and confirm the effect on preliminary shear, the final checked layout and governing status. Reopen patch scope if that evidence shows an incorrect accepted or checked result. |
+| APP-01 — batch interruption | Separate application maintenance. The Lab reports an interrupted job at 1 of 64 members and a `complete` event with `IN_PROGRESS`. The tagged route breaks on disconnect, while the job manager completes only at the total count. Reproduce interruption and polling on the same job ID, preserve completed results and verify the normal-completion control. |
+| SETUP-01, SETUP-02 and DOC-02 | Confirmed preflight and dependency-reference problems. Group them into the next bounded installation-maintenance change so the slab correction can qualify on its own. |
+| REL-01 and release workflow redesign | Keep the timing baseline and proposals. Select CI sharding or further workflow automation after profiling and equivalent-run proof. |
+| Human-maintainability plan, AI pilot and broader contributor work | Keep the Lab's entry-point-to-owner-to-test map as the proposal for a separate documentation pass. The slab PR can record its own owner and focused test commands. Defer moving files or tests, splitting output/transport responsibilities, and running the broader adoption pilot. #1127 and #1128 retain their own review lanes. |
+| Remaining Lab and programme proposals | Retain the A40 special replay status, A51 caller binding and A52/A53 catalogue controls under their own evidence and scope. Keep FLOW04, new footing topologies and other element extensions in their programme lanes. |
+
+The proposed scope is bound to the published `v0.31.0` commit above.
+FLOW04 #1117 and release guidance #1125 remain open draft paths. Recheck
+their SHAs, affected paths and sequencing before establishing an
+implementation candidate. The linked planning and documentation drafts
+can be reviewed separately.
+
+## SLAB-01 evidence and acceptance
+
+The Coding Lab's `continuous-slab-strip-width.md` handoff records the
+public built-in coefficient workflow returning `PASS` at **500 mm**
+and `FAIL` at **1,000 and 2,000 mm** for the same deficient slab. The
+unchanged cookbook control returned `PASS`. The cached wheel, reproducer
+and all four tagged source files matched the hashes recorded in
+`continuous-slab-strip-width-v031.json`. This S0 review checked the
+existing replay and source bindings.
+
+The kernel stores physical-strip demand under per-metre result fields.
+Strength compares that demand to supplied steel per metre. The shear
+caller also mixes physical width with the action and reinforcement basis.
+Repair the published units at the calculation owner and align force, steel
+and width at the shear boundary. Preserve physical strip geometry and
+line load separately. [Calculation owner](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.0/Python/structural_lib/codes/is456/slab/one_way_continuous.py#L143-L232) ·
+[Shared strength checks](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.0/Python/structural_lib/services/slab_api.py#L329-L378)
+
+| Lab fixture | Expected candidate result |
+| --- | --- |
+| Built-in coefficient challenge at 500, 1,000 and 2,000 mm | Completed engineering `FAIL` and `area_passed=false` for positive steel at every width. Compare width-invariant positive and negative moment, required and provided steel, shear force and shear steel percentage. |
+| Supplied-coefficient B02 challenge at the same widths | Width-invariant per-metre results and deficient positive steel at all widths. Preserve the physical strip line load and the submitted width. |
+| Existing cookbook and applicability controls | Cookbook remains `PASS`, sufficiently reinforced control passes at all three widths, and existing coefficient selection, provenance, rejection behavior and diagnostics remain valid. |
+
+The built-in fixture's 1,000 mm software reference is **11.25 kN·m/m**
+positive moment, **13.20 kN·m/m** negative moment, **285.921 mm²/m**
+required positive steel, **170.391 mm²/m** supplied and **17.6625 kN/m**
+shear. Freeze the independent dimensional check and comparison tolerances
+in S1. These are fixture expectations for the repair.
+
+## Other confirmed issues and release observations
 
 | ID | Evidence on 0.31.0 | Patch action and acceptance |
 | --- | --- | --- |
@@ -88,12 +156,14 @@ Rebind historical observations before nominating them as patch repairs.
 
 ### Other evidence and scope
 
-- **Maintenance Lab.** The dependency wording and preflight interpretation
-  were checked again against the released code and metadata. The historical
-  ML-012 proposal targeted earlier 0.30.0 publication prose. The 0.31.0 PyPI
-  description identifies its current version and places 0.30.0 under its
-  historical feature heading. Review the next candidate's package description
-  for accurate current status and release links during the DOC-01 follow-through.
+- **Maintenance Lab.** Reconciled the 17 November handoff and workboard
+  against the 0.31.0 release. ML-001, ML-002, ML-004 and ML-009 are closed
+  for their original scope. The ML-012 text proposal targeted earlier
+  0.30.0 publication wording and is superseded on the current source.
+  The current public-pin drift belongs to DOC-01 and the existing #1125
+  draft. The Pydantic reference and preflight wording belong with the
+  deferred SETUP-01/02 and DOC-02 work. Check the next candidate's public
+  description and links during DOC-01 closeout.
   [Published description](https://pypi.org/project/structural-lib-is456/0.31.0/) ·
   [Installation diagnostics](../getting-started/installation-notes.md)
 - **Independent engineering comparisons.** Previous cage, slab creep,
@@ -113,7 +183,9 @@ Rebind historical observations before nominating them as patch repairs.
 
 ## First-use and AI acceptance
 
-Use one public beam journey for a small pilot. On a clean install of 0.31.0,
+Keep these controls for the follow-up adoption work. The 0.31.1 scope uses
+the published install and affected slab cookbook checks. The AI pilot can
+use one public beam journey later. On a clean install of 0.31.0,
 the maintained beam recipe returned `PASS`. Removing its required width
 `section.b_mm` returned structured `REQUIRED_FIELD_MISSING` for that path.
 This gives a pinned baseline for the published recipe and for the pilot.
@@ -158,7 +230,8 @@ failures were avoidable preflight rework.
 [Façade failure 2](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44044136301) ·
 [Compatibility ledger failure](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44272632653)
 
-Proposed timing targets for the next patch:
+Use 0.31.1 to capture timing with the existing workflow. Keep the following
+targets for later release-process improvement:
 
 - **Weekly ≤30 minutes** after a test runner change proves equivalent on the
   same candidate, with the slowest shard and fan-in timing recorded. Compare
@@ -175,66 +248,52 @@ Proposed timing targets for the next patch:
 
 ## S0–S5 next-patch plan
 
-### S0 — Select scope after discovery
+### S0 — Record the scope decision
 
-- Recheck the published baseline and reconcile new items with the Coding Lab
-  and Maintenance Lab evidence. List the confirmed setup and documentation
-  repair candidates, small usability changes or evidence checks, and later
-  proposals. Select patch scope after reviewing those lists.
-- Reuse the release guidance work in #1125. Check the integration order for
-  FLOW04 #1117 and compare affected paths before a shared-path write. Use
-  #1127 and #1128 as references pending their own integration decisions.
-- Record the selected and deferred items, the exact baseline and the owner of
-  each selected outcome. Carry the A40 special replay as `NOT_RUN` unless
-  new safeguarded evidence is recorded.
+- The selected scope, evidence, deferred work and active dependencies are
+  recorded above. The slab calculation owner and shared slab service own the
+  repair. The release documentation owner owns the public guidance handoff.
+- Bring back evidence that changes patch scope before S1 starts or as soon
+  as it is established. Track the A40 special replay as `NOT_RUN`.
 
-### S1 — Freeze the examples, failures and timing baseline
+### S1 — Freeze the slab cases and expectations
 
-- Retain the installed-wheel setup probes for partial and full extras,
-  plain and JSON preflight, and spaced interpreter paths. For first-use
-  work, freeze the public recipe and its valid and missing-width inputs.
-  Include another engineering outcome only where the changed guide claims it.
-- Preserve original hosted timing receipts. Profile the Python coverage
-  job before choosing a faster execution layout. Record the comparable
-  runner, dependencies and exact test inventory.
-- Record each expected outcome and evidence owner. Keep release runtime,
-  review and dispatch intervals separate.
+- Rebind to the verified implementation base and confirm the existing Lab
+  replay on the released package. Freeze exact fixture inputs, source
+  basis, units, expected positive and negative demands, shear values and
+  tolerances for both coefficient routes.
+- Record the deficient and passing width controls, built-in coefficient
+  provenance, existing B02 benchmark and the capacity-exceeded diagnostic
+  control. Preserve the original release timing receipts for comparison.
 
-### S2 — Repair setup and the first-run instructions
+### S2 — Repair the shared units and protect the entry points
 
-- Implement the selected preflight repairs and update installation and
-  dependency wording. Demonstrate that the reported repair command targets
-  the actual interpreter and that a partial install reports the right
-  availability.
-- Reuse the published-version and CSV migration changes from #1125 in their
-  authorized sequence. When the guidance reaches its public entry page,
-  follow it from a clean environment and capture package version, origin
-  and the first result. Label source-only examples where they are linked.
-- Accept the affected work when the CLI controls pass and the documented
-  install pin, migration and result agree with the tested package.
+- Correct physical-strip and per-metre reporting at the calculation owner.
+  Align shear force, steel area and strip width in the shared strength
+  service. Preserve public fields, coefficient applicability and submitted
+  geometry.
+- Verify the public JSON façade, the supplied-coefficient path and affected
+  HTTP routes. Require invariant per-metre results and a completed
+  engineering `FAIL` at each challenged width. Keep the passing and
+  rejection controls. Record the narrow commands in the repair PR.
 
-### S3 — Trial the usability and release improvements
+### S3 — Prepare the affected guidance and release handoff
 
-- If selected in S0, run the one-recipe AI pilot using the same version and
-  contract as the human first run. Retain the valid result and the
-  missing-input diagnostic. The contributor onboarding check applies when
-  contributor instructions change.
-- Run the existing documentation generators and checks before hosted
-  validation when their inputs are ready. Stage the retained artifact record
-  before generating its compatibility-ledger entries. Prepare the S5
-  handoff fields early.
-- Trial hosted Python shards only when profiling supports the split.
-  Compare the same test IDs and combined branch coverage, keep the 85% gate,
-  and check that a missing or failed shard rejects the result.
+- Explain which continuous slab results need rerunning and show the checked
+  example's expected result. Reconcile #1125 in the existing integration
+  order for the public install and CSV guidance.
+- Run the existing generated-reference checks when their inputs are ready.
+  Stage the retained artifact record before generating its ledger entries.
+  Prepare the handoff fields and record gate and review timestamps.
 
 ### S4 — Review and freeze one candidate
 
-- Review the affected workflow from install instructions to the API, result,
-  diagnostic and upgrade path. Capture the entry point, expected behavior,
-  migration impact and verification in the PR.
-- Verify generated references, selected source-bound CLI controls and any
-  shadow CI results. Use the already qualified Lab controls for the affected
-  paths. Record any separately held evidence, including the A40 distinction.
+- Review the affected workflow from install instructions to the slab result
+  and diagnostic. Compare the width controls to the frozen expectations and
+  review the migration and publication text. Record the governing decisions
+  and supported-path boundaries in the repair PR.
+- Verify generated references and the selected source-bound slab controls.
+  Carry forward already qualified regression evidence for unaffected paths.
 - Bind the exact build inputs and allowed post-review publication metadata.
   Confirm the candidate contains the selected work.
 
@@ -243,7 +302,7 @@ Proposed timing targets for the next patch:
 - Retain one wheel and sdist from the frozen payload. Generate dependent
   evidence against the retained record and check it locally. Run the
   existing required installed qualification, exact-head hosted checks and
-  cross-platform Weekly, with the selected setup and first-use controls.
+  cross-platform Weekly, with the selected slab and cookbook controls.
   Bind independent review to the exact candidate and archive hashes.
 - With separate owner authorization, verify the retained bytes on TestPyPI
   before production. Verify PyPI and GitHub readback and a fresh PyPI
