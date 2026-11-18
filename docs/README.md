@@ -19,6 +19,7 @@ Guides, references, evidence, and contributor material for the
 | **Inspect tool readiness** | [Beam tool manifest](reference/beam-tool-manifest.md) | reference | Catalogue-derived schema and review boundary without AI activation |
 | **Look up a function** | [API reference](reference/api.md) | reference | Public signatures, parameters, units, and results |
 | **Run a family recipe** | [Family facade cookbook](cookbook/python/family-facades.md) | guide | Copy-paste payloads for all 13 advertised journeys |
+| **Choose and verify an element workflow** | [Reinforced-concrete element guide](getting-started/element-workflow-guide.md) | guide | Find a supported case, run a footing example and check the engineering and library rules |
 | **Inspect facade contracts** | [Family facade contracts](reference/family-facade-contracts.md) | reference | Generated signatures, schemas, units, enums, issues, and statuses |
 | **Verify supported evidence** | [Evidence crosswalk](verification/is456-library-first-evidence.md) | evidence | Supported cases, sources, unsafe cases, limits, and release evidence |
 | **Check release status** | [Current release](getting-started/release-status.md) | guide | Public install, maturity, evidence, and claim boundary |
