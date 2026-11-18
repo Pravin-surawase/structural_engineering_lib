@@ -10,6 +10,14 @@
 
 ---
 
+## Planning status
+
+Issue discovery is open. This working draft records the evidence and proposed
+fixes collected so far. Add new findings with their affected workflow, source
+or artifact identity, observed impact and verification status. S0 will select
+the patch scope after discovery and review. The later stages describe how to
+implement and qualify the selected work.
+
 ## Baseline and scope
 
 Proposed patch **0.31.1** starts from published **0.31.0** at
@@ -22,7 +30,7 @@ The scoped review found no new confirmed engineering calculation defect.
 [Published package](https://pypi.org/project/structural-lib-is456/0.31.0/) ·
 [Public install receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.0/public-install-verification.json)
 
-## Confirmed issues and proposed fixes
+## Confirmed issues and proposed fixes so far
 
 | ID | Evidence on 0.31.0 | Patch action and acceptance |
 | --- | --- | --- |
@@ -124,7 +132,7 @@ Proposed timing targets for the next patch:
 
 | Stage | Work | Exit evidence |
 | --- | --- | --- |
-| **S0 — Bind scope and ownership** | Recheck latest PyPI/GitHub version, record exact base and existing PRs, reconcile both labs' open items and resolve ownership of #1125. Select the proposed SETUP, DOC and REL items. Capture the existing sequencing decision on #1117 before an integration write. | Baseline and issue register reviewed. Any older finding needs a new 0.31.0 reproduction before it enters the patch. |
+| **S0 — Bind scope and ownership** | When discovery is complete, recheck the published baseline, reconcile new evidence and decide which SETUP, DOC and REL items belong in the patch. Confirm ownership of #1125 and capture the sequencing decision on #1117 before an integration write. | Record the selected items, deferred items and exact baseline. Recheck historical findings against the selected baseline before admitting them. |
 | **S1 — Freeze reproducers and timing controls** | Preserve the two installed-wheel setup probes, partial/full extra and plain/JSON controls, spaced interpreter paths, and the original timing receipts. Profile Weekly's slowest tests and coverage overhead before selecting a parallel runner design. Record comparable runner and dependency identities. | Positive and negative controls have expected results. The timing baseline records CI and handoff stages independently. |
 | **S2 — Fix setup and current guidance** | Repair the preflight dependency mapping and command formatting. Update dependency and installation guidance in the same packet. Reconcile #1125 and validate the live 0.31.0 guidance after integration. | Focused tests pass through the public CLI. The advertised registry version, docs pins and migration guidance agree. |
 | **S3 — Remove release rework** | Apply the existing release-generation and checking sequence before artifact qualification. Stage the appropriate artifact record before generating the compatibility ledger. Prepare the S5 handoff packet early. If profiling supports it, trial balanced hosted Python shards with FastAPI and React work scheduled independently. | Generated checks pass before CI. A shadow comparison proves the same selected test IDs, successful required jobs and combined coverage with the 85% gate. A missing or failed shard must still prevent a pass. |
