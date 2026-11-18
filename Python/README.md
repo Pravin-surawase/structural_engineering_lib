@@ -26,6 +26,8 @@ metre values normalize to mm in the ledger. This previously optional input is
 why the correction release uses a minor version. ETABS intake rejects mixed
 raw/precomputed force formats, equivalent-station collisions and cross-file
 label/story aliases before exposing a batch or snapshot design request.
+Unsupported `T`, `V3` and `M2` calculation columns reject at strict intake;
+the two-component profile does not silently discard those source actions.
 
 ## Scope added in v0.30.0
 

@@ -42,6 +42,8 @@ All notable changes to this project will be documented in this file.
   while preserving public IDs. Require explicit spans for strict Generic CSV
   intake, normalize metre spans to mm in its ledger, and reject malformed
   supplied spans instead of creating a 5 m member.
+- Reject unsupported torsion and secondary bending/shear columns at strict
+  CSV intake instead of silently projecting them out of a design request.
 
 ### Qualification scope
 
