@@ -68,6 +68,9 @@ require a separately supported profile.
 Geometry and force rows must match the exact trimmed label and story pair.
 Public IDs retain the legacy underscore spelling, but that spelling alone
 cannot bind different pairs such as `(A_B, C)` and `(A, B_C)`.
+This two-component profile does not admit `T`, `V3` or `M2` action columns.
+Strict intake rejects those unsupported calculation columns instead of
+retaining them as ignorable metadata or projecting their actions away.
 
 #### Optional Columns
 

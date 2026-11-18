@@ -401,3 +401,26 @@ def test_matching_underscore_member_keeps_legacy_public_id(
     assert result.status is ImportStatus.ACCEPTED and result.batch is not None
     assert result.batch.beams[0].id == result.batch.forces[0].id == "A_B_C"
     assert _snapshot(geometry, forces, model).status is ETABSSnapshotStatus.ACCEPTED
+
+
+@pytest.mark.parametrize("component", ["T", "V3", "M2", "T (kN-m)", "V3_kN"])
+def test_unsupported_action_column_cannot_become_metadata(
+    tmp_path: Path, component: str
+) -> None:
+    geometry, forces, model = _files(
+        tmp_path, "Output Case,Station,M3,V2," + component, "ULS-1,2,-120,-75,5"
+    )
+    pair = parse_dual_csv_lossless(
+        geometry, forces, format_hint="etabs", defaults=_defaults()
+    )
+    assert pair.status is ImportStatus.BLOCKED and pair.batch is None
+    (issue,) = pair.issues
+    assert issue.code is ImportIssueCode.UNKNOWN_CALCULATION_HEADER
+    assert issue.path.endswith("." + component)
+    field = next(
+        field for field in pair.ledger.rows[-1].fields if field.raw_header == component
+    )
+    assert field.raw_value == "5" and field.action.value == "REJECTED"
+    snapshot = _snapshot(geometry, forces, model)
+    assert snapshot.status is ETABSSnapshotStatus.BLOCKED
+    assert snapshot.snapshot is None and not snapshot.beam_requests

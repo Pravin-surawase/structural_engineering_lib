@@ -86,7 +86,7 @@ def test_source_depth_survives_import_and_matches_direct_design(
 def test_dual_csv_and_section_json_preserve_explicit_depth(tmp_path):
     geometry = tmp_path / "geometry.csv"
     geometry.write_text(
-        "beam_id,b_mm,D_mm,d_mm,fck,fy,cover_mm\nB1,300,500,470,25,500,40\n",
+        "beam_id,b_mm,D_mm,d_mm,fck,fy,cover_mm,span_mm\nB1,300,500,470,25,500,40,6000\n",
         encoding="utf-8",
     )
     forces = tmp_path / "forces.csv"

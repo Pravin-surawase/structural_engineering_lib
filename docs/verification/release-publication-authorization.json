@@ -1,6 +1,6 @@
 {
-  "authorization_basis": "The owner confirmed release and tagging of the qualified 0.30.0 scope after independent review. Required hosted work was still in progress. The authorization became effective at the recorded time, when the exact candidate review and hosted gates were verified. TestPyPI verifies the same retained pair before the production tag and upload.",
-  "authorized_at_utc": "2026-11-16T21:06:52Z",
+  "authorization_basis": "The owner expressly authorized completion of the fixes and the sensible 0.31 or 0.30.1 release. The conditional authority becomes effective after the exact candidate review and required hosted gates pass and the final results are presented. Version 0.31.0 follows the minor-version policy for newly required strict CSV span input. TestPyPI must verify the same retained pair before production tag/upload.",
+  "authorized_at_utc": "2026-11-18T11:29:27Z",
   "authorized_by": "Pravin Surawase (repository owner)",
   "authorized_targets": [
     "testpypi",
@@ -8,26 +8,28 @@
     "github-release"
   ],
   "decision": "AUTHORIZED",
-  "exact_candidate_review_receipt": "docs/verification/library-0300-exact-candidate-review.json",
-  "exact_candidate_review_receipt_sha256": "48d72abc6a745615a6010dc5a82bae1b5094526e153683ac789c8ac27c911d6f",
+  "exact_candidate_review_receipt": "docs/verification/library-0310-exact-candidate-review.json",
+  "exact_candidate_review_receipt_sha256": "29dad632a088f7872eddb60619707064e9a4a70cc79ba361bdf86ccefa626b6c",
   "independent_review_waiver": null,
-  "owner_instruction": "lets release and tag t",
+  "owner_instruction": "Okay lets get all the fixes first. Then release the 0.31 or or 0.30.1 whichever makes sense.",
+  "owner_instruction_at_utc": "2026-11-18T07:50:47Z",
+  "owner_instruction_evidence": "Verified authenticated Dot user message Sentinel_5f1bfe1eb4848191a19e5ccde85cc17c via native relay",
   "professional_approval": false,
-  "qualified_artifact_record": "docs/verification/library-0300-release-artifacts.json",
+  "qualified_artifact_record": "docs/verification/library-0310-release-artifacts.json",
   "qualified_artifacts": [
     {
-      "filename": "structural_lib_is456-0.30.0-py3-none-any.whl",
-      "sha256": "50779361e162f835ce86da79c3fbfbd33e794b0263d6dfd801de2c5ce9788611",
-      "size_bytes": 1602804
+      "filename": "structural_lib_is456-0.31.0-py3-none-any.whl",
+      "sha256": "cf85ee0fd9b4368619ad67d1e33f4056413038857a5c2988f4bfc0d3af9d4cd4",
+      "size_bytes": 1606099
     },
     {
-      "filename": "structural_lib_is456-0.30.0.tar.gz",
-      "sha256": "40aebdb2dc97b63776a4810ae2763114c4aa3ca046cb82ad1b430c844538216d",
-      "size_bytes": 1366442
+      "filename": "structural_lib_is456-0.31.0.tar.gz",
+      "sha256": "235b81ffc352b7e32e26998a8ec9cf1c6aa80ab3310afc955cf7f7d197760f90",
+      "size_bytes": 1370412
     }
   ],
   "qualified_structural_engineering_review": false,
   "schema_version": "release-publication-authorization/v1",
-  "tag": "v0.30.0",
-  "version": "0.30.0"
+  "tag": "v0.31.0",
+  "version": "0.31.0"
 }

@@ -81,16 +81,21 @@ class DesignConnectionManager:
             f"Client connected: {session_id} (total: {len(self.active_connections)})"
         )
 
-    def disconnect(self, session_id: str) -> None:
-        """Remove a disconnected client."""
-        self.active_connections.pop(session_id, None)
-        logger.info(
-            f"Client disconnected: {session_id} (total: {len(self.active_connections)})"
-        )
+    def disconnect(self, session_id: str, websocket: WebSocket) -> None:
+        """Remove the connection only if it still owns the session."""
+        if self.active_connections.get(session_id) is websocket:
+            del self.active_connections[session_id]
+            logger.info(
+                "Client disconnected: %s (total: %d)",
+                session_id,
+                len(self.active_connections),
+            )
 
-    async def send_json(self, session_id: str, data: dict[str, Any]) -> None:
-        """Send JSON data to a specific session."""
-        if websocket := self.active_connections.get(session_id):
+    async def send_json(
+        self, session_id: str, websocket: WebSocket, data: dict[str, Any]
+    ) -> None:
+        """Reply to the originating socket while it owns the session."""
+        if self.active_connections.get(session_id) is websocket:
             await websocket.send_json(data)
 
     async def broadcast(self, data: dict[str, Any]) -> None:
@@ -178,14 +183,17 @@ async def design_websocket(
                 message_type = data.get("type", "unknown")
                 if message_type == "design_beam":
                     validated = model_validate_or_error(WSDesignMessage, data)
-                    await handle_design_beam(session_id, validated.params.model_dump())
+                    await handle_design_beam(
+                        session_id, websocket, validated.params.model_dump()
+                    )
 
                 elif message_type == "check_beam":
-                    await handle_check_beam(session_id, data)
+                    await handle_check_beam(session_id, websocket, data)
 
                 elif message_type == "ping":
                     await manager.send_json(
                         session_id,
+                        websocket,
                         {
                             "type": "pong",
                             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -195,6 +203,7 @@ async def design_websocket(
                 else:
                     await manager.send_json(
                         session_id,
+                        websocket,
                         {
                             "type": "error",
                             "message": f"Unknown message type: {message_type}",
@@ -204,6 +213,7 @@ async def design_websocket(
             except InputContractError as e:
                 await manager.send_json(
                     session_id,
+                    websocket,
                     {
                         "type": "error",
                         "message": f"Invalid input: {e.message}",
@@ -213,20 +223,23 @@ async def design_websocket(
             except (ValueError, TypeError) as e:
                 await manager.send_json(
                     session_id,
+                    websocket,
                     {"type": "error", "message": sanitize_error(e, "live design")},
                 )
             except (RuntimeError, KeyError, AttributeError):
                 logger.exception("WebSocket handler error for session %s", session_id)
                 await manager.send_json(
                     session_id,
+                    websocket,
                     {"type": "error", "message": "Internal error processing request"},
                 )
 
     except WebSocketDisconnect:
-        manager.disconnect(session_id)
+        pass
     except (RuntimeError, ConnectionError, OSError):
         logger.exception(f"WebSocket error for session {session_id}")
-        manager.disconnect(session_id)
+    finally:
+        manager.disconnect(session_id, websocket)
 
 
 # =============================================================================
@@ -413,7 +426,9 @@ def beam_check_websocket_schema_v2() -> dict[str, Any]:
 # =============================================================================
 
 
-async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
+async def handle_design_beam(
+    session_id: str, websocket: WebSocket, params: dict[str, Any]
+) -> None:
     """
     Handle design_beam message.
 
@@ -435,6 +450,7 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     except InputContractError as e:
         await manager.send_json(
             session_id,
+            websocket,
             {
                 "type": "error",
                 "message": f"Invalid input: {e.message}",
@@ -477,6 +493,7 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     latency_ms = (datetime.now(timezone.utc) - start_time).total_seconds() * 1000
     await manager.send_json(
         session_id,
+        websocket,
         {
             "type": "design_result",
             "latency_ms": round(latency_ms, 2),
@@ -485,7 +502,9 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     )
 
 
-async def handle_check_beam(session_id: str, message: dict[str, Any]) -> None:
+async def handle_check_beam(
+    session_id: str, websocket: WebSocket, message: dict[str, Any]
+) -> None:
     """
     Run the same supplied-beam V2 request and result used by REST.
     """
@@ -509,6 +528,7 @@ async def handle_check_beam(session_id: str, message: dict[str, Any]) -> None:
         )
         await manager.send_json(
             session_id,
+            websocket,
             error.model_dump(mode="json"),
         )
         return
@@ -526,6 +546,7 @@ async def handle_check_beam(session_id: str, message: dict[str, Any]) -> None:
         )
         await manager.send_json(
             session_id,
+            websocket,
             error.model_dump(mode="json"),
         )
         return
@@ -541,5 +562,6 @@ async def handle_check_beam(session_id: str, message: dict[str, Any]) -> None:
     )
     await manager.send_json(
         session_id,
+        websocket,
         response.model_dump(mode="json", by_alias=True),
     )

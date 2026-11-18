@@ -159,7 +159,7 @@ _UNITS = {
 
 _CALCULATION_HEADER = re.compile(
     r"(?:moment|shear|axial|force|mu|vu|pu|width|depth|cover|fck|fy|"
-    r"span|length|diameter|load)",
+    r"span|length|diameter|load|torsion)|^(?:v3|m2|t)(?:\b|_)",
     re.IGNORECASE,
 )
 

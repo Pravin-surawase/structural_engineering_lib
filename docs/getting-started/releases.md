@@ -2136,3 +2136,38 @@ verification receipt SHA-256 is `de6c92b268fd4096bdc1308698b17d3ca95125c8746fd3e
 The matched FLOW04 source evidence remains in [draft PR #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117).
 PROJECT01 and PROJECT02 remain on HOLD pending member design and checked-output
 integration. PROJECT03 remains qualified for the bounded design-review workflow.
+
+## v0.31.0 — Prepared candidate (unreleased; qualification pending)
+
+This candidate combines the corrections prepared after v0.30.0 with strict
+ETABS force-format/station/member identity safeguards and Generic span fixes.
+Strict Generic input now requires explicit span instead of manufacturing 5 m
+geometry, so the documented pre-1.0 compatibility change uses a minor version.
+Existing CSVs must supply a finite positive span. No new eccentric-footing or
+snapshot-to-section caller API is included. The public baseline at preparation
+is v0.30.0; the earlier prepared 0.30.1 archives are retained historical evidence.
+
+The owner authorized completion of the fixes and the sensible release on
+18 November 2026. Publication remains conditional on exact replacement wheel
+and source-archive qualification, required hosted/cross-platform checks and
+review of the final results. The safeguarded A40 special replay remains NOT_RUN;
+its source fix and ordinary transport evidence are recorded separately.
+
+## v0.31.0 — Release authorized (2026-11-18)
+
+The owner authorized the completed corrections and the appropriate release.
+The required-span compatibility correction selects 0.31.0 under the pre-1.0
+minor-version policy. Independent exact-candidate review and the required PR
+and cross-platform Weekly checks passed on `07e1449aef93483c1da64e9b671c326019a48709`.
+
+The retained wheel and source archive passed all 20 installed profiles, with
+980 beam/column tests, 25 slab/footing scenarios and 56 focused intake controls
+per archive, plus three offline broker return/error/timeout controls per archive.
+Exact-wheel UAT passed 29 cases. The committed qualification and
+review records bind the exact archive hashes and unchanged Python tree.
+TestPyPI must verify this retained pair before production publication.
+
+A40 has source and ordinary transport evidence; its safeguarded special replay
+remains NOT_RUN. PROJECT01/02 remain HOLD, PROJECT03 retains site evidence
+requirements, and FLOW04 stays excluded. No new footing or caller API is
+included. Software qualification does not confer professional approval.
