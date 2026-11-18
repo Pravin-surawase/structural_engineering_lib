@@ -213,3 +213,137 @@ def test_direct_precomputed_compatibility_is_preserved(
     (force,) = ETABSAdapter().load_forces(forces)
     assert (force.mu_knm, force.vu_kn) == expected
     assert force.load_case == "Envelope"
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize(
+    ("stations", "second_actions", "kind"),
+    [
+        (("2", "2"), "-120,-75", "Duplicate"),
+        (("2", "2.0"), "-120,-75", "Duplicate"),
+        (("2", "2.0"), "-40,-150", "Ambiguous"),
+        (("2", "2e0"), "-40,-150", "Ambiguous"),
+    ],
+)
+def test_station_collisions_block_before_reduction_and_preserve_rows(
+    tmp_path: Path, monkeypatch, reverse: bool, stations, second_actions: str, kind: str
+) -> None:
+    geometry, forces, model = _files(tmp_path, "M3,V2", "-120,-75")
+    with geometry.open("a", encoding="utf-8") as output:
+        output.write("L1,B2,202,Beam,B300X500,5,0,0,10,0,0\n")
+    samples = [(stations[0], "-120,-75"), (stations[1], second_actions)]
+    if reverse:
+        samples.reverse()
+    forces.write_text(
+        "Story,Label,UniqueName,Output Case,Station,M3,V2\n"
+        + "".join(
+            f"L1,B1,101,ULS-1,{station},{actions}\n" for station, actions in samples
+        )
+        + "L1,B2,202,ULS-1,2,-10,-5\n",
+        encoding="utf-8",
+    )
+
+    def unexpected_reduction(*args, **kwargs):
+        raise AssertionError("Station collision reached force reduction")
+
+    monkeypatch.setattr(ETABSAdapter, "load_forces", unexpected_reduction)
+    result = parse_dual_csv_lossless(
+        geometry, forces, format_hint="etabs", defaults=_defaults()
+    )
+    assert result.status is ImportStatus.BLOCKED and result.batch is None
+    assert result.ledger.totals.source_rows == 5
+    force_rows = [row for row in result.ledger.rows if row.artifact_role == "forces"]
+    assert len(force_rows) == 3
+    for row, (station, actions) in zip(force_rows[:2], samples, strict=True):
+        assert row.status is ImportStatus.BLOCKED
+        assert row.issue_codes == (ImportIssueCode.DUPLICATE_RECORD_ID,)
+        assert row.source_record_id == f"B1_L1:ULS-1:{station}"
+        fields = {field.canonical_field: field for field in row.fields}
+        assert fields["station"].raw_value == station
+        assert fields["station"].parsed_value == 2
+        assert (fields["m3"].raw_value, fields["v2"].raw_value) == tuple(
+            actions.split(",")
+        )
+    assert force_rows[2].status is ImportStatus.ACCEPTED
+    assert len(result.issues) == 2
+    assert all(
+        issue.message.startswith(kind + " ETABS force rows") for issue in result.issues
+    )
+    assert {issue.source_row_number for issue in result.issues} == {2, 3}
+    snapshot = _snapshot(geometry, forces, model)
+    assert snapshot.status is ETABSSnapshotStatus.BLOCKED
+    assert snapshot.snapshot is None and not snapshot.beam_requests
+    assert snapshot.row_accounting.source_rows == 5
+    assert snapshot.row_accounting.blocked_rows == 2
+
+
+@pytest.mark.parametrize("nearby", ["2.000001", "2.0000000000000004"])
+def test_distinct_numeric_stations_keep_governing_signed_companions(
+    tmp_path: Path, nearby: str
+) -> None:
+    geometry, forces, model = _files(tmp_path, "M3,V2", "-120,-75")
+    forces.write_text(
+        "Story,Label,UniqueName,Output Case,Station,M3,V2\n"
+        "L1,B1,101,ULS-1,2,-120,-75\n"
+        f"L1,B1,101,ULS-1,{nearby},-40,-150\n",
+        encoding="utf-8",
+    )
+    result = parse_dual_csv_lossless(
+        geometry, forces, format_hint="etabs", defaults=_defaults()
+    )
+    assert result.status is ImportStatus.ACCEPTED and result.batch is not None
+    assert not result.issues
+    (force,) = result.batch.forces
+    assert force.station_count == 2
+    assert (force.mu_knm, force.vu_kn) == (120, 150)
+    assert (force.moment_station, force.shear_at_moment_station_kn) == (2, -75)
+    assert (force.shear_station, force.moment_at_shear_station_knm) == (
+        float(nearby),
+        -40,
+    )
+    snapshot = _snapshot(geometry, forces, model)
+    assert snapshot.status is ETABSSnapshotStatus.ACCEPTED
+    (request,) = snapshot.beam_requests
+    assert (request.mu_knm, request.vu_kn) == (120, 150)
+
+
+def test_station_identity_keeps_exact_cases_distinct(tmp_path: Path) -> None:
+    geometry, forces, _ = _files(tmp_path, "M3,V2", "-120,-75")
+    forces.write_text(
+        "Story,Label,UniqueName,Output Case,Station,M3,V2\n"
+        "L1,B1,101,ULS-A,2,-120,-75\n"
+        "L1,B1,101,uls-a,2.0,-40,-150\n",
+        encoding="utf-8",
+    )
+    result = parse_dual_csv_lossless(
+        geometry, forces, format_hint="etabs", defaults=_defaults()
+    )
+    assert all(row.status is ImportStatus.ACCEPTED for row in result.ledger.rows)
+    # The existing member-only batch still refuses two envelopes for one member.
+    assert result.status is ImportStatus.BLOCKED and result.batch is None
+    assert {issue.path for issue in result.issues} == {"adapter.output"}
+
+
+@pytest.mark.parametrize("station", ["NaN", "inf", "not-a-station"])
+def test_invalid_station_is_refused_with_original_token(
+    tmp_path: Path, station: str
+) -> None:
+    geometry, forces, model = _files(
+        tmp_path, "Output Case,Station,M3,V2", f"ULS-1,{station},-120,-75"
+    )
+    result = parse_dual_csv_lossless(
+        geometry, forces, format_hint="etabs", defaults=_defaults()
+    )
+    assert result.status is ImportStatus.BLOCKED and result.batch is None
+    row = result.ledger.rows[-1]
+    field = next(field for field in row.fields if field.canonical_field == "station")
+    assert field.raw_value == station and field.parsed_value is None
+    assert row.issue_codes == (
+        (
+            ImportIssueCode.MALFORMED_NUMBER
+            if station == "not-a-station"
+            else ImportIssueCode.NON_FINITE_NUMBER
+        ),
+    )
+    snapshot = _snapshot(geometry, forces, model)
+    assert snapshot.status is ETABSSnapshotStatus.BLOCKED and not snapshot.beam_requests

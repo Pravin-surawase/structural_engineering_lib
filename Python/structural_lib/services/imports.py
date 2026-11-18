@@ -456,6 +456,28 @@ def _source_record_id(
     return f"{member_id}:{suffix}" if suffix else member_id
 
 
+def _etabs_station_identity(row: ImportRowLedgerV1) -> tuple[str, str, float] | None:
+    """Compare the same finite station consumed by the raw ETABS adapter."""
+    values = {
+        field.canonical_field: field.raw_value.strip()
+        for field in row.fields
+        if field.canonical_field is not None
+    }
+    station = next(
+        (
+            field.parsed_value
+            for field in row.fields
+            if field.canonical_field == "station"
+        ),
+        None,
+    )
+    member = _source_member_id(values)
+    case = values.get("case_id", "")
+    if member and case and isinstance(station, float) and math.isfinite(station):
+        return member, case, station
+    return None
+
+
 def _artifact_ledger(
     path_value: Path | str,
     *,
@@ -702,17 +724,48 @@ def _artifact_ledger(
             )
         )
 
-    identities: dict[str, list[int]] = defaultdict(list)
+    raw_etabs_forces = (
+        role == "forces"
+        and isinstance(adapter, ETABSAdapter)
+        and adapter.classify_force_columns(
+            {
+                field: header
+                for field, header in zip(canonical, headers, strict=True)
+                if field
+            }
+        )
+        == "raw"
+    )
+    identities: dict[str | tuple[str, str, float], list[int]] = defaultdict(list)
     for index, row in enumerate(rows):
         if row.exclusion_reason is None:
-            identities[row.source_record_id].append(index)
-    duplicate_indexes = {
-        index
-        for indexes in identities.values()
-        if len(indexes) > 1
-        for index in indexes
-    }
-    for index in sorted(duplicate_indexes):
+            identity = (
+                _etabs_station_identity(row) if raw_etabs_forces else None
+            ) or row.source_record_id
+            identities[identity].append(index)
+    duplicate_messages: dict[int, str] = {}
+    for identity, indexes in identities.items():
+        if len(indexes) < 2:
+            continue
+        if isinstance(identity, tuple):
+            payloads = {
+                tuple(
+                    field.parsed_value
+                    for field in rows[index].fields
+                    if field.canonical_field in {"m3", "v2", "p"}
+                )
+                for index in indexes
+            }
+            kind = "Ambiguous" if len(payloads) > 1 else "Duplicate"
+            message = (
+                f"{kind} ETABS force rows share member {identity[0]!r}, "
+                f"exact output case {identity[1]!r} and numeric station {identity[2]!r}; "
+                "all colliding rows are blocked before force reduction"
+            )
+        else:
+            message = f"Duplicate source record identity {identity!r}"
+        duplicate_messages.update((index, message) for index in indexes)
+    for index, message in sorted(duplicate_messages.items()):
         row = rows[index]
         code_set = set(row.issue_codes) | {ImportIssueCode.DUPLICATE_RECORD_ID}
         rows[index] = row.model_copy(
@@ -725,7 +778,7 @@ def _artifact_ledger(
             ImportIssueV1(
                 code=ImportIssueCode.DUPLICATE_RECORD_ID,
                 path=f"{role}.rows[{row.source_row_number}].source_record_id",
-                message=f"Duplicate source record identity {row.source_record_id!r}",
+                message=message,
                 artifact_role=role,
                 source_row_number=row.source_row_number,
             )

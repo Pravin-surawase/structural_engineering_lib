@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
   precomputed extrema before creating a batch or snapshot design request.
   Preserve raw signed actions and station provenance, precomputed envelope
   behavior, and the blocked source rows with explicit header diagnostics.
+- Compare raw ETABS station identity by member, exact case and finite numeric
+  station. Block equivalent-spelling collisions before reducing forces while
+  retaining original rows, tokens and actions; keep distinct nearby stations.
 
 ## [0.30.0] — 2026-11-17
 

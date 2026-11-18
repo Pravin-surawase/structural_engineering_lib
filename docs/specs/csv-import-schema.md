@@ -57,6 +57,14 @@ ETABS exports beam forces via: Display → Show Tables → Element Forces - Beam
 | `M3` | Moment, M, Mu, MomentY, Myy | Signed bending moment about local 3 axis | kN·m |
 | `V2` | Shear, V, Vu, ShearY, Vyy | Signed shear force in local 2 plane | kN |
 
+Within one raw ETABS force artifact, each member and exact output case must
+have one row per finite numeric station in the declared source coordinate
+basis. `2` and `2.0` identify the same station; distinct numeric stations are
+not merged by a tolerance. Every colliding row is blocked before envelope
+reduction, with its original station token, signed actions and row identity
+retained in the lossless ledger. Element, step and station-side qualifiers
+require a separately supported profile.
+
 #### Optional Columns
 
 | Column | Aliases | Description | Units | Default |
