@@ -9,9 +9,10 @@ tags: [release, installation, external-user]
 
 # Current Release
 
-**StructLib 0.31.0** was published on 18 November 2026. It corrects edited beam
-cage clearance, torsion receiver peak moments and one-way slab creep checks,
-and tightens Generic and ETABS CSV import. The
+The current published package is **StructLib 0.31.0**. It was published on
+18 November 2026. It corrects edited beam cage clearance, torsion receiver
+peak moments and one-way slab creep checks, and tightens Generic and ETABS CSV
+import. The
 [public install receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.0/public-install-verification.json)
 records the artifact hashes and a clean install from PyPI.
 
