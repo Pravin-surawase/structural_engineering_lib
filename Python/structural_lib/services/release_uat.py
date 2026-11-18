@@ -290,8 +290,8 @@ def _case_invalid_import_row() -> dict[str, Any]:
         path = Path(directory) / "combined.csv"
         _write(
             path,
-            "BeamID,b (mm),D (mm),fck,fy,Cover (mm),Mu (kN-m),Vu (kN)\n"
-            "B1,300,500,25,500,40,bad,80",
+            "BeamID,b (mm),D (mm),fck,fy,Cover (mm),Span (mm),Mu (kN-m),Vu (kN)\n"
+            "B1,300,500,25,500,40,5000,bad,80",
         )
         result = parse_single_csv_lossless(path, format_hint="generic")
     assert result.status is ImportStatus.BLOCKED and result.batch is None
@@ -315,8 +315,8 @@ def _case_adapter_row_loss_guard() -> dict[str, Any]:
             path = Path(directory) / "combined.csv"
             _write(
                 path,
-                "BeamID,b (mm),D (mm),fck,fy,Cover (mm),Mu (kN-m),Vu (kN)\n"
-                "B1,300,500,25,500,40,150,80",
+                "BeamID,b (mm),D (mm),fck,fy,Cover (mm),Span (mm),Mu (kN-m),Vu (kN)\n"
+                "B1,300,500,25,500,40,5000,150,80",
             )
             result = parse_single_csv_lossless(path, format_hint="generic")
     finally:
@@ -332,7 +332,7 @@ def _case_unmatched_geometry_force() -> dict[str, Any]:
         forces = Path(directory) / "forces.csv"
         _write(
             geometry,
-            "BeamID,b (mm),D (mm),fck,fy,Cover (mm)\nB1,300,500,25,500,40",
+            "BeamID,b (mm),D (mm),fck,fy,Cover (mm),Span (mm)\nB1,300,500,25,500,40,5000",
         )
         _write(forces, "BeamID,Mu (kN-m),Vu (kN)\nB2,150,80")
         result = parse_dual_csv_lossless(
