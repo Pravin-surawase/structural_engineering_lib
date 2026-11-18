@@ -4,9 +4,12 @@
 from __future__ import annotations
 
 import json
+import multiprocessing
+import queue
 import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -439,3 +442,88 @@ def test_supervised_broker_reports_operation_failure_without_retry(
     assert "offline injected operation failure" in (result.error or "")
     assert not result.process_instance_fenced
     lease.release()
+
+
+@pytest.mark.parametrize("terminal", ["RETURNED", "ERROR", None])
+def test_supervised_broker_waits_for_terminal_result_after_worker_exit(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, terminal: str | None
+) -> None:
+    class DelayedMessages:
+        polls = 0
+
+        def get(self, *, timeout: float) -> tuple[object, ...]:
+            self.polls += 1
+            if terminal is None:
+                time.sleep(timeout)
+                raise queue.Empty
+            if self.polls <= 2:
+                raise queue.Empty
+            if self.polls == 3:
+                return ("STARTED", 7000, datetime.now(UTC))
+            payload = (
+                {"echo": "ready"}
+                if terminal == "RETURNED"
+                else "RuntimeError: offline injected operation failure"
+            )
+            return (terminal, payload, datetime.now(UTC))
+
+        def close(self) -> None:
+            pass
+
+        def join_thread(self) -> None:
+            pass
+
+    class ExitedWorker:
+        pid = 7000
+        exitcode = 0
+        starts = 0
+
+        def start(self) -> None:
+            self.starts += 1
+
+        def is_alive(self) -> bool:
+            return False
+
+        def join(self, *, timeout: float) -> None:
+            pass
+
+        def terminate(self) -> None:
+            raise AssertionError("An exited worker must not be terminated.")
+
+    messages = DelayedMessages()
+    worker = ExitedWorker()
+
+    context = SimpleNamespace(Queue=lambda: messages, Process=lambda **_: worker)
+    monkeypatch.setattr(multiprocessing, "get_context", lambda _: context)
+    lease = acquire_etabs_operation_lease_v1(
+        _process(tmp_path),
+        "TX-BROKER-LATE",
+        lease_directory=tmp_path / "leases",
+        duration=timedelta(seconds=30),
+    )
+    result = run_etabs_sta_broker_v1(
+        _broker_echo,
+        args=("ready",),
+        deadline_seconds=0.2 if terminal is None else 15,
+        heartbeat_seconds=0.05,
+        lease=lease,
+    )
+
+    assert worker.starts == 1
+    if terminal == "RETURNED":
+        assert result.status == "COMPLETED"
+        assert result.payload == {"echo": "ready"}
+        assert not result.process_instance_fenced
+    elif terminal == "ERROR":
+        assert result.status == "ERROR"
+        assert "offline injected operation failure" in (result.error or "")
+        assert not result.process_instance_fenced
+    else:
+        assert result.status == "ERROR"
+        assert "Broker exited with code 0 without a result" in (result.error or "")
+        assert result.process_instance_fenced
+        assert lease.lease.fence_reason == (
+            "RESTORATION_UNVERIFIED: BROKER_RESULT_UNAVAILABLE"
+        )
+    if not result.process_instance_fenced:
+        lease.release()

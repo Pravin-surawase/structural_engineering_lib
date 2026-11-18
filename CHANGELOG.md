@@ -29,6 +29,9 @@ All notable changes to this project will be documented in this file.
 - Keep calculation packages in draft with inactive approval when their profile
   requires cost evidence and the evidence is missing.
 - Bind live beam WebSocket replies and cleanup to their originating connection.
+- Receive a supervised ETABS worker's terminal message within its existing
+  deadline before treating worker exit as a missing result and fencing the lease.
+  Preserve operation errors and successful payloads without retrying the operation.
 - Lead installation and examples with the published Python library and
   document the optional DXF installation.
 - Reject ETABS force tables that combine raw station components with
