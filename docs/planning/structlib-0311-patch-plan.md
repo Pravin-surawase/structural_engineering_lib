@@ -6,17 +6,18 @@
 **Importance:** High
 **Created:** 2026-11-18
 **Last Updated:** 2026-11-18
-**Abstract:** S0 scope, frozen S1 evidence and S2–S5 plan for the 0.31.1 continuous slab correction.
+**Abstract:** S0 scope, frozen S1 cases, S2 source repair and S3–S5 plan for the 0.31.1 continuous slab correction.
 
 ---
 
 ## Planning status
 
-S0 and S1 planning are complete. The 0.31.1 scope centers on the continuous
-one-way slab false pass. S1 froze the exact fixture inputs, numerical
-expectations and release timing baseline. S2–S5 remain planned. As issue
-discovery continues, review new evidence before changing scope. Record its
-workflow, source or artifact identity, observed effect and verification status.
+S0 and S1 planning and S2 source verification are complete. The 0.31.1
+scope centers on the continuous one-way slab false pass. S1 froze the exact
+fixture inputs, numerical expectations and release timing baseline. S3–S5
+remain planned. As issue discovery continues, review new evidence before
+changing scope. Record its workflow, source or artifact identity, observed
+effect and verification status.
 
 Use the [library adoption and maintenance guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128)
 to choose evidence for affected user journeys. The
@@ -310,19 +311,23 @@ targets for later release-process improvement:
   records the hosted timings and source receipts. Use the same checkpoints
   in 0.31.1 and capture the candidate and archive identities, review and
   authorization timestamps, dispatch intervals, and retry reasons.
-- This stage used the saved replay and checked fixture arithmetic. The S2
-  implementation and its product regression tests remain pending.
+- This stage used the saved replay and checked fixture arithmetic for the
+  S2 handoff.
 
 ### S2 — Repair the shared units and protect the entry points
 
-- Correct physical-strip and per-metre reporting at the calculation owner.
-  Align shear force, steel area and strip width in the shared strength
-  service. Preserve public fields, coefficient applicability and submitted
-  geometry.
-- Verify the public JSON façade, the supplied-coefficient path and affected
-  HTTP routes. Require invariant per-metre results and a completed
-  engineering `FAIL` at each challenged width. Keep the passing and
-  rejection controls. Record the narrow commands in the repair PR.
+- The calculation owner now solves the moment, reinforcement and shear
+  demands on a one-metre basis. The shared strength check uses the same
+  basis for shear force, steel area and width. Submitted geometry, physical
+  line load and the physical-strip capacity diagnostic retain their units.
+- Source tests confirmed completed engineering `FAIL` on the built-in JSON
+  façade at 500, 1,000 and 2,000 mm. The supplied-coefficient B02 case returned
+  `area_passed=false` at all three widths, its direct service's positive steel
+  verdict. Both routes matched the frozen per-metre values. The cookbook
+  control returned `PASS` at all three widths.
+- The affected HTTP routes, applicability checks and physical-strip capacity
+  diagnostic passed their focused tests. The repair PR records the commands.
+  Installed archive qualification remains in S5.
 
 ### S3 — Prepare the affected guidance and release handoff
 
