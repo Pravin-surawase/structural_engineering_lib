@@ -2,6 +2,9 @@
 
 Thanks for helping improve **structural_engineering_lib**.
 
+Use the [library adoption and maintenance guide](docs/contributing/library-adoption-and-maintenance.md)
+when your change affects how people or AI assistants learn, call, or upgrade StructLib.
+
 ## Quick Start
 
 ```bash
