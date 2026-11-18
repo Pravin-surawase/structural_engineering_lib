@@ -19,7 +19,11 @@ tags: []
 ---
 
 **For use with:** IS 456 RC Beam Design Library
-**Code Reference:** IS 456:2000, SP:16-1980
+**Code reference:** IS 456:2000 and its applicable amendments.
+
+SP 16:1980 is a historical design aid based on IS 456:1978. Use it for
+edition-matched benchmark comparisons. BIS lists it under withdrawn or
+superseded publications. [BIS list](https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/pow_new/Pow/download_pow_pdf_dept_commtt/63/190/)
 
 ---
 
