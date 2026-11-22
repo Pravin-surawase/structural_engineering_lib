@@ -1,8 +1,8 @@
 import { ArrowRight, Boxes, Calculator, Layers3, ShieldCheck, Workflow } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { projectStagePath } from '../../app/navigation';
 import { WorkbenchHeader } from '../workbench/WorkbenchHeader';
-import { WorkbenchPanel } from '../workbench/WorkbenchPanel';
 import { WorkbenchShell } from '../workbench/WorkbenchShell';
 import { useWorkspaceStore } from '../../workspace/workspaceStore';
 import { WORKFLOW_RUNNER_ENABLED } from '../../features/automation/config';
@@ -23,16 +23,16 @@ export function WorkbenchHomePage({
 
   return (
     <WorkbenchShell
-      className="pt-14"
+      className="bg-paper pt-14 text-ink [--focus-color:var(--color-cobalt)] [color-scheme:light]"
       header={(
         <WorkbenchHeader
           title={title}
-          projectName="IS 456 reinforced-concrete design"
+          projectName="IS 456 reinforced-concrete workbench"
           primaryAction={(
             <button
               type="button"
               onClick={() => navigate('/workbench/projects/new')}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-sm bg-cobalt px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover"
             >
               New project
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -41,227 +41,98 @@ export function WorkbenchHomePage({
         />
       )}
     >
-      <div className="mx-auto grid max-w-5xl gap-4 p-4 pb-24 sm:p-6 md:grid-cols-2 md:pb-8">
+      <div className="mx-auto max-w-6xl p-4 sm:p-6">
         {searchParams.get('recovery') === 'project-required' ? (
-          <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100 md:col-span-2" role="alert">
+          <div className="mb-5 border border-amber-700/30 bg-amber-100/60 p-4 text-sm text-ink" role="alert">
             Open an existing project or import a new one before using that project stage.
           </div>
         ) : null}
         {workspace ? (
-          <WorkbenchPanel
-            title="Continue project"
-            description={`${workspace.projectName} · ${workspace.members.length} members · ${workspace.selectedStage}`}
-            className="md:col-span-2"
-          >
+          <section className="mb-6 border border-ink/20 bg-white p-4 shadow-[4px_4px_0_0_rgba(23,36,53,0.12)]" aria-labelledby="continue-project-title">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-zinc-400">
-                Revision {workspace.projectRevision} · {workspace.saveState === 'clean' ? 'saved locally' : workspace.saveState}
-              </p>
+              <div>
+                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-cobalt">Saved workspace</p>
+                <h2 id="continue-project-title" className="mt-1 text-lg font-semibold">Continue {workspace.projectName}</h2>
+                <p className="mt-1 text-sm text-ink/70">{workspace.members.length} members · {workspace.selectedStage} · revision {workspace.projectRevision} · {workspace.saveState === 'clean' ? 'saved locally' : workspace.saveState}</p>
+              </div>
               <button
                 type="button"
                 onClick={() => navigate(projectStagePath(workspace.projectId, workspace.selectedStage))}
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                className="inline-flex min-h-10 items-center gap-2 rounded-sm bg-cobalt px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover"
               >
                 Resume project
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
-          </WorkbenchPanel>
+          </section>
         ) : loadState === 'loading' ? (
-          <div className="rounded-xl border border-white/10 bg-zinc-900/60 p-4 text-sm text-zinc-400 md:col-span-2" role="status">
+          <div className="mb-6 border border-ink/15 bg-white p-4 text-sm text-ink/75" role="status">
             Restoring the last local project…
           </div>
         ) : loadState === 'error' && loadError ? (
-          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-200 md:col-span-2" role="alert">
+          <div className="mb-6 border border-rose-700/30 bg-rose-50 p-4 text-sm text-rose-900" role="alert">
             Saved project needs recovery: {loadError}
           </div>
         ) : null}
 
-        <WorkbenchPanel
-          title="Building gravity V1"
-          description="One-storey dead/live load path with a complete calculation book."
-        >
-          <div className="flex items-start gap-3">
-            <span className="rounded-xl bg-cyan-500/10 p-2.5 text-cyan-300">
-              <Layers3 className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm leading-6 text-zinc-400">
-                Review accepted topology, exact load reconciliation, transferred
-                actions, component PASS/FAIL/HOLD, and immutable calculation identity.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/workbench/building-gravity/v1')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200"
-              >
-                Open gravity review
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
+        <section className="border-b border-ink/20 pb-6" aria-label="Quick design and project import">
+          <div className="grid gap-px border border-ink/20 bg-ink sm:grid-cols-2">
+            <button type="button" onClick={() => navigate('/workbench/quick')} className="group min-h-40 bg-white p-5 text-left transition-colors hover:bg-cobalt hover:text-white">
+              <Calculator className="h-6 w-6 text-cobalt group-hover:text-white" aria-hidden="true" />
+              <span className="mt-4 block text-lg font-semibold">Quick beam</span>
+              <span className="mt-1 block max-w-sm text-sm leading-6 text-ink/75 group-hover:text-white/85">Check one beam and inspect the governing result.</span>
+              <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold">Open quick beam <ArrowRight className="h-4 w-4" aria-hidden="true" /></span>
+            </button>
+            <button type="button" onClick={() => navigate('/workbench/projects/new')} className="group min-h-40 bg-ink p-5 text-left text-white transition-colors hover:bg-cobalt">
+              <Boxes className="h-6 w-6 text-paper" aria-hidden="true" />
+              <span className="mt-4 block text-lg font-semibold">Projects</span>
+              <span className="mt-1 block max-w-sm text-sm leading-6 text-white/75">Import and review multiple beams in a local project.</span>
+              <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold">Start project <ArrowRight className="h-4 w-4" aria-hidden="true" /></span>
+            </button>
           </div>
-        </WorkbenchPanel>
+        </section>
 
-        <WorkbenchPanel
-          title="Isolated footing"
-          description="Centred square or rectangular footing with maintained server evidence."
-        >
-          <div className="flex items-start gap-3">
-            <span className="rounded-xl bg-amber-500/10 p-2.5 text-amber-300">
-              <Calculator className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm leading-6 text-zinc-400">
-                Keep service and factored loads, soil approval, structural checks,
-                reinforcement detailing and review status visibly separate.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/workbench/footing/isolated/concentric')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200"
-              >
-                Open isolated footing
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
+        <section className="py-6" aria-labelledby="calculators-title">
+          <h2 id="calculators-title" className="text-xl font-semibold">More design tools</h2>
+          <div className="mt-4 grid border-l border-t border-ink/20 sm:grid-cols-2 lg:grid-cols-4">
+            <DirectoryItem icon={<Layers3 className="h-5 w-5" />} title="Solid slabs" detail="One-way and common two-way slab checks." action="Open slab workbench" onClick={() => navigate('/workbench/slabs')} />
+            <DirectoryItem icon={<ShieldCheck className="h-5 w-5" />} title="Column review" detail="Supplied rectangular tied-column section." action="Open column review" onClick={() => navigate('/workbench/columns/rectangular')} />
+            <DirectoryItem icon={<Calculator className="h-5 w-5" />} title="Isolated footing" detail="Centred square or rectangular footing." action="Open isolated footing" onClick={() => navigate('/workbench/footing/isolated/concentric')} />
+            <DirectoryItem icon={<Layers3 className="h-5 w-5" />} title="Building gravity" detail="Dead/live path and calculation book." action="Open gravity review" onClick={() => navigate('/workbench/building-gravity/v1')} />
+            {WORKFLOW_RUNNER_ENABLED ? <DirectoryItem icon={<Workflow className="h-5 w-5" />} title="Beam workflow" detail="Approved development workflow." action="Open workflow" onClick={() => navigate('/workbench/automation')} /> : null}
           </div>
-        </WorkbenchPanel>
+        </section>
 
-        <WorkbenchPanel
-          title="Quick beam"
-          description="One focused calculation without creating a project."
-        >
-          <div className="flex items-start gap-3">
-            <span className="rounded-xl bg-blue-500/10 p-2.5 text-blue-300">
-              <Calculator className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm leading-6 text-zinc-400">
-                Enter beam inputs, inspect checks and 3D detail, then export only
-                when the result is current and supported.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/workbench/quick')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-300 hover:text-blue-200"
-              >
-                Open quick beam
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </WorkbenchPanel>
-
-        <WorkbenchPanel
-          title="Solid slabs"
-          description="One-way and common two-way slab workflows with visible boundaries."
-        >
-          <div className="flex items-start gap-3">
-            <span className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-300">
-              <Layers3 className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm leading-6 text-zinc-400">
-                Resolve IS 456 coefficient cases, inspect strips and corner torsion,
-                check supplied bars, shear and span/depth, then export a current passport.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/workbench/slabs')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
-              >
-                Open slab workbench
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </WorkbenchPanel>
-
-        <WorkbenchPanel
-          title="Rectangular column review"
-          description="Check a supplied tied-column section and reinforcement."
-        >
-          <div className="flex items-start gap-3">
-            <span className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-300">
-              <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm leading-6 text-zinc-400">
-                Review both-axis classification, minimum eccentricity, adequacy,
-                and supplied detailing with explicit PASS, FAIL, HOLD, and stale states.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/workbench/columns/rectangular')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
-              >
-                Open column review
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </WorkbenchPanel>
-
-        {WORKFLOW_RUNNER_ENABLED ? (
-          <WorkbenchPanel
-            title="Beam workflow"
-            description="Build and run the one approved development workflow."
-          >
-            <div className="flex items-start gap-3">
-              <span className="rounded-xl bg-cyan-500/10 p-2.5 text-cyan-300">
-                <Workflow className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm leading-6 text-zinc-400">
-                  Ordered input, validation, beam design, review stop and evidence
-                  export with fixed handlers and bounded execution.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => navigate('/workbench/automation')}
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200"
-                >
-                  Open workflow
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-          </WorkbenchPanel>
-        ) : null}
-
-        <WorkbenchPanel
-          title="Project workflow"
-          description="Import, review, design and resolve in context."
-        >
-          <div className="flex items-start gap-3">
-            <span className="rounded-xl bg-violet-500/10 p-2.5 text-violet-300">
-              <Boxes className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm leading-6 text-zinc-400">
-                Start with CSV, ETABS/SAFE, or the maintained sample. Full project
-                resume appears here only after a durable snapshot exists.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/workbench/projects/new')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-300 hover:text-violet-200"
-              >
-                Start project
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </WorkbenchPanel>
-
-        <div className="flex gap-3 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.05] p-4 md:col-span-2">
-          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" aria-hidden="true" />
-          <p className="text-xs leading-5 text-emerald-100/80">
-            Supported scope and evidence status remain visible throughout the
-            workflow. Software results do not replace qualified engineering review.
+        <div className="flex gap-3 border-t border-ink/20 py-5">
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-cobalt" aria-hidden="true" />
+          <p className="max-w-3xl text-xs leading-5 text-ink/75">
+            Engineering use requires review by a qualified structural engineer.
           </p>
         </div>
       </div>
     </WorkbenchShell>
+  );
+}
+
+function DirectoryItem({
+  icon,
+  title,
+  detail,
+  action,
+  onClick,
+}: {
+  icon: ReactNode;
+  title: string;
+  detail: string;
+  action: string;
+  onClick: () => void;
+}) {
+  return (
+    <button type="button" onClick={onClick} className="group min-h-40 border-b border-r border-ink/20 bg-white p-4 text-left transition-colors hover:bg-paper">
+      <span className="text-cobalt" aria-hidden="true">{icon}</span>
+      <span className="mt-5 block font-semibold text-ink">{title}</span>
+      <span className="mt-1 block text-sm leading-5 text-ink/70">{detail}</span>
+      <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cobalt group-hover:underline">{action} <ArrowRight className="h-4 w-4" aria-hidden="true" /></span>
+    </button>
   );
 }

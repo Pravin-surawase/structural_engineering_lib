@@ -175,12 +175,12 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   }, [state.result, state.resultLifecycle]);
 
   return (
-    <div className="h-screen pt-14">
+    <div className="h-full pt-14">
       <WorkbenchShell
         header={(
           <WorkbenchHeader
             title="Quick beam design"
-            projectName="IS 456:2000 · current input revision shown explicitly"
+            projectName="Rectangular beam · IS 456:2000"
             primaryAction={(
               <button
                 onClick={actions.triggerDesign}

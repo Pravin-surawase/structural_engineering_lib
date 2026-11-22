@@ -1,4 +1,16 @@
+/*! StructLib workbench by Pravin Surawase and contributors. MIT. Source: https://github.com/Pravin-surawase/structural_engineering_lib */
 @import "tailwindcss";
+
+@theme {
+  --color-paper: #f5f3ee;
+  --color-ink: #172435;
+  --color-cobalt: #214dc5;
+  --color-cobalt-hover: #193b97;
+  --color-zinc-950: #101923;
+  --color-zinc-900: #172432;
+  --color-zinc-800: #213244;
+  --color-zinc-700: #32465c;
+}
 
 :root {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -6,7 +18,7 @@
   font-weight: 400;
   color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #1e1e1e;
+  background-color: var(--color-zinc-950);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -27,22 +39,27 @@ body,
   overflow: hidden;
 }
 
+:focus-visible {
+  outline: 2px solid var(--focus-color, #6e9cfa);
+  outline-offset: 3px;
+}
+
 /* Dockview theme customization */
 .dockview-theme-dark {
-  --dv-background-color: #1e1e1e;
-  --dv-paneview-header-border-color: #333;
+  --dv-background-color: var(--color-zinc-950);
+  --dv-paneview-header-border-color: var(--color-zinc-700);
   --dv-tabs-and-actions-container-font-size: 13px;
-  --dv-activegroup-visiblepanel-tab-background-color: #2d2d2d;
-  --dv-activegroup-hiddenpanel-tab-background-color: #1e1e1e;
-  --dv-inactivegroup-visiblepanel-tab-background-color: #252525;
-  --dv-inactivegroup-hiddenpanel-tab-background-color: #1e1e1e;
-  --dv-tab-divider-color: #333;
+  --dv-activegroup-visiblepanel-tab-background-color: var(--color-zinc-800);
+  --dv-activegroup-hiddenpanel-tab-background-color: var(--color-zinc-950);
+  --dv-inactivegroup-visiblepanel-tab-background-color: var(--color-zinc-900);
+  --dv-inactivegroup-hiddenpanel-tab-background-color: var(--color-zinc-950);
+  --dv-tab-divider-color: var(--color-zinc-700);
   --dv-activegroup-visiblepanel-tab-color: #fff;
   --dv-activegroup-hiddenpanel-tab-color: #a1a1aa;
   --dv-inactivegroup-visiblepanel-tab-color: #ccc;
   --dv-inactivegroup-hiddenpanel-tab-color: #a1a1aa;
-  --dv-separator-border: #333;
-  --dv-paneview-header-background-color: #252525;
+  --dv-separator-border: var(--color-zinc-700);
+  --dv-paneview-header-background-color: var(--color-zinc-900);
 }
 
 /* Accessibility: Screen Reader Only - visually hidden but accessible to screen readers */

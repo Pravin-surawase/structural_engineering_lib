@@ -1,8 +1,8 @@
-/**
- * SettingsPanel - Slide-over settings panel with theme, API, and version info.
- */
-import { X } from "lucide-react";
-import { useEffect } from "react";
+import { X } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { version } from '../../../package.json';
+import { API_BASE_URL } from '../../config';
+import { ProjectCredits } from './ProjectCredits';
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -10,104 +10,59 @@ interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
-  // Close on Escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (isOpen && !dialog?.open) dialog?.showModal();
+    if (!isOpen && dialog?.open) dialog.close();
+  }, [isOpen]);
 
   return (
-    <>
-          {/* Backdrop */}
-          <div
-            onClick={onClose}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-            aria-hidden="true"
-          />
+    <dialog
+      ref={dialogRef}
+      aria-labelledby="settings-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md border-l border-zinc-700 bg-zinc-950 p-0 text-white backdrop:bg-black/65"
+    >
+      {isOpen ? <div className="flex min-h-full flex-col">
+        <header className="flex items-center justify-between border-b border-zinc-700 px-5 py-4 sm:px-6">
+          <h2 id="settings-title" className="text-xl font-semibold tracking-tight">Settings</h2>
+          <button type="button" onClick={onClose} aria-label="Close settings" className="inline-flex size-10 items-center justify-center rounded-sm text-zinc-300 hover:bg-zinc-800 hover:text-white">
+            <X size={20} aria-hidden="true" />
+          </button>
+        </header>
 
-          {/* Slide-over panel */}
-          <div
-            className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-zinc-900 border-l border-white/10 z-50 flex flex-col"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="settings-title"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <h2 id="settings-title" className="text-lg font-semibold text-white">
-                Settings
-              </h2>
-              <button
-                onClick={onClose}
-                aria-label="Close settings"
-                className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {/* Theme Section */}
-              <section>
-                <h3 className="text-sm font-medium text-white mb-3">Theme</h3>
-                <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5">
-                  <p className="text-sm text-zinc-400">
-                    Dark theme (default) — customization coming soon.
-                  </p>
-                </div>
-              </section>
-
-              {/* API Configuration */}
-              <section>
-                <h3 className="text-sm font-medium text-white mb-3">API Configuration</h3>
-                <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-zinc-400">Endpoint:</span>
-                    <code className="text-xs font-mono text-blue-400 bg-zinc-900 px-2 py-1 rounded">
-                      {import.meta.env.VITE_API_BASE_URL || "/api/v1"}
-                    </code>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-zinc-400">Status:</span>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-green-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                      Connected
-                    </span>
-                  </div>
-                </div>
-              </section>
-
-              {/* Version Info */}
-              <section>
-                <h3 className="text-sm font-medium text-white mb-3">Version</h3>
-                <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-zinc-400">App:</span>
-                    <span className="text-sm font-mono text-zinc-300">v0.31.0</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-zinc-400">IS 456:</span>
-                    <span className="text-sm font-mono text-zinc-300">2000</span>
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            {/* Footer */}
-            <div className="p-6 border-t border-white/10">
-              <p className="text-xs text-zinc-500 text-center">
-                structural_engineering_lib © {new Date().getFullYear()}
-              </p>
-            </div>
-          </div>
-    </>
+        <div className="flex-1 space-y-7 px-5 py-6 sm:px-6">
+          <section className="space-y-3">
+            <h3 className="text-sm font-semibold text-white">Workbench</h3>
+            <dl className="divide-y divide-zinc-700 border-y border-zinc-700 text-sm">
+              <div className="flex flex-wrap justify-between gap-2 py-3">
+                <dt className="text-zinc-300">API endpoint</dt>
+                <dd className="break-all font-mono text-blue-200">{API_BASE_URL || 'Same origin'}</dd>
+              </div>
+              <div className="flex justify-between gap-2 py-3">
+                <dt className="text-zinc-300">Design standard</dt>
+                <dd>IS 456:2000</dd>
+              </div>
+              <div className="flex justify-between gap-2 py-3">
+                <dt className="text-zinc-300">Workbench version</dt>
+                <dd className="font-mono">{version}</dd>
+              </div>
+            </dl>
+          </section>
+          <section className="space-y-3 text-zinc-300">
+            <h3 className="text-sm font-semibold text-white">About StructLib</h3>
+            <ProjectCredits />
+          </section>
+        </div>
+      </div> : null}
+    </dialog>
   );
 }

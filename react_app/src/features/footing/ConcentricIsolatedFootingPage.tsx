@@ -82,7 +82,7 @@ export function ConcentricIsolatedFootingPage() {
   };
 
   return (
-    <div className="h-screen pt-14">
+    <div className="h-full pt-14">
       <WorkbenchShell
         header={(
           <WorkbenchHeader

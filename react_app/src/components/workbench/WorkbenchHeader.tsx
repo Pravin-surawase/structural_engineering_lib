@@ -34,11 +34,11 @@ export function WorkbenchHeader({
   children,
 }: WorkbenchHeaderProps) {
   return (
-    <header className="border-b border-white/10 bg-zinc-950/95 px-4 py-3 sm:px-6">
+    <header className="border-b border-zinc-700 bg-zinc-900 px-4 py-3 sm:px-6 sm:py-4">
       <div className="mx-auto flex max-w-screen-2xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          {projectName ? <p className="truncate text-xs text-zinc-400">{projectName}</p> : null}
-          <h1 className="truncate text-lg font-semibold text-white">{title}</h1>
+          {projectName ? <p className="mb-1 text-xs text-zinc-300">{projectName}</p> : null}
+          <h1 className="text-xl leading-tight font-semibold tracking-tight text-white sm:text-2xl">{title}</h1>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {saveState ? (
@@ -50,7 +50,7 @@ export function WorkbenchHeader({
             </span>
           ) : null}
           {children}
-          {secondaryActions ? <div className="flex items-center gap-2">{secondaryActions}</div> : null}
+          {secondaryActions ? <div className="flex flex-wrap items-center gap-2">{secondaryActions}</div> : null}
           {primaryAction ? (
             <div className="w-full [&>a]:w-full [&>button]:w-full sm:w-auto sm:[&>a]:w-auto sm:[&>button]:w-auto">
               {primaryAction}

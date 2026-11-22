@@ -127,7 +127,7 @@ export function ImportView() {
   };
 
   return (
-    <div className="h-screen pt-14 flex flex-col bg-zinc-950">
+    <div className="flex h-full flex-col bg-zinc-950 pt-14">
       {/* Workflow Breadcrumb */}
       <WorkflowBreadcrumb />
 

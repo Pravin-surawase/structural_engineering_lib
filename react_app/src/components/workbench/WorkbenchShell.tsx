@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { cn } from '../../lib/utils';
 
 export interface WorkbenchShellProps {
   header: ReactNode;
@@ -20,9 +21,9 @@ export function WorkbenchShell({
   className = '',
 }: WorkbenchShellProps) {
   return (
-    <section className={`h-full min-h-0 overflow-y-auto bg-zinc-950 text-zinc-100 ${className}`}>
+    <section className={cn('h-full min-h-0 overflow-y-auto bg-zinc-950 text-zinc-100', className)}>
       {header}
-      <div className="grid min-h-0 grid-cols-1 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className={cn('grid min-h-0 grid-cols-1', inspector && 'xl:grid-cols-[minmax(0,1fr)_22rem]')}>
         <section className="min-w-0" aria-label="Workbench content">
           {children}
         </section>

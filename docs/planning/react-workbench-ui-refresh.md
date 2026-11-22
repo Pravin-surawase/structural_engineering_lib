@@ -19,6 +19,12 @@ project screen, and the shared controls. Quick Beam is the first implementation
 slice. The redesign is complete when every maintained route and user-facing
 state follows the new patterns and passes its compatibility replay.
 
+Give StructLib its own visual identity. The design uses paper-toned entry
+screens, ink-coloured calculation surfaces, cobalt actions and a section mark.
+Use engineering diagrams from the library's own components. Show StructLib and
+Pravin Surawase in the interface, and make the repository, MIT notice, contributor
+credits and engineering basis discoverable in the source and built site.
+
 | Area | Design direction |
 | --- | --- |
 | Public entry and library help | A short library introduction, the runnable example and direct links to Python and supported cases. Match the workbench typography and controls to the entry. |
@@ -261,8 +267,8 @@ each replay. The following existing cases are anchors for the baseline.
 | Column, footing and gravity | Replay passing and failing column checks and the stale packet lock, footing blocked approvals and returned detailing `HOLD`, and gravity malformed JSON plus a bundle with mixed dispositions and its calculation book. [Column tests](../../react_app/src/features/columns/__tests__/ColumnReviewWorkspace.test.tsx) · [Footing tests](../../react_app/src/features/footing/__tests__/ConcentricIsolatedFootingPage.test.tsx) · [Gravity tests](../../react_app/src/features/building-gravity/BuildingGravityReviewPage.test.tsx) |
 | Workflow composer | Verify entry and route availability across the flag states. Validate and run the existing beam template to its review stop, cancel one active request, and round-trip the local draft. [Composer tests](../../react_app/src/features/automation/__tests__/WorkflowComposerPage.test.tsx) · [Draft tests](../../react_app/src/features/automation/__tests__/draft.test.ts) |
 
-This draft records source-reviewed decisions and acceptance targets. Browser
-captures and fixture replays are pending.
+Record browser captures and fixture replays for the entire redesign as each
+route family is updated.
 
 ## Journeys and acceptance
 

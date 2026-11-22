@@ -129,7 +129,7 @@ export function DashboardPage() {
 
   if (beams.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen pt-14 gap-4">
+      <div className="flex h-full flex-col items-center justify-center gap-4 pt-14">
         <BarChart3 className="w-12 h-12 text-white/10" />
         <p className="text-zinc-500 text-sm">No beams imported. Import CSV first.</p>
         <button
@@ -143,7 +143,7 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="h-screen pt-14 overflow-y-auto bg-zinc-950">
+    <div className="h-full overflow-y-auto bg-zinc-950 pt-14">
       {/* Workflow Breadcrumb */}
       <WorkflowBreadcrumb />
 

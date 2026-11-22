@@ -2,6 +2,10 @@
 
 React-based IDE for structural beam design with 3D visualization.
 
+## Source and attribution
+
+This workbench is part of [StructLib](https://github.com/Pravin-surawase/structural_engineering_lib), created by Pravin Surawase and distributed under the MIT License. The deployed app exposes its complete source, engineering-basis, and license attribution at [`/CREDITS.txt`](./public/CREDITS.txt).
+
 ## Features
 
 - **3D Viewport** - React Three Fiber powered beam visualization

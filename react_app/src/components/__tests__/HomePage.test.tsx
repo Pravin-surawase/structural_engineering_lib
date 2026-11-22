@@ -19,4 +19,16 @@ describe('HomePage', () => {
     expect(screen.getByRole('button', { name: /quick beam/i })).toBeVisible();
     expect(screen.getByRole('button', { name: /new project/i })).toBeVisible();
   });
+
+  it('shows the creator, source repository, and distributed credits', () => {
+    render(<HomePage />);
+
+    expect(screen.getByText('By Pravin Surawase')).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Source on GitHub' })).toHaveAttribute(
+      'href',
+      'https://github.com/Pravin-surawase/structural_engineering_lib',
+    );
+    expect(screen.getByRole('link', { name: 'Source credits' })).toHaveAttribute('href', '/CREDITS.txt');
+    expect(screen.getByRole('link', { name: 'MIT License' })).toBeVisible();
+  });
 });
