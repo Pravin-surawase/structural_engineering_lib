@@ -5,19 +5,20 @@
 **Status:** Draft
 **Importance:** High
 **Created:** 2026-11-18
-**Last Updated:** 2026-11-18
+**Last Updated:** 2026-11-22
 **Abstract:** 0.31.1 slab scope, source verification, migration guidance and release handoff.
 
 ---
 
 ## Planning status
 
-S0–S3 are complete on the draft branch. The 0.31.1 scope centers on
-the continuous one-way slab false pass. The frozen cases, verified source
-repair, migration guidance and release handoff are ready for S4 review and
-S5 archive qualification. As issue discovery continues, review new evidence
-before changing scope. Record its workflow, source or artifact identity,
-observed effect and verification status.
+S0–S4 are complete for the continuous one-way slab correction. The
+[specific source freeze](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1126)
+pins `91a33345ad288791b9690991c4809a82dd6c93fe`. On 22 November 2026 the
+owner separated the full React workbench refresh into
+`codex/structlib-react-workbench-refresh`. 0.31.1 retains the slab scope,
+CSV guidance predecessor and the faster release work below. S5 archive
+qualification and publication authorization are pending.
 
 Use the [library adoption and maintenance guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128)
 to choose evidence for affected user journeys. The
@@ -65,14 +66,16 @@ Coding Lab and Maintenance Lab handoffs.
 | FOOT-01 — isolated footing minimum steel | High-priority follow-up. The Lab reports 810.00 mm² per direction at 830 kN and 764.22 mm² at 900 kN against the same 810 mm² gross-area floor. Tagged flexure only applies that floor after an effective-depth percentage screen, and its percentage feeds preliminary shear. The checked detailing path has its own gross-area check. Both reported service calls had calculation `PASS` and overall `HOLD`. Obtain the exact fixtures and confirm the effect on preliminary shear, the final checked layout and governing status. Reopen patch scope if that evidence shows an incorrect accepted or checked result. |
 | APP-01 — batch interruption | Separate application maintenance. The Lab reports an interrupted job at 1 of 64 members and a `complete` event with `IN_PROGRESS`. The tagged route breaks on disconnect, while the job manager completes only at the total count. Reproduce interruption and polling on the same job ID, preserve completed results and verify the normal-completion control. |
 | SETUP-01, SETUP-02 and DOC-02 | Confirmed preflight and dependency-reference problems. Group them into the next bounded installation-maintenance change so the slab correction can qualify on its own. |
-| REL-01 and release workflow redesign | Keep the timing baseline and proposals. Select CI sharding or further workflow automation after profiling and equivalent-run proof. |
+| REL-01 and release workflow redesign | Use the existing verified-parallel workflow and time its coverage step for this patch. Profile CI sharding separately and require equivalent test and coverage evidence before switching. |
+| React workbench refresh | Planned in its own branch and chat. It has separate implementation and browser acceptance. |
 | Human-maintainability plan, AI pilot and broader contributor work | Keep the Lab's entry-point-to-owner-to-test map as the proposal for a separate documentation pass. The slab PR can record its own owner and focused test commands. Defer moving files or tests, splitting output/transport responsibilities, and running the broader adoption pilot. #1127 and #1128 retain their own review lanes. |
 | Remaining Lab and programme proposals | Retain the A40 special replay status, A51 caller binding and A52/A53 catalogue controls under their own evidence and scope. Keep FLOW04, new footing topologies and other element extensions in their programme lanes. |
 
 The proposed scope is bound to the published `v0.31.0` commit above.
-FLOW04 #1117 and release guidance #1125 remain separate drafts. Recheck their
-SHAs, affected paths and sequencing before selecting an integration base.
-The linked planning and documentation drafts can be reviewed separately.
+FLOW04 #1117 is an active draft and #1125 is the public 0.31.0 guidance
+predecessor. Recheck exact heads and candidate overlap before advancing
+`main`. Rebind the patch to the actual integration base. If #1127 lands
+first, regenerate the shared API compatibility ledger.
 
 ## SLAB-01 evidence and acceptance
 
@@ -269,8 +272,28 @@ failures were avoidable preflight rework.
 [Façade failure 2](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44044136301) ·
 [Compatibility ledger failure](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/44272632653)
 
-Use 0.31.1 to capture timing with the existing workflow. Keep the following
-targets for later release-process improvement:
+### Faster execution for 0.31.1
+
+- Resolve the integration base before versioning and package build. Stage the
+  retained proof before generating dependent references. Run the generated
+  cookbook and compatibility checks locally before the final push to avoid
+  another hosted cycle for drift.
+- Build and retain one wheel and sdist from the frozen 0.31.1 payload. Run the
+  installed qualification and replay the slab cases against both archives.
+  Carry the exact hashes through later authorized stages. Requalify affected
+  evidence for a change and preserve the reason for each retry.
+- Once the final candidate and evidence are ready, run the required PR gate
+  and cross-platform Weekly on the same head concurrently. Prepare the review
+  packet, artifact identifiers and dispatch fields during the hosted runs.
+  Bind the independent decision to the completed evidence.
+- After exact review and separate owner authorization, use the existing
+  TestPyPI, same-byte readback, production and clean-install sequence. Target
+  dispatch within five minutes of each eligible handoff. Record required gate
+  completion, review, authorization and dispatch separately so wait is
+  visible. Compare with the 0.31.0 baseline of 41m06s for Weekly and 20m05s
+  from Weekly completion to TestPyPI creation.
+
+Keep the following targets for release-process improvement:
 
 - **Weekly ≤30 minutes** after a test runner change proves equivalent on the
   same candidate, with the slowest shard and fan-in timing recorded. Compare
