@@ -17,8 +17,11 @@ S0–S4 are complete for the continuous one-way slab correction. The
 pins `91a33345ad288791b9690991c4809a82dd6c93fe`. On 22 November 2026 the
 owner separated the full React workbench refresh into
 `codex/structlib-react-workbench-refresh`. 0.31.1 retains the slab scope,
-CSV guidance predecessor and the faster release work below. S5 archive
-qualification and publication authorization are pending.
+CSV guidance predecessor and the faster release work below. S5 local
+archive qualification is recorded in the
+[retained artifact record](../verification/library-0311-release-artifacts.json).
+The draft PR tracks the exact-head hosted checks and review. Publication
+authorization is pending.
 
 Use the [library adoption and maintenance guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128)
 to choose evidence for affected user journeys. The
@@ -66,7 +69,7 @@ Coding Lab and Maintenance Lab handoffs.
 | FOOT-01 — isolated footing minimum steel | High-priority follow-up. The Lab reports 810.00 mm² per direction at 830 kN and 764.22 mm² at 900 kN against the same 810 mm² gross-area floor. Tagged flexure only applies that floor after an effective-depth percentage screen, and its percentage feeds preliminary shear. The checked detailing path has its own gross-area check. Both reported service calls had calculation `PASS` and overall `HOLD`. Obtain the exact fixtures and confirm the effect on preliminary shear, the final checked layout and governing status. Reopen patch scope if that evidence shows an incorrect accepted or checked result. |
 | APP-01 — batch interruption | Separate application maintenance. The Lab reports an interrupted job at 1 of 64 members and a `complete` event with `IN_PROGRESS`. The tagged route breaks on disconnect, while the job manager completes only at the total count. Reproduce interruption and polling on the same job ID, preserve completed results and verify the normal-completion control. |
 | SETUP-01, SETUP-02 and DOC-02 | Confirmed preflight and dependency-reference problems. Group them into the next bounded installation-maintenance change so the slab correction can qualify on its own. |
-| REL-01 and release workflow redesign | Use the existing verified-parallel workflow and time its coverage step for this patch. Profile CI sharding separately and require equivalent test and coverage evidence before switching. |
+| REL-01 and release workflow redesign | Use the existing Weekly workflow and time its coverage step for this patch. Profile CI sharding separately and require equivalent test and coverage evidence before switching. |
 | React workbench refresh | Planned in its own branch and chat. It has separate implementation and browser acceptance. |
 | Human-maintainability plan, AI pilot and broader contributor work | Keep the Lab's entry-point-to-owner-to-test map as the proposal for a separate documentation pass. The slab PR can record its own owner and focused test commands. Defer moving files or tests, splitting output/transport responsibilities, and running the broader adoption pilot. #1127 and #1128 retain their own review lanes. |
 | Remaining Lab and programme proposals | Retain the A40 special replay status, A51 caller binding and A52/A53 catalogue controls under their own evidence and scope. Keep FLOW04, new footing topologies and other element extensions in their programme lanes. |
