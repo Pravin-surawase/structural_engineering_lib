@@ -172,8 +172,7 @@ export function Viewport3D({
   return (
     <div
       ref={containerRef}
-      className="relative h-full w-full overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}
+      className="relative h-full w-full overflow-hidden bg-zinc-950"
       role="region"
       aria-label={effectiveMode === 'building'
         ? `3D building visualization with ${beams.length} members`

@@ -27,6 +27,8 @@ describe('TopBar', () => {
   it('renders the StructLib brand text', () => {
     render(React.createElement(TopBar));
     expect(screen.getByText('StructLib')).toBeInTheDocument();
+    expect(screen.getByText('By Pravin Surawase')).toBeVisible();
+    expect(screen.getByRole('link', { name: /source credits/i })).toHaveAttribute('href', '/CREDITS.txt');
   });
 
   it('renders navigation links', () => {

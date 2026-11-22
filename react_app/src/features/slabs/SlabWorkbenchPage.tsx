@@ -613,64 +613,65 @@ export function SlabWorkbenchPage() {
 
   return (
     <WorkbenchShell
-      className="pt-14"
+      className="bg-paper pt-14 text-ink [color-scheme:light]"
       header={<WorkbenchHeader title="Solid slab workbench" projectName="IS 456 · bounded beam/wall-supported panels" />}
     >
-      <div className="h-full overflow-y-auto p-4 pb-24 sm:p-6 md:pb-8">
-        <div className="mx-auto grid max-w-7xl gap-4 xl:grid-cols-[360px_minmax(0,1fr)]">
+      <div className="p-4 sm:p-6">
+        <div className="mx-auto grid max-w-6xl gap-4 xl:grid-cols-[minmax(18rem,0.75fr)_minmax(0,1.25fr)]">
           <div className="space-y-4">
-            <WorkbenchPanel title="Design route" description="Choose the physical slab system before entering values.">
+            <WorkbenchPanel title="Slab type" tone="paper">
               <div className="grid gap-2">
                 {MODES.map((item) => (
                   <button
                     key={item.id}
                     type="button"
+                    aria-pressed={mode === item.id}
                     onClick={() => switchMode(item.id)}
-                    className={`rounded-lg border p-3 text-left ${mode === item.id ? 'border-blue-400/60 bg-blue-500/10' : 'border-white/10 bg-zinc-950/40 hover:border-white/20'}`}
+                    className={`border p-3 text-left ${mode === item.id ? 'border-cobalt bg-cobalt/10' : 'border-ink/15 bg-white hover:border-ink/35'}`}
                   >
-                    <span className="block text-sm font-semibold text-zinc-100">{item.label}</span>
-                    <span className="mt-1 block text-xs text-zinc-400">{item.note}</span>
+                    <span className="block text-sm font-semibold text-ink">{item.label}</span>
+                    <span className="mt-1 block text-xs text-ink/65">{item.note}</span>
                   </button>
                 ))}
               </div>
             </WorkbenchPanel>
 
-            <WorkbenchPanel title="Inputs" description="All displayed dimensions and actions have explicit units.">
+            <WorkbenchPanel title="Slab inputs" tone="paper">
               {usesDemonstrationEvidence && (
-                <p className="rounded-lg border border-blue-400/20 bg-blue-500/[0.06] p-3 text-xs leading-5 text-blue-100">
+                <p className="mb-3 rounded-sm border border-cobalt/25 bg-cobalt/5 p-3 text-xs leading-5 text-ink">
                   Demonstration preset: its review references apply only to the unchanged sample inputs. Editing a design clears that evidence and requires a current source and qualified-review attestation.
                 </p>
               )}
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
                 {EDITABLE[mode].map(([field, label, unit]) => (
-                  <label key={field} className="grid gap-1 text-xs text-zinc-400">
+                  <label key={field} className="grid gap-1 text-xs text-ink/75">
                     <span>{label}</span>
-                    <span className="flex overflow-hidden rounded-lg border border-white/10 bg-zinc-950 focus-within:border-blue-400/60">
+                    <span className="flex overflow-hidden rounded-sm border border-ink/25 bg-white focus-within:border-cobalt">
                       <input
                         aria-label={label}
                         type="number"
                         value={String(request[field])}
                         onChange={(event) => updateNumber(field, event.target.value)}
-                        className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none"
+                        className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-ink outline-none"
                       />
-                      <span className="border-l border-white/10 px-2 py-2 text-zinc-500">{unit}</span>
+                      <span className="border-l border-ink/15 px-2 py-2 text-ink/55">{unit}</span>
                     </span>
                   </label>
                 ))}
               </div>
               {choiceFields.length > 0 ? (
-                <div className="mt-4 grid gap-3 border-t border-white/10 pt-4">
+                <div className="mt-4 grid gap-3 border-t border-ink/15 pt-4">
                   {choiceFields.map(({ field, label, options }) => (
-                    <label key={field} className="grid gap-1 text-xs text-zinc-400">
+                    <label key={field} className="grid gap-1 text-xs text-ink/75">
                       <span>{label}</span>
                       <select
                         aria-label={label}
                         value={String(request[field])}
                         onChange={(event) => updateChoice(field, event.target.value)}
-                        className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-blue-400/60"
+                        className="rounded-sm border border-ink/25 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cobalt"
                       >
                         {options.map((option) => (
-                          <option key={option.value} value={option.value} className="bg-zinc-950">
+                          <option key={option.value} value={option.value}>
                             {option.label}
                           </option>
                         ))}
@@ -685,9 +686,9 @@ export function SlabWorkbenchPage() {
                   ) : null}
                 </div>
               ) : null}
-              <div className="mt-4 grid gap-3 border-t border-white/10 pt-4">
-                <p className="text-xs font-semibold text-zinc-300">Current serviceability review evidence</p>
-                <label className="grid gap-1 text-xs text-zinc-400">
+              <div className="mt-4 grid gap-3 border-t border-ink/15 pt-4">
+                <p className="text-xs font-semibold text-ink">Current serviceability review evidence</p>
+                <label className="grid gap-1 text-xs text-ink/75">
                   <span>Serviceability limit source reference</span>
                   <input
                     aria-label="Serviceability limit source reference"
@@ -695,10 +696,10 @@ export function SlabWorkbenchPage() {
                     value={String(request.serviceability_limit_source_reference)}
                     onChange={(event) => updateEvidence('serviceability_limit_source_reference', event.target.value)}
                     placeholder="Enter the source applying to these inputs"
-                    className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-blue-400/60"
+                    className="rounded-sm border border-ink/25 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cobalt"
                   />
                 </label>
-                <label className="flex items-start gap-2 text-xs leading-5 text-zinc-400">
+                <label className="flex items-start gap-2 text-xs leading-5 text-ink/75">
                   <input
                     aria-label="Source applies to current inputs"
                     type="checkbox"
@@ -708,7 +709,7 @@ export function SlabWorkbenchPage() {
                   />
                   I confirm this source applies to the current serviceability inputs.
                 </label>
-                <label className="grid gap-1 text-xs text-zinc-400">
+                <label className="grid gap-1 text-xs text-ink/75">
                   <span>Qualified review acceptance reference</span>
                   <input
                     aria-label="Qualified review acceptance reference"
@@ -716,10 +717,10 @@ export function SlabWorkbenchPage() {
                     value={String(request.qualified_serviceability_acceptance_reference)}
                     onChange={(event) => updateEvidence('qualified_serviceability_acceptance_reference', event.target.value)}
                     placeholder="Enter the qualified review reference"
-                    className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-blue-400/60"
+                    className="rounded-sm border border-ink/25 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cobalt"
                   />
                 </label>
-                <label className="flex items-start gap-2 text-xs leading-5 text-zinc-400">
+                <label className="flex items-start gap-2 text-xs leading-5 text-ink/75">
                   <input
                     aria-label="Qualified review acknowledged for current inputs"
                     type="checkbox"
@@ -734,7 +735,7 @@ export function SlabWorkbenchPage() {
                 type="button"
                 onClick={calculate}
                 disabled={running}
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-500 disabled:cursor-wait disabled:opacity-60"
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-cobalt px-4 py-2.5 text-sm font-semibold text-white hover:bg-cobalt-hover disabled:cursor-wait disabled:opacity-60"
               >
                 <Calculator className="h-4 w-4" aria-hidden="true" />
                 {running ? 'Calculating…' : 'Run slab design'}

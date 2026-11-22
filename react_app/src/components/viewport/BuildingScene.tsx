@@ -1,4 +1,4 @@
-import { Environment, Grid, Html } from '@react-three/drei';
+import { Grid, Html } from '@react-three/drei';
 import { useMemo } from 'react';
 import * as THREE from 'three';
 import { useWebGLContextLoss } from '../../hooks/useWebGLContextLoss';
@@ -106,7 +106,6 @@ export function BuildingScene({
       <ambientLight intensity={0.6} />
       <directionalLight position={[10, 20, 10]} intensity={1} />
       <directionalLight position={[-10, 10, -10]} intensity={0.3} />
-      <Environment preset="city" />
       <Grid
         args={[50, 50]}
         cellSize={1}

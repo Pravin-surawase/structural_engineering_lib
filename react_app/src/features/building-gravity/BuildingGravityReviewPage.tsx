@@ -125,26 +125,26 @@ export function BuildingGravityReviewPage() {
   }
 
   return (
-    <div className="h-full overflow-auto bg-zinc-950 px-4 pb-16 pt-20 text-zinc-100 sm:px-6">
+    <div className="h-full overflow-auto bg-paper px-4 pb-24 pt-20 text-ink [color-scheme:light] sm:px-6 md:pb-8">
       <div className="mx-auto max-w-6xl space-y-5">
         <header>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cobalt">
             building.gravity.dead-live.v1
           </p>
           <h1 className="mt-2 text-2xl font-semibold">Building Gravity Workflow V1</h1>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-ink/75">
             Review one accepted physical model, its reconciled dead/live load path,
             caller-assigned practical actions, exact member actions, conditional
             component checks, and visible holds.
           </p>
         </header>
 
-        <section className="rounded-xl border border-amber-400/25 bg-amber-400/[0.06] p-4">
+        <section className="border border-amber-700/30 bg-amber-100/60 p-4">
           <div className="flex gap-3">
-            <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" aria-hidden="true" />
+            <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-800" aria-hidden="true" />
             <div>
-              <h2 className="text-sm font-semibold text-amber-100">Qualified review required</h2>
-              <p className="mt-1 text-xs leading-5 text-amber-100/75">
+              <h2 className="text-sm font-semibold text-amber-950">Qualified review required</h2>
+              <p className="mt-1 text-xs leading-5 text-amber-950/80">
                 PASS and FAIL are bounded software dispositions. HOLD stays visible when
                 a required design, soil, detailing, or acceptance basis is missing.
               </p>
@@ -153,15 +153,15 @@ export function BuildingGravityReviewPage() {
         </section>
 
         {definition ? (
-          <section className="rounded-xl border border-white/10 bg-zinc-900/60 p-4">
+          <section className="border border-ink/20 bg-white p-4">
             <h2 className="text-sm font-semibold">Accepted topology</h2>
-            <ul className="mt-2 grid gap-1 text-xs text-zinc-400 sm:grid-cols-2">
+            <ul className="mt-2 grid gap-1 text-xs text-ink/70 sm:grid-cols-2">
               {definition.accepted_topology.map((item) => <li key={item}>• {item}</li>)}
             </ul>
           </section>
         ) : null}
 
-        <section className="rounded-xl border border-white/10 bg-zinc-900/60 p-4">
+        <section className="border border-ink/20 bg-white p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <label htmlFor="gravity-request" className="text-sm font-semibold">
               GravityWorkflowRequestV1 JSON
@@ -170,12 +170,12 @@ export function BuildingGravityReviewPage() {
               type="button"
               onClick={loadExample}
               disabled={!definition}
-              className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-semibold enabled:hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-sm border border-ink/25 px-3 py-1.5 text-xs font-semibold enabled:hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
             >
               Load maintained example
             </button>
           </div>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-ink/60">
             Paste the exported, hash-bound request. Unknown or incomplete fields are rejected before calculation.
           </p>
           <textarea
@@ -184,7 +184,7 @@ export function BuildingGravityReviewPage() {
             onChange={(event) => setRequestText(event.target.value)}
             rows={12}
             spellCheck={false}
-            className="mt-3 w-full rounded-lg border border-white/10 bg-zinc-950 p-3 font-mono text-xs text-zinc-200 outline-none focus:border-cyan-400/60"
+            className="mt-3 w-full rounded-sm border border-ink/25 bg-ink p-3 font-mono text-xs text-white outline-none focus:border-cobalt"
             placeholder='{"schema_version":"gravity-workflow-request/v1", ...}'
           />
           <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -192,7 +192,7 @@ export function BuildingGravityReviewPage() {
               type="button"
               onClick={handleRun}
               disabled={running || requestText.trim().length === 0}
-              className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white enabled:hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-sm bg-cobalt px-4 py-2 text-sm font-semibold text-white enabled:hover:bg-cobalt-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Play className="h-4 w-4" aria-hidden="true" />
               {running ? 'Running…' : 'Run gravity review'}
@@ -203,7 +203,7 @@ export function BuildingGravityReviewPage() {
 
         {bundle ? (
           <>
-            <section className="rounded-xl border border-white/10 bg-zinc-900/60 p-4">
+            <section className="border border-ink/20 bg-ink p-4 text-white">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <StatusBadge status={bundle.workflow_result.result_envelope.overall_status} />
@@ -221,7 +221,7 @@ export function BuildingGravityReviewPage() {
                   Download calculation book
                 </button>
               </div>
-              <div className="mt-4 grid gap-2 font-mono text-[11px] text-zinc-500">
+              <div className="mt-4 grid gap-2 font-mono text-[11px] text-white/55">
                 <p>model {bundle.workflow_result.model_hash}</p>
                 <p>loads {bundle.workflow_result.load_model_hash}</p>
                 <p>ledger {bundle.workflow_result.ledger_hash}</p>
@@ -229,7 +229,7 @@ export function BuildingGravityReviewPage() {
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 {(Object.keys(componentCounts) as GravityOverallStatus[]).map((status) => (
-                  <span key={status} className="text-xs text-zinc-400">
+                  <span key={status} className="text-xs text-white/70">
                     {STATUS_LABELS[status]} {componentCounts[status]}
                   </span>
                 ))}
@@ -243,7 +243,7 @@ export function BuildingGravityReviewPage() {
             </section>
 
             {bundle.workflow_result.practical_action_reconciliation.length > 0 ? (
-              <section className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900/60">
+              <section className="overflow-hidden border border-ink/20 bg-white">
                 <h2 className="p-4 text-sm font-semibold">Caller-assigned practical actions</h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
@@ -271,7 +271,7 @@ export function BuildingGravityReviewPage() {
               </section>
             ) : null}
 
-            <section className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900/60">
+              <section className="overflow-hidden border border-ink/20 bg-white">
               <h2 className="p-4 text-sm font-semibold">Component review</h2>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
@@ -292,7 +292,7 @@ export function BuildingGravityReviewPage() {
               </div>
             </section>
 
-            <section className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900/60">
+            <section className="overflow-hidden border border-ink/20 bg-white">
               <h2 className="p-4 text-sm font-semibold">Transferred actions</h2>
               <div className="max-h-80 overflow-auto">
                 <table className="w-full text-left text-xs">
@@ -314,7 +314,7 @@ export function BuildingGravityReviewPage() {
           </>
         ) : null}
 
-        <section className="rounded-xl border border-white/10 bg-zinc-900/60 p-4">
+        <section className="border border-ink/20 bg-white p-4">
           <h2 className="text-sm font-semibold">Status meanings</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {(['BLOCKED', 'ERROR', 'PASS', 'FAIL', 'HOLD'] as GravityOverallStatus[]).map((status) => (

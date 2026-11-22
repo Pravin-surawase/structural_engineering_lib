@@ -1,4 +1,4 @@
-import { AlertTriangle, Database, Loader2 } from 'lucide-react';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 import type {
   CatalogBeamTransportName,
   CatalogBeamValues,
@@ -13,6 +13,8 @@ export interface CatalogBeamInputPanelProps {
   disabled?: boolean;
 }
 
+const controlClass = 'min-h-10 w-full rounded-sm border border-ink/25 bg-white px-2.5 text-sm text-ink disabled:opacity-50';
+
 function FieldControl({
   field,
   value,
@@ -26,10 +28,10 @@ function FieldControl({
 }) {
   const inputId = `catalog-field-${field.field_id}`;
   return (
-    <label htmlFor={inputId} className="block space-y-1.5">
-      <span className="flex items-center justify-between gap-2 text-xs font-medium text-zinc-300">
+    <label htmlFor={inputId} className="block min-w-0 space-y-1.5">
+      <span className="flex flex-wrap items-center justify-between gap-x-2 text-xs font-medium text-ink/80">
         {field.label}
-        <span className="text-[10px] font-normal text-zinc-500">{field.unit}</span>
+        <span className="font-normal text-ink/75">{field.unit}</span>
       </span>
       {field.widget === 'select' ? (
         <select
@@ -38,7 +40,7 @@ function FieldControl({
           value={value ?? ''}
           disabled={disabled}
           onChange={(event) => onChange(Number(event.target.value))}
-          className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-blue-400"
+          className={controlClass}
         >
           {field.choices.map((choice) => (
             <option key={String(choice)} value={Number(choice)}>
@@ -63,7 +65,7 @@ function FieldControl({
               next === '' && field.default === null ? undefined : Number(next),
             );
           }}
-          className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-blue-400"
+          className={controlClass}
         />
       )}
     </label>
@@ -80,7 +82,7 @@ export function CatalogBeamInputPanel({
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs text-zinc-400" role="status">
+      <div className="flex items-center gap-2 rounded-sm border border-ink/20 bg-white p-3 text-sm text-ink/80" role="status">
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
         Loading the approved beam contract…
       </div>
@@ -89,12 +91,12 @@ export function CatalogBeamInputPanel({
 
   if (!catalog || error) {
     return (
-      <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-3" role="alert">
-        <div className="flex items-start gap-2 text-xs text-amber-100">
+      <div className="rounded-sm border border-amber-300 bg-amber-50 p-3" role="alert">
+        <div className="flex items-start gap-2 text-sm text-amber-950">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
           <div>
             <p className="font-semibold">Catalogue input is unavailable</p>
-            <p className="mt-1 text-amber-100/70">{error ?? 'The approved beam contract could not be loaded.'}</p>
+            <p className="mt-1">{error ?? 'The approved beam contract could not be loaded.'}</p>
             <button type="button" onClick={onUseManual} className="mt-2 font-semibold underline underline-offset-2">
               Use reviewed manual form
             </button>
@@ -112,18 +114,9 @@ export function CatalogBeamInputPanel({
 
   return (
     <div className="space-y-3" data-testid="catalog-beam-inputs">
-      <div className="flex items-start gap-2 rounded-xl border border-blue-400/20 bg-blue-400/[0.06] p-3">
-        <Database className="mt-0.5 h-4 w-4 shrink-0 text-blue-300" aria-hidden="true" />
-        <div>
-          <p className="text-xs font-semibold text-blue-100">{capability.title}</p>
-          <p className="mt-1 text-[10px] leading-4 text-blue-100/65">
-            Catalogue {catalog.catalog_version} · {capability.request_schema_id}
-          </p>
-        </div>
-      </div>
       {[...groups.entries()].map(([group, fields]) => (
-        <fieldset key={group} className="grid grid-cols-2 gap-2.5 rounded-xl border border-white/8 bg-white/[0.03] p-3">
-          <legend className="px-1 text-xs font-semibold text-white/70">{group}</legend>
+        <fieldset key={group} className="grid min-w-0 grid-cols-2 gap-2.5 rounded-sm border border-ink/20 bg-white px-3 pb-3 pt-1">
+          <legend className="px-1 text-sm font-semibold text-ink">{group}</legend>
           {fields.map((field) => (
             <FieldControl
               key={field.field_id}
@@ -135,9 +128,11 @@ export function CatalogBeamInputPanel({
           ))}
         </fieldset>
       ))}
-      <p className="text-[10px] leading-4 text-zinc-500">
-        {capability.limitations.join(' ')}
-      </p>
+      <details className="text-xs leading-relaxed text-ink/80">
+        <summary className="cursor-pointer font-medium text-cobalt">Catalogue scope and source</summary>
+        <p className="mt-2">{capability.title} · Catalogue {catalog.catalog_version} · {capability.request_schema_id}</p>
+        <p className="mt-1">{capability.limitations.join(' ')}</p>
+      </details>
     </div>
   );
 }

@@ -5,6 +5,7 @@
  * Uses the useCSVFileImport hook which calls the library's
  * adapter system for intelligent column mapping.
  */
+import { FileUp, Loader2 } from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { useCSVFileImport } from "../../hooks/useCSVImport";
 import type { MaterialOverrides } from "../../utils/materialOverrides";
@@ -137,156 +138,50 @@ export function FileDropZone({
 
   return (
     <div
-      className={`file-drop-zone ${isDragging ? "dragging" : ""} ${isImporting ? "importing" : ""} ${className}`}
+      className={className}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      style={{
-        border: `2px dashed ${isDragging ? "#3b82f6" : "#52525b"}`,
-        borderRadius: "8px",
-        padding: "32px",
-        textAlign: "center",
-        backgroundColor: isDragging ? "#172554" : "#18181b",
-        cursor: isImporting ? "wait" : "pointer",
-        transition: "all 0.2s ease",
-      }}
     >
       <input
+        id="file-drop-input"
         type="file"
         accept={accept}
         onChange={handleFileInput}
         disabled={isImporting}
-        id="file-drop-input"
-        style={{ display: "none" }}
+        aria-label="Choose CSV file"
+        className="peer sr-only"
       />
-
       <label
         htmlFor="file-drop-input"
-        style={{
-          cursor: isImporting ? "wait" : "pointer",
-          display: "block",
-        }}
+        className={
+          "flex min-h-40 flex-col items-center justify-center gap-2 rounded-sm border border-dashed p-4 text-center text-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt " +
+          (isDragging ? "border-cobalt bg-cobalt/10" : "border-ink/25 bg-white hover:border-cobalt") +
+          (isImporting ? " cursor-wait" : " cursor-pointer")
+        }
       >
         {isImporting ? (
-          <div className="importing-state">
-            <svg
-              className="animate-spin"
-              style={{
-                width: "48px",
-                height: "48px",
-                margin: "0 auto",
-                animation: "spin 1s linear infinite",
-              }}
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                style={{ opacity: 0.25 }}
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                style={{ opacity: 0.75 }}
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              />
-            </svg>
-            <p style={{ marginTop: "12px", color: "#a1a1aa" }}>
-              Importing CSV...
-            </p>
-          </div>
+          <span role="status" className="flex flex-col items-center gap-2 text-sm text-ink">
+            <Loader2 size={25} className="animate-spin text-cobalt" aria-hidden="true" />
+            Importing CSV…
+          </span>
         ) : (
-          <div className="ready-state">
-            <svg
-              style={{
-                width: "48px",
-                height: "48px",
-                margin: "0 auto",
-                color: isDragging ? "#3b82f6" : "#9ca3af",
-              }}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-              />
-            </svg>
-            <p style={{ marginTop: "12px", color: "#e4e4e7", fontWeight: 500 }}>
-              {isDragging ? "Drop CSV file here" : "Drag & drop CSV file"}
-            </p>
-            <p style={{ marginTop: "4px", color: "#a1a1aa", fontSize: "14px" }}>
-              or click to browse
-            </p>
-          </div>
+          <>
+            <FileUp size={26} className="text-cobalt" aria-hidden="true" />
+            <span className="text-sm font-semibold">{isDragging ? "Drop CSV file here" : "Choose CSV file"}</span>
+            <span className="text-xs text-ink/75">You can also drag and drop a file.</span>
+          </>
         )}
       </label>
-
-      {/* Success state */}
-      {data?.success && beams.length > 0 && !isImporting && (
-        <div
-          style={{
-            marginTop: "16px",
-            padding: "12px",
-            backgroundColor: "#052e16",
-            borderRadius: "6px",
-            color: "#4ade80",
-          }}
-        >
-          <p style={{ fontWeight: 500 }}>
-            ✓ Imported {beams.length} beams
-          </p>
-          {data.warnings && data.warnings.length > 0 && (
-            <p style={{ fontSize: "12px", marginTop: "4px" }}>
-              {data.warnings.length} warning(s)
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Error state */}
-      {displayError && (
-        <div
-          style={{
-            marginTop: "16px",
-            padding: "12px",
-            backgroundColor: "#450a0a",
-            borderRadius: "6px",
-            color: "#fca5a5",
-          }}
-        >
-          <p>{displayError}</p>
-        </div>
-      )}
-
-      {/* Format info */}
-      <div
-        style={{
-          marginTop: "16px",
-          color: "#9ca3af",
-          fontSize: "12px",
-        }}
-      >
-        Supports: Generic CSV, ETABS, SAFE, STAAD formats
-      </div>
-
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .file-drop-zone:hover:not(.importing) {
-          border-color: #3b82f6;
-          background-color: #172554;
-        }
-      `}</style>
+      {data?.success && beams.length > 0 && !isImporting ? (
+        <p className="mt-2 text-sm text-emerald-800" role="status">
+          Imported {beams.length} beams{data.warnings?.length ? ` · ${data.warnings.length} warning(s)` : ""}
+        </p>
+      ) : null}
+      {displayError ? (
+        <p className="mt-2 rounded-sm border border-rose-300 bg-rose-50 p-3 text-sm text-rose-900" role="alert">{displayError}</p>
+      ) : null}
     </div>
   );
 }

@@ -24,8 +24,8 @@ const STATE_CLASS: Record<WorkbenchStageState, string> = {
 export function StageNavigation({ stages, ariaLabel = 'Workbench stages' }: StageNavigationProps) {
   return (
     <nav aria-label={ariaLabel} className="overflow-x-auto border-b border-white/10 bg-zinc-950 px-4 sm:px-6">
-      <ol className="mx-auto flex min-w-max max-w-screen-2xl gap-2 py-2">
-        {stages.map((stage, index) => {
+      <ol className="mx-auto flex min-w-max max-w-screen-2xl gap-1.5 py-2 sm:gap-2">
+        {stages.map((stage) => {
           const locked = stage.state === 'locked';
           const current = stage.state === 'current';
           return (
@@ -36,10 +36,9 @@ export function StageNavigation({ stages, ariaLabel = 'Workbench stages' }: Stag
                 onClick={stage.onSelect}
                 aria-current={current ? 'step' : undefined}
                 aria-describedby={stage.description ? `${stage.id}-description` : undefined}
-                className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm font-medium transition-colors disabled:cursor-not-allowed ${STATE_CLASS[stage.state]}`}
+                className={`flex items-center rounded-sm border px-2.5 py-2 text-left text-sm font-medium transition-colors disabled:cursor-not-allowed sm:px-3 ${STATE_CLASS[stage.state]}`}
               >
-                <span aria-hidden="true" className="text-xs tabular-nums">{index + 1}</span>
-                <span>{stage.label}</span>
+                {stage.label}
               </button>
               {stage.description ? (
                 <span id={`${stage.id}-description`} className="sr-only">{stage.description}</span>

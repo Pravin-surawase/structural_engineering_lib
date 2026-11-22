@@ -2,7 +2,7 @@ import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { activeGlobalDestination, GLOBAL_DESTINATIONS } from '../../app/navigation';
-import { PROJECT_OWNER, SOURCE_URL } from '../../app/projectIdentity';
+import { CREDITS_URL, PROJECT_OWNER } from '../../app/projectIdentity';
 import { SettingsPanel } from './SettingsPanel';
 
 export function TopBar() {
@@ -40,7 +40,15 @@ export function TopBar() {
         </nav>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <a href={SOURCE_URL} className="hidden min-h-10 items-center rounded-sm px-2 text-sm text-zinc-300 hover:text-white sm:inline-flex">Source</a>
+          <a
+            href={CREDITS_URL}
+            target="_blank"
+            rel="noopener"
+            aria-label="Source credits (opens in a new tab)"
+            className="inline-flex min-h-10 items-center rounded-sm px-2 text-sm text-blue-200 hover:bg-zinc-800 hover:text-white"
+          >
+            Credits
+          </a>
           <button
             type="button"
             aria-label="Settings"

@@ -19,10 +19,10 @@ interface NumberFieldDefinition {
 }
 
 const NUMBER_INPUT_CLASS =
-  'mt-1 w-full rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-white outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:text-zinc-500';
+  'mt-1 w-full rounded-sm border border-ink/25 bg-white px-3 py-2 text-sm text-ink outline-none transition focus:border-cobalt focus:ring-2 focus:ring-cobalt/20 disabled:cursor-not-allowed disabled:text-ink/45';
 const TEXT_INPUT_CLASS = NUMBER_INPUT_CLASS;
-const CHECKBOX_CLASS = 'mt-0.5 h-4 w-4 accent-blue-500';
-const FIELDSET_CLASS = 'space-y-3 rounded-xl border border-white/8 bg-white/[0.02] p-4';
+const CHECKBOX_CLASS = 'mt-0.5 h-4 w-4 accent-cobalt';
+const FIELDSET_CLASS = 'space-y-3 border border-ink/15 bg-paper p-4';
 
 const GEOMETRY_FIELDS: NumberFieldDefinition[] = [
   { key: 'column_L_mm', label: 'Column dimension L', unit: 'mm', minimum: 1 },
@@ -107,7 +107,7 @@ function TextField({
   onChange: FootingInputFormProps['onChange'];
 }) {
   return (
-    <label className="block text-xs font-medium text-zinc-300">
+    <label className="block text-xs font-medium text-ink/80">
       {label}
       <input
         aria-label={label}
@@ -133,9 +133,9 @@ function NumberField({
 }) {
   const descriptionId = `${String(definition.key)}-unit`;
   return (
-    <label className="block text-xs font-medium text-zinc-300">
+    <label className="block text-xs font-medium text-ink/80">
       {definition.label}
-      <span id={descriptionId} className="ml-1 text-zinc-500">
+      <span id={descriptionId} className="ml-1 text-ink/55">
         ({definition.unit})
       </span>
       <input
@@ -198,7 +198,7 @@ function ApprovalField({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className="flex items-start gap-3 rounded-lg border border-white/8 bg-zinc-950/60 p-3">
+    <label className="flex items-start gap-3 rounded-sm border border-ink/15 bg-white p-3">
       <input
         aria-label={label}
         checked={checked}
@@ -208,8 +208,8 @@ function ApprovalField({
         onChange={(event) => onChange(event.target.checked)}
       />
       <span>
-        <span className="block text-sm font-medium text-zinc-100">{label}</span>
-        <span className="mt-1 block text-xs leading-5 text-zinc-400">{description}</span>
+        <span className="block text-sm font-medium text-ink">{label}</span>
+        <span className="mt-1 block text-xs leading-5 text-ink/75">{description}</span>
       </span>
     </label>
   );
@@ -224,7 +224,7 @@ function DetailingFields({
 
   return (
     <fieldset className={FIELDSET_CLASS}>
-      <legend className="px-1 text-sm font-semibold text-white">
+      <legend className="px-1 text-sm font-semibold text-ink">
         Complete approved detailing inputs
       </legend>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -252,7 +252,7 @@ function DetailingFields({
           disabled={disabled}
           onChange={onChange}
         />
-        <label className="block text-xs font-medium text-zinc-300">
+        <label className="block text-xs font-medium text-ink/80">
           Permitted bottom-bar diameters (mm, comma-separated)
           <input
             aria-label="Permitted bottom-bar diameters in mm"
@@ -269,7 +269,7 @@ function DetailingFields({
             }}
           />
         </label>
-        <label className="block text-xs font-medium text-zinc-300">
+        <label className="block text-xs font-medium text-ink/80">
           Lower bottom-bar direction
           <select
             aria-label="Lower bottom-bar direction"
@@ -282,7 +282,7 @@ function DetailingFields({
             <option value="B">B</option>
           </select>
         </label>
-        <label className="block text-xs font-medium text-zinc-300">
+        <label className="block text-xs font-medium text-ink/80">
           Upper bottom-bar direction
           <select
             aria-label="Upper bottom-bar direction"
@@ -295,7 +295,7 @@ function DetailingFields({
             <option value="B">B</option>
           </select>
         </label>
-        <label className="block text-xs font-medium text-zinc-300">
+        <label className="block text-xs font-medium text-ink/80">
           Footing bottom-bar type
           <select
             aria-label="Footing bottom-bar type"
@@ -332,7 +332,7 @@ export function FootingInputForm({
   return (
     <div className="space-y-4">
       <fieldset className={FIELDSET_CLASS}>
-        <legend className="px-1 text-sm font-semibold text-white">Case and actions</legend>
+        <legend className="px-1 text-sm font-semibold text-ink">Case and actions</legend>
         <div className="grid gap-3 sm:grid-cols-2">
           <TextField
             fieldKey="case_id"
@@ -341,7 +341,7 @@ export function FootingInputForm({
             disabled={disabled}
             onChange={onChange}
           />
-          <label className="block text-xs font-medium text-zinc-300">
+          <label className="block text-xs font-medium text-ink/80">
             Footing plan type
             <select
               aria-label="Footing plan type"
@@ -394,14 +394,14 @@ export function FootingInputForm({
             onChange={onChange}
           />
         </div>
-        <p className="text-xs leading-5 text-zinc-400">
+        <p className="text-xs leading-5 text-ink/75">
           Service load basis: includes footing self-weight and overburden. The factored
           action is submitted separately; the client does not derive a load factor.
         </p>
       </fieldset>
 
       <fieldset className={FIELDSET_CLASS}>
-        <legend className="px-1 text-sm font-semibold text-white">
+        <legend className="px-1 text-sm font-semibold text-ink">
           External soil and supporting-area evidence
         </legend>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -434,9 +434,9 @@ export function FootingInputForm({
             value={draft.effective_supporting_area_A1_mm2}
             onChange={onChange}
           />
-          <div className="rounded-lg border border-white/8 bg-zinc-950/60 p-3 text-xs text-zinc-400">
+          <div className="rounded-sm border border-ink/15 bg-white p-3 text-xs text-ink/75">
             A1 basis
-            <code className="mt-1 block break-all text-zinc-200">
+            <code className="mt-1 block break-all text-ink">
               largest_frustum_1v_2h
             </code>
           </div>
@@ -460,7 +460,7 @@ export function FootingInputForm({
       </fieldset>
 
       <fieldset className={FIELDSET_CLASS}>
-        <legend className="px-1 text-sm font-semibold text-white">
+        <legend className="px-1 text-sm font-semibold text-ink">
           Geometry and depth search
         </legend>
         <NumberFieldGrid
@@ -470,14 +470,14 @@ export function FootingInputForm({
           onChange={onChange}
         />
         {draft.footing_type === 'ISOLATED_SQUARE' ? (
-          <p className="text-xs text-blue-200">
+          <p className="text-xs text-cobalt">
             Square mode keeps column B synchronized to column L.
           </p>
         ) : null}
       </fieldset>
 
       <fieldset className={FIELDSET_CLASS}>
-        <legend className="px-1 text-sm font-semibold text-white">Materials</legend>
+        <legend className="px-1 text-sm font-semibold text-ink">Materials</legend>
         <NumberFieldGrid
           definitions={MATERIAL_FIELDS}
           draft={draft}
@@ -487,7 +487,7 @@ export function FootingInputForm({
       </fieldset>
 
       <fieldset className={FIELDSET_CLASS}>
-        <legend className="px-1 text-sm font-semibold text-white">
+        <legend className="px-1 text-sm font-semibold text-ink">
           Load transfer and dowels
         </legend>
         <NumberFieldGrid
@@ -496,7 +496,7 @@ export function FootingInputForm({
           disabled={disabled}
           onChange={onChange}
         />
-        <label className="block text-xs font-medium text-zinc-300">
+        <label className="block text-xs font-medium text-ink/80">
           Dowel bar type
           <select
             aria-label="Dowel bar type"
@@ -515,10 +515,10 @@ export function FootingInputForm({
       </fieldset>
 
       <fieldset className={FIELDSET_CLASS}>
-        <legend className="px-1 text-sm font-semibold text-white">
+        <legend className="px-1 text-sm font-semibold text-ink">
           Optional complete detailing
         </legend>
-        <label className="flex items-start gap-3 text-sm text-zinc-200">
+        <label className="flex items-start gap-3 text-sm text-ink">
           <input
             aria-label="Include complete detailing"
             checked={draft.detailing_enabled}
@@ -529,7 +529,7 @@ export function FootingInputForm({
           />
           <span>
             Request a buildable reinforcement schedule
-            <span className="mt-1 block text-xs leading-5 text-zinc-400">
+            <span className="mt-1 block text-xs leading-5 text-ink/75">
               When omitted, a safe calculation remains an explicit detailing and
               aggregate HOLD.
             </span>
@@ -541,11 +541,11 @@ export function FootingInputForm({
 
       {issues.length > 0 ? (
         <div
-          className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4"
+          className="rounded-sm border border-amber-300 bg-amber-50 p-4"
           role="alert"
         >
-          <p className="text-sm font-semibold text-amber-100">Input review required</p>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-amber-100/80">
+          <p className="text-sm font-semibold text-amber-950">Input review required</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-amber-900">
             {issues.map((issue) => <li key={issue}>{issue}</li>)}
           </ul>
         </div>
