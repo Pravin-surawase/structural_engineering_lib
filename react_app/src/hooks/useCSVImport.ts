@@ -100,6 +100,8 @@ interface BatchDesignResponse {
 
 interface ImportFailureDetails {
   issues?: Array<{
+    code?: string;
+    path?: string;
     message?: string;
     source_row_number?: number | null;
     artifact_role?: string;
@@ -114,14 +116,22 @@ async function importFailureMessage(response: Response): Promise<string> {
   const details = problem?.error?.details ?? problem?.detail;
   if (typeof details === "string" && details) return details;
 
-  const issues = typeof details === "object" ? details?.issues : undefined;
-  const issue = Array.isArray(issues) ? issues.find((item) => typeof item?.message === "string" && item.message) : undefined;
+  const rawIssues = typeof details === "object" ? details?.issues : undefined;
+  const issues = Array.isArray(rawIssues) ? rawIssues : [];
+  const issue = issues.find((item) => typeof item?.message === "string" && item.message);
+  let message = issue?.message || problem?.error?.message || response.statusText || String(response.status);
   if (issue && typeof issue.source_row_number === "number") {
     const source = issue.artifact_role === "geometry" ? "Geometry CSV" : issue.artifact_role === "forces" ? "Forces CSV" : "CSV";
-    return `${source} row ${issue.source_row_number}: ${issue.message}`;
+    message = `${source} row ${issue.source_row_number}: ${issue.message}`;
   }
 
-  return issue?.message || problem?.error?.message || response.statusText || String(response.status);
+  const missingSpanHeader = issues.some((item) => (
+    item?.code === "import.missing_required_header" && item.path === "combined.headers.span_mm"
+  ));
+  if (!missingSpanHeader) return message;
+
+  const separator = /[.!?]$/.test(message) ? " " : ". ";
+  return `${message}${separator}Add a span_mm or Span (mm) column for millimetres, or a Span_m or Span (m) column for metres. Enter a finite positive span for every beam, then upload the CSV again.`;
 }
 
 /**
