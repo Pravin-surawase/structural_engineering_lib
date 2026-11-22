@@ -1,0 +1,64 @@
+{
+  "schema_version": "exact-candidate-review-receipt/v1",
+  "decision": "ACCEPT",
+  "reviewed_candidate": {
+    "head_sha": "4597a7ca94dec09692e151c2df8cada4b17e53ef",
+    "tree_sha": "f2500b1f7785f68656b8b23dab0a62c23a2b306d",
+    "python_tree_sha": "c378d67bcce8e403ab9cef86a6c773e057bfbcb8",
+    "version": "0.31.1",
+    "tag": "v0.31.1",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ]
+  },
+  "review_scope": "Independent software review of the exact draft source, retained wheel and sdist, installed tests and hosted checks. Publication authority is pending.",
+  "reviewer": {
+    "identity": "/root/s5_record_audit",
+    "independent": true,
+    "reviewed_at_utc": "2026-11-22T16:09:01Z"
+  },
+  "hosted_checks_observed_at_utc": "2026-11-22T16:09:42.203592Z",
+  "hosted_checks": {
+    "required_pr_checks": {
+      "status": "PASS",
+      "head_sha": "4597a7ca94dec09692e151c2df8cada4b17e53ef",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/45038434637/job/137257704544"
+    },
+    "weekly_verification": {
+      "status": "PASS",
+      "head_sha": "4597a7ca94dec09692e151c2df8cada4b17e53ef",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/45038438750"
+    }
+  },
+  "artifacts": [
+    {
+      "filename": "structural_lib_is456-0.31.1-py3-none-any.whl",
+      "size_bytes": 1606194,
+      "sha256": "fbff4a613ece32270647089b4080754869fae45a98081e9edc7a81de42b60ea4"
+    },
+    {
+      "filename": "structural_lib_is456-0.31.1.tar.gz",
+      "size_bytes": 1366988,
+      "sha256": "dc4f57b4e7e23bc562634f94c7c2c8430fcf5bd335e7e5ccbc59ea341251c359"
+    }
+  ],
+  "local_verification": {
+    "artifact_record": "docs/verification/library-0311-release-artifacts.json",
+    "artifact_record_sha256": "23336b871a5ed289d6852de904e67969234697dffc40c558a1f02488ad3ab889",
+    "build_head": "29ee5e25c78c1eb8e80b0e253cbee072a2e9b08f",
+    "source_merge_sha": "583acaef5330f84dc24e093d5c92b7f26038bfdf",
+    "qualification_receipt_sha256": "d92f3e83f979805183df475eb75a4578bf9be717ea463cc7480205ee110f65f4",
+    "qualified_installed_profiles": 20,
+    "installed_wheel_uat_cases": 29,
+    "frozen_slab_replays": {
+      "wheel": "PASS",
+      "sdist": "PASS"
+    },
+    "distribution_inputs_changed_after_build": false
+  },
+  "integration_requirement": "Preserve the reviewed ancestry, Python tree, build inputs and the exact archive pair. Only the maintained publication-evidence paths may change after review.",
+  "professional_approval": false,
+  "qualified_structural_engineering_review": false
+}
