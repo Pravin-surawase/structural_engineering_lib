@@ -1,4 +1,4 @@
-# StructLib React workbench UI refresh plan
+# StructLib React workbench redesign plan
 
 **Type:** Plan
 **Audience:** All Agents
@@ -7,9 +7,68 @@
 **Created:** 2026-11-22
 **Last Updated:** 2026-11-22
 **Related Tasks:** None
-**Abstract:** Library-first public experience, browser workbench priorities, and acceptance criteria for the independent React refresh.
+**Abstract:** Whole-workbench redesign, library-first public experience, and compatibility for downstream consumers.
 
 ---
+
+## Whole-workbench redesign
+
+Redesign the entire maintained React workbench as one experience. Apply the same
+visual language and task structure to the public entry, every calculation and
+project screen, and the shared controls. Quick Beam is the first implementation
+slice. The redesign is complete when every maintained route and user-facing
+state follows the new patterns and passes its compatibility replay.
+
+| Area | Design direction |
+| --- | --- |
+| Public entry and library help | A short library introduction, the runnable example and direct links to Python and supported cases. Match the workbench typography and controls to the entry. |
+| Navigation and settings | A compact app header, consistent mobile navigation and clear route titles. Make Projects easy to reach from any tool. Keep settings, measured service status and help available without displacing the main action. |
+| Calculation workspaces | Apply the same form, run action, summary and evidence layout to manual and catalogue beam, slabs, rectangular column, isolated footing and building gravity. Keep case-specific fields and make the result readable without 3D. |
+| Projects and CSV import | Use one project header and stage indicator from import to results. Pair the member table and selected-member inspector on wide screens. Stack the table, selected member and actions in a usable order on phones. |
+| Review, drawings and outputs | Align section and reinforcement views, the 3D toolbar, governing checks, reports and download feedback. Keep a clear link between selected member, current evidence and available outputs. |
+| Shared controls and system states | Use the same spacing, field labels, units, button roles, table density, status text and focus treatment. Cover loading, no project, invalid input, blocked requests, stale results, lost connection, restore and save errors, and unavailable WebGL. |
+| Flagged workflows | Apply the same shell and interaction patterns to the composer. Keep its existing development flag and keep draft actions distinct from project saves and checked outputs. |
+
+Use one set of Tailwind design tokens and a small set of existing workbench
+primitives. Keep the standalone header and navigation composed around panels
+that receive their case, state and actions from the owning workflow. Where a
+confirmed downstream host already supplies its own navigation, preserve that
+host's entry and shell behavior. Keep rollout in the existing app and use the
+same responsive layouts at each supported entry point.
+
+[Route inventory](../../react_app/src/App.tsx) · [Shared workbench components](../../react_app/src/components/workbench) ·
+[Viewport contract](../reference/3d-json-contract.md)
+
+## Downstream compatibility
+
+The owner identified downstream use by other libraries and products. The source
+review confirms a standalone browser build and independently configurable HTTP
+and WebSocket endpoints. The TypeScript API client has its own package. Lib
+Checker uses the Python package with its own Streamlit UI. The inspected source
+and GitHub searches did not identify a current downstream product that imports
+the React components or embeds the workbench. An older Streamlit iframe is
+documented as retired. Record named product usage as evidence becomes available.
+
+| How a product uses StructLib | What the redesign must preserve and replay |
+| --- | --- |
+| Link or bookmark to the browser UI | Canonical and legacy paths, query semantics, project IDs, guarded recovery and direct entry. Verify refresh and Back on the actual host, including static-host fallback for a nested URL. |
+| Host its own workbench build | The deployment's public URL and base-path behavior, existing API and WebSocket configuration, feature flags and same-origin settings. Run one real calculation and download against the host's configured backend. |
+| Embed the UI or reuse a rendered component, if confirmed | Capture the host, current entry point, available width and any styling or message contract it relies on. Replay focus, sizing, navigation, result visibility and downloads from that host. Retain proven dependencies during component moves. |
+| Integrate through Python, CLI, REST, WebSocket or SSE | Keep the existing data contracts, units, status semantics and artifacts. At the same backend version and equivalent inputs, verify the redesign sends the same request and presents the same outcome. |
+| Resume saved browser work | Keep the storage keys, project schema, revision identity and same-origin recovery behavior. Load an old project in the redesigned build on the same origin and verify stage, member identity and export readiness. |
+
+For each known UI consumer, record the product and owner, usage type, current
+URL or component entry, build/version, representative journey and replay
+result. Record unavailable hosts as unverified. Use the deployed entry for the
+compatibility check. Keep the current deployment available until the affected
+host has replayed its journey. Retain the previous build and its configuration
+so it can be restored without changing saved projects. Ideas for a new embed
+contract, UI package or configurable white-label shell belong in a later
+proposal if a named consumer needs one.
+
+[Runtime config](../../react_app/src/config.ts) · [Browser package](../../react_app/package.json) ·
+[TypeScript API client](../../clients/typescript/package.json) · [Integration guide](../developers/platform-guide.md) ·
+[Workspace persistence](../../react_app/src/workspace/WorkspacePersistenceBridge.tsx)
 
 ## Public experience
 
@@ -84,7 +143,7 @@ Three.js, AG Grid and Dockview out of paths that do not use them.
 
 | Priority | Proposal and evidence of value |
 | --- | --- |
-| **First public slice** | Refresh Home, the workbench entry and one complete Quick Beam journey. Add the library and API links, a ready-to-run sample, a 2D section and a concise result. A first-time visitor can reach a result or a field-specific correction in three actions from Home and can find the Python quick start directly. Then reuse the pattern in Import → Results and the other calculators in the main refresh. |
+| **First implementation slice** | Redesign Home, the workbench entry and one complete Quick Beam journey. Add the library and API links, a ready-to-run sample, a 2D section and a concise result. A first-time visitor can reach a result or a field-specific correction in three actions from Home and can find the Python quick start directly. Use this slice to validate the common design before it reaches the rest of the application. |
 | **Next — runnable examples** | Add a small **Examples** collection, starting with a normal and a failed beam case and a held case. Let users open the same example in the browser and copy or download a matching Python snippet. Add an HTTP example where the maintained parity contract applies. Re-run the snippets on the named package version and check the stated outcome and units. Expand to other members after the first cases hold up. |
 | **Next — project intake** | Provide a blank Generic CSV template, a filled example and a paired-file checklist beside upload. Use the existing import ledger to make a row issue easy to find and fix. After correction, users can re-upload and review the accounted member list before designing. |
 | **Next — reproduce or report a result** | Trial a compact **Copy case details** action with the calculation identity, library version, units and current status. Allow sharing links for public examples by stable example ID. Keep user imports, project identifiers and demand values out of generated URLs, and show exactly what a user is copying. |
@@ -100,9 +159,10 @@ evidence process.
 
 On 22 November 2026 the owner separated the React workbench refresh from the 0.31.1 slab correction. This branch starts with the UI plan. Its release version will be selected separately. The slab fix stays in [draft PR #1126](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1126).
 
-The update covers the browser app, from first entry through completion,
-review and existing exports. Use the current React, Tailwind and Dockview
-components as the starting point. Define shared styles and patterns for
+The update covers the whole browser app, from first entry through completion,
+review and existing exports, including its use from other products. Use the
+current React, Tailwind and Dockview components as the starting point. Define
+shared styles and patterns for
 layout, labels and units, fields, buttons, tables, focus, feedback and
 engineering status. Keep route identities, API and export contracts, stored
 projects, feature flags and engineering scope compatible with 0.31.0. The
@@ -229,12 +289,12 @@ on narrow screens. Allow contained scrolling for dense tables and viewports.
 
 | Stage | UI and combined-candidate work |
 | --- | --- |
-| S0 — Scope | Inventory enabled routes, shared components, existing tests and user journeys. Include landing, workbench, project, results and feature-flagged app surfaces from the table. |
-| S1 — Design and acceptance | Capture current desktop and narrow-screen states. Prepare Home and the first example view, then walk through them with a first-time visitor and a technical user if available. Pin representative pass, fail, hold, blocked-import and saved-project fixtures before changing presentation. |
-| S2 — Implement | First prove the public entry, Python path and shared controls with one complete Quick Beam journey. Then apply the patterns to Projects and import through results, the other calculators, and the flagged composer. Reuse route guards, state stores, request hooks and result components. Keep app logic limited to presentation and interaction. |
+| S0 — Scope | Inventory routes, shared components, user-visible states and downstream use. Record confirmed consumer entry points and replay evidence alongside the route and export fixtures. |
+| S1 — Design and acceptance | Capture current desktop and narrow-screen states. Design the shell, calculation and project layouts, and shared state patterns. Walk through the example and project design with a first-time visitor and a technical user if available. Pin representative pass, fail, hold, blocked-import and saved-project fixtures. |
+| S2 — Implement | First prove the shell and shared controls with Home, the Python path and Quick Beam. Then migrate Projects and import through results, the other calculators, the shared visualization and output surfaces, and the flagged composer under their existing routes. Reuse route guards, state stores, request hooks and result components. |
 | S3 — Guidance | Update the public walkthrough and screenshots for changed steps. Verify the current install and API links, exact example release and expected result. Put strict CSV span guidance at upload. |
-| S4 — Verify and freeze | Run the relevant React route, state, form and result tests, then `./run.sh frontend check` on the integrated UI. Replay the table journeys at desktop and narrow sizes, with keyboard and reduced-motion checks. Confirm current requests, outputs and stored-project behavior. Bind independent review to the UI candidate's exact head. |
-| S5 — Handoff | Record the successful production build, hosted checks, browser journeys and any remaining user-facing decisions. Select the release target after the implementation scope is known. |
+| S4 — Verify and freeze | Run the relevant React route, state, form and result tests, then `./run.sh frontend check` on the integrated UI. Replay all route families, shared states and confirmed consumers at their relevant sizes. Confirm same-version request and output parity, deep-link refresh, accessibility and saved-project behavior. Bind independent review to the UI candidate's exact head. |
+| S5 — Handoff | Record the production build, hosted checks, browser and consumer replays, and any unresolved host compatibility. Hand off the previous build and configuration for rollback. Select the release target after the implementation scope is known. |
 
 Keep new engineering methods, native-host expansion, server-side batch
 recovery, changes to public contracts and unrelated dependency upgrades in
