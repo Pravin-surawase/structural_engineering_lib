@@ -125,6 +125,37 @@ describe('useLiveDesign request truth', () => {
     expect(result.current.state.exportEligible).toBe(true);
   });
 
+  it('blocks a zero span and automatically reruns when the original span is restored', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.designBeam.mockResolvedValue(designResult('passing'));
+      const originalLength = useDesignStore.getState().length;
+      const { result } = renderHook(() => useLiveDesign({ autoDesign: true }));
+      await act(async () => { await vi.runOnlyPendingTimersAsync(); });
+      expect(result.current.state.exportEligible).toBe(true);
+
+      act(() => result.current.actions.updateLength(0));
+      expect(result.current.state.inputErrors.span).toBe('Span must be greater than 0 m.');
+      expect(result.current.state.resultLifecycle).toBe('stale');
+      expect(result.current.state.exportEligible).toBe(false);
+      expect(mocks.useBeamGeometry).toHaveBeenLastCalledWith(null, { enabled: false });
+      act(() => {
+        expect(result.current.actions.triggerDesign()).toBe(false);
+        result.current.actions.reconnect();
+      });
+      await act(async () => { await vi.runOnlyPendingTimersAsync(); });
+      expect(mocks.designBeam).toHaveBeenCalledTimes(1);
+
+      act(() => result.current.actions.updateLength(originalLength));
+      await act(async () => { await vi.runOnlyPendingTimersAsync(); });
+      expect(mocks.designBeam).toHaveBeenCalledTimes(2);
+      expect(result.current.state.inputErrors.span).toBeNull();
+      expect(result.current.state.exportEligible).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('replaces the Strict Mode probe request instead of leaving loading stuck', async () => {
     const first = deferred<BeamDesignResponse>();
     mocks.designBeam

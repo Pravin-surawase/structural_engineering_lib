@@ -47,6 +47,7 @@ interface LiveDesignState {
   resultLifecycle: ResultLifecycle;
   /** Whether the retained result may drive a current-revision export. */
   exportEligible: boolean;
+  inputErrors: { width: string | null; span: string | null };
   /** 3D geometry data */
   geometry: Beam3DGeometry | null;
   /** Any error message */
@@ -174,6 +175,12 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     setError,
     reset,
   } = store;
+  const inputErrors = {
+    width: Number.isFinite(inputs.width) && inputs.width > 0 ? null : 'Width must be greater than 0 mm.',
+    span: Number.isFinite(length) && length > 0 ? null : 'Span must be greater than 0 m.',
+  };
+  const hasInputErrors = inputErrors.width !== null || inputErrors.span !== null;
+  const canRunDesign = enabled && !hasInputErrors;
 
   // Debounce ref for auto-design
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -184,6 +191,8 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
   // Quick design deliberately uses the AbortSignal-aware REST facade until the
   // WebSocket contract carries a request/input revision that can be echoed back.
   const runRestDesign = useCallback(async () => {
+    if (!canRunDesign) return;
+
     const requestInputs = { ...inputs };
     const requestRevision = inputRevision;
     const identity = createQuickDesignIdentity(requestInputs, length, requestRevision);
@@ -212,14 +221,14 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
         setLoading(false, requestRevision);
       }
     }
-  }, [inputRevision, inputs, length, setError, setLoading, setResult]);
+  }, [canRunDesign, inputRevision, inputs, length, setError, setLoading, setResult]);
   const runInitialDesign = useEffectEvent(() => {
     void runRestDesign();
   });
 
   // Build geometry request from current state
   const geometryParams = useMemo<BeamGeometryRequest | null>(() => {
-    if (resultLifecycle !== 'current' || !result?.success || !result.flexure) return null;
+    if (hasInputErrors || resultLifecycle !== 'current' || !result?.success || !result.flexure) return null;
 
     return {
       beam_id: 'live-design',
@@ -239,7 +248,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       cover: inputs.clear_cover ?? 40,
       is_seismic: false,
     };
-  }, [inputs, length, result, resultLifecycle]);
+  }, [hasInputErrors, inputs, length, result, resultLifecycle]);
 
   // Fetch geometry when design result changes
   const {
@@ -265,6 +274,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
 
     if (!inputsChanged) return;
     lastInputsRef.current = currentInputs;
+    if (hasInputErrors) return;
 
     // Debounce the design request
     if (debounceRef.current) {
@@ -280,14 +290,14 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [inputs, length, autoDesign, enabled, debounceMs, runRestDesign]);
+  }, [inputs, length, autoDesign, enabled, hasInputErrors, debounceMs, runRestDesign]);
 
   // Actions
   const triggerDesign = useCallback(() => {
-    if (!enabled) return false;
+    if (!canRunDesign) return false;
     void runRestDesign();
     return true;
-  }, [enabled, runRestDesign]);
+  }, [canRunDesign, runRestDesign]);
 
   const updateInputs = useCallback(
     (newInputs: Partial<typeof inputs>) => {
@@ -332,8 +342,10 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     inputRevision,
     resultRevision,
     resultLifecycle,
+    inputErrors,
     exportEligible: Boolean(
-      result
+      !hasInputErrors
+      && result
       && resultLifecycle === 'current'
       && resultRevision === inputRevision
       && isBeamResultExportable(result),

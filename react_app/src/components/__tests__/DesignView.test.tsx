@@ -35,6 +35,23 @@ const mockActions = vi.hoisted(() => ({
   reconnect: vi.fn(),
   reset: vi.fn(),
 }));
+const mockLiveState = vi.hoisted(() => ({
+  result: null as Record<string, unknown> | null,
+  inputRevision: 1,
+  resultRevision: null as number | null,
+  resultLifecycle: 'not_evaluated' as 'not_evaluated' | 'current',
+  exportEligible: false,
+  isDesigning: false,
+  isConnected: true,
+  isLoadingGeometry: false,
+  connectionStatus: 'disconnected',
+  latency: null,
+  error: null as string | null,
+  inputErrors: { width: null as string | null, span: null as string | null },
+  geometry: null,
+  isFallbackActive: true,
+  transportExplanation: 'Verified HTTP mode.',
+}));
 let mockLength = 4000;
 
 // Mock react-router-dom
@@ -46,22 +63,7 @@ vi.mock('react-router-dom', () => ({
 // Mock useLiveDesign
 vi.mock('../../hooks/useLiveDesign', () => ({
   useLiveDesign: vi.fn(() => ({
-    state: {
-      result: null,
-      inputRevision: 1,
-      resultRevision: null,
-      resultLifecycle: 'not_evaluated',
-      exportEligible: false,
-      isDesigning: false,
-      isConnected: true,
-      isLoadingGeometry: false,
-      connectionStatus: 'disconnected',
-      latency: null,
-      error: null,
-      geometry: null,
-      isFallbackActive: true,
-      transportExplanation: 'Verified HTTP mode.',
-    },
+    state: mockLiveState,
     actions: mockActions,
   })),
 }));
@@ -127,6 +129,16 @@ describe('DesignView', () => {
       if (mockLoadAnalysis.data) options?.onSuccess?.(mockLoadAnalysis.data);
     });
     mockActions.updateInputs.mockReset();
+    mockActions.updateLength.mockReset();
+    mockActions.triggerDesign.mockReset();
+    Object.assign(mockLiveState, {
+      result: null,
+      inputRevision: 1,
+      resultRevision: null,
+      resultLifecycle: 'not_evaluated',
+      exportEligible: false,
+      inputErrors: { width: null, span: null },
+    });
   });
 
   it('renders without crashing', () => {
@@ -296,4 +308,68 @@ describe('DesignView', () => {
     expect(screen.getByRole('button', { name: /use values/i })).toBeDisabled();
     expect(mockActions.updateInputs).not.toHaveBeenCalled();
   });
+
+  it.each([
+    { field: 'Span in m', key: 'span', error: 'Span must be greater than 0 m.', action: 'updateLength', value: 0 },
+    { field: 'Width in mm', key: 'width', error: 'Width must be greater than 0 mm.', action: 'updateInputs', value: { width: 0 } },
+  ] as const)(
+    'blocks $field from design and export when validation fails despite a current PASS result',
+    ({ field, key, error, action, value }) => {
+      Object.assign(mockLiveState, currentPassingState());
+      const { rerender } = render(React.createElement(DesignView));
+      const input = screen.getByLabelText(field);
+      const recalculate = screen.getByRole('button', { name: 'Recalculate' });
+      const download = screen.getByRole('button', { name: 'Export' });
+      expect(recalculate).toBeEnabled();
+      expect(download).toBeEnabled();
+
+      fireEvent.change(input, { target: { value: '0' } });
+      expect(mockActions[action]).toHaveBeenCalledWith(value);
+      mockLiveState.inputErrors[key] = error;
+      rerender(React.createElement(DesignView));
+
+      expect(input).toHaveAccessibleDescription(error);
+      expect(input).toHaveAttribute('aria-invalid', 'true');
+      expect(recalculate).toBeDisabled();
+      expect(download).toBeDisabled();
+    },
+  );
 });
+
+function currentPassingState() {
+  const inputHash = 'i'.repeat(64);
+  const calculationIdentity = 'c'.repeat(64);
+  return {
+    result: {
+      success: true,
+      message: 'Current passing result',
+      flexure: { ast_required: 400, xu: 100, moment_capacity: 200 },
+      ast_total: 500,
+      asc_total: 0,
+      utilization_ratio: 0.8,
+      governing_utilization: 0.8,
+      holds: [],
+      evidence: {
+        support_status: 'SUPPORTED',
+        status: 'PASS',
+        exact_utilization: 0.8,
+        margin: 0.2,
+        normalized_input_hash: inputHash,
+        calculation_identity: calculationIdentity,
+        governing_check: 'flexure',
+      },
+      result_envelope: {
+        overall_status: 'PASS',
+        engineering_status: 'PASS',
+        result_identity: {
+          library_version: '0.31.1',
+          input_hash: inputHash,
+          calculation_identity: calculationIdentity,
+        },
+      },
+    },
+    resultRevision: 1,
+    resultLifecycle: 'current',
+    exportEligible: true,
+  };
+}

@@ -8,6 +8,7 @@ import { useWorkflowCatalog } from './useWorkflowCatalog';
 
 export interface CatalogBeamInputPanelProps {
   values: CatalogBeamValues;
+  widthError?: string | null;
   onChange: (name: CatalogBeamTransportName, value: number | undefined) => void;
   onUseManual: () => void;
   disabled?: boolean;
@@ -20,11 +21,13 @@ function FieldControl({
   value,
   onChange,
   disabled,
+  error,
 }: {
   field: CatalogField;
   value: number | undefined;
   onChange: (value: number | undefined) => void;
   disabled: boolean;
+  error: string | null;
 }) {
   const inputId = `catalog-field-${field.field_id}`;
   return (
@@ -37,6 +40,8 @@ function FieldControl({
         <select
           id={inputId}
           aria-label={`${field.label} in ${field.unit}`}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${inputId}-error` : undefined}
           value={value ?? ''}
           disabled={disabled}
           onChange={(event) => onChange(Number(event.target.value))}
@@ -52,6 +57,8 @@ function FieldControl({
         <input
           id={inputId}
           aria-label={`${field.label} in ${field.unit}`}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${inputId}-error` : undefined}
           type="number"
           value={value ?? ''}
           min={field.minimum ?? undefined}
@@ -68,12 +75,14 @@ function FieldControl({
           className={controlClass}
         />
       )}
+      {error ? <span id={`${inputId}-error`} role="alert" className="block text-xs text-rose-800">{error}</span> : null}
     </label>
   );
 }
 
 export function CatalogBeamInputPanel({
   values,
+  widthError = null,
   onChange,
   onUseManual,
   disabled = false,
@@ -122,6 +131,7 @@ export function CatalogBeamInputPanel({
               key={field.field_id}
               field={field}
               value={values[field.transport_name]}
+              error={field.transport_name === 'width' ? widthError : null}
               disabled={disabled}
               onChange={(value) => onChange(field.transport_name, value)}
             />

@@ -91,8 +91,10 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
     autoDesign,
     enabled: true,
   });
+  const { inputErrors } = state;
+  const hasInputErrors = inputErrors.width !== null || inputErrors.span !== null;
   const trust = state.result ? getTrustPresentation(state.result) : null;
-  const canExport = Boolean(state.exportEligible && trust?.canExport);
+  const canExport = Boolean(!hasInputErrors && state.exportEligible && trust?.canExport);
 
   const codeChecks = useCodeChecks();
   const rebarSuggestions = useRebarSuggestions();
@@ -185,7 +187,7 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
             primaryAction={(
               <button
                 onClick={actions.triggerDesign}
-                disabled={state.isDesigning}
+                disabled={state.isDesigning || hasInputErrors}
                 className="inline-flex min-h-10 items-center justify-center gap-2 rounded-sm bg-cobalt px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {state.isDesigning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calculator className="h-4 w-4" />}
@@ -254,6 +256,14 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
             {state.isDesigning && <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />}
           </div>
 
+          {inputMode === "catalog" && inputErrors.span ? (
+            <div className="text-sm text-rose-800">
+              <p role="alert">{inputErrors.span}</p>
+              <button type="button" onClick={() => navigate("/workbench/quick/manual")} className="font-semibold underline underline-offset-2">
+                Edit span in manual Quick Beam
+              </button>
+            </div>
+          ) : null}
           {inputMode === "catalog" ? (
             <CatalogBeamInputPanel
               values={{
@@ -268,15 +278,16 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                 fck: inputs.fck,
                 fy: inputs.fy,
               }}
+              widthError={inputErrors.width}
               onChange={updateCatalogInput}
               onUseManual={() => navigate("/workbench/quick/manual")}
             />
           ) : (
           <>
           <AccordionSection title="Dimensions">
-            <InputField label="Width" value={inputs.width} onChange={(v) => actions.updateInputs({ width: v })} unit="mm" min={150} max={600} />
+            <InputField label="Width" value={inputs.width} onChange={(v) => actions.updateInputs({ width: v })} unit="mm" min={150} max={600} error={inputErrors.width} />
             <InputField label="Depth" value={inputs.depth} onChange={(v) => actions.updateInputs({ depth: v })} unit="mm" min={300} max={1200} />
-            <InputField label="Span" value={spanMeters} onChange={(v) => actions.updateLength(v * 1000)} unit="m" min={1} max={15} step={0.5} />
+            <InputField label="Span" value={spanMeters} onChange={(v) => actions.updateLength(v * 1000)} unit="m" min={1} max={15} step={0.5} error={inputErrors.span} />
             <InputField label="Cover" value={inputs.clear_cover ?? 40} onChange={(v) => actions.updateInputs({ clear_cover: v })} unit="mm" min={20} max={75} />
           </AccordionSection>
 
@@ -485,7 +496,11 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
               <>
                 {state.resultLifecycle !== "current" ? <p className="text-sm text-amber-200">Previous calculation. Recalculate to review the current inputs.</p> : null}
                 <BeamResultSummary result={state.result} trust={trust} />
-                {!canExport ? <p className="text-xs text-zinc-300">Export requires a current, supported passing result.</p> : null}
+                {!canExport ? (
+                  <p className="text-xs text-zinc-300">
+                    {hasInputErrors ? "Correct the highlighted inputs before exporting." : "Export requires a current, supported passing result."}
+                  </p>
+                ) : null}
                 {combinedCase ? <p className="text-xs text-zinc-300">Combined actions and serviceability results use the HTML or JSON report.</p> : null}
                 <button type="button" aria-expanded={showResultDetails} onClick={() => setShowResultDetails(!showResultDetails)} className="flex min-h-9 items-center gap-2 rounded-sm text-sm font-semibold text-blue-200 hover:text-white">
                   {showResultDetails ? "Hide checks and evidence" : "Show checks and evidence"}
@@ -794,9 +809,10 @@ function RebarSuggestionsPanel({ data, isPending }: { data: ReturnType<typeof us
 
 /* ---------- Input Components ---------- */
 
-function InputField({ label, value, onChange, unit, min, max, step = 1, disabled = false }: {
+function InputField({ label, value, onChange, unit, min, max, step = 1, disabled = false, error }: {
   label: string; value: number; onChange: (v: number) => void; unit: string;
   min?: number; max?: number; step?: number; disabled?: boolean;
+  error?: string | null;
 }) {
   const fieldId = `design-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
@@ -815,12 +831,15 @@ function InputField({ label, value, onChange, unit, min, max, step = 1, disabled
           step={step}
           disabled={disabled}
           aria-label={`${label} in ${unit}`}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${fieldId}-error` : undefined}
           className="min-h-10 w-full rounded-sm border border-ink/25 bg-white px-2.5 pr-10 text-sm text-ink disabled:opacity-50"
         />
         <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-ink/75" aria-hidden="true">
           {unit}
         </span>
       </div>
+      {error ? <p id={`${fieldId}-error`} role="alert" className="mt-1 text-xs text-rose-800">{error}</p> : null}
     </div>
   );
 }
