@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.31.1] — Prepared candidate (unreleased; on hold)
+
 ### Fixed
 
 - Use one consistent per-metre basis for continuous one-way slab moments,

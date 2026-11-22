@@ -72,10 +72,11 @@ Coding Lab and Maintenance Lab handoffs.
 | Remaining Lab and programme proposals | Retain the A40 special replay status, A51 caller binding and A52/A53 catalogue controls under their own evidence and scope. Keep FLOW04, new footing topologies and other element extensions in their programme lanes. |
 
 The proposed scope is bound to the published `v0.31.0` commit above.
-FLOW04 #1117 is an active draft and #1125 is the public 0.31.0 guidance
-predecessor. Recheck exact heads and candidate overlap before advancing
-`main`. Rebind the patch to the actual integration base. If #1127 lands
-first, regenerate the shared API compatibility ledger.
+The public 0.31.0 guidance in [#1125](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1125)
+merged at `675ccbebecbe7656e727b15dfef58331aea6b9ba`. The 0.31.1 candidate
+uses that base. [FLOW04 #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117)
+is queued after the patch and will rebind to the resulting `main` before its
+affected checks and review. #1127 still owns a separate ledger change.
 
 ## SLAB-01 evidence and acceptance
 
