@@ -5,7 +5,8 @@
   "build_head": "29ee5e25c78c1eb8e80b0e253cbee072a2e9b08f",
   "build_tree_sha": "aa91fba71cc0260e685ff3bdad094f3fb02d3098",
   "python_tree_sha": "c378d67bcce8e403ab9cef86a6c773e057bfbcb8",
-  "s5_merge_sha": null,
+  "s5_merge_sha": "583acaef5330f84dc24e093d5c92b7f26038bfdf",
+  "s5_merge_scope": "Candidate source merge of the integrated #1125 base before the versioned build. PR #1126 awaits integration into main.",
   "source_build_inputs_sha256": {
     "Python/pyproject.toml": "7c6141b97929a70dd5aa8e72f751f7793dbc50f28e9cb62dde056e38892b8423",
     "Python/MANIFEST.in": "b703d2df94d48815b9660e1eae7473d32c051dd5bb57bc623775a0890f3773c3",
