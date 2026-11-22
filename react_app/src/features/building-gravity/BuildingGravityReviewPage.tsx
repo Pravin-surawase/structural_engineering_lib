@@ -272,7 +272,7 @@ export function BuildingGravityReviewPage() {
                           <td>{action.case_id} · {action.kind}</td>
                           <td className="font-mono">{action.destination_id}</td>
                           <td>{practicalActionValue(action)}</td>
-                          <td className={action.reconciled ? 'text-emerald-300' : 'text-rose-300'}>
+                          <td className={action.reconciled ? 'text-emerald-800' : 'text-rose-800'}>
                             {action.reconciled ? 'BALANCED' : 'UNBALANCED'} · residual {action.residual_kn} kN
                           </td>
                         </tr>
@@ -296,7 +296,7 @@ export function BuildingGravityReviewPage() {
                         <td className="p-3 font-mono">{component.component_id}</td>
                         <td>{component.kind}</td>
                         <td><StatusBadge status={component.result_envelope.overall_status} /></td>
-                        <td className="pr-3 font-mono text-zinc-400">{component.canonical_function}</td>
+                        <td className="pr-3 font-mono text-zinc-700">{component.canonical_function}</td>
                       </tr>
                     ))}
                   </tbody>
