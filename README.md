@@ -42,19 +42,19 @@ optional ways to use the same library.
 
 ### Install the Python package
 
-**0.31.0 is published and verified** on
-[PyPI](https://pypi.org/project/structural-lib-is456/0.31.0/) and
-[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.0).
+**0.31.1 is published and verified** on
+[PyPI](https://pypi.org/project/structural-lib-is456/0.31.1/) and
+[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.1).
 Install the exact public version:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.31.0"
+python3 -m pip install "structural-lib-is456==0.31.1"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.31.0` is a final PEP 440 version. The project's development-maturity
+`0.31.1` is a final PEP 440 version. The project's development-maturity
 classifier remains **Beta**. Pin the exact version for reproducible work.
 See the [current release page](docs/getting-started/release-status.md) for
 publication evidence and the supported scope.
@@ -90,12 +90,12 @@ print(json.dumps(result.to_dict(), allow_nan=False, indent=2))
 The result reports a strength **PASS** and requires qualified engineering
 review. Serviceability, physical cage detailing and provided reinforcement
 are outside this example. Use the
-[beam calculation and status recipe](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.0/docs/cookbook/python/beam-design.md)
+[beam calculation and status recipe](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.1/docs/cookbook/python/beam-design.md)
 to inspect the result and run the failure and input-error controls.
 
 ### Upgrade existing Generic CSV files
 
-Strict Generic CSV import requires a finite, positive span for every beam.
+Since 0.31.0, strict Generic CSV import requires a finite, positive span for every beam.
 Add a `span_mm` or `Span (mm)` column for millimetres, or a `Span_m` or
 `Span (m)` column for metres. For example, a 4.2 m beam uses `4200` in
 `span_mm` or `4.2` in `Span_m`. Missing, blank or invalid spans now block

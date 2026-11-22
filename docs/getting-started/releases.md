@@ -2183,3 +2183,34 @@ This source candidate carries the continuous one-way slab strip-width correction
 The owner authorized the exact 0.31.1 wheel and source distribution after installed qualification, independent review and exact-head PR and Weekly checks. Use the retained pair from the continuous one-way slab correction. TestPyPI must return both retained hashes before the production tag and upload. Registry readback and a fresh public install will establish the publication result. The linked evidence records preparation and authorization.
 
 [Retained artifact record](../verification/library-0311-release-artifacts.json) · [Exact review](../verification/library-0311-exact-candidate-review.json) · [Owner authorization](../verification/release-publication-authorization.json)
+
+## v0.31.1 published and verified
+
+**22 November 2026 (Asia/Kolkata).** The annotated tag targets
+`3e1ce096868f764d2b830d11b7c8a211c29407b2`. Both archives were built at
+`29ee5e25c78c1eb8e80b0e253cbee072a2e9b08f` from Python tree
+`c378d67bcce8e403ab9cef86a6c773e057bfbcb8` and
+passed 20 installed profiles and 29 exact-wheel acceptance cases. The same
+archives were promoted from TestPyPI to PyPI and GitHub without rebuilding.
+[Retained artifact record](../verification/library-0311-release-artifacts.json) · [PyPI 0.31.1](https://pypi.org/project/structural-lib-is456/0.31.1/) · [GitHub Release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.1)
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.31.1-py3-none-any.whl` | `fbff4a613ece32270647089b4080754869fae45a98081e9edc7a81de42b60ea4` | 1606194 |
+| `structural_lib_is456-0.31.1.tar.gz` | `dc4f57b4e7e23bc562634f94c7c2c8430fcf5bd335e7e5ccbc59ea341251c359` | 1366988 |
+
+Both registries and the GitHub downloads returned the qualified archive
+hashes. A fresh install from PyPI passed the slab replay at 500, 1,000 and
+2,000 mm. The deficient built-in cases returned `FAIL`, the supplied-coefficient
+steel-area checks were false, and all passing cookbook controls still returned
+`PASS`. The public receipt SHA-256 is
+`96867f5cb7a60973341e01ac79e41cf43e9d4284d93dff05975fa0d25b3256ed`.
+[Public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.1/public-install-verification.json) · [Slab rerun guide](../cookbook/python/slab-continuous-one-way.md#rerun-affected-0310-results)
+
+TestPyPI finished at 16:17:50 UTC, both registry hashes matched at 16:17:56,
+and the production workflow started at 16:18:14. The handoff took 24 seconds
+from TestPyPI completion to production dispatch, compared with 4 minutes
+57 seconds for 0.31.0. The first install attempt preceded visibility on the
+PyPI install index. The retry passed, and verification finished at 16:21:45,
+1 minute 27 seconds after the production workflow completed.
+[TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/45042932125) · [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/45043064772) · [0.31.0 timing baseline](../planning/structlib-0311-patch-plan.md#release-timing-baseline-and-targets)
