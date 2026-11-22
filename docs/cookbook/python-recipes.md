@@ -27,9 +27,9 @@ The pin follows the [verified public version](../getting-started/release-status.
 For a development checkout, use the [source-install route](../getting-started/installation-notes.md#run-the-current-repository-workbench).
 
 ```bash
-pip install "structural-lib-is456==0.31.0"
+pip install "structural-lib-is456==0.31.1"
 # For DXF support:
-pip install "structural-lib-is456[dxf]==0.31.0"
+pip install "structural-lib-is456[dxf]==0.31.1"
 ```
 
 ```python

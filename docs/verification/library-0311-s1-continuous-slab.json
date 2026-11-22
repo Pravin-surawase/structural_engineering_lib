@@ -1,0 +1,353 @@
+{
+  "schema_version": "structlib-slab-regression-plan/v1",
+  "status": "frozen_for_S2",
+  "target_version": "0.31.1",
+  "issue": "SLAB-01",
+  "published_reference": {
+    "version": "0.31.0",
+    "source_commit": "16c6b660a03cdfe4942e7e50d2141e4824cf5a24",
+    "wheel_filename": "structural_lib_is456-0.31.0-py3-none-any.whl",
+    "wheel_sha256": "cf85ee0fd9b4368619ad67d1e33f4056413038857a5c2988f4bfc0d3af9d4cd4",
+    "coding_lab_receipt": "review/replays/continuous-slab-strip-width-v031.json",
+    "coding_lab_receipt_sha256": "31ce5e6480b3f02e03f0f14759d4128e18a921fe1207443a2e03b06ec0c1e6ce",
+    "coding_lab_driver_sha256": "fa370e5fb342606db606eb8941827e3a5064cbdb91aed1c0e1025edd8a39ad9b",
+    "replay_environment": {
+      "python": "3.11.15",
+      "pydantic": "2.14.3"
+    }
+  },
+  "candidate_comparison": {
+    "case_construction": "Copy the base request. Apply the listed field overrides, then set each listed width. Apply nested JSON overrides at the field level and preserve other fields.",
+    "tolerances": {
+      "moment_shear_stress_percentage_and_dimensionless_absolute": 1e-09,
+      "steel_area_mm2_per_m_absolute": 1e-06,
+      "relative": 0
+    },
+    "exact": [
+      "engineering and calculation statuses",
+      "pass flags",
+      "coefficient provenance",
+      "submitted strip width"
+    ],
+    "invariant_across_widths": [
+      "normalized success-path quantities",
+      "design concrete shear stress and shear disposition",
+      "serviceability result"
+    ],
+    "basis": "Published 1000 mm replay anchors and an independent 1000 mm arithmetic check of the tagged equations. The additional calculated quantities are candidate expectations."
+  },
+  "built_in": {
+    "entry": {
+      "source_file": "Python/structural_lib/design/is456/slab.py",
+      "loader": "load_continuous_one_way_json",
+      "operation": "design_continuous_one_way"
+    },
+    "expected_provenance": {
+      "coefficient_correctness_verified_by_library": true,
+      "method": "built_in_exact",
+      "table_id": "IS456_TABLE_12_13",
+      "case_id": "end_span_positive|next_to_end_support_negative|end_support"
+    },
+    "output_checks": [
+      "Require a completed result and finite JSON serialization.",
+      "Preserve strip_width_mm in request geometry and calculation.flexure.input.geometry."
+    ],
+    "cookbook_base": {
+      "source": "docs/cookbook/python/slab-continuous-one-way.md",
+      "request": {
+        "actions": {
+          "factored_dead_and_fixed_imposed_load_kn_per_m2": 7.5,
+          "factored_nonfixed_imposed_load_kn_per_m2": 2.5,
+          "negative_location": "next_to_end_support_negative",
+          "positive_location": "end_span_positive",
+          "redistribution_applied": false,
+          "shear_location": "end_support",
+          "substantially_uniform_load_acknowledged": true
+        },
+        "geometry": {
+          "effective_depth_mm": 130.0,
+          "long_effective_span_mm": 7500.0,
+          "maximum_span_variation_percent": 0.0,
+          "number_of_spans": 3,
+          "short_effective_span_mm": 3000.0,
+          "strip_width_mm": 1000.0,
+          "thickness_mm": 160.0,
+          "uniform_cross_section_acknowledged": true
+        },
+        "identity": {
+          "case_id": "SLAB-C-F0",
+          "family_id": "solid_slab",
+          "member_id": "SLAB-C-F0",
+          "source_reference": "LIB-PRO-013-F0",
+          "story": "F0"
+        },
+        "materials": {
+          "fck_nmm2": 20.0,
+          "fy_nmm2": 415.0
+        },
+        "reinforcement": {
+          "distribution_bar_diameter_mm": 8.0,
+          "distribution_bar_spacing_mm": 200.0,
+          "negative_bar_diameter_mm": 10.0,
+          "negative_bar_spacing_mm": 150.0,
+          "positive_bar_diameter_mm": 10.0,
+          "positive_bar_spacing_mm": 150.0
+        },
+        "serviceability_evidence": {
+          "qualified_serviceability_acceptance_acknowledged": true,
+          "qualified_serviceability_acceptance_reference": "review:F0",
+          "reviewed_aggregate_modification_factor": 1.2,
+          "reviewed_base_span_depth_limit": 20.0,
+          "serviceability_limit_source_is_approved": true,
+          "serviceability_limit_source_reference": "reviewed-limit:F0"
+        }
+      }
+    },
+    "cases": [
+      {
+        "id": "SLAB-01-DEFICIENT",
+        "request_overrides": {
+          "geometry": {
+            "thickness_mm": 140.0,
+            "effective_depth_mm": 115.0
+          },
+          "actions": {
+            "factored_dead_and_fixed_imposed_load_kn_per_m2": 10.5,
+            "factored_nonfixed_imposed_load_kn_per_m2": 3.75
+          },
+          "reinforcement": {
+            "positive_bar_diameter_mm": 8.0,
+            "positive_bar_spacing_mm": 295.0
+          },
+          "serviceability_evidence": {
+            "reviewed_base_span_depth_limit": 23.0,
+            "reviewed_aggregate_modification_factor": 1.18
+          }
+        },
+        "widths_mm": [
+          500,
+          1000,
+          2000
+        ],
+        "physical_line_load_kn_per_m_by_width_mm": {
+          "500": 7.125,
+          "1000": 14.25,
+          "2000": 28.5
+        },
+        "observed_0_31_0": [
+          {
+            "strip_width_mm": 500.0,
+            "engineering_status": "PASS",
+            "positive_moment_knm_per_m": 5.625,
+            "negative_moment_knm_per_m": 6.6000000000000005,
+            "positive_action_steel_mm2_per_m": 142.96039634553978,
+            "positive_governing_steel_mm2_per_m": 168.0,
+            "positive_provided_steel_mm2_per_m": 170.3914659574125,
+            "positive_area_passed": true,
+            "shear_kn_per_m": 8.83125,
+            "shear_stress_n_per_mm2": 0.15358695652173912,
+            "shear_tension_steel_percent": 0.29633298427376087
+          },
+          {
+            "strip_width_mm": 1000.0,
+            "engineering_status": "FAIL",
+            "positive_moment_knm_per_m": 11.25,
+            "negative_moment_knm_per_m": 13.200000000000001,
+            "positive_action_steel_mm2_per_m": 285.92079269107955,
+            "positive_governing_steel_mm2_per_m": 285.92079269107955,
+            "positive_provided_steel_mm2_per_m": 170.3914659574125,
+            "positive_area_passed": false,
+            "shear_kn_per_m": 17.6625,
+            "shear_stress_n_per_mm2": 0.15358695652173912,
+            "shear_tension_steel_percent": 0.14816649213688043
+          },
+          {
+            "strip_width_mm": 2000.0,
+            "engineering_status": "FAIL",
+            "positive_moment_knm_per_m": 22.5,
+            "negative_moment_knm_per_m": 26.400000000000002,
+            "positive_action_steel_mm2_per_m": 571.8415853821591,
+            "positive_governing_steel_mm2_per_m": 571.8415853821591,
+            "positive_provided_steel_mm2_per_m": 170.3914659574125,
+            "positive_area_passed": false,
+            "shear_kn_per_m": 35.325,
+            "shear_stress_n_per_mm2": 0.15358695652173912,
+            "shear_tension_steel_percent": 0.07408324606844022
+          }
+        ],
+        "expected_at_each_width": {
+          "engineering_status": "FAIL",
+          "positive_moment_knm_per_m": 11.25,
+          "negative_moment_knm_per_m": 13.200000000000001,
+          "positive_action_steel_mm2_per_m": 285.92079269107955,
+          "positive_governing_steel_mm2_per_m": 285.92079269107955,
+          "positive_provided_steel_mm2_per_m": 170.3914659574125,
+          "positive_area_passed": false,
+          "shear_kn_per_m": 17.6625,
+          "shear_stress_n_per_mm2": 0.15358695652173912,
+          "shear_tension_steel_percent": 0.14816649213688043,
+          "negative_action_steel_mm2_per_m": 338.954460016285,
+          "negative_governing_steel_mm2_per_m": 338.954460016285,
+          "negative_provided_steel_mm2_per_m": 523.598775598299,
+          "negative_area_passed": true,
+          "positive_limiting_moment_knm_per_m": 36.49135104,
+          "negative_limiting_moment_knm_per_m": 36.49135104,
+          "actual_span_depth_ratio": 26.086956521739,
+          "reviewed_modified_span_depth_limit": 27.139999999999997,
+          "serviceability_satisfied": true
+        }
+      },
+      {
+        "id": "SLAB-01-COOKBOOK",
+        "request_overrides": {},
+        "widths_mm": [
+          500,
+          1000,
+          2000
+        ],
+        "physical_line_load_kn_per_m_by_width_mm": {
+          "500": 5.0,
+          "1000": 10.0,
+          "2000": 20.0
+        },
+        "observed_0_31_0": [
+          {
+            "strip_width_mm": 1000.0,
+            "engineering_status": "PASS",
+            "positive_moment_knm_per_m": 7.875,
+            "negative_moment_knm_per_m": 9.25,
+            "positive_action_steel_mm2_per_m": 172.606633358994,
+            "positive_governing_steel_mm2_per_m": 192.0,
+            "positive_provided_steel_mm2_per_m": 523.5987755982989,
+            "positive_area_passed": true,
+            "shear_kn_per_m": 12.375,
+            "shear_stress_n_per_mm2": 0.09519230769230769,
+            "shear_tension_steel_percent": 0.40276828892176836
+          }
+        ],
+        "expected_at_each_width": {
+          "engineering_status": "PASS",
+          "positive_moment_knm_per_m": 7.875,
+          "negative_moment_knm_per_m": 9.25,
+          "positive_action_steel_mm2_per_m": 172.606633358994,
+          "positive_governing_steel_mm2_per_m": 192.0,
+          "positive_provided_steel_mm2_per_m": 523.5987755982989,
+          "positive_area_passed": true,
+          "shear_kn_per_m": 12.375,
+          "shear_stress_n_per_mm2": 0.09519230769230769,
+          "shear_tension_steel_percent": 0.40276828892176836,
+          "negative_action_steel_mm2_per_m": 203.804015017887,
+          "negative_governing_steel_mm2_per_m": 203.804015017887,
+          "negative_provided_steel_mm2_per_m": 523.598775598299,
+          "negative_area_passed": true,
+          "positive_limiting_moment_knm_per_m": 46.63166976,
+          "negative_limiting_moment_knm_per_m": 46.63166976,
+          "actual_span_depth_ratio": 23.076923076923,
+          "reviewed_modified_span_depth_limit": 24.0,
+          "serviceability_satisfied": true
+        }
+      }
+    ]
+  },
+  "supplied_coefficients": {
+    "entry": {
+      "source_file": "Python/structural_lib/services/slab_api.py",
+      "operation": "design_continuous_one_way_slab_is456"
+    },
+    "source": "Python/tests/codes/is456/slab/test_extended_workflows.py::_continuous_b02",
+    "base_kwargs": {
+      "short_effective_span_mm": 3000,
+      "long_effective_span_mm": 7500,
+      "thickness_mm": 140,
+      "d_mm": 115,
+      "factored_area_load_kn_per_m2": 14.25,
+      "fck_n_per_mm2": 20,
+      "fy_n_per_mm2": 415,
+      "positive_moment_coefficient": 0.08333333333333333,
+      "negative_moment_coefficient": 0.1,
+      "shear_coefficient": 0.4,
+      "coefficient_source_reference": "NPTEL-L18-B02",
+      "coefficient_source_is_approved": true,
+      "qualified_coefficient_acceptance_reference": "review:SLAB-B02",
+      "qualified_coefficient_acceptance_acknowledged": true,
+      "number_of_spans": 3,
+      "maximum_span_variation_percent": 0,
+      "uniform_cross_section_acknowledged": true,
+      "substantially_uniform_load_acknowledged": true,
+      "redistribution_applied": false,
+      "positive_bar_diameter_mm": 8,
+      "positive_bar_spacing_mm": 180,
+      "negative_bar_diameter_mm": 10,
+      "negative_bar_spacing_mm": 230,
+      "distribution_bar_diameter_mm": 8,
+      "distribution_bar_spacing_mm": 250,
+      "reviewed_base_span_depth_limit": 23,
+      "reviewed_aggregate_modification_factor": 1.18,
+      "serviceability_limit_source_reference": "NPTEL-L18-B02-SLS",
+      "serviceability_limit_source_is_approved": true,
+      "qualified_serviceability_acceptance_reference": "review:SLAB-B02-SLS",
+      "qualified_serviceability_acceptance_acknowledged": true
+    },
+    "id": "SLAB-01-B02-DEFICIENT",
+    "kwargs_overrides": {
+      "positive_bar_spacing_mm": 295
+    },
+    "widths_mm": [
+      500,
+      1000,
+      2000
+    ],
+    "physical_line_load_kn_per_m_by_width_mm": {
+      "500": 7.125,
+      "1000": 14.25,
+      "2000": 28.5
+    },
+    "expected_at_each_width": {
+      "positive_moment_knm_per_m": 10.6875,
+      "negative_moment_knm_per_m": 12.825,
+      "positive_action_steel_mm2_per_m": 270.835140945972,
+      "positive_governing_steel_mm2_per_m": 270.835140945972,
+      "positive_provided_steel_mm2_per_m": 170.3914659574125,
+      "positive_area_passed": false,
+      "shear_kn_per_m": 17.1,
+      "shear_stress_n_per_mm2": 0.14869565217391306,
+      "shear_tension_steel_percent": 0.14816649213688043,
+      "negative_action_steel_mm2_per_m": 328.664718474443,
+      "negative_governing_steel_mm2_per_m": 328.664718474443,
+      "negative_provided_steel_mm2_per_m": 341.477462346717,
+      "negative_area_passed": true,
+      "positive_limiting_moment_knm_per_m": 36.49135104,
+      "negative_limiting_moment_knm_per_m": 36.49135104,
+      "actual_span_depth_ratio": 26.086956521739,
+      "reviewed_modified_span_depth_limit": 27.139999999999997,
+      "serviceability_satisfied": true
+    },
+    "expected_provenance": {
+      "coefficient_correctness_verified_by_library": false,
+      "source_reference": "NPTEL-L18-B02",
+      "qualified_acceptance_reference": "review:SLAB-B02"
+    },
+    "retain": [
+      "test_b02_continuous_actions_flexure_shear_and_serviceability",
+      "test_continuous_coefficient_method_domain_fails_closed"
+    ],
+    "published_wheel_replay": "not_run"
+  },
+  "capacity_diagnostic_control": {
+    "id": "SLAB-01-B02-CAPACITY",
+    "base": "supplied_coefficients.base_kwargs",
+    "kwargs_overrides": {
+      "strip_width_mm": 2000,
+      "factored_area_load_kn_per_m2": 60
+    },
+    "expected": {
+      "governing_region": "continuous_positive_midspan",
+      "issue_code": "SLAB_FLEXURE_CAPACITY_EXCEEDED",
+      "engineering_status": "FAIL",
+      "factored_moment_knm": 90.0,
+      "limiting_moment_knm": 72.98270208
+    },
+    "basis": "Inspect the structured capacity result from the existing owner exception. Both moments are totals for the physical 2000 mm strip.",
+    "published_wheel_replay": "not_run"
+  }
+}

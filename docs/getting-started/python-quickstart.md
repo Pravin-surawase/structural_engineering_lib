@@ -13,7 +13,7 @@ tags: []
 **Audience:** Users
 **Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 0.31.0
+**Version:** 0.31.1
 **Created:** 2025-12-15
 **Last Updated:** 2026-10-29
 
@@ -35,10 +35,10 @@ in the [examples guide](../../Python/examples/README.md).
 python3 -m pip install --upgrade pip
 
 # Install the verified public version
-python3 -m pip install "structural-lib-is456==0.31.0"
+python3 -m pip install "structural-lib-is456==0.31.1"
 
 # Optional DXF support
-python3 -m pip install "structural-lib-is456[dxf]==0.31.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.31.1"
 
 # Verify the interpreter, package origin/version, and installed extras
 python3 -m structural_lib install-preflight
@@ -54,7 +54,7 @@ engineer.
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf]==0.31.0"
+%pip install -q "structural-lib-is456[dxf]==0.31.1"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
@@ -74,12 +74,12 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "structural-lib-is456==0.31.0"
+   python3 -m pip install "structural-lib-is456==0.31.1"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:
    ```bash
-   python3 -m pip install "structural-lib-is456[dxf]==0.31.0"
+   python3 -m pip install "structural-lib-is456[dxf]==0.31.1"
    ```
 
 ## 2) Canonical beam design (no files)
@@ -188,7 +188,7 @@ installed wheel.
 ```bash
 git clone --branch v0.31.0 --single-branch https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
-python3 -m pip install "structural-lib-is456==0.31.0"
+python3 -m pip install "structural-lib-is456==0.31.1"
 python3 -m structural_lib install-preflight
 python3 Python/examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500 --skip-dxf
 ```
@@ -200,7 +200,7 @@ For DXF output, install the matching optional extra and use a separate output
 directory.
 
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]==0.31.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.31.1"
 python3 -m structural_lib install-preflight
 python3 Python/examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500_dxf
 ```
@@ -321,7 +321,7 @@ For the supported-case boundary and rejected-input example, see the
 
 ## 9) Troubleshooting
 - "Module not found": ensure the venv is activated and you installed `structural-lib-is456`.
-- DXF generation missing: install `structural-lib-is456[dxf]==0.31.0`.
+- DXF generation missing: install `structural-lib-is456[dxf]==0.31.1`.
 - Tests failing on path issues: run commands from the repo root.
 ## 10) Sample Files & Examples
 
