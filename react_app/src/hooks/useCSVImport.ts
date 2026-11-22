@@ -98,6 +98,32 @@ interface BatchDesignResponse {
   summary: Record<string, unknown>;
 }
 
+interface ImportFailureDetails {
+  issues?: Array<{
+    message?: string;
+    source_row_number?: number | null;
+    artifact_role?: string;
+  }>;
+}
+
+async function importFailureMessage(response: Response): Promise<string> {
+  const problem: {
+    detail?: string | ImportFailureDetails;
+    error?: { message?: string; details?: string | ImportFailureDetails };
+  } | null = await response.json().catch(() => null);
+  const details = problem?.error?.details ?? problem?.detail;
+  if (typeof details === "string" && details) return details;
+
+  const issues = typeof details === "object" ? details?.issues : undefined;
+  const issue = Array.isArray(issues) ? issues.find((item) => typeof item?.message === "string" && item.message) : undefined;
+  if (issue && typeof issue.source_row_number === "number") {
+    const source = issue.artifact_role === "geometry" ? "Geometry CSV" : issue.artifact_role === "forces" ? "Forces CSV" : "CSV";
+    return `${source} row ${issue.source_row_number}: ${issue.message}`;
+  }
+
+  return issue?.message || problem?.error?.message || response.statusText || String(response.status);
+}
+
 /**
  * Import CSV from file upload.
  */
@@ -140,8 +166,7 @@ async function importCSVFile(
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(`Import failed: ${error.detail || response.status}`);
+    throw new Error(`Import failed: ${await importFailureMessage(response)}`);
   }
 
   return response.json().then(unwrapResponse<CSVImportResponse>);
@@ -185,8 +210,7 @@ async function importCSVText(
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(`Import failed: ${error.detail || response.status}`);
+    throw new Error(`Import failed: ${await importFailureMessage(response)}`);
   }
 
   return response.json().then(unwrapResponse<CSVImportResponse>);
@@ -238,8 +262,7 @@ async function importDualCSVFiles(
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(`Dual CSV import failed: ${error.detail || response.status}`);
+    throw new Error(`Dual CSV import failed: ${await importFailureMessage(response)}`);
   }
 
   return response.json().then(unwrapResponse<DualCSVImportResponse>);

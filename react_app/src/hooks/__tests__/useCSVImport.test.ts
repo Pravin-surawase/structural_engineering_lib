@@ -142,8 +142,38 @@ describe('useCSVFileImport', () => {
     result.current.importFile(file, 'generic', explicitBasis);
 
     await waitFor(() => {
-      expect(mockSetError).toHaveBeenCalled();
+      expect(mockSetError).toHaveBeenCalledWith('Import failed: Invalid CSV format');
     });
+  });
+
+  it.each(['file', 'text', 'dual'] as const)('shows the source row in a rejected %s import', async (transport) => {
+    const artifactRole = transport === 'dual' ? 'geometry' : 'combined';
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(JSON.stringify({
+      success: false,
+      error: {
+        schema_version: 'structural-problem/v1',
+        message: 'Request was rejected',
+        details: {
+          status: 'BLOCKED',
+          issues: [{
+            artifact_role: artifactRole,
+            source_row_number: 2,
+            message: "Field 'span_mm' is not a valid number",
+          }],
+        },
+      },
+    }), { status: 422 }));
+    const { result } = renderHook(() => ({
+      file: useCSVFileImport(), text: useCSVTextImport(), dual: useDualCSVImport(),
+    }), { wrapper: createWrapper() });
+    const file = new File(['source'], 'beams.csv', { type: 'text/csv' });
+    if (transport === 'file') result.current.file.importFile(file, 'generic', explicitBasis);
+    else if (transport === 'text') result.current.text.importText('source', 'generic', explicitBasis);
+    else result.current.dual.importFiles(file, file, 'generic', explicitBasis);
+
+    const prefix = transport === 'dual' ? 'Dual CSV import failed: Geometry CSV' : 'Import failed: CSV';
+    await waitFor(() => expect(mockSetError).toHaveBeenCalledWith(`${prefix} row 2: Field 'span_mm' is not a valid number`));
+    expect(mockSetBeams).not.toHaveBeenCalled();
   });
 
   it('handles wrapped response and extracts beams correctly (regression: envelope mismatch)', async () => {
