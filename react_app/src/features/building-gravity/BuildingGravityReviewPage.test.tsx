@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BuildingGravityReviewPage } from './BuildingGravityReviewPage';
 
@@ -158,5 +158,48 @@ describe('BuildingGravityReviewPage', () => {
     expect(runMock).toHaveBeenCalledWith(
       { schema_version: 'gravity-workflow-request/v1' },
     );
+  });
+
+  it('retains a completed run as previous evidence when its JSON changes', async () => {
+    runMock.mockResolvedValue(bundle());
+    render(<BuildingGravityReviewPage />);
+    const request = screen.getByLabelText(/GravityWorkflowRequestV1 JSON/i);
+    fireEvent.change(request, {
+      target: { value: '{"schema_version":"gravity-workflow-request/v1"}' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /run gravity review/i }));
+
+    expect(await screen.findByRole('button', { name: 'Download calculation book' })).toBeEnabled();
+    fireEvent.change(request, {
+      target: { value: '{"schema_version":"gravity-workflow-request/v1","model_hash":"changed"}' },
+    });
+
+    expect(await screen.findByText(/Previous result/i)).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Download previous calculation book' })).toBeEnabled();
+    expect(screen.getByText('BASIS_MISSING')).toBeVisible();
+  });
+
+  it('labels a late response as previous when the JSON changes while running', async () => {
+    let resolveRun: (value: ReturnType<typeof bundle>) => void = () => undefined;
+    runMock.mockImplementationOnce(() => new Promise<ReturnType<typeof bundle>>((resolve) => {
+      resolveRun = resolve;
+    }));
+    render(<BuildingGravityReviewPage />);
+    const request = screen.getByLabelText(/GravityWorkflowRequestV1 JSON/i);
+    fireEvent.change(request, {
+      target: { value: '{"schema_version":"gravity-workflow-request/v1"}' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /run gravity review/i }));
+    fireEvent.change(request, {
+      target: { value: '{"schema_version":"gravity-workflow-request/v1","model_hash":"changed"}' },
+    });
+
+    await act(async () => {
+      resolveRun(bundle());
+    });
+
+    expect(await screen.findByText(/Previous result/i)).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Download previous calculation book' })).toBeEnabled();
+    expect(screen.getByText('BASIS_MISSING')).toBeVisible();
   });
 });

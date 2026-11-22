@@ -18,13 +18,13 @@ const STATUS_LABELS: Record<GravityOverallStatus, string> = {
 };
 
 const STATUS_CLASSES: Record<GravityOverallStatus, string> = {
-  BLOCKED: 'border-rose-400/40 bg-rose-400/10 text-rose-200',
-  ERROR: 'border-rose-400/40 bg-rose-400/10 text-rose-200',
-  NOT_EVALUATED: 'border-zinc-400/40 bg-zinc-400/10 text-zinc-200',
-  STALE: 'border-amber-400/40 bg-amber-400/10 text-amber-200',
-  PASS: 'border-emerald-400/40 bg-emerald-400/10 text-emerald-200',
-  FAIL: 'border-red-400/40 bg-red-400/10 text-red-200',
-  HOLD: 'border-amber-400/40 bg-amber-400/10 text-amber-200',
+  BLOCKED: 'border-rose-300 bg-rose-100 text-rose-900',
+  ERROR: 'border-rose-300 bg-rose-100 text-rose-900',
+  NOT_EVALUATED: 'border-zinc-300 bg-zinc-100 text-zinc-900',
+  STALE: 'border-amber-300 bg-amber-100 text-amber-900',
+  PASS: 'border-emerald-300 bg-emerald-100 text-emerald-900',
+  FAIL: 'border-red-300 bg-red-100 text-red-900',
+  HOLD: 'border-amber-300 bg-amber-100 text-amber-900',
 };
 
 function StatusBadge({ status }: { status: GravityOverallStatus }) {
@@ -53,9 +53,14 @@ function practicalActionValue(
 export function BuildingGravityReviewPage() {
   const [definition, setDefinition] = useState<GravityWorkflowDefinition | null>(null);
   const [requestText, setRequestText] = useState('');
-  const [bundle, setBundle] = useState<GravityWorkflowRunBundle | null>(null);
+  const [completedRun, setCompletedRun] = useState<{
+    submittedRequestText: string;
+    bundle: GravityWorkflowRunBundle;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
+  const bundle = completedRun?.bundle;
+  const isPreviousRun = completedRun !== null && completedRun.submittedRequestText !== requestText;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -83,16 +88,17 @@ export function BuildingGravityReviewPage() {
   function loadExample() {
     if (!definition) return;
     setError(null);
-    setBundle(null);
+    setCompletedRun(null);
     setRequestText(JSON.stringify(definition.example_request, null, 2));
   }
 
   async function handleRun() {
     setError(null);
-    setBundle(null);
+    setCompletedRun(null);
+    const submittedRequestText = requestText;
     let request: unknown;
     try {
-      request = JSON.parse(requestText);
+      request = JSON.parse(submittedRequestText);
     } catch {
       setError('The request must be valid JSON before calculation can start.');
       return;
@@ -103,7 +109,8 @@ export function BuildingGravityReviewPage() {
     }
     setRunning(true);
     try {
-      setBundle(await runGravityWorkflow(request as Record<string, unknown>));
+      const returnedBundle = await runGravityWorkflow(request as Record<string, unknown>);
+      setCompletedRun({ submittedRequestText, bundle: returnedBundle });
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Gravity workflow failed');
     } finally {
@@ -197,13 +204,18 @@ export function BuildingGravityReviewPage() {
               <Play className="h-4 w-4" aria-hidden="true" />
               {running ? 'Running…' : 'Run gravity review'}
             </button>
-            {error ? <p role="alert" className="text-sm text-rose-300">INPUT BLOCKED — {error}</p> : null}
+            {error ? <p role="alert" className="text-sm text-rose-800">INPUT BLOCKED — {error}</p> : null}
           </div>
         </section>
 
         {bundle ? (
           <>
             <section className="border border-ink/20 bg-ink p-4 text-white">
+              {isPreviousRun ? (
+                <p role="status" className="mb-3 rounded-sm border border-amber-300 bg-amber-100 p-3 text-sm text-amber-900">
+                  <strong>Previous result.</strong> Run gravity review to check the edited request.
+                </p>
+              ) : null}
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <StatusBadge status={bundle.workflow_result.result_envelope.overall_status} />
@@ -218,7 +230,7 @@ export function BuildingGravityReviewPage() {
                   className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold hover:bg-white/5"
                 >
                   <Download className="h-4 w-4" aria-hidden="true" />
-                  Download calculation book
+                  {isPreviousRun ? 'Download previous calculation book' : 'Download calculation book'}
                 </button>
               </div>
               <div className="mt-4 grid gap-2 font-mono text-[11px] text-white/55">
@@ -320,7 +332,7 @@ export function BuildingGravityReviewPage() {
             {(['BLOCKED', 'ERROR', 'PASS', 'FAIL', 'HOLD'] as GravityOverallStatus[]).map((status) => (
               <StatusBadge key={status} status={status} />
             ))}
-            <span className="inline-flex rounded-full border border-violet-400/40 bg-violet-400/10 px-2.5 py-1 text-xs font-semibold text-violet-200">
+            <span className="inline-flex rounded-full border border-violet-300 bg-violet-100 px-2.5 py-1 text-xs font-semibold text-violet-900">
               QUALIFIED REVIEW REQUIRED
             </span>
           </div>
