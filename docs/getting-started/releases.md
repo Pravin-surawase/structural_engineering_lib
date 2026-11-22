@@ -2171,3 +2171,15 @@ A40 has source and ordinary transport evidence; its safeguarded special replay
 remains NOT_RUN. PROJECT01/02 remain HOLD, PROJECT03 retains site evidence
 requirements, and FLOW04 stays excluded. No new footing or caller API is
 included. Software qualification does not confer professional approval.
+
+
+## v0.31.1 — Prepared candidate (unreleased; on hold)
+
+This source candidate carries the continuous one-way slab strip-width correction. It is **not tagged or published**. The public package remains 0.31.0. S5 binds qualification to the reviewed source and exact wheel and sdist. Publication requires a separate owner decision. See the [slab rerun guide](../cookbook/python/slab-continuous-one-way.md#rerun-affected-0310-results) and [draft PR #1126](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1126).
+
+
+## v0.31.1 — Release authorized (2026-11-22)
+
+The owner authorized the exact 0.31.1 wheel and source distribution after installed qualification, independent review and exact-head PR and Weekly checks. Use the retained pair from the continuous one-way slab correction. TestPyPI must return both retained hashes before the production tag and upload. Registry readback and a fresh public install will establish the publication result. The linked evidence records preparation and authorization.
+
+[Retained artifact record](../verification/library-0311-release-artifacts.json) · [Exact review](../verification/library-0311-exact-candidate-review.json) · [Owner authorization](../verification/release-publication-authorization.json)

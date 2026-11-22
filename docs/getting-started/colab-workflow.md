@@ -13,7 +13,7 @@ tags: [colab, python, cli, beam]
 **Audience:** Users
 **Status:** Active
 **Importance:** Medium
-**Version:** 0.31.0
+**Version:** 0.31.1
 **Last Updated:** 2026-10-29
 
 This guide runs the selected package version in a clean Google Colab runtime.

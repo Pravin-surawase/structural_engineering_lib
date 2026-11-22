@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-28
+last_updated: 2026-11-18
 doc_type: guide
 complexity: intermediate
 tags: [canonical-api, family-facades, lib-pro-012-r0]
@@ -17,6 +17,21 @@ Errors: `input-issue/v1 + structural-problem/v1`
 This recipe constructs caller-supplied data and delegates to the maintained
 calculation owner. It does not infer loads, geometry, topology, soil data,
 evidence, review inputs, or professional acceptance.
+
+## Rerun affected 0.31.0 results
+
+Rerun continuous one-way slab checks from 0.31.0 that used a strip width
+other than 1,000 mm. Rerun any saved result whose submitted width you cannot
+confirm. This applies to built-in and supplied coefficients through Python or
+HTTP. Prioritize accepted results from narrower strips, where 0.31.0 could
+understate steel demand and report a false `PASS`.
+
+Use a build that includes the 0.31.1 correction. Resubmit the original loads,
+geometry, strip width, reinforcement and reviewed inputs. Review the new
+engineering verdict and the moment, required steel and shear values per metre.
+Refresh reports or exports that used the old results. The line load along the
+physical strip still scales with its width. Capacity-exceeded diagnostics give
+moments for that physical strip in kN·m.
 
 ## Copy-paste recipe
 
@@ -92,6 +107,57 @@ paths. For a saved request, use
 `slab.load_continuous_one_way_json(Path("request.json").read_bytes())` after importing
 `Path` from `pathlib`. Existing Python mappings use `slab.load_continuous_one_way`.
 
+## Corrected strip-width example
+
+Run this block after the passing recipe above, using source that includes the
+0.31.1 correction. The modified loads, section and positive bars produce a
+steel shortfall.
+
+```python
+challenge = json.loads(request_json)
+challenge["geometry"].update(
+    thickness_mm=140.0,
+    effective_depth_mm=115.0,
+)
+challenge["actions"].update(
+    factored_dead_and_fixed_imposed_load_kn_per_m2=10.5,
+    factored_nonfixed_imposed_load_kn_per_m2=3.75,
+)
+challenge["reinforcement"].update(
+    positive_bar_diameter_mm=8.0,
+    positive_bar_spacing_mm=295.0,
+)
+challenge["serviceability_evidence"].update(
+    reviewed_base_span_depth_limit=23.0,
+    reviewed_aggregate_modification_factor=1.18,
+)
+
+for width_mm in (500, 1000, 2000):
+    challenge["geometry"]["strip_width_mm"] = width_mm
+    request = slab.load_continuous_one_way_json(json.dumps(challenge))
+    checked = slab.design_continuous_one_way(request)
+    steel = checked.calculation.positive_reinforcement
+    print(
+        f"{width_mm} mm: {checked.engineering_status.value}, "
+        f"{steel.governing_required_mm2_per_m:.3f} required, "
+        f"{steel.provided_mm2_per_m:.3f} provided (mm²/m)"
+    )
+```
+
+The corrected calculation prints the following output.
+
+```text
+500 mm: FAIL, 285.921 required, 170.391 provided (mm²/m)
+1000 mm: FAIL, 285.921 required, 170.391 provided (mm²/m)
+2000 mm: FAIL, 285.921 required, 170.391 provided (mm²/m)
+```
+
+At every width the positive moment is 11.25 kN·m/m, the negative moment
+magnitude is 13.20 kN·m/m and the end shear is 17.6625 kN/m.
+Use the 1,000 mm recipe above as the passing control. A completed `FAIL`
+means the input was evaluated and a check failed. See the
+[frozen slab cases](../../verification/library-0311-s1-continuous-slab.json).
+
 ## Rejected-input example
 
 ```python
@@ -134,6 +200,6 @@ and group imports require its matching build rather than an older published whee
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-Replay this recipe with a local build of source package version `0.31.0`.
-Use the [release guide](../../getting-started/release-status.md) for the public
-package. Results require qualified review.
+Use the [Current Release page](../../getting-started/release-status.md) to
+check public package availability. The strip-width example above was checked
+on source with the correction. Results require qualified review.
