@@ -7,7 +7,6 @@ import csv
 import io
 import math
 from pathlib import Path
-from xml.etree.ElementTree import ParseError
 from zipfile import BadZipFile
 
 
@@ -64,7 +63,7 @@ def project_etabs_worksheet_v1(path: Path, *, worksheet: str) -> bytes:
                 rows.append(values)
         finally:
             workbook.close()
-    except (BadZipFile, InvalidFileException, KeyError, OSError, ParseError) as exc:
+    except (BadZipFile, InvalidFileException, KeyError, OSError, SyntaxError) as exc:
         raise ValueError(f"Could not read ETABS workbook {path.name!r}.") from exc
 
     while rows and not rows[-1]:

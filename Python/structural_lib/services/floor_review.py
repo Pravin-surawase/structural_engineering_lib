@@ -98,9 +98,7 @@ def _prepared_design(
     pitch_status = (
         "NOT_EVALUATED"
         if maximum is None
-        else "PASS"
-        if record.stirrup_spacing <= maximum
-        else "FAIL"
+        else "PASS" if record.stirrup_spacing <= maximum else "FAIL"
     )
     status = result.engineering_status.value
     if pitch_status == "FAIL":

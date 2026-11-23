@@ -13,7 +13,6 @@ import hashlib
 from io import BytesIO
 from pathlib import Path
 from typing import Any, Literal
-from xml.etree.ElementTree import ParseError
 from zipfile import BadZipFile
 
 from . import cli_design
@@ -78,7 +77,7 @@ def _load_xlsx(path: Path) -> cli_design.CLIDesignIntakeV1:
         KeyError,
         BadZipFile,
         InvalidFileException,
-        ParseError,
+        SyntaxError,
     ) as exc:
         raise _blocked("PREPARED_FLOOR_INVALID_WORKBOOK", "input", str(exc)) from exc
     if PREPARED_WORKSHEET_NAME not in workbook.sheetnames:

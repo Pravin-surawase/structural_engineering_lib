@@ -393,9 +393,7 @@ def _paired(folder: Path, packet: _PairedPacket, result: EtabsFloorIntakeV1) -> 
     result.status = (
         "ACCEPTED"
         if status == "COMPLETE_FOR_DECLARED_ROWS"
-        else "HOLD"
-        if status == "HOLD"
-        else "BLOCKED"
+        else "HOLD" if status == "HOLD" else "BLOCKED"
     )
     result.issues.extend(
         issue(
@@ -424,9 +422,11 @@ def _paired(folder: Path, packet: _PairedPacket, result: EtabsFloorIntakeV1) -> 
                     "i_mm": binding["i_mm"],
                     "j_mm": binding["j_mm"],
                     "local_axes": binding["local_axes"],
-                    "section": declared.section.model_dump(mode="json")
-                    if declared.section
-                    else None,
+                    "section": (
+                        declared.section.model_dump(mode="json")
+                        if declared.section
+                        else None
+                    ),
                 },
                 "source_identity": {
                     "object_id": member.object_id,
