@@ -53,12 +53,16 @@ class Viewport3DErrorBoundary extends React.Component<
   }
 }
 
-function CanvasFailure() {
+function CanvasFailure({ mode }: { mode: Viewport3DMode }) {
   return (
     <div className="flex h-full items-center justify-center p-4 text-center text-sm text-zinc-200">
       <div className="rounded-xl border border-amber-500/30 bg-zinc-950/90 px-4 py-3">
         <p className="font-semibold text-amber-100">3D rendering unavailable</p>
-        <p className="mt-1 text-xs text-zinc-400">Member selection and current evidence remain available in the overlay.</p>
+        <p className="mt-1 text-xs text-zinc-400">
+          {mode === 'building'
+            ? 'Member selection and current evidence remain available in the overlay.'
+            : 'Continue reviewing the beam details and available exports.'}
+        </p>
       </div>
     </div>
   );
@@ -79,8 +83,18 @@ export function Viewport3D({
   const [showStatus, setShowStatus] = useState(true);
   const [showUtilization, setShowUtilization] = useState(true);
   const [focusRequest, setFocusRequest] = useState(0);
+  const [hasWebGL2, setHasWebGL2] = useState<boolean | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const startedAtRef = useRef(0);
+  const attachContainer = useCallback((container: HTMLDivElement | null) => {
+    containerRef.current = container;
+    if (!container) return;
+
+    // Fiber initializes its renderer asynchronously, outside the error boundary.
+    const context = container.ownerDocument.createElement('canvas').getContext('webgl2');
+    setHasWebGL2(context !== null);
+    context?.getExtension('WEBGL_lose_context')?.loseContext();
+  }, []);
 
   useEffect(() => {
     startedAtRef.current = performance.now();
@@ -168,10 +182,11 @@ export function Viewport3D({
       onSelectMember={handleSelectMember}
     />
   ) : null;
+  const canvasUnavailable = hasWebGL2 === false || (effectiveMode === 'building' && !buildingScene);
 
   return (
     <div
-      ref={containerRef}
+      ref={attachContainer}
       className="relative h-full w-full overflow-hidden bg-zinc-950"
       role="region"
       aria-label={effectiveMode === 'building'
@@ -200,10 +215,10 @@ export function Viewport3D({
         />
       ) : null}
 
-      {effectiveMode === 'building' && !buildingScene ? (
-        <CanvasFailure />
-      ) : (
-        <Viewport3DErrorBoundary fallback={<CanvasFailure />}>
+      {canvasUnavailable ? (
+        <CanvasFailure mode={effectiveMode} />
+      ) : hasWebGL2 && (
+        <Viewport3DErrorBoundary fallback={<CanvasFailure mode={effectiveMode} />}>
           <Canvas shadows className="!h-full !w-full" onCreated={handleCanvasCreated}>
             <Suspense fallback={null}>
               <ViewportMetricsProbe onSample={handleRendererMetrics} />
@@ -218,11 +233,13 @@ export function Viewport3D({
         </Viewport3DErrorBoundary>
       )}
 
-      <div className="pointer-events-none absolute bottom-2 left-2 rounded bg-black/50 px-2 py-1 text-[11px] text-zinc-400">
-        {effectiveMode === 'building'
-          ? `${beams.length} members · click to select · drag to orbit`
-          : '3D viewport · scroll to zoom · drag to rotate'}
-      </div>
+      {hasWebGL2 && !canvasUnavailable && (
+        <div className="pointer-events-none absolute bottom-2 left-2 rounded bg-black/50 px-2 py-1 text-[11px] text-zinc-400">
+          {effectiveMode === 'building'
+            ? `${beams.length} members · click to select · drag to orbit`
+            : '3D viewport · scroll to zoom · drag to rotate'}
+        </div>
+      )}
     </div>
   );
 }

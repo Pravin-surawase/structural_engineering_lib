@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useImportedBeamsStore } from '../../../store/importedBeamsStore';
 import { useWorkspaceStore } from '../../../workspace/workspaceStore';
 import { Viewport3D } from '../Viewport3D';
@@ -19,7 +19,10 @@ describe('ViewportOverlay', () => {
   beforeEach(() => {
     useWorkspaceStore.getState().reset();
     useImportedBeamsStore.setState({ beams: [], selectedId: null, selectedFloor: null });
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
   });
+
+  afterEach(() => vi.restoreAllMocks());
 
   it('keeps current selection evidence and inspection controls available in the DOM', () => {
     const onFloorChange = vi.fn();
@@ -83,5 +86,14 @@ describe('ViewportOverlay', () => {
       'Not evaluated',
     );
     expect(screen.getByText('3D rendering unavailable')).toBeInTheDocument();
+  });
+
+  it('shows the beam fallback without mounting a renderer when WebGL 2 is disabled', () => {
+    const { container } = render(<Viewport3D mode="design" forceMode />);
+
+    expect(HTMLCanvasElement.prototype.getContext).toHaveBeenCalledWith('webgl2');
+    expect(screen.getByText('3D rendering unavailable')).toBeVisible();
+    expect(screen.getByText('Continue reviewing the beam details and available exports.')).toBeVisible();
+    expect(container.querySelector('canvas')).toBeNull();
   });
 });
