@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { TopBar } from '../layout/TopBar';
 
@@ -24,9 +24,33 @@ vi.mock('framer-motion', () => ({
 }));
 
 describe('TopBar', () => {
+  const dialogPrototype = HTMLDialogElement.prototype as HTMLDialogElement & {
+    showModal: () => void;
+    close: () => void;
+  };
+  const originalShowModal = dialogPrototype.showModal;
+  const originalClose = dialogPrototype.close;
+
+  beforeEach(() => {
+    dialogPrototype.showModal = function showModal(this: HTMLDialogElement) {
+      this.setAttribute('open', '');
+    };
+    dialogPrototype.close = function close(this: HTMLDialogElement) {
+      this.removeAttribute('open');
+      this.dispatchEvent(new Event('close'));
+    };
+  });
+
+  afterEach(() => {
+    dialogPrototype.showModal = originalShowModal;
+    dialogPrototype.close = originalClose;
+  });
+
   it('renders the StructLib brand text', () => {
     render(React.createElement(TopBar));
     expect(screen.getByText('StructLib')).toBeInTheDocument();
+    expect(screen.getByText('By Pravin Surawase')).toBeVisible();
+    expect(screen.getByRole('link', { name: /source credits/i })).toHaveAttribute('href', '/CREDITS.txt');
   });
 
   it('renders navigation links', () => {
@@ -48,5 +72,18 @@ describe('TopBar', () => {
     routerMock.useLocation.mockReturnValueOnce({ pathname: '/' });
     const { container } = render(React.createElement(TopBar));
     expect(container.innerHTML).toBe('');
+  });
+
+  it('returns focus to Settings after button and Escape closes', () => {
+    render(React.createElement(TopBar));
+
+    const trigger = screen.getByRole('button', { name: 'Settings' });
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole('button', { name: 'Close settings' }));
+    expect(document.activeElement).toBe(trigger);
+
+    fireEvent.click(trigger);
+    fireEvent(screen.getByRole('dialog'), new Event('cancel', { cancelable: true }));
+    expect(document.activeElement).toBe(trigger);
   });
 });

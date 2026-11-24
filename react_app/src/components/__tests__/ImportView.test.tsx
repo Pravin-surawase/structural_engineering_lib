@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import React from 'react';
 import { ImportView } from '../import/ImportView';
 
@@ -57,11 +57,13 @@ describe('ImportView', () => {
     expect(screen.getByText('Import Beam Data')).toBeInTheDocument();
   });
 
-  it('renders step indicators', () => {
+  it('shows the project stages with import selected', () => {
     render(React.createElement(ImportView));
-    expect(screen.getByText('1. Upload')).toBeInTheDocument();
-    expect(screen.getByText('2. Preview & Design')).toBeInTheDocument();
-    expect(screen.getByText('3. Building Editor')).toBeInTheDocument();
+    const stages = within(screen.getByRole('navigation', { name: 'Project stages' }));
+    expect(stages.getByRole('button', { name: 'Import' })).toHaveAttribute('aria-current', 'step');
+    for (const name of ['Review', 'Design', 'Results']) {
+      expect(stages.getByRole('button', { name })).toBeDisabled();
+    }
   });
 
   it('renders import mode tabs', () => {

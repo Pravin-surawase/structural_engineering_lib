@@ -82,18 +82,19 @@ export function ConcentricIsolatedFootingPage() {
   };
 
   return (
-    <div className="h-screen pt-14">
+    <div className="h-full bg-paper pt-14 text-ink [color-scheme:light]">
       <WorkbenchShell
+        className="bg-paper text-ink"
         header={(
           <WorkbenchHeader
             title="Concentric isolated footing"
-            projectName="IS 456 ordinary centred square/rectangular case · server evidence is authoritative"
+            projectName="Centred square or rectangular footing · IS 456:2000"
             primaryAction={(
               <button
                 type="button"
                 disabled={!canRun}
                 title={canRun ? 'Run the maintained footing service' : issues[0] ?? 'Request pending'}
-                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-sm bg-cobalt px-4 py-2 text-sm font-semibold text-white transition hover:bg-cobalt-hover disabled:cursor-not-allowed disabled:opacity-40"
                 onClick={() => void runDesign()}
               >
                 {requestPending ? (
@@ -110,10 +111,10 @@ export function ConcentricIsolatedFootingPage() {
         <p className="sr-only" aria-live="polite">
           Footing request lifecycle: {lifecycle}.
         </p>
-        <div className="mx-auto grid max-w-screen-2xl gap-4 p-4 pb-24 md:p-6 xl:grid-cols-[minmax(32rem,1fr)_minmax(30rem,0.9fr)]">
+        <div className="mx-auto grid max-w-6xl items-start gap-4 p-4 md:p-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <WorkbenchPanel
             title="Footing inputs"
-            description="All units and approvals are explicit. Client checks improve usability; FastAPI remains the calculation authority."
+            tone="paper"
           >
             <FootingInputForm
               draft={draft}
@@ -128,9 +129,9 @@ export function ConcentricIsolatedFootingPage() {
               title="Returned evidence"
               description="Calculation, detailing and aggregate decisions remain separate."
             >
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/8 bg-zinc-950/60 p-3">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border border-zinc-700 bg-zinc-950 p-3">
                 <ResultLifecycleBadge lifecycle={lifecycle} />
-                <span className="text-xs font-medium text-amber-200">
+                <span className="text-xs font-medium text-zinc-300">
                   Report/export closeout is not enabled in D1
                 </span>
               </div>
@@ -138,15 +139,14 @@ export function ConcentricIsolatedFootingPage() {
               {result ? (
                 <FootingResults result={result} lifecycle={lifecycle} />
               ) : (
-                <div className="rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-zinc-400">
-                  Confirm the external approvals and run the maintained service to obtain
-                  bounded footing evidence.
+                <div className="border border-dashed border-zinc-700 p-4 text-sm text-zinc-300">
+                  Confirm the external approvals, then run the footing design.
                 </div>
               )}
 
               {result?.status === 'HOLD' ? (
                 <div
-                  className="mt-4 rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-xs leading-5 text-amber-100"
+                  className="mt-4 border border-amber-700/30 bg-amber-100/60 p-3 text-xs leading-5 text-amber-950"
                   role="alert"
                 >
                   Returned HOLD: {result.hold_reasons.join(', ')
@@ -157,7 +157,7 @@ export function ConcentricIsolatedFootingPage() {
 
               {error ? (
                 <div
-                  className="mt-4 flex gap-2 rounded-xl border border-rose-400/30 bg-rose-400/10 p-3 text-xs text-rose-100"
+                  className="mt-4 flex gap-2 border border-rose-700/30 bg-rose-50 p-3 text-xs text-rose-900"
                   role="alert"
                 >
                   <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -167,10 +167,10 @@ export function ConcentricIsolatedFootingPage() {
             </WorkbenchPanel>
 
             <WorkbenchPanel
-              title="Maintained boundary"
+              title="Scope and review"
               description="Structural pressure checks are not a geotechnical approval."
             >
-              <ul className="list-disc space-y-1 pl-5 text-xs leading-5 text-zinc-400">
+              <ul className="list-disc space-y-1 pl-5 text-xs leading-5 text-zinc-300">
                 <li>Allowable soil pressure is an externally approved input.</li>
                 <li>Settlement, SBC derivation and soil-structure interaction are excluded.</li>
                 <li>Eccentric, partial-contact, biaxial, combined and strap cases are excluded.</li>

@@ -1,81 +1,38 @@
-/**
- * TopBar - Compact navigation bar with logo, nav links, breadcrumbs, and settings.
- */
-import { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { Settings, ChevronRight } from "lucide-react";
-import { activeGlobalDestination, GLOBAL_DESTINATIONS } from "../../app/navigation";
-import { SettingsPanel } from "./SettingsPanel";
-
-const routeLabels: Record<string, string> = {
-  "/": "Home",
-  "/start": "Get Started",
-  "/design": "Beam Design",
-  "/design/results": "Design Results",
-  "/import": "Batch Import",
-  "/editor": "Building Editor",
-  "/dashboard": "Dashboard",
-  "/batch": "Batch Design",
-  "/settings": "Settings",
-  "/workbench": "Workbench",
-  "/workbench/quick": "Quick Beam",
-  "/workbench/footing": "Footing",
-  "/workbench/footing/isolated": "Isolated",
-  "/workbench/footing/isolated/concentric": "Concentric Footing",
-  "/workbench/projects": "Projects",
-  "/workbench/projects/new": "New Project",
-};
+import { Settings } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { activeGlobalDestination, GLOBAL_DESTINATIONS } from '../../app/navigation';
+import { CREDITS_URL, PROJECT_OWNER } from '../../app/projectIdentity';
+import { SettingsPanel } from './SettingsPanel';
 
 export function TopBar() {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const settingsTriggerRef = useRef<HTMLButtonElement>(null);
 
-  const activeDestination = activeGlobalDestination(location.pathname);
+  if (pathname === '/') return null;
 
-  // Don't show on home page
-  if (location.pathname === "/") return null;
-
-  // Build breadcrumb segments
-  const segments = location.pathname.split("/").filter(Boolean);
-  const breadcrumbs = segments.map((_, i) => {
-    const path = "/" + segments.slice(0, i + 1).join("/");
-    return { path, label: routeLabels[path] || segments[i] };
-  });
-
+  const activeDestination = activeGlobalDestination(pathname);
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between px-6 bg-zinc-950/80 backdrop-blur-xl border-b border-white/5"
-    >
-      {/* Left: Logo + Nav links */}
-      <div className="flex items-center gap-4">
-        <Link
-          to="/"
-          className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
-        >
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-          </div>
-          <span className="text-sm font-semibold hidden sm:block">StructLib</span>
+    <header className="fixed inset-x-0 top-0 z-40 h-14 border-b border-zinc-700 bg-zinc-950 text-white">
+      <div className="mx-auto flex h-full max-w-screen-2xl items-center justify-between gap-3 px-4 sm:px-6">
+        <Link to="/" className="flex shrink-0 items-center gap-2.5 rounded-sm">
+          <img src={`${import.meta.env.BASE_URL}structlib.svg`} alt="" width="29" height="29" />
+          <span className="leading-tight">
+            <span className="block text-sm font-semibold tracking-tight">StructLib</span>
+            <span className="block text-[11px] text-zinc-300">By {PROJECT_OWNER}</span>
+          </span>
         </Link>
 
-        {/* Separator */}
-        <div className="hidden md:block w-px h-5 bg-white/10" />
-
-        {/* Nav links */}
-        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
+        <nav aria-label="Main navigation" className="hidden h-full items-stretch gap-4 md:flex">
           {GLOBAL_DESTINATIONS.map((destination) => {
             const isActive = activeDestination === destination.id;
             return (
               <Link
                 key={destination.id}
                 to={destination.path}
-                className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center ${
-                  isActive
-                    ? "bg-white/10 text-white"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
-                }`}
+                aria-current={isActive ? 'page' : undefined}
+                className={`inline-flex items-center border-b-2 px-2 text-sm font-medium transition-colors ${isActive ? 'border-blue-400 text-white' : 'border-transparent text-zinc-300 hover:text-white'}`}
               >
                 {destination.label}
               </Link>
@@ -83,37 +40,33 @@ export function TopBar() {
           })}
         </nav>
 
-        {/* Mobile: breadcrumbs */}
-        <div className="flex md:hidden items-center gap-1 text-sm">
-          {breadcrumbs.map((crumb, i) => (
-            <div key={crumb.path} className="flex items-center gap-1">
-              <ChevronRight className="w-3.5 h-3.5 text-zinc-500" aria-hidden="true" />
-              {i === breadcrumbs.length - 1 ? (
-                <span className="text-white/60">{crumb.label}</span>
-              ) : (
-                <Link
-                  to={crumb.path}
-                  className="text-zinc-400 hover:text-zinc-200 transition-colors"
-                >
-                  {crumb.label}
-                </Link>
-              )}
-            </div>
-          ))}
+        <div className="flex items-center gap-1 sm:gap-2">
+          <a
+            href={CREDITS_URL}
+            target="_blank"
+            rel="noopener"
+            aria-label="Source credits (opens in a new tab)"
+            className="inline-flex min-h-10 items-center rounded-sm px-2 text-sm text-blue-200 hover:bg-zinc-800 hover:text-white"
+          >
+            Credits
+          </a>
+          <button
+            type="button"
+            ref={settingsTriggerRef}
+            aria-label="Settings"
+            aria-haspopup="dialog"
+            onClick={() => setIsSettingsOpen(true)}
+            className="inline-flex size-10 items-center justify-center rounded-sm text-zinc-300 hover:bg-zinc-800 hover:text-white"
+          >
+            <Settings size={18} aria-hidden="true" />
+          </button>
         </div>
       </div>
-
-      {/* Right: Settings */}
-      <button
-        aria-label="Settings"
-        onClick={() => setIsSettingsOpen(true)}
-        className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors"
-      >
-        <Settings className="w-4.5 h-4.5" />
-      </button>
-
-      {/* Settings Panel */}
-      <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onAfterClose={() => settingsTriggerRef.current?.focus()}
+      />
     </header>
   );
 }

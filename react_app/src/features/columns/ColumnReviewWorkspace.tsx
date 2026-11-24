@@ -67,19 +67,19 @@ export function ColumnReviewWorkspace({
   };
 
   return (
-    <main className="h-full overflow-y-auto bg-zinc-950 p-4 text-white">
-      <header className="mx-auto mb-4 max-w-7xl rounded-xl border border-white/10 bg-white/[0.03] p-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">COLUMN-RECTANGULAR-REVIEW-V1</p>
+    <div className="h-full overflow-y-auto bg-paper p-4 pt-20 text-ink [--focus-color:var(--color-cobalt)] [color-scheme:light] sm:p-6 sm:pt-20">
+      <header className="mx-auto mb-4 max-w-6xl border-b border-ink/20 pb-4">
+        <p className="text-xs font-medium text-cobalt">IS 456:2000</p>
         <h1 className="mt-1 text-2xl font-semibold">Rectangular tied-column check and review</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
-          Review a supplied section and reinforcement arrangement using the maintained IS 456 rectangular-column routes. This workflow does not automatically design the member or reinforcement.
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-ink/75">
+          Check a supplied section and reinforcement arrangement. This workflow does not automatically design the member or reinforcement.
         </p>
       </header>
-      <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[22rem_minmax(0,1fr)]">
-        <aside className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-[minmax(17rem,0.7fr)_minmax(0,1.3fr)]">
+        <aside className="min-w-0 border border-ink/20 bg-white p-4">
           <ColumnInputEditor inputs={inputs} isSubmitting={isSubmitting} onChange={updateInputs} onSubmit={submit} />
         </aside>
-        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <div className="min-w-0 border border-ink/20 bg-ink p-4 text-white [--focus-color:#6e9cfa] [color-scheme:dark]">
           {error ? (
             <div className="mb-4 rounded-lg border border-rose-400/30 bg-rose-400/10 p-3 text-sm text-rose-100" role="alert">
               HOLD — {error}. No adequacy result or export is available.
@@ -93,6 +93,6 @@ export function ColumnReviewWorkspace({
           />
         </div>
       </div>
-    </main>
+    </div>
   );
 }

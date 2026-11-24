@@ -45,8 +45,10 @@ describe('route cutover guards', () => {
 
   it('recovers a project route without identity and maps one with identity', () => {
     useWorkspaceStore.getState().setLoadState('ready');
-    const missing = renderLegacy('/editor', '/editor');
-    expect(screen.getByText('/workbench?recovery=project-required')).toBeInTheDocument();
+    const missing = renderLegacy('/editor?source=bookmark&recovery=obsolete', '/editor');
+    expect(
+      screen.getByText('/workbench?source=bookmark&recovery=project-required'),
+    ).toBeInTheDocument();
     missing.unmount();
 
     useWorkspaceStore.getState().createProject('project 01', 'Project 01');

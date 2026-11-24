@@ -1,4 +1,4 @@
-import { Environment, Grid, Html, OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { Grid, Html, OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { useMemo } from 'react';
 import { useBeamGeometry } from '../../hooks/useBeamGeometry';
 import { useWebGLContextLoss } from '../../hooks/useWebGLContextLoss';
@@ -74,7 +74,6 @@ export function DesignScene({
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 10, 5]} intensity={1.2} castShadow />
       <directionalLight position={[-5, 5, -5]} intensity={0.4} />
-      <Environment preset="city" />
       <Grid
         args={[10, 10]}
         cellSize={0.5}

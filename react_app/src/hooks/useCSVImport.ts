@@ -98,6 +98,42 @@ interface BatchDesignResponse {
   summary: Record<string, unknown>;
 }
 
+interface ImportFailureDetails {
+  issues?: Array<{
+    code?: string;
+    path?: string;
+    message?: string;
+    source_row_number?: number | null;
+    artifact_role?: string;
+  }>;
+}
+
+async function importFailureMessage(response: Response): Promise<string> {
+  const problem: {
+    detail?: string | ImportFailureDetails;
+    error?: { message?: string; details?: string | ImportFailureDetails };
+  } | null = await response.json().catch(() => null);
+  const details = problem?.error?.details ?? problem?.detail;
+  if (typeof details === "string" && details) return details;
+
+  const rawIssues = typeof details === "object" ? details?.issues : undefined;
+  const issues = Array.isArray(rawIssues) ? rawIssues : [];
+  const issue = issues.find((item) => typeof item?.message === "string" && item.message);
+  let message = issue?.message || problem?.error?.message || response.statusText || String(response.status);
+  if (issue && typeof issue.source_row_number === "number") {
+    const source = issue.artifact_role === "geometry" ? "Geometry CSV" : issue.artifact_role === "forces" ? "Forces CSV" : "CSV";
+    message = `${source} row ${issue.source_row_number}: ${issue.message}`;
+  }
+
+  const missingSpanHeader = issues.some((item) => (
+    item?.code === "import.missing_required_header" && item.path === "combined.headers.span_mm"
+  ));
+  if (!missingSpanHeader) return message;
+
+  const separator = /[.!?]$/.test(message) ? " " : ". ";
+  return `${message}${separator}Add a span_mm or Span (mm) column for millimetres, or a Span_m or Span (m) column for metres. Enter a finite positive span for every beam, then upload the CSV again.`;
+}
+
 /**
  * Import CSV from file upload.
  */
@@ -140,8 +176,7 @@ async function importCSVFile(
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(`Import failed: ${error.detail || response.status}`);
+    throw new Error(`Import failed: ${await importFailureMessage(response)}`);
   }
 
   return response.json().then(unwrapResponse<CSVImportResponse>);
@@ -185,8 +220,7 @@ async function importCSVText(
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(`Import failed: ${error.detail || response.status}`);
+    throw new Error(`Import failed: ${await importFailureMessage(response)}`);
   }
 
   return response.json().then(unwrapResponse<CSVImportResponse>);
@@ -238,8 +272,7 @@ async function importDualCSVFiles(
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(`Dual CSV import failed: ${error.detail || response.status}`);
+    throw new Error(`Dual CSV import failed: ${await importFailureMessage(response)}`);
   }
 
   return response.json().then(unwrapResponse<DualCSVImportResponse>);
@@ -295,10 +328,6 @@ export function useCSVFileImport() {
   const mutation = useMutation({
     mutationFn: ({ file, format, overrides }: { file: File; format?: string; overrides?: MaterialOverrides }) =>
       importCSVFile(file, format, overrides),
-    onMutate: () => {
-      setImporting(true);
-      setError(null);
-    },
     onSuccess: (data, variables) => {
       setImporting(false);
       if (data.success && data.beams?.length) {
@@ -336,8 +365,13 @@ export function useCSVFileImport() {
   });
 
   return {
-    importFile: (file: File, format?: string, overrides?: MaterialOverrides) =>
-      mutation.mutate({ file, format, overrides }),
+    importFile: (file: File, format?: string, overrides?: MaterialOverrides) => {
+      // Reserve the shared import state before React or the mutation callbacks run.
+      if (useImportedBeamsStore.getState().isImporting) return;
+      setError(null);
+      setImporting(true);
+      mutation.mutate({ file, format, overrides });
+    },
     isImporting: mutation.isPending,
     error: mutation.error,
     data: mutation.data,

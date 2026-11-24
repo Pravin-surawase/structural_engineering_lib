@@ -13,7 +13,6 @@ import {
   FileSpreadsheet,
   ChevronDown,
   Play,
-  ArrowRight,
   Loader2,
   CheckCircle,
   Upload,
@@ -24,7 +23,6 @@ import { loadSampleData } from "../../api/client";
 import { mapSampleBeamsToRows } from "../../utils/sampleData";
 import { applyMaterialOverrides } from "../../utils/materialOverrides";
 import { useDualCSVImport } from "../../hooks/useCSVImport";
-import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 import { projectStagePath } from "../../app/navigation";
 import { useWorkspaceStore } from "../../workspace/workspaceStore";
@@ -127,34 +125,8 @@ export function ImportView() {
   };
 
   return (
-    <div className="h-screen pt-14 flex flex-col bg-zinc-950">
-      {/* Workflow Breadcrumb */}
+    <div className="flex h-full flex-col bg-paper pt-14 text-ink [--focus-color:var(--color-cobalt)] [color-scheme:light]">
       <WorkflowBreadcrumb />
-
-      {/* Step indicator */}
-      <div className="px-6 pt-4 pb-2 flex items-center gap-3">
-        <StepPill active={step === "upload"} done={step === "preview"} label="1. Upload" />
-        <ArrowRight className="w-4 h-4 text-white/20" />
-        <StepPill active={step === "preview"} done={false} label="2. Preview & Design" />
-        <ArrowRight className="w-4 h-4 text-white/20" />
-        <StepPill active={false} done={false} label="3. Building Editor" />
-      </div>
-
-      {/* Workflow hint */}
-      <div className="px-6 pb-2">
-        <WorkflowHint
-          stepNumber={step === "upload" ? 1 : 2}
-          totalSteps={3}
-          title={step === "upload" ? "Upload Beam Data" : "Review & Proceed"}
-          description={
-            step === "upload"
-              ? "Upload CSV from ETABS, SAFE, STAAD, or generic format. Use sample data to explore quickly."
-              : "Review imported beams in the table. Proceed to the Building Editor to design all beams."
-          }
-          nextAction={step === "upload" ? "Upload CSV or Load Sample" : "Go to Building Editor"}
-          storageKey="workflow_hint_import_view"
-        />
-      </div>
 
       {step === "upload" ? (
         <UploadStep
@@ -185,19 +157,6 @@ export function ImportView() {
           }}
         />
       )}
-    </div>
-  );
-}
-
-function StepPill({ active, done, label }: { active: boolean; done: boolean; label: string }) {
-  return (
-    <div className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-      active ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" :
-      done ? "bg-green-500/20 text-green-400 border border-green-500/30" :
-      "bg-white/5 text-zinc-500 border border-white/8"
-    }`}>
-      {done && <CheckCircle className="w-3 h-3 inline mr-1" />}
-      {label}
     </div>
   );
 }
@@ -255,33 +214,37 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
   const displayError = error || dualError?.message;
 
   return (
-    <div className="flex flex-1 flex-col items-stretch justify-start gap-6 overflow-y-auto px-4 pt-6 sm:px-6 lg:flex-row lg:items-start lg:justify-center lg:pt-8">
+    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-stretch gap-6 overflow-y-auto px-4 py-6 sm:px-6 lg:flex-row lg:items-start">
       {/* Left: Upload zones */}
-      <div className="flex-1 max-w-2xl space-y-5">
+      <div className="max-w-3xl flex-1 space-y-5">
         <div>
-          <h2 className="text-xl font-bold text-white mb-1">Import Beam Data</h2>
-          <p className="text-sm text-zinc-400">Upload CSV from ETABS, SAFE, STAAD, or generic format</p>
+          <h1 className="mb-1 text-2xl font-semibold tracking-tight text-ink">Import Beam Data</h1>
+          <p className="max-w-xl text-sm leading-6 text-ink/65">Choose one combined file or pair geometry with forces. StructLib keeps source rows visible before design begins.</p>
         </div>
 
         {/* Import mode tabs */}
-        <div className="flex gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/8 w-fit">
+        <div className="flex w-full gap-1 rounded-xl border border-ink/10 bg-white/70 p-1 sm:w-fit">
           <button
+            type="button"
+            aria-pressed={importMode === "single"}
             onClick={() => setImportMode("single")}
             className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
               importMode === "single"
-                ? "bg-blue-500/20 text-blue-400"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cobalt text-white shadow-sm"
+                : "text-ink/60 hover:bg-paper hover:text-ink"
             }`}
           >
             <Upload className="w-3.5 h-3.5" />
             Single CSV
           </button>
           <button
+            type="button"
+            aria-pressed={importMode === "dual"}
             onClick={() => setImportMode("dual")}
             className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
               importMode === "dual"
-                ? "bg-blue-500/20 text-blue-400"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cobalt text-white shadow-sm"
+                : "text-ink/60 hover:bg-paper hover:text-ink"
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -293,15 +256,15 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
           /* Single CSV mode */
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <p className="text-xs text-white/50 mb-2">Geometry + Forces (Single CSV)</p>
-              <label className="mb-2 block text-xs text-white/50" htmlFor="single-import-format">
+              <p className="mb-2 text-xs font-semibold text-ink/75">Geometry + forces in one CSV</p>
+              <label className="mb-2 block text-xs text-ink/65" htmlFor="single-import-format">
                 Format
               </label>
               <select
                 id="single-import-format"
                 value={singleFormat}
                 onChange={(event) => setSingleFormat(event.target.value as typeof singleFormat)}
-                className="mb-3 w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-xs text-white"
+                className="mb-3 w-full rounded-lg border border-ink/15 bg-white px-3 py-2 text-xs text-ink"
               >
                 <option value="auto">Auto (requires one unique match)</option>
                 <option value="generic">Generic combined CSV</option>
@@ -309,6 +272,11 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
                 <option value="safe">SAFE</option>
                 <option value="staad">STAAD</option>
               </select>
+              {singleFormat === "generic" ? (
+                <p className="mb-3 text-xs leading-relaxed text-ink/80">
+                  Include a positive span for each beam. Use <code>span_mm</code> for millimetres or <code>Span_m</code> for metres.
+                </p>
+              ) : null}
               <FileDropZone
                 onSuccess={onFileImported}
                 onError={(err) => console.error(err)}
@@ -317,20 +285,20 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
               />
             </div>
             <div>
-              <p className="text-xs text-white/50 mb-2">Or use sample data</p>
+              <p className="mb-2 text-xs font-semibold text-ink/75">Or explore a maintained sample</p>
               <button
                 onClick={onLoadSample}
                 disabled={isImporting}
-                className="w-full h-full min-h-[160px] rounded-2xl border-2 border-dashed border-white/10 hover:border-blue-500/30 bg-white/[0.02] hover:bg-blue-500/5 transition-all flex flex-col items-center justify-center gap-3 disabled:opacity-50"
+                className="flex min-h-40 w-full flex-col items-center justify-center gap-3 rounded-sm border border-dashed border-cobalt/30 bg-cobalt/[0.03] transition-colors hover:bg-cobalt/[0.08] disabled:opacity-50"
               >
                 {isImporting ? (
-                  <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+                  <Loader2 className="h-8 w-8 animate-spin text-cobalt" />
                 ) : (
                   <>
-                    <FileSpreadsheet className="w-8 h-8 text-blue-400" />
+                    <FileSpreadsheet className="h-8 w-8 text-cobalt" />
                     <div className="text-center">
-                      <p className="text-sm text-white font-medium">Sample Building</p>
-                      <p className="text-[11px] text-zinc-400">Bundled ETABS sample</p>
+                      <p className="text-sm font-semibold text-ink">Sample Building</p>
+                      <p className="text-[11px] text-ink/60">Bundled ETABS sample</p>
                     </div>
                   </>
                 )}
@@ -362,11 +330,11 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
             </div>
 
             {/* Import button */}
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={handleDualImport}
                 disabled={!geometryFile || !forcesFile || isDualImporting}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-white/5 disabled:text-white/20 text-white text-sm font-semibold rounded-xl transition-colors flex items-center gap-2"
+                className="flex items-center gap-2 rounded-xl bg-cobalt px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover disabled:bg-ink/15 disabled:text-ink/40"
               >
                 {isDualImporting ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -376,18 +344,18 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
                 {isDualImporting ? "Importing..." : "Import & Merge"}
               </button>
               {geometryFile && forcesFile && !isDualImporting && (
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-ink/60">
                   Ready: {geometryFile.name} + {forcesFile.name}
                 </p>
               )}
             </div>
 
             {/* Sample data button */}
-            <div className="pt-2 border-t border-white/8">
+            <div className="border-t border-ink/10 pt-2">
               <button
                 onClick={onLoadSample}
                 disabled={isImporting}
-                className="text-xs text-blue-400/70 hover:text-blue-400 transition-colors flex items-center gap-1.5"
+                className="flex items-center gap-1.5 text-xs font-semibold text-cobalt hover:text-cobalt-hover"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5" />
                 Or load the bundled ETABS sample building
@@ -397,17 +365,17 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
         )}
 
         {displayError && (
-          <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30">
-            <p className="text-sm text-red-400">{displayError}</p>
+          <div className="rounded-xl border border-rose-300 bg-rose-50 p-3" role="alert">
+            <p className="text-sm text-rose-800">{displayError}</p>
           </div>
         )}
       </div>
 
       {/* Right: Material settings */}
       <div className="w-full shrink-0 lg:w-64">
-        <div className="p-5 rounded-xl bg-white/[0.03] border border-white/8">
-          <h3 className="text-sm text-white font-semibold mb-1">Material Settings</h3>
-          <p className="text-[10px] text-zinc-400 mb-4">Applied to all imported beams</p>
+        <div className="rounded-2xl border border-ink/10 bg-white/75 p-5 shadow-sm">
+          <h3 className="mb-1 text-sm font-semibold text-ink">Material Settings</h3>
+          <p className="mb-4 text-[10px] text-ink/60">Applied to all imported beams</p>
 
           <div className="space-y-3">
             <DropdownField label="Concrete Grade" value={fck} onChange={setFck} options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />
@@ -417,8 +385,8 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, 
             <DropdownField label="Tension Bar Diameter" value={tensionBarDiameter} onChange={setTensionBarDiameter} options={[12, 16, 20, 25, 32]} format={(v) => `${v} mm`} />
           </div>
 
-          <div className="mt-4 pt-4 border-t border-white/8">
-            <p className="text-[10px] text-zinc-500">Code: IS 456:2000</p>
+          <div className="mt-4 border-t border-ink/10 pt-4">
+            <p className="text-[10px] text-ink/55">Engineering basis: IS 456:2000</p>
           </div>
         </div>
       </div>
@@ -448,23 +416,24 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
   const reviewBlocked = invalidGeometry.length > 0 || duplicateSourceCount > 0;
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden px-4 py-4 sm:px-6">
+    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden px-4 py-5 sm:px-6">
       {/* Header */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-white">Preview Import</h2>
-          <p className="text-sm text-zinc-400">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-cobalt">Review before design</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-ink">Imported members</h1>
+          <p className="mt-1 text-sm text-ink/65">
             {beams.length} beams across {stories.length} stories
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={onBack} className="px-4 py-2 text-sm text-white/50 hover:text-white/80 transition-colors">
+          <button onClick={onBack} className="px-4 py-2 text-sm font-medium text-ink/60 transition-colors hover:text-ink">
             Back
           </button>
           <button
             onClick={onProceed}
             disabled={reviewBlocked}
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center gap-2 rounded-xl bg-cobalt px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Play className="w-4 h-4" />
             Open review
@@ -484,8 +453,8 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
         <div
           className={`mb-4 rounded-xl border p-3 text-sm ${
             reviewBlocked
-              ? "border-rose-500/30 bg-rose-500/10 text-rose-200"
-              : "border-amber-500/30 bg-amber-500/10 text-amber-100"
+              ? "border-rose-300 bg-rose-50 text-rose-900"
+              : "border-amber-300 bg-amber-50 text-amber-900"
           }`}
           role={reviewBlocked ? "alert" : "status"}
         >
@@ -498,34 +467,34 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
       ) : null}
 
       {/* Preview table */}
-      <div className="flex-1 overflow-auto rounded-xl border border-white/8 bg-white/[0.02]">
-        <table className="w-full text-xs">
-          <thead className="sticky top-0 bg-zinc-900/95 backdrop-blur">
-            <tr className="border-b border-white/8">
+      <div className="flex-1 overflow-auto rounded-2xl border border-ink/10 bg-white shadow-sm">
+        <table className="min-w-[760px] w-full text-xs">
+          <thead className="sticky top-0 bg-paper/95 backdrop-blur">
+            <tr className="border-b border-ink/10">
               {["Source ID", "Label", "Story", "Width", "Depth", "Span", "Mu_mid", "Vu_start", "fck", "fy"].map((h) => (
-                <th key={h} className="px-3 py-2.5 text-left text-white/50 font-medium">{h}</th>
+                <th key={h} className="px-3 py-3 text-left font-semibold text-ink/60">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {beams.slice(0, 50).map((b: BeamCSVRow, i: number) => (
-              <tr key={b.id || i} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors">
-                <td className="px-3 py-2 text-white/80 font-mono">{b.source_id ?? b.id}</td>
-                <td className="px-3 py-2 text-white/70 font-mono">{b.id}</td>
-                <td className="px-3 py-2 text-white/60">{b.story || "-"}</td>
-                <td className="px-3 py-2 text-white/60">{b.b} mm</td>
-                <td className="px-3 py-2 text-white/60">{b.D} mm</td>
-                <td className="px-3 py-2 text-white/60">{b.span} mm</td>
-                <td className="px-3 py-2 text-white/60">{b.Mu_mid?.toFixed(1) || "-"}</td>
-                <td className="px-3 py-2 text-white/60">{b.Vu_start?.toFixed(1) || "-"}</td>
-                <td className="px-3 py-2 text-white/60">{b.fck || 25}</td>
-                <td className="px-3 py-2 text-white/60">{b.fy || 500}</td>
+              <tr key={b.id || i} className="border-b border-ink/5 transition-colors hover:bg-cobalt/[0.03]">
+                <td className="px-3 py-2.5 font-mono font-medium text-ink">{b.source_id ?? b.id}</td>
+                <td className="px-3 py-2.5 font-mono text-ink/75">{b.id}</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.story || "-"}</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.b} mm</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.D} mm</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.span} mm</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.Mu_mid?.toFixed(1) || "-"}</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.Vu_start?.toFixed(1) || "-"}</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.fck || 25}</td>
+                <td className="px-3 py-2.5 text-ink/65">{b.fy || 500}</td>
               </tr>
             ))}
           </tbody>
         </table>
         {beams.length > 50 && (
-          <p className="text-center py-3 text-xs text-zinc-500">
+          <p className="py-3 text-center text-xs text-ink/55">
             Showing 50 of {beams.length} beams. Full data in Building Editor.
           </p>
         )}
@@ -536,9 +505,9 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
 
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
-      <p className="text-[10px] text-zinc-400 uppercase tracking-wider">{label}</p>
-      <p className="text-lg font-bold text-white mt-1">{value}</p>
+    <div className="rounded-xl border border-ink/10 bg-white/75 p-3">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-ink/55">{label}</p>
+      <p className="mt-1 text-lg font-semibold text-ink">{value}</p>
     </div>
   );
 }
@@ -547,21 +516,21 @@ function DropdownField({ label, value, onChange, options, format }: {
   label: string; value: number; onChange: (value: number) => void; options: number[]; format: (value: number) => string;
 }) {
   return (
-    <div>
-      <label className="block text-[10px] text-zinc-400 mb-1">{label}</label>
-      <div className="relative">
+    <label className="block min-w-0">
+      <span className="mb-1 block text-xs font-medium text-ink/75">{label}</span>
+      <span className="relative block">
         <select
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-full px-2.5 py-1.5 text-xs text-white bg-white/[0.04] border border-white/8 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+          className="min-h-10 w-full cursor-pointer appearance-none rounded-sm border border-ink/25 bg-white py-1.5 pr-7 pl-2.5 text-sm text-ink"
         >
           {options.map((opt) => (
-            <option key={opt} value={opt} className="bg-zinc-900">{format(opt)}</option>
+            <option key={opt} value={opt}>{format(opt)}</option>
           ))}
         </select>
-        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-500 pointer-events-none" />
-      </div>
-    </div>
+        <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink/65" aria-hidden="true" />
+      </span>
+    </label>
   );
 }
 
@@ -576,33 +545,27 @@ function DualFileZone({ label, description, file, onFileChange, accept, inputId 
 }) {
   return (
     <div>
-      <p className="text-xs text-white/50 mb-2">{label}</p>
+      <p className="mb-2 text-xs font-semibold text-ink/75">{label}</p>
+      <input type="file" accept={accept} onChange={onFileChange} id={inputId} aria-label={label} className="peer sr-only" />
       <label
         htmlFor={inputId}
-        className={`block min-h-[140px] rounded-2xl border-2 border-dashed transition-all cursor-pointer flex flex-col items-center justify-center gap-2 ${
+        className={`flex min-h-36 cursor-pointer flex-col items-center justify-center gap-2 rounded-sm border border-dashed p-3 text-center peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt ${
           file
-            ? "border-green-500/30 bg-green-500/5"
-            : "border-white/10 hover:border-blue-500/30 bg-white/[0.02] hover:bg-blue-500/5"
+            ? "border-emerald-400 bg-emerald-50"
+            : "border-ink/15 bg-white hover:border-cobalt/45 hover:bg-cobalt/[0.03]"
         }`}
       >
-        <input
-          type="file"
-          accept={accept}
-          onChange={onFileChange}
-          id={inputId}
-          className="hidden"
-        />
         {file ? (
           <>
-            <CheckCircle className="w-6 h-6 text-green-400" />
-            <p className="text-sm text-green-400 font-medium">{file.name}</p>
-            <p className="text-[10px] text-zinc-500">Click to replace</p>
+            <CheckCircle className="h-6 w-6 text-emerald-700" />
+            <p className="max-w-full break-all text-sm font-medium text-emerald-800">{file.name}</p>
+            <p className="text-[10px] text-ink/55">Click to replace</p>
           </>
         ) : (
           <>
-            <Upload className="w-6 h-6 text-zinc-500" aria-hidden="true" />
-            <p className="text-xs text-zinc-400 text-center px-4">{description}</p>
-            <p className="text-[10px] text-zinc-500">Click to browse</p>
+            <Upload className="h-6 w-6 text-cobalt" aria-hidden="true" />
+            <p className="px-4 text-center text-xs text-ink/65">{description}</p>
+            <p className="text-[10px] text-ink/55">Click to browse</p>
           </>
         )}
       </label>

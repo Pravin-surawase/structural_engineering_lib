@@ -13,6 +13,8 @@ calculation. StructLib returns structured results for engineering scripts,
 notebooks and other tools. The CLI, FastAPI service and visual workbench are
 optional ways to use the same library.
 
+Created by **Pravin Surawase** with [open-source contributors](https://github.com/Pravin-surawase/structural_engineering_lib/graphs/contributors). [Cite StructLib](CITATION.cff) · [Workbench source credits](react_app/public/CREDITS.txt)
+
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
 [![Release](https://img.shields.io/badge/status-normal%20release-2563eb)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/latest)
 [![PR Gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)

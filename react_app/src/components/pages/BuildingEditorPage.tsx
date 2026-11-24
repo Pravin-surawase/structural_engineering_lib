@@ -313,14 +313,14 @@ export function BuildingEditorPage() {
   if (beams.length === 0) {
     if (workspaceLoadState === "loading") {
       return (
-        <div className="flex h-screen items-center justify-center bg-zinc-950 pt-14" role="status">
+        <div className="flex h-full items-center justify-center bg-zinc-950 pt-14" role="status">
           <RefreshCw className="mr-2 h-4 w-4 animate-spin text-blue-300" />
           <p className="text-zinc-300">Restoring the last project…</p>
         </div>
       );
     }
     return (
-      <div className="h-screen pt-14 flex items-center justify-center bg-zinc-950">
+      <div className="flex h-full items-center justify-center bg-zinc-950 pt-14">
         <div className="text-center">
           <p className="text-zinc-400 mb-4">No beams loaded</p>
           {workspaceLoadState === "error" && workspaceLoadError ? (
@@ -338,7 +338,7 @@ export function BuildingEditorPage() {
   }
 
   return (
-    <div className="h-screen pt-14 flex flex-col bg-zinc-950">
+    <div className="flex h-full flex-col bg-zinc-950 pt-14">
       {/* Workflow Breadcrumb */}
       <WorkflowBreadcrumb />
 

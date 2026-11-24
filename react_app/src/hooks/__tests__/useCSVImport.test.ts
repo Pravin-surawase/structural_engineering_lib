@@ -16,13 +16,14 @@ const explicitBasis = {
   stirrupDiameter: 8,
   tensionBarDiameter: 16,
 };
+const spanHeaderGuidance = 'Add a span_mm or Span (mm) column for millimetres, or a Span_m or Span (m) column for metres. Enter a finite positive span for every beam, then upload the CSV again.';
 
 vi.mock('../../store/importedBeamsStore', () => ({
-  useImportedBeamsStore: vi.fn(() => ({
+  useImportedBeamsStore: Object.assign(vi.fn(() => ({
     setBeams: mockSetBeams,
     setImporting: mockSetImporting,
     setError: mockSetError,
-  })),
+  })), { getState: () => ({ isImporting: false }) }),
 }));
 
 vi.mock('../../utils/materialOverrides', () => ({
@@ -142,8 +143,100 @@ describe('useCSVFileImport', () => {
     result.current.importFile(file, 'generic', explicitBasis);
 
     await waitFor(() => {
-      expect(mockSetError).toHaveBeenCalled();
+      expect(mockSetError).toHaveBeenCalledWith('Import failed: Invalid CSV format');
     });
+  });
+
+  it.each(['file', 'text', 'dual'] as const)('shows the source row in a rejected %s import', async (transport) => {
+    const artifactRole = transport === 'dual' ? 'geometry' : 'combined';
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(JSON.stringify({
+      success: false,
+      error: {
+        schema_version: 'structural-problem/v1',
+        message: 'Request was rejected',
+        details: {
+          status: 'BLOCKED',
+          issues: [{
+            artifact_role: artifactRole,
+            source_row_number: 2,
+            message: "Field 'span_mm' is not a valid number",
+          }],
+        },
+      },
+    }), { status: 422 }));
+    const { result } = renderHook(() => ({
+      file: useCSVFileImport(), text: useCSVTextImport(), dual: useDualCSVImport(),
+    }), { wrapper: createWrapper() });
+    const file = new File(['source'], 'beams.csv', { type: 'text/csv' });
+    if (transport === 'file') result.current.file.importFile(file, 'generic', explicitBasis);
+    else if (transport === 'text') result.current.text.importText('source', 'generic', explicitBasis);
+    else result.current.dual.importFiles(file, file, 'generic', explicitBasis);
+
+    const prefix = transport === 'dual' ? 'Dual CSV import failed: Geometry CSV' : 'Import failed: CSV';
+    await waitFor(() => expect(mockSetError).toHaveBeenCalledWith(`${prefix} row 2: Field 'span_mm' is not a valid number`));
+    expect(mockSetError).not.toHaveBeenCalledWith(expect.stringContaining(spanHeaderGuidance));
+    expect(mockSetBeams).not.toHaveBeenCalled();
+  });
+
+  it('adds span-header guidance when a combined CSV omits the required span column', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(JSON.stringify({
+      success: false,
+      error: {
+        message: 'Request was rejected',
+        details: {
+          status: 'BLOCKED',
+          issues: [{
+            code: 'import.missing_required_header',
+            path: 'combined.headers.span_mm',
+            message: "Missing required combined field 'span_mm'",
+            artifact_role: 'combined',
+            source_row_number: null,
+          }],
+        },
+      },
+    }), { status: 422 }));
+    const { result } = renderHook(() => useCSVFileImport(), { wrapper: createWrapper() });
+    result.current.importFile(new File(['beam_id,b_mm\nB1,300'], 'beams.csv', { type: 'text/csv' }), 'generic', explicitBasis);
+
+    await waitFor(() => expect(mockSetError).toHaveBeenCalledWith(
+      `Import failed: Missing required combined field 'span_mm'. ${spanHeaderGuidance}`,
+    ));
+    expect(mockSetBeams).not.toHaveBeenCalled();
+  });
+
+  it('preserves the first row issue while adding span-header guidance from a later issue', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(JSON.stringify({
+      success: false,
+      error: {
+        message: 'Request was rejected',
+        details: {
+          status: 'BLOCKED',
+          issues: [
+            {
+              code: 'import.invalid_number',
+              path: 'combined.rows[3].width_mm',
+              message: "Field 'width_mm' is not a valid number",
+              artifact_role: 'combined',
+              source_row_number: 3,
+            },
+            {
+              code: 'import.missing_required_header',
+              path: 'combined.headers.span_mm',
+              message: "Missing required combined field 'span_mm'",
+              artifact_role: 'combined',
+              source_row_number: null,
+            },
+          ],
+        },
+      },
+    }), { status: 422 }));
+    const { result } = renderHook(() => useCSVFileImport(), { wrapper: createWrapper() });
+    result.current.importFile(new File(['beam_id,b_mm\nB1,bad'], 'beams.csv', { type: 'text/csv' }), 'generic', explicitBasis);
+
+    await waitFor(() => expect(mockSetError).toHaveBeenCalledWith(
+      `Import failed: CSV row 3: Field 'width_mm' is not a valid number. ${spanHeaderGuidance}`,
+    ));
+    expect(mockSetBeams).not.toHaveBeenCalled();
   });
 
   it('handles wrapped response and extracts beams correctly (regression: envelope mismatch)', async () => {

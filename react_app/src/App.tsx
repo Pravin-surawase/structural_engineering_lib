@@ -74,8 +74,8 @@ function AppDock() {
   }));
 
   return (
-    <div className="md:hidden">
-      <FloatingDock items={items} position="bottom" />
+    <div className="shrink-0 md:hidden">
+      <FloatingDock items={items} position="inline" />
     </div>
   );
 }
@@ -86,7 +86,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <WorkspacePersistenceBridge />
-          <div className="h-screen w-screen bg-zinc-950 flex flex-col">
+          <div className="flex h-dvh w-full flex-col bg-zinc-950">
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:shadow-lg"
@@ -94,7 +94,7 @@ function App() {
               Skip to main content
             </a>
             <TopBar />
-            <main id="main-content" className="flex-1 overflow-hidden">
+            <main id="main-content" tabIndex={-1} className="min-h-0 flex-1 overflow-hidden">
               <Suspense fallback={<RouteLoadingFallback />}>
                 <Routes>
                   <Route path="/" element={<HomePage />} />

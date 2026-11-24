@@ -21,6 +21,7 @@ const LEGACY_STAGE_ROUTES: Record<ProjectStage, string> = {
 };
 
 function stageForPath(pathname: string): ProjectStage | null {
+  if (pathname === '/workbench/projects/new') return 'import';
   const legacy = Object.entries(LEGACY_STAGE_ROUTES).find(([, path]) => path === pathname);
   if (legacy) return legacy[0] as ProjectStage;
   const canonical = PROJECT_STAGES.find((stage) => pathname.endsWith(`/${stage.id}`));

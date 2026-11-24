@@ -1,21 +1,19 @@
 /**
  * DashboardPage — Batch design analytics after CSV import + design.
  *
- * Layout: BentoGrid with export buttons in the header.
- * Cards: Pass rate · Utilization · Pass/Fail bar · Critical beams · Materials · By story
+ * Current member results, export readiness, and project quantities.
  */
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  BarChart3, CheckCircle, AlertCircle, ArrowLeft,
-  Loader2, AlertTriangle, Download, FileText, Package,
+  BarChart3, AlertCircle, ArrowLeft, Loader2, Download, FileText,
 } from "lucide-react";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { useDashboardInsights, useProjectBOQ } from "../../hooks/useInsights";
 import { useExportBuildingSummary } from "../../hooks/useExport";
-import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
+import { WorkbenchPanel } from "../workbench/WorkbenchPanel";
 import { ProjectBOQPanel } from "../design/ProjectBOQPanel";
-import type { BeamResult, DashboardData, StoryStats } from "../../hooks/useInsights";
+import type { BeamResult, DashboardData } from "../../hooks/useInsights";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 import {
   checkedProjectMembers,
@@ -129,12 +127,17 @@ export function DashboardPage() {
 
   if (beams.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen pt-14 gap-4">
-        <BarChart3 className="w-12 h-12 text-white/10" />
-        <p className="text-zinc-500 text-sm">No beams imported. Import CSV first.</p>
+      <div className="flex h-full flex-col items-center justify-center gap-4 bg-paper px-6 pt-14 text-center">
+        <div className="rounded-2xl border border-ink/10 bg-white p-5 shadow-sm">
+          <BarChart3 className="mx-auto h-10 w-10 text-cobalt" />
+        </div>
+        <div>
+          <h1 className="text-xl font-semibold text-ink">Start with project data</h1>
+          <p className="mt-1 text-sm text-ink/65">No beams imported. Import CSV first.</p>
+        </div>
         <button
           onClick={() => navigate(importPath)}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-lg transition-colors"
+          className="rounded-xl bg-cobalt px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover"
         >
           Go to Import
         </button>
@@ -143,25 +146,25 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="h-screen pt-14 overflow-y-auto bg-zinc-950">
+    <div className="h-full overflow-y-auto bg-paper pt-14 text-ink [--focus-color:var(--color-cobalt)]">
       {/* Workflow Breadcrumb */}
       <WorkflowBreadcrumb />
 
-      <div className="max-w-6xl mx-auto px-6 py-6 space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6 px-4 py-6 sm:px-6">
 
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate(-1)} className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-              <ArrowLeft className="w-4 h-4 text-white/60" />
+            <button onClick={() => navigate(-1)} aria-label="Back" className="rounded-lg border border-ink/10 bg-white p-2 text-ink/65 shadow-sm transition-colors hover:text-ink">
+              <ArrowLeft className="h-4 w-4" />
             </button>
             <div>
-              <h1 className="text-lg font-bold text-white">Design Dashboard</h1>
-              <p className="text-xs text-zinc-400">{beams.length} beams · IS 456:2000</p>
+              <h1 className="text-2xl font-semibold tracking-tight text-ink">Project results</h1>
+              <p className="mt-1 text-xs text-ink/75">{beams.length} {beams.length === 1 ? 'beam' : 'beams'} · IS 456:2000</p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-ink/10 bg-white/75 p-2 shadow-sm">
             <ExportBtn
               label="Project HTML" icon={<FileText className="w-3.5 h-3.5" />}
               loading={exportPending}
@@ -175,7 +178,7 @@ export function DashboardPage() {
               onClick={() => handleProjectExport('csv')}
             />
             {exportsHeld ? (
-              <span className="text-[10px] text-amber-400" role="status">
+              <span className="px-1 text-[10px] font-medium text-amber-800" role="status">
                 Exports held: {heldBeamCount} stale, FAIL, HOLD, or not evaluated
               </span>
             ) : null}
@@ -183,198 +186,121 @@ export function DashboardPage() {
         </div>
 
         {(!currentDashboard || currentDashboard.isPending) ? (
-          <div className="flex items-center justify-center py-20 gap-3">
-            <Loader2 className="w-6 h-6 text-blue-400 animate-spin" />
-            <span className="text-zinc-400">Generating dashboard…</span>
+          <div className="flex items-center justify-center gap-3 rounded-2xl border border-ink/10 bg-white py-20 shadow-sm">
+            <Loader2 className="h-6 w-6 animate-spin text-cobalt" />
+            <span className="text-ink/65">Generating dashboard…</span>
           </div>
         ) : currentDashboard.error ? (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-red-400" />
-            <span className="text-sm text-red-400">Dashboard unavailable — API may be offline</span>
+          <div className="flex items-center gap-3 rounded-2xl border border-rose-300 bg-rose-50 p-4">
+            <AlertCircle className="h-5 w-5 text-rose-700" />
+            <span className="text-sm text-rose-800">Dashboard unavailable — API may be offline</span>
           </div>
         ) : currentDashboard.data ? (
           <DashboardContent data={currentDashboard.data} scheduleCount={inputs?.scheduleCount ?? 0} />
         ) : null}
 
-        {/* Project BOQ Panel */}
-        <BentoGrid className="auto-rows-auto">
-          <BentoCard colSpan={12} variant="default">
-            <BentoCardHeader
-              title="Project BOQ"
-              icon={<Package className="w-4 h-4" />}
-              badge={currentBOQ?.data ? `${currentBOQ.data.total_beams} beams` : undefined}
+        <WorkbenchPanel
+          title="Project BOQ"
+          description={currentBOQ?.data ? `${currentBOQ.data.total_beams} beams` : undefined}
+          className="text-zinc-100 [--focus-color:#6e9cfa]"
+        >
+          {inputs?.boq ? (
+            <ProjectBOQPanel
+              data={currentBOQ?.data ?? null}
+              isLoading={!currentBOQ || currentBOQ.isPending}
+              error={currentBOQ?.error?.message ?? null}
             />
-            {inputs?.boq ? (
-              <ProjectBOQPanel
-                data={currentBOQ?.data ?? null}
-                isLoading={!currentBOQ || currentBOQ.isPending}
-                error={currentBOQ?.error?.message ?? null}
-              />
-            ) : (
-              <p className="text-xs text-amber-400" role="status">
-                BOQ held until all beams have a current checked schedule weight.
-              </p>
-            )}
-          </BentoCard>
-        </BentoGrid>
+          ) : (
+            <p className="text-sm text-amber-200" role="status">
+              BOQ held until all beams have a current checked schedule weight.
+            </p>
+          )}
+        </WorkbenchPanel>
       </div>
     </div>
   );
 }
 
 function DashboardContent({ data, scheduleCount }: { data: DashboardData; scheduleCount: number }) {
-  const passColor = data.pass_rate >= 90 ? "text-emerald-400" : data.pass_rate >= 70 ? "text-amber-400" : "text-rose-400";
-  const utilColor = data.avg_utilization !== null && data.avg_utilization <= 0.85 ? "text-emerald-400" : "text-amber-400";
-
   return (
-    <BentoGrid className="auto-rows-auto">
-
-      {/* Pass Rate */}
-      <BentoCard colSpan={3} variant="default">
-        <BentoCardHeader
-          title="Pass Rate"
-          icon={<CheckCircle className="w-4 h-4" />}
-          badge={data.pass_rate >= 90 ? "Good" : data.pass_rate >= 70 ? "Review" : "Critical"}
-        />
-        <p className={`text-4xl font-bold tabular-nums mt-1 ${passColor}`}>
-          {data.pass_rate.toFixed(0)}%
-        </p>
-        <p className="text-xs text-zinc-400 mt-1">
-          {data.passed} passed &middot; {data.failed} failed &middot; {data.held} held
-        </p>
-        <p className="text-xs text-zinc-400 mt-1">
-          Strength checks: {data.strength_passed} passed &middot; {data.strength_failed} failed
-        </p>
-      </BentoCard>
-
-      {/* Avg Utilization */}
-      <BentoCard colSpan={3} variant="default">
-        <BentoCardHeader title="Avg Utilization" icon={<BarChart3 className="w-4 h-4" />} />
-        <p className={`text-4xl font-bold tabular-nums mt-1 ${utilColor}`}>
-          {formatPercent(data.avg_utilization)}
-        </p>
-        <div className="mt-2 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-          <div
-            className={`h-full rounded-full ${utilColor.replace("text-", "bg-")}`}
-            style={{ width: `${Math.min((data.avg_utilization ?? 0) * 100, 100)}%` }}
-          />
-        </div>
-        <p className="text-[10px] text-zinc-500 mt-1 font-mono">
-          avg ratio {formatRatio(data.avg_utilization)} · max {formatPercent(data.max_utilization)} ({formatRatio(data.max_utilization)})
-        </p>
-      </BentoCard>
-
-      {/* Pass / Fail visual bar */}
-      <BentoCard colSpan={6} variant="glass">
-        <BentoCardHeader title="Member status" />
-        <div className="flex h-6 rounded-xl overflow-hidden bg-white/5 mt-2">
-          {data.passed > 0 && (
-            <div
-              className="bg-emerald-500/60 flex items-center justify-center text-[10px] text-emerald-300 font-medium transition-all"
-              style={{ width: `${data.pass_rate}%` }}
-            >
-              {data.pass_rate >= 20 && `${data.passed}`}
-            </div>
-          )}
-          {data.held > 0 && (
-            <div className="bg-amber-500/60" style={{ width: `${(data.held / data.total_beams) * 100}%` }} />
-          )}
-          {data.failed > 0 && (
-            <div
-              className="bg-rose-500/60 flex items-center justify-center text-[10px] text-rose-300 font-medium transition-all"
-              style={{ width: `${(data.failed / data.total_beams) * 100}%` }}
-            >
-              {(data.failed / data.total_beams) >= 0.15 && `${data.failed}`}
-            </div>
-          )}
-        </div>
-        <div className="flex justify-between mt-2 text-[10px] text-zinc-400">
-          <span className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-emerald-500/60" />{data.passed} passed
-          </span>
-          <span className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-rose-500/60" />{data.failed} failed
-          </span>
-          <span className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-amber-500/60" />{data.held} held
-          </span>
-        </div>
-        {data.warnings_count > 0 && (
-          <p className="text-[10px] text-amber-400/60 mt-2">
-            {data.warnings_count} warnings across all beams
+    <div className="space-y-5 text-zinc-100 [--focus-color:#6e9cfa]">
+      <div className="grid gap-4 md:grid-cols-3">
+        <WorkbenchPanel title="Checked pass rate">
+          <p className="font-mono text-3xl font-semibold text-white">{data.pass_rate.toFixed(0)}%</p>
+          <p className="mt-2 text-sm text-zinc-300">
+            Strength checks: {data.strength_passed} passed · {data.strength_failed} failed
           </p>
-        )}
-      </BentoCard>
+        </WorkbenchPanel>
 
-      {/* Critical Beams */}
-      {data.critical_beams.length > 0 && (
-        <BentoCard colSpan={8} variant="elevated" glow>
-          <BentoCardHeader
-            title="Critical Beams"
-            icon={<AlertTriangle className="w-4 h-4 text-rose-400" />}
-            badge={`${data.critical_beams.length}`}
-          />
-          <div className="flex flex-wrap gap-1.5 mt-1">
-            {data.critical_beams.map((id) => (
-              <span
-                key={id}
-                className="px-2 py-0.5 text-[10px] text-rose-400/80 bg-rose-500/10 rounded-md border border-rose-500/20"
-              >
-                {id}
-              </span>
+        <WorkbenchPanel title="Average utilization">
+          <p className="font-mono text-3xl font-semibold text-white">{formatPercent(data.avg_utilization)}</p>
+          <p className="mt-2 text-sm text-zinc-300">
+            Average ratio {formatRatio(data.avg_utilization)} · Maximum {formatPercent(data.max_utilization)} ({formatRatio(data.max_utilization)})
+          </p>
+        </WorkbenchPanel>
+
+        <WorkbenchPanel title="Member status">
+          <dl className="grid grid-cols-3 gap-2 text-sm">
+            <div><dt className="text-zinc-300">Passed</dt><dd className="font-mono text-xl text-emerald-200">{data.passed}</dd></div>
+            <div><dt className="text-zinc-300">Failed</dt><dd className="font-mono text-xl text-rose-200">{data.failed}</dd></div>
+            <div><dt className="text-zinc-300">Held</dt><dd className="font-mono text-xl text-amber-200">{data.held}</dd></div>
+          </dl>
+          {data.total_beams > 0 ? (
+            <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-zinc-800" aria-hidden="true">
+              <span className="bg-emerald-400" style={{ width: `${data.passed / data.total_beams * 100}%` }} />
+              <span className="bg-rose-400" style={{ width: `${data.failed / data.total_beams * 100}%` }} />
+              <span className="bg-amber-400" style={{ width: `${data.held / data.total_beams * 100}%` }} />
+            </div>
+          ) : null}
+          {data.warnings_count > 0 ? (
+            <p className="mt-2 text-sm text-amber-200">{data.warnings_count} {data.warnings_count === 1 ? 'warning' : 'warnings'}</p>
+          ) : null}
+        </WorkbenchPanel>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        {data.critical_beams.length > 0 ? (
+          <WorkbenchPanel title="Critical beams">
+            <ul className="flex flex-wrap gap-2">
+              {data.critical_beams.map((id) => (
+                <li key={id} className="max-w-full break-all rounded-sm border border-rose-400/30 px-2 py-1 text-xs text-rose-200">{id}</li>
+              ))}
+            </ul>
+          </WorkbenchPanel>
+        ) : null}
+
+        <WorkbenchPanel title="Materials">
+          <dl className="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <dt className="text-zinc-300">Checked schedule steel</dt>
+              <dd className="font-mono text-lg text-white">
+                {scheduleCount
+                  ? `${data.total_steel_kg.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kg`
+                  : '—'}
+              </dd>
+              <dd className="text-xs text-zinc-400">{scheduleCount} of {data.total_beams} beams</dd>
+            </div>
+            <div>
+              <dt className="text-zinc-300">Concrete</dt>
+              <dd className="font-mono text-lg text-white">{data.total_concrete_m3.toFixed(1)} m³</dd>
+            </div>
+          </dl>
+        </WorkbenchPanel>
+      </div>
+
+      {Object.keys(data.by_story).length > 0 ? (
+        <WorkbenchPanel title="Pass counts by story">
+          <dl className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {Object.entries(data.by_story).map(([story, stats]) => (
+              <div key={story} className="flex min-w-0 justify-between gap-3 rounded-sm border border-zinc-700 p-2 text-sm">
+                <dt className="min-w-0 break-words text-zinc-200">{story}</dt>
+                <dd className="shrink-0 font-mono text-zinc-300">{stats.passed}/{stats.total}</dd>
+              </div>
             ))}
-          </div>
-        </BentoCard>
-      )}
-
-      {/* Steel + Concrete totals */}
-      <BentoCard colSpan={data.critical_beams.length > 0 ? 4 : 6} variant="default">
-        <BentoCardHeader title="Materials" icon={<BarChart3 className="w-4 h-4" />} />
-        <div className="grid grid-cols-2 gap-3 mt-1">
-          <div>
-            <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Checked schedule steel</p>
-            <p className="text-xl font-bold text-blue-400 tabular-nums">
-              {scheduleCount
-                ? `${data.total_steel_kg.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kg`
-                : '—'}
-            </p>
-            <p className="text-[10px] text-zinc-400">{scheduleCount} of {data.total_beams} beams</p>
-          </div>
-          <div>
-            <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Concrete</p>
-            <p className="text-xl font-bold text-blue-400 tabular-nums">
-              {data.total_concrete_m3.toFixed(1)}
-              <span className="text-xs text-zinc-500 ml-1">m³</span>
-            </p>
-          </div>
-        </div>
-      </BentoCard>
-
-      {/* By Story */}
-      {Object.keys(data.by_story).length > 0 && (
-        <BentoCard colSpan={12} variant="default">
-          <BentoCardHeader title="By Story" />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
-            {Object.entries(data.by_story).map(([story, stats]: [string, StoryStats]) => {
-              const pct = (stats.passed / stats.total) * 100;
-              const storyColor = pct >= 90 ? "bg-emerald-500/50" : pct >= 70 ? "bg-amber-500/50" : "bg-rose-500/50";
-              return (
-                <div key={story} className="flex items-center gap-2.5 p-2 rounded-lg bg-white/[0.02]">
-                  <span className="text-xs text-white/60 w-16 truncate font-medium">{story}</span>
-                  <div className="flex-1 h-2 rounded-full overflow-hidden bg-white/5">
-                    <div className={storyColor} style={{ width: `${pct}%`, height: "100%" }} />
-                  </div>
-                  <span className="text-[10px] text-white/35 tabular-nums w-10 text-right shrink-0">
-                    {stats.passed}/{stats.total}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </BentoCard>
-      )}
-
-    </BentoGrid>
+          </dl>
+        </WorkbenchPanel>
+      ) : null}
+    </div>
   );
 }
 
@@ -391,13 +317,12 @@ function ExportBtn({
     <button
       onClick={onClick}
       disabled={loading || disabled}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-        bg-white/5 border border-white/8 text-xs text-white/60
-        hover:bg-white/10 hover:text-white/90 hover:border-white/15
-        transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+      className="flex items-center gap-1.5 rounded-lg border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink/70
+        transition-colors hover:border-cobalt/30 hover:bg-cobalt/5 hover:text-cobalt
+        disabled:cursor-not-allowed disabled:opacity-40"
     >
       {loading
-        ? <div className="w-3.5 h-3.5 rounded-full border border-white/30 border-t-white/70 animate-spin" />
+        ? <div className="h-3.5 w-3.5 animate-spin rounded-full border border-ink/30 border-t-ink/70" />
         : icon
       }
       {label}
