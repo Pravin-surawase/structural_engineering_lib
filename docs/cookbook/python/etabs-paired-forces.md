@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-13
+last_updated: 2026-11-24
 doc_type: guide
 tags: [etabs, import, beam, column]
 ---
@@ -9,10 +9,10 @@ tags: [etabs, import, beam, column]
 # Reconcile paired ETABS beam and column actions
 
 Use `structural_lib.services.etabs_paired_forces.import_etabs_paired_forces` to
-reconcile two ETABS 22.7.0 Element Forces table projections against a declared
-model, member, station and combination inventory. This API preserves source
-rows in ETABS local axes and normalizes stations, forces and moments to mm, N
-and N·mm.
+reconcile paired ETABS Element Forces table projections against a declared
+model, member, station and combination inventory. The API preserves source rows
+in ETABS local axes and normalizes stations, forces and moments to mm, N and
+N·mm. The profiles cover metric 22.7.0 projections and kip/ft 21.0.0 projections.
 
 ## Replay the reference
 
@@ -31,12 +31,57 @@ axial force becomes −412,500 N at 750 mm in ETABS' compression-negative
 convention. The [frozen reference](../../verification/library-029-flow04-paired-intake.json)
 gives all six independent expected components for each member.
 
+## Replay the Altair ETABS 21.0.0 export
+
+```bash
+./scripts/python_runtime.sh Python/examples/etabs_paired_forces.py --altair-v21
+./scripts/python_runtime.sh Python/examples/etabs_paired_forces.py --altair-v21 --missing-combination
+```
+
+The [21.0.0 reference](../../verification/library-030-flow04-altair-v21.json)
+binds eight native station rows for the connected beam B43 and column C20
+to one Access database capture. The projected CSV retains the native
+headers and components. Its unit row comes from the export's program units.
+Both projections use `Location`. The declared stations have blank
+locations and a one-to-one object and analysis-element match.
+
+The 21.0.0 profile admits beam axial and minor-axis residuals up to
+`1e-12` in native kip or kip-ft. The normalized result retains every
+original signed component. Larger components hold the current snapshot.
+The capture's content-derived analysis token binds the two tables to a
+single immutable snapshot. Member design still needs its own inputs and
+engineering checks.
+[Source review](../../verification/library-029-flow04-etabs-source-review.md#altair-workshop-database)
+
+### Interior station sides
+
+```bash
+./scripts/python_runtime.sh Python/examples/etabs_paired_forces.py \
+  --altair-v21 --reference docs/verification/library-030-flow04-altair-v21-station-sides.json
+```
+
+The interior case imports 12 rows for B130 and its connected column C1.
+A request declares both sides of an interior beam station with
+`EtabsStationSidePair`. Each required combination then needs a
+`Before` and `After` row at that coordinate. The normalized result
+retains distinct row IDs and each row's `station_side`, in source
+I-to-J orientation. A missing side leaves the available rows in the
+diagnostic snapshot and withholds the current snapshot. A blank side at
+the declared pair, a duplicate or different coordinates rejects
+the input.
+
+The two side rows capture a 10 kN service shear jump and a 12 kN ultimate
+shear jump, rounded here for display. Both preserve moment and torque.
+[Frozen station-side reference](../../verification/library-030-flow04-altair-v21-station-sides.json)
+
 ## Supply your own tables
 
 1. Save each native Element Forces table projection as UTF-8 CSV. Keep its
-   title, header, unit row, and all force columns. The beam header includes
-   `Step Type`. The column header ends with `Location`. This profile
-   accepts blank values for those fields.
+   title, header, unit row, and all force columns. In a 22.7.0 projection
+   the beam header includes `Step Type` and the column header ends
+   with `Location`. Both 21.0.0 headers end with `Location`. Use
+   `Before` and `After` for declared 21.0.0 interior beam pairs. Leave
+   `Location` or `Step Type` blank elsewhere.
 2. Create `EtabsForceTable` records using the CSV bytes, ETABS release,
    capture ID and action basis from the same run. The action basis identifies
    the model SHA-256, analysis revision and the section, stiffness and
@@ -58,9 +103,11 @@ withholds both normalized snapshots. Duplicate rows, mismatched units and
 invalid axes reject the intake. Beam axial or minor-axis actions and column
 uplift return HOLD with the signed actions preserved for diagnosis.
 
-This profile covers one object-to-element mapping per member and one row
-per declared station and combination. Member transformations, meshed
-station-side pairs, automatic combination generation, and downstream
-engineering qualification need their own evidence. The
+This profile covers one object-to-element mapping per member. Each
+declared station and combination requires one row, or two distinct rows
+for a declared 21.0.0 interior beam station-side pair. Member
+transformations, meshed station-side pairs, automatic combination
+generation, and downstream engineering qualification need their own
+evidence. The
 [ETABS source review](../../verification/library-029-flow04-etabs-source-review.md)
-records the pending replay against a matched real beam and column export.
+records the evidence and limits of the matched native replay.
