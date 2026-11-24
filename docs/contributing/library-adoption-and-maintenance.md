@@ -134,6 +134,6 @@ impact**, and the **check that verified it**.
    fix from a clean checkout using only the contributor guide. Keep the
    focused setup and check that worked visible at the top.
 4. **Measure release work separately.** Use the
-   [0.31.1 release timing baseline](../planning/structlib-0311-patch-plan.md#release-timing-baseline-and-targets)
+   [0.31.0 release timing baseline](../planning/structlib-0311-patch-plan.md#release-timing-baseline-and-targets)
    when choosing changes to the release workflow. Record verification,
    approval wait, dispatch and publication execution separately.
