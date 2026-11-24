@@ -4,11 +4,14 @@ Tests for SSE Streaming Endpoint.
 Week 3 Priority 3: SSE for batch processing tests.
 """
 
+import asyncio
 import json
 
 from fastapi.testclient import TestClient
+from starlette.types import Message
+
 from fastapi_app.main import app
-from fastapi_app.routers.streaming import job_manager
+from fastapi_app.routers.streaming import _stream_batch_response, job_manager
 from structural_lib.services.batch import design_project_beams_v1
 
 
@@ -248,6 +251,57 @@ class TestJobStatus:
         assert status["progress"]["completed"] == 1
         assert status["is_safe"] is None
         assert status["overall_status"] == "IN_PROGRESS"
+
+    def test_poll_interrupted_stream_keeps_completed_results(self):
+        """A disconnect while sending a result ends the job with partial data."""
+        events: list[str] = []
+
+        async def disconnect_after_first_result() -> None:
+            disconnected = asyncio.Event()
+            response = _stream_batch_response(
+                [_canonical_beam("B1"), _canonical_beam("B2")]
+            )
+
+            async def receive() -> Message:
+                await disconnected.wait()
+                return {"type": "http.disconnect"}
+
+            async def send(message: Message) -> None:
+                if message["type"] == "http.response.body":
+                    body = message.get("body", b"").decode()
+                    events.extend(body.splitlines())
+                    if body.startswith("event: design_result"):
+                        disconnected.set()
+                        # The disconnect watcher cancels the response during send.
+                        await asyncio.Future()
+
+            await asyncio.wait_for(response({"type": "http"}, receive, send), timeout=5)
+
+        asyncio.run(disconnect_after_first_result())
+
+        event_data = TestSSEBatchDesign._event_data
+        job_id = event_data(events, "start")[0]["job_id"]
+        streamed = event_data(events, "design_result")
+        assert [result["beam_id"] for result in streamed] == ["B1"]
+        assert event_data(events, "complete") == []
+
+        client = TestClient(app)
+        response = client.get(f"/stream/job/{job_id}")
+        assert response.status_code == 200
+        status = response.json()
+        assert status["job_id"] == job_id
+        assert status["status"] == "interrupted"
+        assert status["progress"]["completed"] == 1
+        assert status["progress"]["total"] == 2
+        assert status["progress"]["passed"] == 1
+        assert status["is_safe"] is None
+        assert status["overall_status"] == "INTERRUPTED"
+        assert status["completed_at"] is None
+
+        job = job_manager.get_job(job_id)
+        assert job is not None
+        assert job["interrupted_at"] is not None
+        assert job["results"] == streamed
 
     def test_get_job_status_after_batch(self):
         """Test getting job status after running a batch."""

@@ -25,9 +25,10 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any, AsyncGenerator, Mapping
 
-from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
+from starlette.types import Receive, Scope, Send
 
 from structural_lib.services import batch
 from fastapi_app.auth import check_rate_limit
@@ -65,6 +66,8 @@ class BatchJobStatusResponse(BaseModel):
 
 def _job_engineering_status(job: Mapping[str, Any]) -> dict[str, bool | None | str]:
     """Return a verdict only after every batch item has been evaluated."""
+    if job["status"] == "interrupted":
+        return {"is_safe": None, "overall_status": "INTERRUPTED"}
     if job["completed"] < job["total"]:
         return {"is_safe": None, "overall_status": "IN_PROGRESS"}
 
@@ -110,6 +113,7 @@ class BatchJobManager:
             "errors": [],
             "started_at": datetime.now(timezone.utc).isoformat(),
             "completed_at": None,
+            "interrupted_at": None,
         }
         return job_id
 
@@ -121,10 +125,10 @@ class BatchJobManager:
         error: str | None = None,
     ) -> None:
         """Update job progress."""
-        if job_id not in self.jobs:
+        job = self.jobs.get(job_id)
+        if job is None or job["status"] != "running":
             return
 
-        job = self.jobs[job_id]
         job["completed"] += 1
 
         if result:
@@ -146,6 +150,14 @@ class BatchJobManager:
             job["status"] = "complete"
             job["completed_at"] = datetime.now(timezone.utc).isoformat()
 
+    def interrupt_job(self, job_id: str) -> None:
+        """End an unfinished job without discarding completed results."""
+        job = self.jobs.get(job_id)
+        if job is not None and job["status"] == "running":
+            job["status"] = "interrupted"
+            job["interrupted_at"] = datetime.now(timezone.utc).isoformat()
+            logger.info("Batch stream ended before job %s completed", job_id)
+
     def get_job(self, job_id: str) -> dict | None:
         """Get job status."""
         return self.jobs.get(job_id)
@@ -155,11 +167,10 @@ class BatchJobManager:
         now = datetime.now(timezone.utc)
         to_remove = []
         for job_id, job in self.jobs.items():
-            if job.get("completed_at"):
-                completed = datetime.fromisoformat(
-                    job["completed_at"].replace("Z", "+00:00")
-                )
-                if (now - completed).total_seconds() > max_age_seconds:
+            ended_at = job.get("completed_at") or job.get("interrupted_at")
+            if ended_at:
+                ended = datetime.fromisoformat(ended_at.replace("Z", "+00:00"))
+                if (now - ended).total_seconds() > max_age_seconds:
                     to_remove.append(job_id)
         for job_id in to_remove:
             del self.jobs[job_id]
@@ -174,10 +185,22 @@ job_manager = BatchJobManager()
 # =============================================================================
 
 
-def _stream_batch_response(
-    request: Request,
-    beam_list: list[Any],
-) -> EventSourceResponse:
+class _BatchStreamResponse(EventSourceResponse):
+    def __init__(
+        self, job_id: str, events: AsyncGenerator[dict[str, str], None]
+    ) -> None:
+        super().__init__(events)
+        self.job_id = job_id
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        try:
+            await super().__call__(scope, receive, send)
+        finally:
+            # The SSE response can be cancelled while sending a yielded event.
+            job_manager.interrupt_job(self.job_id)
+
+
+def _stream_batch_response(beam_list: list[Any]) -> EventSourceResponse:
     """Build one SSE response after the transport has decoded the beam list."""
     if not isinstance(beam_list, list) or len(beam_list) == 0:
 
@@ -204,9 +227,10 @@ def _stream_batch_response(
 
         return EventSourceResponse(error_response())
 
-    async def event_generator() -> AsyncGenerator[dict, None]:
+    job_id = job_manager.create_job(len(beam_list))
+
+    async def event_generator() -> AsyncGenerator[dict[str, str], None]:
         """Generate SSE events for batch design."""
-        job_id = job_manager.create_job(len(beam_list))
 
         # Send start event
         yield {
@@ -221,11 +245,6 @@ def _stream_batch_response(
         }
 
         for member in batch.design_project_beams_iter_v1(beam_list, units="IS456"):
-            # Check if client disconnected
-            if await request.is_disconnected():
-                logger.info(f"Client disconnected during batch job {job_id}")
-                break
-
             result_data = member.to_dict()
             result_data["beam_id"] = member.member_id
             result_data["design_succeeded"] = (
@@ -274,7 +293,7 @@ def _stream_batch_response(
 
         # Send complete event
         job = job_manager.get_job(job_id)
-        if job is not None:
+        if job is not None and job["status"] == "complete":
             engineering_status = _job_engineering_status(job)
             yield {
                 "event": "complete",
@@ -304,7 +323,7 @@ def _stream_batch_response(
                 ),
             }
 
-    return EventSourceResponse(event_generator())
+    return _BatchStreamResponse(job_id, event_generator())
 
 
 @router.get(
@@ -315,7 +334,6 @@ def _stream_batch_response(
     description="Compatibility transport; use POST /stream/batch-design.",
 )
 async def stream_batch_design(
-    request: Request,
     beams: str = Query(..., description="JSON array of beam parameters"),
     _: None = Depends(check_rate_limit),
 ) -> EventSourceResponse:
@@ -337,7 +355,7 @@ async def stream_batch_design(
         )
         return response
 
-    response = _stream_batch_response(request, beam_list)
+    response = _stream_batch_response(beam_list)
     response.headers["Deprecation"] = "true"
     response.headers["Warning"] = (
         '299 - "Deprecated GET transport; use POST /stream/batch-design"'
@@ -347,12 +365,11 @@ async def stream_batch_design(
 
 @router.post("/batch-design", response_class=EventSourceResponse)
 async def stream_batch_design_post(
-    request: Request,
     beams: list[dict[str, Any]],
     _: None = Depends(check_rate_limit),
 ) -> EventSourceResponse:
     """Canonical project-beam stream using a POST request body."""
-    return _stream_batch_response(request, beams)
+    return _stream_batch_response(beams)
 
 
 @router.get("/job/{job_id}", response_model=BatchJobStatusResponse)
