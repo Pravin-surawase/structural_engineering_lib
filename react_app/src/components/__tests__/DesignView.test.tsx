@@ -56,6 +56,7 @@ let mockLength = 4000;
 
 // Mock react-router-dom
 vi.mock('react-router-dom', () => ({
+  Link: ({ to, children }: { to: string; children: React.ReactNode }) => React.createElement('a', { href: to }, children),
   useNavigate: vi.fn(() => vi.fn()),
   useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
 }));
@@ -89,6 +90,10 @@ vi.mock('../../hooks/useLoadAnalysis', () => ({
 // Mock Viewport3D (Three.js cannot run in jsdom)
 vi.mock('../../components/viewport/Viewport3D', () => ({
   Viewport3D: () => React.createElement('div', { 'data-testid': 'viewport-3d' }, 'Viewport3D'),
+}));
+
+vi.mock('../../components/design/ParetoPanel', () => ({
+  ParetoPanel: () => React.createElement('button', {}, 'Find Alternatives'),
 }));
 
 // Mock ConnectionStatus
@@ -171,7 +176,45 @@ describe('DesignView', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Serviceability' }));
     expect(screen.getByLabelText(/Include maintained Level-A/)).not.toBeChecked();
     expect(screen.getByText('Not evaluated')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Compare options' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Compare options' })).not.toBeInTheDocument();
+  });
+
+  it.each(['manual', 'catalog'] as const)('keeps the exact span editable in %s mode', (inputMode) => {
+    mockLength = 5123;
+    render(<DesignView inputMode={inputMode} />);
+    const span = screen.getByLabelText('Span in m');
+    expect(span).toHaveValue(5.123);
+    fireEvent.change(span, { target: { value: '5.234' } });
+    expect(mockActions.updateLength).toHaveBeenCalledWith(5234);
+  });
+
+  it('moves focus between beam inputs and the result', () => {
+    render(<DesignView />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'View result' }));
+    expect(screen.getByRole('region', { name: 'Beam result' })).toHaveFocus();
+    fireEvent.click(screen.getByRole('button', { name: 'Edit inputs' }));
+    expect(screen.getByRole('region', { name: 'Beam inputs' })).toHaveFocus();
+  });
+
+  it('keeps comparison independent of check details and holds it when the result is stale', () => {
+    Object.assign(mockLiveState, currentPassingState());
+    const { rerender } = render(<DesignView />);
+    const compare = screen.getByRole('button', { name: 'Compare options' });
+    fireEvent.click(compare);
+    expect(compare).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: 'Find Alternatives' })).toBeVisible();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Show checks and evidence' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Hide checks and evidence' }));
+    expect(screen.getByRole('button', { name: 'Find Alternatives' })).toBeVisible();
+
+    mockLiveState.exportEligible = false;
+    rerender(<DesignView />);
+    expect(screen.queryByRole('button', { name: 'Find Alternatives' })).not.toBeInTheDocument();
+    expect(screen.getByText('Run a current passing design to compare options.')).toBeVisible();
+    fireEvent.click(compare);
+    expect(compare).toBeDisabled();
   });
 
   it('offers only maintained serviceability exposure classes', () => {

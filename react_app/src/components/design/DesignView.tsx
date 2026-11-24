@@ -5,7 +5,7 @@
  * contextual advanced actions.
  */
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Calculator, CheckCircle, AlertCircle, Loader2, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, RotateCcw, ArrowRight, Activity } from "lucide-react";
 import { useExportBBS, useExportDXF, useExportReport } from "../../hooks/useExport";
 import { useLoadAnalysis } from "../../hooks/useLoadAnalysis";
@@ -25,6 +25,7 @@ import { WorkbenchHeader } from "../workbench/WorkbenchHeader";
 import { WorkbenchShell } from "../workbench/WorkbenchShell";
 import { ResultLifecycleBadge } from "../workbench/ResultLifecycleBadge";
 import { CatalogBeamInputPanel } from "../../features/catalog/CatalogBeamInputPanel";
+import { CATALOGUE_QUICK_ENABLED } from "../../features/catalog/config";
 import type { CatalogBeamTransportName } from "../../features/catalog/types";
 
 /** Collapsible accordion section */
@@ -58,6 +59,8 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const [showResultDetails, setShowResultDetails] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showCompare, setShowCompare] = useState(false);
+  const inputSectionRef = useRef<HTMLElement>(null);
+  const resultSectionRef = useRef<HTMLElement>(null);
   const [loadCalcEnabled, setLoadCalcEnabled] = useState(false);
   const [loadCalcType, setLoadCalcType] = useState<'udl' | 'point'>('udl');
   const [loadCalcMagnitude, setLoadCalcMagnitude] = useState(20); // kN/m or kN
@@ -100,6 +103,7 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const rebarSuggestions = useRebarSuggestions();
   const loadAnalysis = useLoadAnalysis();
   const combinedCase = (inputs.torsion ?? 0) > 0 || Boolean(inputs.include_serviceability);
+  const canCompare = canExport && !combinedCase;
   const comparisonDepthOffsetMm = resolveComparisonDepthOffsetMm({
     depthMm: inputs.depth,
     // A retained design result may belong to an older input revision. Only its
@@ -128,7 +132,9 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   // or station contract. Do not turn a hogging action into bottom tension steel.
   const cannotTransferLoadResult = minimumLoadMoment !== undefined && minimumLoadMoment < -1e-9;
 
-  const spanMeters = Number((length / 1000).toFixed(2));
+  const spanInput = (
+    <InputField label="Span" value={length / 1000} onChange={(value) => actions.updateLength(value * 1000)} unit="m" min={1} max={15} step="any" error={inputErrors.span} />
+  );
   const updateCatalogInput = (
     name: CatalogBeamTransportName,
     value: number | undefined,
@@ -178,43 +184,21 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   }, [state.result, state.resultLifecycle]);
 
   return (
-    <div className="h-full pt-14">
+    <div className="flex h-full flex-col pt-14">
       <WorkbenchShell
+        className="flex-1"
         header={(
           <WorkbenchHeader
             title="Quick beam design"
             projectName="Rectangular beam · IS 456:2000"
-            primaryAction={(
-              <button
-                onClick={actions.triggerDesign}
-                disabled={state.isDesigning || hasInputErrors}
-                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-sm bg-cobalt px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {state.isDesigning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calculator className="h-4 w-4" />}
-                {state.isDesigning ? "Calculating…" : state.result ? "Recalculate" : "Design beam"}
-              </button>
-            )}
             secondaryActions={(
-              <>
-                <button
-                  onClick={() => {
-                    setShowCompare(!showCompare);
-                    setShowResultDetails(true);
-                  }}
-                  disabled={!state.exportEligible || combinedCase}
-                  title={combinedCase ? "Comparison automation does not carry torsion or serviceability inputs." : undefined}
-                  aria-pressed={showCompare}
-                  className="rounded-lg border border-white/10 px-3 py-2 text-xs text-zinc-300 hover:bg-white/5 disabled:opacity-40"
-                >
-                  Compare options
-                </button>
-                <button
-                  onClick={actions.reset}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-xs text-zinc-300 hover:bg-white/5"
-                >
-                  <RotateCcw className="h-3.5 w-3.5" /> Reset
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={actions.reset}
+                className="inline-flex min-h-10 items-center gap-1.5 rounded-sm border border-zinc-700 px-3 py-2 text-sm text-zinc-200 hover:border-blue-300"
+              >
+                <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" /> Reset
+              </button>
             )}
           >
             <ResultLifecycleBadge lifecycle={state.resultLifecycle} />
@@ -237,9 +221,17 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
         </div>
       ) : null}
       <div className="mx-auto grid min-w-0 max-w-7xl grid-cols-1 gap-5 p-4 sm:p-6 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-start">
-      <section aria-labelledby="beam-inputs" className="min-w-0 rounded-sm border border-ink/20 bg-paper text-ink [--focus-color:var(--color-cobalt)] [color-scheme:light]">
-        <div className="border-b border-ink/20 px-4 py-3">
+      <section ref={inputSectionRef} tabIndex={-1} aria-labelledby="beam-inputs" className="min-w-0 scroll-mt-4 rounded-sm border border-ink/20 bg-paper text-ink [--focus-color:var(--color-cobalt)] [color-scheme:light]">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 border-b border-ink/20 px-4 py-2">
           <h2 id="beam-inputs" className="text-base font-semibold text-ink">Beam inputs</h2>
+          {CATALOGUE_QUICK_ENABLED ? (
+            <Link
+              to={inputMode === "catalog" ? "/workbench/quick/manual" : "/workbench/quick"}
+              className="inline-flex min-h-9 items-center rounded-sm text-sm font-semibold text-cobalt underline-offset-4 hover:underline"
+            >
+              {inputMode === "catalog" ? "Manual inputs" : "Catalogue inputs"}
+            </Link>
+          ) : null}
         </div>
 
         <div className="space-y-3 p-4">
@@ -256,15 +248,13 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
             {state.isDesigning && <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />}
           </div>
 
-          {inputMode === "catalog" && inputErrors.span ? (
-            <div className="text-sm text-rose-800">
-              <p role="alert">{inputErrors.span}</p>
-              <button type="button" onClick={() => navigate("/workbench/quick/manual")} className="font-semibold underline underline-offset-2">
-                Edit span in manual Quick Beam
-              </button>
-            </div>
-          ) : null}
           {inputMode === "catalog" ? (
+            <>
+            <fieldset className="min-w-0 rounded-sm border border-ink/20 bg-white px-3 pb-3 pt-1">
+              <legend className="px-1 text-sm font-semibold text-ink">Detailing geometry</legend>
+              {spanInput}
+              <p className="mt-2 text-xs text-ink/80">Used for the 3D view and checked exports.</p>
+            </fieldset>
             <CatalogBeamInputPanel
               values={{
                 width: inputs.width,
@@ -282,12 +272,13 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
               onChange={updateCatalogInput}
               onUseManual={() => navigate("/workbench/quick/manual")}
             />
+            </>
           ) : (
           <>
           <AccordionSection title="Dimensions">
             <InputField label="Width" value={inputs.width} onChange={(v) => actions.updateInputs({ width: v })} unit="mm" min={150} max={600} error={inputErrors.width} />
             <InputField label="Depth" value={inputs.depth} onChange={(v) => actions.updateInputs({ depth: v })} unit="mm" min={300} max={1200} />
-            <InputField label="Span" value={spanMeters} onChange={(v) => actions.updateLength(v * 1000)} unit="m" min={1} max={15} step={0.5} error={inputErrors.span} />
+            {spanInput}
             <InputField label="Cover" value={inputs.clear_cover ?? 40} onChange={(v) => actions.updateInputs({ clear_cover: v })} unit="mm" min={20} max={75} />
           </AccordionSection>
 
@@ -417,7 +408,7 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
       </section>
 
       <div className="min-w-0 space-y-5">
-        <section aria-labelledby="beam-result" className="rounded-md border border-zinc-700 bg-zinc-900">
+        <section ref={resultSectionRef} tabIndex={-1} aria-labelledby="beam-result" className="scroll-mt-4 rounded-md border border-zinc-700 bg-zinc-900">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-700 px-4 py-3">
             <h2 id="beam-result" className="text-base font-semibold text-white">Beam result</h2>
             {state.result ? (
@@ -502,16 +493,36 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                   </p>
                 ) : null}
                 {combinedCase ? <p className="text-xs text-zinc-300">Combined actions and serviceability results use the HTML or JSON report.</p> : null}
-                <button type="button" aria-expanded={showResultDetails} onClick={() => setShowResultDetails(!showResultDetails)} className="flex min-h-9 items-center gap-2 rounded-sm text-sm font-semibold text-blue-200 hover:text-white">
-                  {showResultDetails ? "Hide checks and evidence" : "Show checks and evidence"}
-                  <ChevronDown size={16} className={showResultDetails ? "rotate-180" : undefined} aria-hidden="true" />
-                </button>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  <button type="button" aria-expanded={showResultDetails} onClick={() => setShowResultDetails((open) => !open)} className="flex min-h-10 items-center gap-2 rounded-sm text-sm font-semibold text-blue-200 hover:text-white">
+                    {showResultDetails ? "Hide checks and evidence" : "Show checks and evidence"}
+                    <ChevronDown size={16} className={showResultDetails ? "rotate-180" : undefined} aria-hidden="true" />
+                  </button>
+                  {!combinedCase ? (
+                    <button
+                      type="button"
+                      aria-expanded={showCompare}
+                      aria-controls="beam-comparison"
+                      onClick={() => setShowCompare((open) => !open)}
+                      disabled={!canCompare && !showCompare}
+                      className="flex min-h-10 items-center gap-2 rounded-sm text-sm font-semibold text-blue-200 hover:text-white disabled:text-zinc-400"
+                    >
+                      Compare options
+                      <ChevronDown size={16} className={showCompare ? "rotate-180" : undefined} aria-hidden="true" />
+                    </button>
+                  ) : null}
+                </div>
+                <div id="beam-comparison" hidden={!showCompare || combinedCase}>
+                  {showCompare && !combinedCase ? (
+                    canCompare ? <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} effectiveDepthOffsetMm={comparisonDepthOffsetMm} />
+                      : <p className="text-sm text-amber-200">Run a current passing design to compare options.</p>
+                  ) : null}
+                </div>
                 {showResultDetails ? (
                   <div className="space-y-3">
                     <BeamResultDetails result={state.result} trust={trust} />
                     {!combinedCase && <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />}
                     <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
-                    {showCompare && !combinedCase ? <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} effectiveDepthOffsetMm={comparisonDepthOffsetMm} /> : null}
                   </div>
                 ) : null}
               </>
@@ -544,6 +555,33 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
       </div>
       </div>
       </WorkbenchShell>
+      <div className="shrink-0 border-t border-zinc-700 bg-zinc-900">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 py-2 sm:justify-end sm:px-6">
+          <button
+            type="button"
+            onClick={() => inputSectionRef.current?.focus()}
+            className="min-h-11 flex-1 rounded-sm border border-zinc-700 px-2 text-sm font-semibold text-zinc-200 hover:border-blue-300 sm:flex-none sm:px-4 lg:hidden"
+          >
+            Edit inputs
+          </button>
+          <button
+            type="button"
+            onClick={() => resultSectionRef.current?.focus()}
+            className="min-h-11 flex-1 rounded-sm border border-zinc-700 px-2 text-sm font-semibold text-zinc-200 hover:border-blue-300 sm:flex-none sm:px-4"
+          >
+            View result
+          </button>
+          <button
+            type="button"
+            onClick={actions.triggerDesign}
+            disabled={state.isDesigning || hasInputErrors}
+            className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-sm bg-cobalt px-2 text-sm font-semibold text-white transition-colors hover:bg-cobalt-hover disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none sm:px-4"
+          >
+            {state.isDesigning ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Calculator className="h-4 w-4" aria-hidden="true" />}
+            {state.isDesigning ? "Calculating…" : state.result ? "Recalculate" : "Design beam"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -811,7 +849,7 @@ function RebarSuggestionsPanel({ data, isPending }: { data: ReturnType<typeof us
 
 function InputField({ label, value, onChange, unit, min, max, step = 1, disabled = false, error }: {
   label: string; value: number; onChange: (v: number) => void; unit: string;
-  min?: number; max?: number; step?: number; disabled?: boolean;
+  min?: number; max?: number; step?: number | "any"; disabled?: boolean;
   error?: string | null;
 }) {
   const fieldId = `design-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
