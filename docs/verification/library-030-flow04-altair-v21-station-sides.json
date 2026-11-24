@@ -1,0 +1,435 @@
+{
+  "schema_version": "flow04-altair-v21-station-sides-reference/v1",
+  "scope": "Independently reconciled ETABS 21.0.0 interior station sides for an unmeshed beam and its connected column. Intake and signed force evidence only.",
+  "source": {
+    "url": "https://community.altair.com/discussion/62902/atcxaec-concrete-design-made-easier-workshop",
+    "etabs_release": "21.0.0",
+    "program_units": "kip, ft, F",
+    "native_project_revision": "0",
+    "archive_sha256": "503d4e8abe0f60c186cb79bb5f6ad2e3273eb6ab397b569d40267117bc21f2e5",
+    "database_sha256": "4f5661c09f40f262cdc1972c3efa74ac1a061dfa09ebbe2383a3632293157199",
+    "independent_reference_sha256": "288d439cfeca95253db59f6892dfd373dcfe087804f2bcdc6074a0d5cab16b10",
+    "capture_identity_basis": "An immutable, single database contains the selected geometry, assignments, combination definitions and signed result tables. The analysis revision string below identifies this capture by content."
+  },
+  "capture_id": "accdb-sha256:4f5661c09f40f262cdc1972c3efa74ac1a061dfa09ebbe2383a3632293157199",
+  "basis": {
+    "model_id": "altair-workshop-etabs-21",
+    "model_sha256": "4f5661c09f40f262cdc1972c3efa74ac1a061dfa09ebbe2383a3632293157199",
+    "analysis_revision": "snapshot-sha256:4f5661c09f40f262cdc1972c3efa74ac1a061dfa09ebbe2383a3632293157199",
+    "section_stiffness_connectivity_revision": "snapshot-sha256:4f5661c09f40f262cdc1972c3efa74ac1a061dfa09ebbe2383a3632293157199"
+  },
+  "units": {
+    "force": "kip",
+    "moment": "kip_ft",
+    "station": "ft"
+  },
+  "same_joint": "94",
+  "beam_numerical_zero_native_limit": 1e-12,
+  "combinations": [
+    {
+      "name": "SLS_Gravity",
+      "terms": [
+        [
+          "DL",
+          1
+        ],
+        [
+          "SDL",
+          1
+        ],
+        [
+          "CLAD",
+          1
+        ],
+        [
+          "LL",
+          1
+        ]
+      ],
+      "type": "Linear Add",
+      "design_use": "service"
+    },
+    {
+      "name": "ULS_Gravity",
+      "terms": [
+        [
+          "DL",
+          "1.2"
+        ],
+        [
+          "SDL",
+          "1.2"
+        ],
+        [
+          "CLAD",
+          "1.2"
+        ],
+        [
+          "LL",
+          "1.6"
+        ]
+      ],
+      "type": "Linear Add",
+      "design_use": "ultimate"
+    }
+  ],
+  "members": {
+    "beam": {
+      "source_table": "Element Forces - Beams",
+      "story": "STORY1",
+      "label": "B130",
+      "object_id": "43",
+      "analysis_element_id": "43",
+      "end_joints_i_j": [
+        "99",
+        "94"
+      ],
+      "i_mm": [
+        -34749.97368,
+        3296.201688,
+        9144.0
+      ],
+      "j_mm": [
+        -29530.490088,
+        7571.957424,
+        9144.0
+      ],
+      "axis_vectors": [
+        [
+          0.7735744213745337,
+          0.6337054635988673,
+          0.0
+        ],
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0.6337054635988673,
+          -0.7735744213745337,
+          0.0
+        ]
+      ],
+      "source_axis_rotation_deg": 0,
+      "expected_rows": [
+        {
+          "table_ordinal": 63841,
+          "projected_csv_line": 4,
+          "combination": "SLS_Gravity",
+          "station_mm": 0.0,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": -67507.68603093506,
+            "v3_n": 1.157465169350979e-14,
+            "t_nmm": 73706.70480162842,
+            "m2_nmm": 1.4111815344727082e-11,
+            "m3_nmm": -98994593.02724946
+          }
+        },
+        {
+          "table_ordinal": 63842,
+          "projected_csv_line": 5,
+          "combination": "SLS_Gravity",
+          "station_mm": 3373.614385236323,
+          "station_side": "before",
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": -12196.207733568412,
+            "v3_n": 1.157465169350979e-14,
+            "t_nmm": 73706.70480162842,
+            "m2_nmm": -2.4936596112597618e-11,
+            "m3_nmm": 38521537.4860324
+          }
+        },
+        {
+          "table_ordinal": 63843,
+          "projected_csv_line": 6,
+          "combination": "SLS_Gravity",
+          "station_mm": 3373.614385236323,
+          "station_side": "after",
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": -2196.2096507390584,
+            "v3_n": 1.157465169350979e-14,
+            "t_nmm": 73706.70480162842,
+            "m2_nmm": -2.4936596112597618e-11,
+            "m3_nmm": 38521537.4860324
+          }
+        },
+        {
+          "table_ordinal": 63844,
+          "projected_csv_line": 7,
+          "combination": "SLS_Gravity",
+          "station_mm": 6747.228770472676,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": 64038.96844497794,
+            "v3_n": 1.157465169350979e-14,
+            "t_nmm": 73706.70480162842,
+            "m2_nmm": -6.398500756992232e-11,
+            "m3_nmm": -62724243.6277969
+          }
+        },
+        {
+          "table_ordinal": 63861,
+          "projected_csv_line": 8,
+          "combination": "ULS_Gravity",
+          "station_mm": 0.0,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": -81305.14426638368,
+            "v3_n": 1.2732116862860765e-14,
+            "t_nmm": 90341.13222071654,
+            "m2_nmm": 1.5052603034375664e-11,
+            "m3_nmm": -119740034.32278821
+          }
+        },
+        {
+          "table_ordinal": 63862,
+          "projected_csv_line": 9,
+          "combination": "ULS_Gravity",
+          "station_mm": 3373.614385236323,
+          "station_side": "before",
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": -14931.370309543983,
+            "v3_n": 1.2732116862860765e-14,
+            "t_nmm": 90341.13222071654,
+            "m2_nmm": -2.790064956868159e-11,
+            "m3_nmm": 46277645.73436185
+          }
+        },
+        {
+          "table_ordinal": 63863,
+          "projected_csv_line": 10,
+          "combination": "ULS_Gravity",
+          "station_mm": 3373.614385236323,
+          "station_side": "after",
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": -2931.3726101487628,
+            "v3_n": 1.2732116862860765e-14,
+            "t_nmm": 90341.13222071654,
+            "m2_nmm": -2.790064956868159e-11,
+            "m3_nmm": 46277645.73436185
+          }
+        },
+        {
+          "table_ordinal": 63864,
+          "projected_csv_line": 11,
+          "combination": "ULS_Gravity",
+          "station_mm": 6747.228770472676,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": 0.0,
+            "v2_n": 76550.84110471165,
+            "v3_n": 1.2732116862860765e-14,
+            "t_nmm": 90341.13222071654,
+            "m2_nmm": -7.085390217173885e-11,
+            "m3_nmm": -74218968.16102144
+          }
+        }
+      ],
+      "table_csv": "TABLE:  Element Forces - Beams\nStory,Beam,Unique Name,Output Case,Case Type,Station,P,V2,V3,T,M2,M3,Element,Elem Station,Location\n,,,,,ft,kip,kip,kip,kip-ft,kip-ft,kip-ft,,ft,\nSTORY1,B130,43,SLS_Gravity,Combination,0,0,-15.1763315477216,2.60208521396521E-18,0.054363275609634,1.04083408558608E-17,-73.0146648000063,43,0,\nSTORY1,B130,43,SLS_Gravity,Combination,11.0682886654735,0,-2.74181657040803,2.60208521396521E-18,0.054363275609634,-1.83922894244666E-17,28.4120279816628,43,11.0682886654735,Before\nSTORY1,B130,43,SLS_Gravity,Combination,11.0682886654735,0,-0.493727570408032,2.60208521396521E-18,0.054363275609634,-1.83922894244666E-17,28.4120279816628,43,11.0682886654735,After\nSTORY1,B130,43,SLS_Gravity,Combination,22.1365773309471,0,14.3965328133112,2.60208521396521E-18,0.054363275609634,-4.7192919704794E-17,-46.2630279419087,43,22.1365773309471,\nSTORY1,B130,43,ULS_Gravity,Combination,0,0,-18.2781235510952,2.86229373536173E-18,0.0666321996488533,1.11022302462516E-17,-88.3157170696492,43,0,\nSTORY1,B130,43,ULS_Gravity,Combination,11.0682886654735,0,-3.35670557831898,2.86229373536173E-18,0.0666321996488533,-2.05784630621086E-17,34.1326398513278,43,11.0682886654735,Before\nSTORY1,B130,43,ULS_Gravity,Combination,11.0682886654735,0,-0.658998778318983,2.86229373536173E-18,0.0666321996488533,-2.05784630621086E-17,34.1326398513278,43,11.0682886654735,After\nSTORY1,B130,43,ULS_Gravity,Combination,22.1365773309471,0,17.2093136821441,2.86229373536173E-18,0.0666321996488533,-5.22591563704688E-17,-54.7411016739839,43,22.1365773309471,\n",
+      "table_sha256": "f72ab1da0dd8f36e190d820265c8ce4a4db46d17ec5c281d3a81ffde8206be33"
+    },
+    "column": {
+      "source_table": "Element Forces - Columns",
+      "story": "STORY1",
+      "label": "C1",
+      "object_id": "23",
+      "analysis_element_id": "23",
+      "end_joints_i_j": [
+        "53",
+        "94"
+      ],
+      "i_mm": [
+        -29530.490088,
+        7571.957424,
+        0.0
+      ],
+      "j_mm": [
+        -29530.490088,
+        7571.957424,
+        9144.0
+      ],
+      "axis_vectors": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.8090169943749475,
+          0.5877852522924731,
+          0
+        ],
+        [
+          -0.5877852522924731,
+          0.8090169943749475,
+          0.0
+        ]
+      ],
+      "source_axis_rotation_deg": 36,
+      "expected_rows": [
+        {
+          "table_ordinal": 12161,
+          "projected_csv_line": 4,
+          "combination": "SLS_Gravity",
+          "station_mm": 0.0,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": -10375648.193862729,
+            "v2_n": -1870.8674856240123,
+            "v3_n": -72.98464180215849,
+            "t_nmm": 0.0,
+            "m2_nmm": -4.0453870654884493e-10,
+            "m3_nmm": 2.4648637468790017e-09
+          }
+        },
+        {
+          "table_ordinal": 12162,
+          "projected_csv_line": 5,
+          "combination": "SLS_Gravity",
+          "station_mm": 9144.0,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": -10250541.960927121,
+            "v2_n": -1870.8674856240123,
+            "v3_n": -72.98464180215849,
+            "t_nmm": 0.0,
+            "m2_nmm": 667371.564638936,
+            "m3_nmm": 17107212.288545955
+          }
+        },
+        {
+          "table_ordinal": 12171,
+          "projected_csv_line": 6,
+          "combination": "ULS_Gravity",
+          "station_mm": 0.0,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": -12880588.588090735,
+            "v2_n": -2226.279743890667,
+            "v3_n": -121.47842458333709,
+            "t_nmm": 0.0,
+            "m2_nmm": -5.155516539273647e-10,
+            "m3_nmm": 2.957836496254805e-09
+          }
+        },
+        {
+          "table_ordinal": 12172,
+          "projected_csv_line": 7,
+          "combination": "ULS_Gravity",
+          "station_mm": 9144.0,
+          "station_side": null,
+          "normalized_components": {
+            "p_n": -12730461.108567996,
+            "v2_n": -2226.279743890667,
+            "v3_n": -121.47842458333709,
+            "t_nmm": 0.0,
+            "m2_nmm": 1110798.7143900343,
+            "m3_nmm": 20357101.978136327
+          }
+        }
+      ],
+      "table_csv": "TABLE:  Element Forces - Columns\nStory,Column,Unique Name,Output Case,Case Type,Station,P,V2,V3,T,M2,M3,Element,Elem Station,Location\n,,,,,ft,kip,kip,kip,kip-ft,kip-ft,kip-ft,,ft,\nSTORY1,C1,23,SLS_Gravity,Combination,0,-2332.5385044367,-0.420587742122747,-0.0164076001860542,0,-2.98372437868011E-16,1.81799020282369E-15,23,0,\nSTORY1,C1,23,SLS_Gravity,Combination,30,-2304.41350443526,-0.420587742122747,-0.0164076001860542,0,0.492228005581625,12.6176322636824,23,30,\nSTORY1,C1,23,ULS_Gravity,Combination,0,-2895.67150699087,-0.500487596268355,-0.0273094362399979,0,-3.80251385934116E-16,2.18158824338843E-15,23,0,\nSTORY1,C1,23,ULS_Gravity,Combination,30,-2861.92150698914,-0.500487596268355,-0.0273094362399979,0,0.819283087199937,15.0146278880507,23,30,\n",
+      "table_sha256": "2ee12e071b3c5518b8caebfa9e77368332be6c424ebff619c36460d9d1999749"
+    }
+  },
+  "controls": {
+    "positive": {
+      "status": "COMPLETE_FOR_DECLARED_ROWS",
+      "engineering": "not_evaluated",
+      "rows": 12
+    },
+    "missing_after": {
+      "status": "HOLD",
+      "diagnostic": "IMPORT.REQUIRED_ROW_MISSING",
+      "missing_side": "after",
+      "diagnostic_rows": 11
+    },
+    "missing_pair": {
+      "status": "HOLD",
+      "diagnostic": "IMPORT.REQUIRED_ROW_MISSING",
+      "missing_sides": [
+        "after",
+        "before"
+      ],
+      "diagnostic_rows": 10
+    },
+    "duplicate_before": {
+      "execution": "rejected_input",
+      "diagnostic": "IMPORT.INVALID_TABLE_OR_BINDING"
+    },
+    "blank_at_pair": {
+      "execution": "rejected_input",
+      "diagnostic": "IMPORT.INVALID_TABLE_OR_BINDING"
+    },
+    "undeclared_pair": {
+      "execution": "rejected_input",
+      "diagnostic": "IMPORT.INVALID_TABLE_OR_BINDING"
+    },
+    "endpoint_pair": {
+      "execution": "rejected_input",
+      "diagnostic": "IMPORT.INVALID_TABLE_OR_BINDING"
+    },
+    "different_coordinates": {
+      "execution": "rejected_input",
+      "diagnostic": "IMPORT.INVALID_TABLE_OR_BINDING",
+      "difference_mm": "0.0000005"
+    }
+  },
+  "legacy_intake_result_sha256": {
+    "22.7.0": "d58d5787893bd44667f1ab02ca1e50e94fb99c084146af049f310241093765e2",
+    "21.0.0": "33f98d00aeaeb1a40264e66c4143977011a22f49423d96525d7a6e31f973a5ca"
+  },
+  "shear_jumps": [
+    {
+      "after_v2_kip": "-0.493727570408032",
+      "applied_SDL_factor": "1",
+      "beam": "B130",
+      "before_after_source_ordinals": [
+        63842,
+        63843
+      ],
+      "before_v2_kip": "-2.74181657040803",
+      "combination": "SLS_Gravity",
+      "expected_shear_jump_kip": "2.248089",
+      "expected_shear_jump_kn": "9.9999980828293621845",
+      "object": "43",
+      "reported_shear_jump_kip": "2.248088999999998",
+      "station_mm": "3373.61438523632280",
+      "unchanged_m3_kip_ft": "28.4120279816628",
+      "unchanged_t_kip_ft": "0.054363275609634"
+    },
+    {
+      "after_v2_kip": "-0.658998778318983",
+      "applied_SDL_factor": "1.2",
+      "beam": "B130",
+      "before_after_source_ordinals": [
+        63862,
+        63863
+      ],
+      "before_v2_kip": "-3.35670557831898",
+      "combination": "ULS_Gravity",
+      "expected_shear_jump_kip": "2.6977068",
+      "expected_shear_jump_kn": "11.9999976993952346214",
+      "object": "43",
+      "reported_shear_jump_kip": "2.697706799999997",
+      "station_mm": "3373.61438523632280",
+      "unchanged_m3_kip_ft": "34.1326398513278",
+      "unchanged_t_kip_ft": "0.0666321996488533"
+    }
+  ],
+  "station_side_pairs": [
+    {
+      "object_id": "43",
+      "station_mm": 3373.614385236323
+    }
+  ]
+}
