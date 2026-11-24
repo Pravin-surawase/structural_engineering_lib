@@ -24,6 +24,32 @@ only the calculation scope admitted by its profile. With `-o`, the command
 creates a new JSON file exclusively; without it, it writes JSON to standard
 output. A non-accepted intake exits nonzero.
 
+## Open the local demo
+
+From the source checkout, start the demo in your browser:
+
+```bash
+./scripts/python_runtime.sh Python/examples/floor_review/demo.py --open
+```
+
+On Windows, use the Python environment with the local StructLib candidate installed:
+
+```powershell
+& 'C:\path\to\venv\Scripts\python.exe' -E Python/examples/floor_review/demo.py --open
+```
+
+Use **Try sample** to see a checked two-beam example. Drop CSV or Excel
+exports to inspect table headers, units and signed rows. A raw table preview
+needs no manifest. For checks, add a supported prepared beam file or the
+revision-bound ETABS manifest alongside the exported files. Excel needs
+the optional `xlsx` dependency in the demo environment.
+
+Select an EDB to see the Windows export steps. The original stays closed
+and ETABS opens only the authorized, already-analyzed copy. The browser
+uses the EDB filename for those instructions. Use the exported tables as the
+demo input. The browser and processing stay on the computer running the
+demo.
+
 ## Start with a prepared beam file
 
 The prepared profile is for an engineer-supplied, single-story list of already

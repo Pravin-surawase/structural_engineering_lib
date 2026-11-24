@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Local floor-review intake preview" />
+    <title>Floor Review | Local intake</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">Skip to intake workspace</a>
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">LOCAL FLOOR REVIEW</p>
+        <h1>Review one floor</h1>
+      </div>
+      <p class="review-boundary">
+        Input preview supports review. Engineering approval remains with a
+        qualified engineer.
+      </p>
+    </header>
+
+    <main id="workspace" class="workspace" tabindex="-1">
+      <section class="intro" aria-labelledby="intake-heading">
+        <div>
+          <h2 id="intake-heading">One floor, traceable inputs</h2>
+          <p>
+            Use the supplied sample or add CSV, Excel, JSON, or an ETABS
+            identity export. Your files stay in this local workflow.
+          </p>
+        </div>
+        <button id="sample-button" class="button button-primary" type="button">
+          Try sample
+        </button>
+      </section>
+
+      <section class="intake-panel" aria-labelledby="file-heading">
+        <div class="panel-heading">
+          <div>
+            <h2 id="file-heading">Add source files</h2>
+          </div>
+          <p class="supported">CSV · XLSX · JSON · E2K · EDB identity</p>
+        </div>
+        <div id="drop-zone" class="drop-zone" aria-describedby="drop-help">
+          <input
+            id="file-input"
+            type="file"
+            multiple
+            accept=".csv,.xlsx,.json,.e2k,.edb"
+          />
+          <strong>Drop files here</strong>
+          <span>or choose from this computer</span>
+          <button
+            id="choose-button"
+            class="button button-secondary"
+            type="button"
+          >
+            Choose files
+          </button>
+          <p id="drop-help">
+            The browser does not read or upload native .edb model bytes.
+          </p>
+        </div>
+        <div class="file-list-region" aria-live="polite">
+          <h3>Selected files</h3>
+          <ul id="file-list" class="file-list">
+            <li class="empty-state">No files selected.</li>
+          </ul>
+        </div>
+        <aside
+          id="edb-guidance"
+          class="edb-guidance"
+          hidden
+          aria-labelledby="edb-heading"
+        >
+          <h3 id="edb-heading">Native ETABS model selected</h3>
+          <p>
+            <strong id="edb-name"></strong> remains local and unread by this
+            page. On a licensed Windows ETABS installation, first confirm ETABS
+            version <strong>22.7.0</strong>, then open a copy read-only and
+            export the supported frame/connectivity and force tables before
+            adding them here.
+          </p>
+        </aside>
+        <div class="actions">
+          <button
+            id="preview-button"
+            class="button button-primary"
+            type="button"
+            disabled
+          >
+            Preview intake
+          </button>
+          <button
+            id="run-checks-button"
+            class="button button-primary"
+            type="button"
+            disabled
+          >
+            Run checks
+          </button>
+          <button
+            id="review-button"
+            class="button button-review"
+            type="button"
+            disabled
+          >
+            Download review JSON
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="status-panel"
+        class="status-panel"
+        aria-live="polite"
+        hidden
+      ></section>
+
+      <section
+        id="preview-panel"
+        class="results-panel"
+        hidden
+        aria-labelledby="preview-heading"
+      >
+        <div class="panel-heading">
+          <div>
+            <h2 id="preview-heading">Source rows and headers</h2>
+          </div>
+          <p id="preview-summary" class="supported"></p>
+        </div>
+        <div id="tables" class="tables"></div>
+      </section>
+
+      <section
+        id="review-panel"
+        class="results-panel"
+        hidden
+        aria-labelledby="review-heading"
+      >
+        <div class="panel-heading">
+          <div>
+            <h2 id="review-heading">Member review summary</h2>
+          </div>
+          <p class="qualified">Qualified engineering review required</p>
+        </div>
+        <div id="review-summary" class="summary-grid"></div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>Engineering status</th>
+                <th>Governing row</th>
+                <th>Combination</th>
+                <th>Station (mm)</th>
+              </tr>
+            </thead>
+            <tbody id="review-rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <template id="file-item-template"
+      ><li class="file-item">
+        <span class="file-name"></span><span class="file-meta"></span
+        ><button class="remove-file" type="button">Remove</button>
+      </li></template
+    >
+    <script src="app.js"></script>
+  </body>
+</html>
