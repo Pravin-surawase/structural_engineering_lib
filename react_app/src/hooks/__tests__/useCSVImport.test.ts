@@ -19,11 +19,11 @@ const explicitBasis = {
 const spanHeaderGuidance = 'Add a span_mm or Span (mm) column for millimetres, or a Span_m or Span (m) column for metres. Enter a finite positive span for every beam, then upload the CSV again.';
 
 vi.mock('../../store/importedBeamsStore', () => ({
-  useImportedBeamsStore: vi.fn(() => ({
+  useImportedBeamsStore: Object.assign(vi.fn(() => ({
     setBeams: mockSetBeams,
     setImporting: mockSetImporting,
     setError: mockSetError,
-  })),
+  })), { getState: () => ({ isImporting: false }) }),
 }));
 
 vi.mock('../../utils/materialOverrides', () => ({

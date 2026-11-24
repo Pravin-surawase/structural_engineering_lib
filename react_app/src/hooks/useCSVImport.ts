@@ -328,10 +328,6 @@ export function useCSVFileImport() {
   const mutation = useMutation({
     mutationFn: ({ file, format, overrides }: { file: File; format?: string; overrides?: MaterialOverrides }) =>
       importCSVFile(file, format, overrides),
-    onMutate: () => {
-      setImporting(true);
-      setError(null);
-    },
     onSuccess: (data, variables) => {
       setImporting(false);
       if (data.success && data.beams?.length) {
@@ -369,8 +365,13 @@ export function useCSVFileImport() {
   });
 
   return {
-    importFile: (file: File, format?: string, overrides?: MaterialOverrides) =>
-      mutation.mutate({ file, format, overrides }),
+    importFile: (file: File, format?: string, overrides?: MaterialOverrides) => {
+      // Reserve the shared import state before React or the mutation callbacks run.
+      if (useImportedBeamsStore.getState().isImporting) return;
+      setError(null);
+      setImporting(true);
+      mutation.mutate({ file, format, overrides });
+    },
     isImporting: mutation.isPending,
     error: mutation.error,
     data: mutation.data,

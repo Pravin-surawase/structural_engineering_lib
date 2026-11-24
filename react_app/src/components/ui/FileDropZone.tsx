@@ -39,13 +39,14 @@ export function FileDropZone({
 }: FileDropZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const { importFile, isImporting, data, error: importError } = useCSVFileImport();
-  const { beams, error: storeError } = useImportedBeamsStore();
+  const { beams, error: storeError, isImporting: storeIsImporting } = useImportedBeamsStore();
+  const isBusy = isImporting || storeIsImporting;
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(true);
-  }, []);
+    if (!isBusy) setIsDragging(true);
+  }, [isBusy]);
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -80,6 +81,7 @@ export function FileDropZone({
 
   const processFile = useCallback(
     (file: File) => {
+      if (isBusy) return;
       const validationError = validateFile(file);
       if (validationError) {
         onError?.(validationError);
@@ -88,7 +90,7 @@ export function FileDropZone({
 
       importFile(file, formatHint, materialOverrides);
     },
-    [importFile, validateFile, onError, materialOverrides, formatHint]
+    [importFile, isBusy, validateFile, onError, materialOverrides, formatHint]
   );
 
   const handleDrop = useCallback(
@@ -149,7 +151,7 @@ export function FileDropZone({
         type="file"
         accept={accept}
         onChange={handleFileInput}
-        disabled={isImporting}
+        disabled={isBusy}
         aria-label="Choose CSV file"
         className="peer sr-only"
       />
@@ -158,10 +160,10 @@ export function FileDropZone({
         className={
           "flex min-h-40 flex-col items-center justify-center gap-2 rounded-sm border border-dashed p-4 text-center text-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt " +
           (isDragging ? "border-cobalt bg-cobalt/10" : "border-ink/25 bg-white hover:border-cobalt") +
-          (isImporting ? " cursor-wait" : " cursor-pointer")
+          (isBusy ? " cursor-wait" : " cursor-pointer")
         }
       >
-        {isImporting ? (
+        {isBusy ? (
           <span role="status" className="flex flex-col items-center gap-2 text-sm text-ink">
             <Loader2 size={25} className="animate-spin text-cobalt" aria-hidden="true" />
             Importing CSV…
@@ -174,9 +176,9 @@ export function FileDropZone({
           </>
         )}
       </label>
-      {data?.success && beams.length > 0 && !isImporting ? (
+      {data?.success && beams.length > 0 && !isBusy ? (
         <p className="mt-2 text-sm text-emerald-800" role="status">
-          Imported {beams.length} beams{data.warnings?.length ? ` · ${data.warnings.length} warning(s)` : ""}
+          Imported {beams.length} {beams.length === 1 ? 'beam' : 'beams'}{data.warnings?.length ? ` · ${data.warnings.length} warning(s)` : ""}
         </p>
       ) : null}
       {displayError ? (
