@@ -78,10 +78,10 @@ tracks the remaining cases. Solver and native-host tracks retain their own plans
 ## Required Reading
 
 For Python work, start with the [API chooser](../reference/api-levels.md),
-[executable examples](../../Python/examples/README.md), and
+[executable examples](https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/Python/examples), and
 [completed usability scope](library-usability-improvement.md).
 For installed Excel/ETABS work, use the
 [WP10 plan](xll-product/wp10-etabs-read-adapter.md),
-[PF11 blueprint](xll-product/library-definition/pf11/README.md), and
+[PF11 blueprint](https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/docs/planning/xll-product/library-definition/pf11), and
 [current XLL plan](xll-product/current-plan.md).
 All deliveries follow the [canonical Git workflow](../git-automation/git-workflow-single-source.md).

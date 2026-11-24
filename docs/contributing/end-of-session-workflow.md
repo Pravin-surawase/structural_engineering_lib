@@ -16,7 +16,7 @@ tags: []
 **Created:** 2026-01-08
 **Last Updated:** 2026-11-24
 
-[AGENTS.md](../../AGENTS.md) and the
+[AGENTS.md](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/AGENTS.md) and the
 [canonical Git workflow](../git-automation/git-workflow-single-source.md)
 define routine delivery, audited integration, and handoff requirements.
 

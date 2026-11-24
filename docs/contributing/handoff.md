@@ -24,7 +24,7 @@ Start the task in its intended worktree.
 
 Check the [session brief](../planning/next-session-brief.md) for the latest
 verified work and the [task board](../TASKS.md) for the queue. Use
-[AGENTS.md](../../AGENTS.md) for repository instructions. If the start reports a
+[AGENTS.md](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/AGENTS.md) for repository instructions. If the start reports a
 hold, inspect the source binding with `./scripts/python_runtime.sh --diagnose`
 and the local lane with `./scripts/python_runtime.sh scripts/git_state.py --json`.
 
