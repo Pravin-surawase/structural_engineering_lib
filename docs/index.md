@@ -2,12 +2,12 @@
 
 Use the `structural-lib-is456` Python package and the React/FastAPI workbench for
 case-qualified IS 456 reinforced-concrete workflows. The current public release
-is `0.30.0` and requires Python 3.11 or newer.
+is `0.31.1` and requires Python 3.11 or newer.
 
 ## Install and verify
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.30.0"
+python3 -m pip install "structural-lib-is456==0.31.1"
 python3 -m structural_lib install-preflight
 ```
 

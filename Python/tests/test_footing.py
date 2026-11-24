@@ -709,10 +709,11 @@ class TestFootingFlexure:
         assert result.pt_B_percent >= 0.12
         assert any("minimum" in w.lower() for w in result.warnings)
 
-    def test_minimum_steel_uses_explicit_overall_thickness(self):
+    @pytest.mark.parametrize("Pu_kN", [100, 900])
+    def test_minimum_steel_uses_explicit_overall_thickness(self, Pu_kN):
         """Cl. 26.5.2.1 minimum area uses gross, not effective, depth."""
         common = {
-            "Pu_kN": 100,
+            "Pu_kN": Pu_kN,
             "L_mm": 1500,
             "B_mm": 1500,
             "d_mm": 400,
@@ -724,9 +725,17 @@ class TestFootingFlexure:
         thinner = footing_flexure(**common, overall_thickness_mm=450)
         thicker = footing_flexure(**common, overall_thickness_mm=600)
 
-        assert thinner.Ast_L_mm2 == pytest.approx(0.0012 * 1500 * 450)
-        assert thicker.Ast_L_mm2 == pytest.approx(0.0012 * 1500 * 600)
-        assert thicker.Ast_L_mm2 > thinner.Ast_L_mm2
+        for result, thickness_mm in ((thinner, 450), (thicker, 600)):
+            assert (
+                result.Ast_L_mm2
+                == result.Ast_B_mm2
+                == pytest.approx(0.0012 * 1500 * thickness_mm)
+            )
+            assert (
+                result.pt_L_percent
+                == result.pt_B_percent
+                == pytest.approx(0.12 * thickness_mm / 400)
+            )
 
     @pytest.mark.parametrize("overall_thickness_mm", [400, 350])
     def test_effective_depth_must_be_less_than_overall_thickness(

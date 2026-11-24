@@ -1,4 +1,4 @@
-"""Replay the synthetic paired Element Forces beam and column intake."""
+"""Replay paired ETABS beam and column intake for 22.7.0 or Altair 21.0.0."""
 
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ from structural_lib.services.etabs_paired_forces import (
     EtabsForceTable,
     EtabsMemberBinding,
     EtabsPairedForcesRequest,
+    EtabsStationSidePair,
     EtabsTableUnits,
     import_etabs_paired_forces,
 )
@@ -31,6 +32,7 @@ REFERENCE = (
     Path(__file__).resolve().parents[2]
     / "docs/verification/library-029-flow04-paired-intake.json"
 )
+ALTAIR_REFERENCE = REFERENCE.with_name("library-030-flow04-altair-v21.json")
 
 
 def build_request(
@@ -139,16 +141,72 @@ def build_request(
     )
 
 
+def build_altair_request(path: Path = ALTAIR_REFERENCE) -> EtabsPairedForcesRequest:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    basis = EtabsActionBasis(**data["basis"])
+    units = EtabsTableUnits(
+        ForceUnit(data["units"]["force"]),
+        MomentUnit(data["units"]["moment"]),
+        LengthUnit(data["units"]["station"]),
+    )
+    combinations = tuple(
+        EtabsCombination(entry["name"], entry["type"], entry["design_use"])
+        for entry in data["combinations"]
+    )
+    side_pairs = tuple(
+        EtabsStationSidePair(**item) for item in data.get("station_side_pairs", ())
+    )
+    kinds: tuple[Literal["beam", "column"], ...] = ("beam", "column")
+    members = []
+    tables = []
+    for kind in kinds:
+        member = data["members"][kind]
+        e1, e2, e3 = (Vector3(*axis) for axis in member["axis_vectors"])
+        members.append(
+            EtabsMemberBinding(
+                kind,
+                member["story"],
+                member["label"],
+                member["object_id"],
+                member["analysis_element_id"],
+                Vector3(*member["i_mm"]),
+                Vector3(*member["j_mm"]),
+                LocalAxes(f"{kind}-axes", e1, e2, e3),
+                tuple(sorted({row["station_mm"] for row in member["expected_rows"]})),
+                tuple(entry.combination_id for entry in combinations),
+            )
+        )
+        tables.append(
+            EtabsForceTable(
+                member["table_csv"].encode("utf-8"),
+                data["source"]["etabs_release"],
+                data["capture_id"],
+                basis,
+            )
+        )
+    return EtabsPairedForcesRequest(
+        tables[0], tables[1], basis, units, tuple(members), combinations, side_pairs
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--reference", type=Path, default=REFERENCE)
+    parser.add_argument("--reference", type=Path)
     parser.add_argument("--missing-combination", action="store_true")
-    parser.add_argument("--alternate-units", action="store_true")
+    layouts = parser.add_mutually_exclusive_group()
+    layouts.add_argument("--alternate-units", action="store_true")
+    layouts.add_argument("--altair-v21", action="store_true")
     args = parser.parse_args()
-    request = build_request(args.reference, alternate_units=args.alternate_units)
+    if args.altair_v21:
+        request = build_altair_request(args.reference or ALTAIR_REFERENCE)
+    else:
+        request = build_request(
+            args.reference or REFERENCE, alternate_units=args.alternate_units
+        )
     if args.missing_combination:
+        target = b",ULS_Gravity," if args.altair_v21 else b",U2,"
         table = request.beam_table
-        rows = [line for line in table.csv_bytes.splitlines() if b",U2," not in line]
+        rows = [line for line in table.csv_bytes.splitlines() if target not in line]
         request = replace(
             request, beam_table=replace(table, csv_bytes=b"\n".join(rows))
         )

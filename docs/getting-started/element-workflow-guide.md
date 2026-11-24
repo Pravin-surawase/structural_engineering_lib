@@ -5,7 +5,7 @@
 **Status:** Draft
 **Importance:** High
 **Created:** 2026-11-18
-**Last Updated:** 2026-11-18
+**Last Updated:** 2026-11-24
 **Abstract:** Published Python workflows, engineering sources, and completion criteria for StructLib element cases.
 
 ---
@@ -14,7 +14,7 @@
 
 Use this guide to choose a public Python workflow, run a known example and
 decide what evidence is needed to use or extend it. The examples below are
-anchored to the published **StructLib 0.31.0** package. The
+anchored to the published **StructLib 0.31.1** package. The
 [capability register](../verification/indian-code-capability-coverage.json)
 owns the exact supported and held cases. The
 [generated contracts](../reference/family-facade-contracts.md) own signatures,
@@ -24,13 +24,16 @@ With Python 3.11 or newer and an activated virtual environment, install the
 release used in this guide.
 
 ```bash
-python -m pip install "structural-lib-is456==0.31.0"
+python -m pip install "structural-lib-is456==0.31.1"
 python -m structural_lib install-preflight --json
 ```
 
-Check that the reported version is 0.31.0 and the package origin belongs to
-the intended environment. See the [PyPI release](https://pypi.org/project/structural-lib-is456/0.31.0/)
+Check that the reported version is 0.31.1 and the package origin belongs to
+the intended environment. See the [PyPI release](https://pypi.org/project/structural-lib-is456/0.31.1/)
 and [PyPA virtual-environment guide](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/).
+
+For continuous one-way slab results from 0.31.0, follow the
+[0.31.1 rerun guidance](release-status.md#rerun-affected-continuous-slab-checks).
 
 1. Choose a recipe whose geometry, support, action and reinforcement basis
    match your case. Run its first Python block with the supplied inputs.
@@ -81,9 +84,9 @@ and review evidence.
 | Combined footing | [Symmetric combined footing](../cookbook/python/combined-footing-symmetric.md) | Symmetric rectangular footing under equal concentric loads |
 | Strap footing | [Property-line strap footing](../cookbook/python/strap-footing-property-line.md) | Two rectangular pads connected by a prismatic strap that spans clear of soil, with the supplied action and review basis |
 
-The existing verifier replayed **all 13 recipes** and **29 acceptance cases**
-against the public wheel in an isolated package directory. Its SHA-256 matched
-the [0.31.0 release record](../verification/library-0310-release-artifacts.json).
+The release verifiers replayed **all 13 recipes** and **29 acceptance cases**
+against the public 0.31.1 wheel in isolated package directories. Its SHA-256
+matched the [0.31.1 release record](../verification/library-0311-release-artifacts.json).
 Each recipe establishes its named case. Check the
 [evidence crosswalk](../verification/is456-library-first-evidence.md) before
 building around more general geometry, loading, serviceability or detailing.
@@ -101,8 +104,10 @@ cover, plus the supporting-area and soil evidence required by the chosen
 contract. Copying a fixture's approval fields into a project request cannot
 supply those project facts. Use a separate checked case for each revision.
 
-Once your reviewed input is in `footing.json`, this calls the same public
-function and writes the result as JSON to standard output.
+To try the file-based example with the same fixture, save the recipe's
+`request_json` contents as `footing.json` in the working directory. The
+example reads that file and writes the result as JSON to standard output.
+Use your own reviewed input file for project work.
 
 ```python
 import json
@@ -114,6 +119,9 @@ request = isolated_footing.load_json(Path("footing.json").read_bytes())
 result = isolated_footing.design(request)
 print(json.dumps(result.to_dict(), indent=2, allow_nan=False))
 ```
+
+For the fixture, `envelope.engineering_status` is `PASS` and
+`envelope.review_status` is `QUALIFIED_REVIEW_REQUIRED`.
 
 Use the combined or strap recipe when its actual topology fits. Eccentric
 isolated footing, partial contact, raft and pile-cap workflows need their own

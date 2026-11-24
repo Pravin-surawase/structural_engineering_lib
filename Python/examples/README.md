@@ -1,15 +1,15 @@
 # Python Examples
 
 Use a source tag that matches the installed package version. These commands
-pair the public 0.30.0 wheel with the released example files. Run the examples
+pair the public 0.31.0 wheel with the released example files. Run the examples
 from the repository root so the interpreter resolves the installed package.
 
 ```bash
-git clone --branch v0.30.0 --single-branch https://github.com/Pravin-surawase/structural_engineering_lib.git
+git clone --branch v0.31.0 --single-branch https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python3 -m pip install "structural-lib-is456==0.30.0"
+python3 -m pip install "structural-lib-is456==0.31.1"
 python3 -m structural_lib install-preflight
 ```
 
@@ -114,7 +114,7 @@ WP06 paths and their bound WP07 package for physical multilayer geometry.
 
 `canonical_workflows.py` uses public request groups, a beam-to-BBS workflow,
 column and slab checks, structured errors and a JSON round-trip. Run it from the
-matching 0.30.0 checkout with the published wheel installed.
+matching 0.31.0 checkout with the published wheel installed.
 
 ```bash
 python3 -I Python/examples/canonical_workflows.py
@@ -164,7 +164,7 @@ python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
 | Example | What it demonstrates | Writes files? |
 |---|---|---|
 | `complete_member_workflow.py` | Single-layer and multilayer beams through checks, physical paths, BBS and HTML. [Member guide](../../docs/cookbook/python/ordinary-beam-member.md) | Yes, with `--output-dir` |
-| `canonical_workflows.py` | Typed canonical beam, column and slab journeys on the matching 0.30.0 wheel | No |
+| `canonical_workflows.py` | Typed canonical beam, column and slab journeys on the matching 0.31.0 wheel | No |
 | `beam_comparator_reference.py` | Installed-package section capacities for three supplied beam layouts. [Beam comparison guide](../../docs/cookbook/python/beam-comparator-reference.md) | No |
 | `torsion_station_reference.py` | Correct longitudinal-corner geometry for the torsion station check with passing/failing links and explicit full-member HOLD. [Torsion reference](../../docs/library/reference/wp02-shear-torsion.md#packet-d-corner-geometry-correction) | No |
 | `physical_torsion_member.py` | D2 physical torsion beam, signed support/crosshead transfer, cage, hooks, direct tension anchorage and bound draft outputs; D3 HOLD. [Guide](../../docs/cookbook/python/physical-torsion-member.md) | Yes, with `--output-dir` |
@@ -202,7 +202,7 @@ python3 examples/full_pipeline_synthetic.py \
   --output-dir ./output/demo_50
 ```
 
-Install `structural-lib-is456[dxf]==0.30.0` and omit `--skip-dxf` to generate
+Install `structural-lib-is456[dxf]==0.31.1` and omit `--skip-dxf` to generate
 drawings. `sample_beam_design.csv` is strict CLI input;
 `sample_building_beams.csv` is an educational fixture for
 `complete_beam_design.py` and includes output-like columns that the strict CLI
