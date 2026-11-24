@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-11-24
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -14,18 +14,28 @@ tags: []
 **Status:** Production Ready
 **Importance:** Low
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-11-24
 
 ---
 
-This repository is primarily standard-library based. Optional and development tools introduce third-party licenses.
+The Python distribution uses a base runtime dependency and optional
+dependency groups. The [package manifest](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/Python/pyproject.toml)
+lists their version constraints.
 
 ## Runtime Dependencies
-- Standard library only (core runtime)
+
+- `pydantic>=2.0` for validating the package's data models. Pip installs its
+  required dependencies with the base package.
 
 ## Optional Dependencies
-- `ezdxf` (DXF export)
-- `matplotlib` (rendering support)
+
+| Group reported by preflight | Required modules |
+| --- | --- |
+| `dxf` | ezdxf |
+| `render` | ezdxf and Matplotlib |
+| `report` | Jinja2 |
+| `pdf` | ReportLab and WeasyPrint |
+| `validation` | jsonschema |
 
 ## Development Dependencies
 - `pytest`
