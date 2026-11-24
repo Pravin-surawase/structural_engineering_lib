@@ -8,7 +8,7 @@ import asyncio
 import json
 
 from fastapi.testclient import TestClient
-from starlette.types import Message
+from starlette.types import Message, Scope
 
 from fastapi_app.main import app
 from fastapi_app.routers.streaming import _stream_batch_response, job_manager
@@ -275,7 +275,21 @@ class TestJobStatus:
                         # The disconnect watcher cancels the response during send.
                         await asyncio.Future()
 
-            await asyncio.wait_for(response({"type": "http"}, receive, send), timeout=5)
+            scope: Scope = {
+                "type": "http",
+                "asgi": {"version": "3.0", "spec_version": "2.4"},
+                "http_version": "1.1",
+                "method": "POST",
+                "scheme": "http",
+                "path": "/stream/batch-design",
+                "raw_path": b"/stream/batch-design",
+                "root_path": "",
+                "query_string": b"",
+                "headers": [],
+                "client": ("127.0.0.1", 50000),
+                "server": ("127.0.0.1", 8000),
+            }
+            await asyncio.wait_for(response(scope, receive, send), timeout=5)
 
         asyncio.run(disconnect_after_first_result())
 
