@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { Navigate, parsePath, useLocation, useParams } from 'react-router-dom';
 import {
   PROJECT_STAGES,
   projectStagePath,
@@ -18,13 +18,13 @@ export function LegacyRouteRedirect({ legacyPath }: { legacyPath: string }) {
   if (needsProject && !projectId && ['idle', 'loading'].includes(workspaceLoadState)) {
     return <p className="p-6 text-sm text-zinc-400" role="status">Restoring project…</p>;
   }
-  const destination = resolveLegacyDestination(legacyPath, projectId) ?? '/workbench';
+  const destination = parsePath(resolveLegacyDestination(legacyPath, projectId) ?? '/workbench');
   const search = new URLSearchParams(location.search);
+  new URLSearchParams(destination.search).forEach((value, key) => search.set(key, value));
   if (legacyPath === '/design/results' && resultLifecycle !== 'current') {
     search.set('recovery', 'result-required');
   }
-  const query = search.toString();
-  return <Navigate to={`${destination}${query ? `?${query}` : ''}`} replace />;
+  return <Navigate to={{ ...destination, search: search.toString() }} replace />;
 }
 
 export function ProjectStageRoute({
