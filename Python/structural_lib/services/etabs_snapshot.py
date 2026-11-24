@@ -307,6 +307,10 @@ class ETABSSnapshotBuildResultV1(BaseModel):
     snapshot: ETABSCanonicalSnapshotV1 | None
     beam_requests: tuple[ProjectBeamDesignInputV1, ...]
 
+    # Internal preview consumers can reuse the verified geometry and row ledger
+    # without changing the serialized snapshot or its hash basis.
+    source_import: LosslessImportResultV1 | None = Field(default=None, exclude=True)
+
     @model_validator(mode="after")
     def _blocked_results_expose_no_requests(self) -> ETABSSnapshotBuildResultV1:
         if self.status is ETABSSnapshotStatus.BLOCKED:
@@ -1277,6 +1281,7 @@ def build_etabs_canonical_snapshot_v1(
         issues=(),
         snapshot=snapshot,
         beam_requests=beam_requests,
+        source_import=import_result,
     )
 
 

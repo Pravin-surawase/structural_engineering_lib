@@ -1334,6 +1334,27 @@ def cmd_install_preflight(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_floor_review(args: argparse.Namespace) -> int:
+    """Preview or evaluate a local floor packet and emit its JSON review package."""
+    from .services.floor_review import review_floor_v1
+
+    package = review_floor_v1(
+        args.input, profile=args.profile, evaluate=args.phase == "review"
+    )
+    content = json.dumps(package, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+    if args.output:
+        try:
+            # Exclusive creation prevents accidental replacement of a source artifact.
+            with Path(args.output).open("x", encoding="utf-8") as stream:
+                stream.write(content)
+        except OSError as exc:
+            _print_error(str(exc))
+            return 2
+    else:
+        sys.stdout.write(content)
+    return 0 if package["intake_status"] == "ACCEPTED" else 2
+
+
 def _build_parser() -> argparse.ArgumentParser:
     """Build the main argument parser with subcommands."""
 
@@ -1443,6 +1464,21 @@ def _build_parser() -> argparse.ArgumentParser:
         "-o", "--output", help="Output file (if omitted, prints to stdout)"
     )
     excel_parser.set_defaults(func=cmd_excel_v1)
+
+    from .services.floor_review import FLOOR_REVIEW_PROFILES
+
+    floor_parser = subparsers.add_parser(
+        "floor-review", help="Preview or review one floor from local beam inputs"
+    )
+    floor_parser.add_argument("phase", choices=("preview", "review"))
+    floor_parser.add_argument(
+        "input", type=Path, help="Prepared beam file or ETABS packet manifest"
+    )
+    floor_parser.add_argument("--profile", required=True, choices=FLOOR_REVIEW_PROFILES)
+    floor_parser.add_argument(
+        "-o", "--output", help="New review JSON file (defaults to stdout)"
+    )
+    floor_parser.set_defaults(func=cmd_floor_review)
 
     # Design subcommand
     design_parser = subparsers.add_parser(

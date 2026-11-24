@@ -1,0 +1,6 @@
+TABLE:  Element Forces - Columns
+Story,Column,Unique Name,Output Case,Case Type,Station,P,V2,V3,T,M2,M3,Element,Elem Station,Location
+,,,,,mm,kN,kN,kN,kN-m,kN-m,kN-m,,mm,
+L2,C1,201,ULS-G1,Combination,500,-500,32,-18,1.25,-23,18.75,2001,500,
+L2,C1,201,ULS-G2,Combination,500,-450,32,-18,1.25,-23,18.75,2001,500,
+L2,C1,201,SLS-G1,Combination,500,-400,32,-18,1.25,-23,18.75,2001,500,
