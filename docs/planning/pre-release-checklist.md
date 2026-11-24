@@ -5,11 +5,11 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-11-18
+**Last Updated:** 2026-11-22
 
 ## Current State
 
-Current source metadata: 0.31.0.
+Current source metadata: 0.31.1.
 
 **0.30.0 is published and verified.** The [release status](../getting-started/release-status.md)
 and [publication receipt](../getting-started/releases.md#v0300-published-and-verified)

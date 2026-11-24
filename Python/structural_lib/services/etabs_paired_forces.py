@@ -1,4 +1,4 @@
-"""Portable intake of paired ETABS 22.7.0 Element Forces table projections."""
+"""Portable intake of paired ETABS Element Forces table projections."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import hashlib
 import io
 import math
 from collections.abc import Iterator
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from typing import Literal
 
 from structural_lib.beam.analysis import (
@@ -18,6 +18,7 @@ from structural_lib.beam.analysis import (
     MomentUnit,
     RawActionRow,
     RawActionSnapshot,
+    RawStationSideRow,
     Vector3,
     normalize_action_snapshot,
 )
@@ -34,6 +35,7 @@ from structural_lib.beam.semantics import (
     rejected_result,
     semantic_hash,
 )
+from structural_lib.core.analysis_snapshot import StationSide
 
 __all__ = [
     "EtabsActionBasis",
@@ -41,6 +43,7 @@ __all__ = [
     "EtabsForceTable",
     "EtabsMemberBinding",
     "EtabsPairedForcesRequest",
+    "EtabsStationSidePair",
     "EtabsTableUnits",
     "import_etabs_paired_forces",
 ]
@@ -51,6 +54,14 @@ _PROVENANCE = Provenance(
     "etabs-22.7.0-element-forces-paired-v1",
     (
         "CSI ETABS 22.7.0 Element Forces - Beams / Columns",
+        "CSI ETABS Analysis Reference Manual, Frame Element Internal Forces",
+    ),
+)
+_PROVENANCE_21 = Provenance(
+    "no-code-calculation",
+    "etabs-21.0.0-element-forces-paired-v1",
+    (
+        "CSI ETABS 21.0.0 Element Forces - Beams / Columns",
         "CSI ETABS Analysis Reference Manual, Frame Element Internal Forces",
     ),
 )
@@ -65,11 +76,21 @@ _STATION_LABELS = {"mm": LengthUnit.MM, "m": LengthUnit.M}
 _DESIGN_USES = ("ultimate", "service", "sustained_service")
 _MEMBER_KINDS = ("beam", "column")
 _STATION_TOL_MM = 1e-6
+_ETABS_21_RELEASE = "21.0.0"
+_ETABS_22_RELEASE = "22.7.0"
+# Bound the native kip or kip-ft residuals admitted by the 21.0.0 profile.
+_ETABS_21_BEAM_ZERO_LIMIT = 1e-12
+_LOCATION_SIDES = {
+    "": StationSide.CONTINUOUS,
+    "Before": StationSide.BEFORE,
+    "After": StationSide.AFTER,
+}
+_PAIRED_SIDES = (StationSide.BEFORE, StationSide.AFTER)
 
 
 @dataclass(frozen=True)
 class EtabsActionBasis:
-    """Caller-supplied identity from an independently retained model and run."""
+    """Caller-supplied identity from a retained model and analysis capture."""
 
     model_id: str
     model_sha256: str
@@ -116,6 +137,14 @@ class EtabsCombination:
 
 
 @dataclass(frozen=True)
+class EtabsStationSidePair:
+    """Two required sides of a declared interior beam station in each combination."""
+
+    object_id: str
+    station_mm: float
+
+
+@dataclass(frozen=True)
 class EtabsPairedForcesRequest:
     beam_table: EtabsForceTable
     column_table: EtabsForceTable
@@ -123,6 +152,7 @@ class EtabsPairedForcesRequest:
     configured_units: EtabsTableUnits
     members: tuple[EtabsMemberBinding, ...]
     combinations: tuple[EtabsCombination, ...]
+    station_side_pairs: tuple[EtabsStationSidePair, ...] = ()
 
 
 class _TableError(ValueError):
@@ -204,13 +234,15 @@ def _table_rows(
         "Element",
         "Elem Station",
     )
+    is_etabs_21 = table.etabs_release == _ETABS_21_RELEASE
+    if table.etabs_release not in (_ETABS_21_RELEASE, _ETABS_22_RELEASE):
+        raise _TableError("The paired profiles require ETABS 21.0.0 or 22.7.0.")
+    has_step_type = kind == "beam" and not is_etabs_21
     columns = (
         (*identity, "Step Type", *values)
-        if kind == "beam"
+        if has_step_type
         else (*identity, *values, "Location")
     )
-    if table.etabs_release != "22.7.0":
-        raise _TableError("The paired profile requires ETABS release 22.7.0.")
     reader = csv.reader(io.StringIO(table.csv_bytes.decode("utf-8-sig")), strict=True)
     title = next(reader, [])
     if (
@@ -228,9 +260,11 @@ def _table_rows(
     station_label, p, v2, v3, t, m2, m3, element, element_station = unit_row[
         start : start + 9
     ]
-    station = _STATION_LABELS.get(station_label)
-    force = _FORCE_LABELS.get(p)
-    moment = _MOMENT_LABELS.get(t)
+    station = ({"ft": LengthUnit.FT} if is_etabs_21 else _STATION_LABELS).get(
+        station_label
+    )
+    force = ({"kip": ForceUnit.KIP} if is_etabs_21 else _FORCE_LABELS).get(p)
+    moment = ({"kip-ft": MomentUnit.KIP_FT} if is_etabs_21 else _MOMENT_LABELS).get(t)
     if (
         station is None
         or force is None
@@ -255,8 +289,8 @@ def _table_rows(
             reader.line_num,
             tuple(row),
             common,
-            cells[5] if kind == "beam" else "",
-            cells[14] if kind == "column" else "",
+            cells[5] if has_step_type else "",
+            "" if has_step_type else cells[-1],
         )
 
 
@@ -301,7 +335,10 @@ def _bindings(
                 )
             )
             or not stations
-            or not all(math.isfinite(x) and 0 <= x <= length for x in stations)
+            or not all(
+                math.isfinite(x) and 0 <= x <= length + _STATION_TOL_MM
+                for x in stations
+            )
             or any(
                 b - a <= 2 * _STATION_TOL_MM
                 for a, b in zip(stations, stations[1:], strict=False)
@@ -315,6 +352,36 @@ def _bindings(
             )
         lengths[member.object_id] = length
     return members, lengths, combinations
+
+
+def _side_pair_stations(
+    request: EtabsPairedForcesRequest,
+    members: dict[str, EtabsMemberBinding],
+    lengths: dict[str, float],
+) -> set[tuple[str, float]]:
+    if (
+        request.station_side_pairs
+        and request.beam_table.etabs_release != _ETABS_21_RELEASE
+    ):
+        raise _TableError("Paired station sides require ETABS release 21.0.0.")
+    stations: set[tuple[str, float]] = set()
+    for pair in request.station_side_pairs:
+        key = (pair.object_id, pair.station_mm)
+        member = members.get(pair.object_id)
+        if (
+            member is None
+            or member.member_kind != "beam"
+            or pair.station_mm not in member.required_stations_mm
+            or not _STATION_TOL_MM
+            < pair.station_mm
+            < lengths[pair.object_id] - _STATION_TOL_MM
+            or key in stations
+        ):
+            raise _TableError(
+                "Each side pair must name a distinct declared interior beam station."
+            )
+        stations.add(key)
+    return stations
 
 
 def _number(value: str) -> float:
@@ -334,6 +401,9 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
     """
     tables = (request.beam_table, request.column_table)
     hashes = tuple(hashlib.sha256(table.csv_bytes).hexdigest() for table in tables)
+    release = request.beam_table.etabs_release
+    is_etabs_21 = release == _ETABS_21_RELEASE
+    provenance = _PROVENANCE_21 if is_etabs_21 else _PROVENANCE
     identities = {
         "table_sha256": hashes,
         "table_bases": tuple(table.basis for table in tables),
@@ -342,35 +412,52 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
         "current_basis": request.current_basis,
     }
     try:
+        side_inputs = (
+            {"station_side_pairs": request.station_side_pairs}
+            if request.station_side_pairs
+            else {}
+        )
         inputs = effective_inputs(
             **identities,
             configured_units=request.configured_units,
             members=request.members,
             combinations=request.combinations,
+            **side_inputs,
         )
     except ValueError as exc:
         return rejected_result(
             _OPERATION,
             effective_inputs(**identities),
             (_issue("IMPORT.INVALID_BINDING", str(exc), "members"),),
-            provenance=_PROVENANCE,
+            provenance=provenance,
         )
     issues: list[Diagnostic] = []
     raw_rows: list[RawActionRow] = []
     source_rows: list[dict[str, object]] = []
-    seen: set[tuple[str, str, float]] = set()
-    declared_seen: set[tuple[str, str, float]] = set()
+    seen: set[tuple[str, str, float, StationSide]] = set()
+    declared_seen: set[tuple[str, str, float, StationSide]] = set()
+    pair_coordinates: dict[tuple[str, str, float], tuple[float, float]] = {}
     units = request.configured_units
     source_id = semantic_hash("etabs_paired_source", identities)
     try:
+        if release != request.column_table.etabs_release:
+            raise _TableError("Paired tables must use the same ETABS release.")
         if not all(
             table.capture_id.strip() and _basis_valid(table.basis) for table in tables
         ) or not _basis_valid(request.current_basis):
             raise _TableError(
                 "Each source and the current model require complete run identities."
             )
+        if not (
+            isinstance(units.force, ForceUnit)
+            and isinstance(units.moment, MomentUnit)
+            and isinstance(units.station, LengthUnit)
+        ):
+            raise _TableError("Configured units must use the supported unit types.")
         members, lengths, combinations = _bindings(request)
-        station_scale = 1000 if units.station == LengthUnit.M else 1
+        side_pair_stations = _side_pair_stations(request, members, lengths)
+        station_scale = units.station.mm_per_unit
+        beam_zero_limit = _ETABS_21_BEAM_ZERO_LIMIT if is_etabs_21 else 0.0
         kinds: tuple[Literal["beam", "column"], ...] = ("beam", "column")
         for table, kind, digest in zip(tables, kinds, hashes, strict=True):
             for source in _table_rows(table, kind, units):
@@ -388,17 +475,30 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
                     )
                 station, elem_station = _number(cells[5]), _number(cells[13])
                 station_mm = station * station_scale
+                expected = next(
+                    (
+                        x
+                        for x in member.required_stations_mm
+                        if abs(x - station_mm) <= _STATION_TOL_MM
+                    ),
+                    None,
+                )
+                side = _LOCATION_SIDES.get(source.location)
+                paired = (
+                    expected is not None and (object_id, expected) in side_pair_stations
+                )
                 if not (
                     0 <= station_mm <= lengths[object_id] + _STATION_TOL_MM
                     and elem_station >= 0
                     and abs(elem_station * station_scale - station_mm)
                     <= _STATION_TOL_MM
-                    and not source.location
+                    and side is not None
+                    and paired == (side != StationSide.CONTINUOUS)
                 ):
                     raise _TableError(
                         f"Unsupported station or station side at {kind} line {line}."
                     )
-                key = (object_id, case, station_mm)
+                key = (object_id, case, station_mm, side)
                 if key in seen:
                     raise _TableError(f"Duplicate force row at {kind} line {line}.")
                 seen.add(key)
@@ -420,14 +520,13 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
                             row_id,
                         )
                     )
-                expected = next(
-                    (
-                        x
-                        for x in member.required_stations_mm
-                        if abs(x - station_mm) <= _STATION_TOL_MM
-                    ),
-                    None,
-                )
+                if paired and expected is not None:
+                    coordinates = (station, elem_station)
+                    pair = (object_id, case, expected)
+                    if pair_coordinates.setdefault(pair, coordinates) != coordinates:
+                        raise _TableError(
+                            f"Paired sides have different coordinates at {kind} line {line}."
+                        )
                 if expected is None or case not in member.required_combination_ids:
                     issues.append(
                         _issue(
@@ -436,14 +535,16 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
                             row_id,
                         )
                     )
-                elif (object_id, case, expected) in declared_seen:
+                elif (object_id, case, expected, side) in declared_seen:
                     raise _TableError(
                         f"Duplicate declared station at {kind} line {line}."
                     )
                 else:
-                    declared_seen.add((object_id, case, expected))
+                    declared_seen.add((object_id, case, expected, side))
                 p, v2, v3, t, m2, m3 = map(_number, cells[6:12])
-                if (kind == "beam" and (p or v3 or m2)) or (kind == "column" and p > 0):
+                if (
+                    kind == "beam" and max(abs(p), abs(v3), abs(m2)) > beam_zero_limit
+                ) or (kind == "column" and p > 0):
                     issues.append(
                         _issue(
                             "IMPORT.ACTION_OUTSIDE_PROFILE",
@@ -452,28 +553,29 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
                         )
                     )
                 qualified_id = f"{story}/{label}"
-                raw_rows.append(
-                    RawActionRow(
-                        row_id,
-                        qualified_id,
-                        qualified_id,
-                        object_id,
-                        cells[12],
-                        member.local_axes.axis_id,
-                        station,
-                        elem_station,
-                        case,
-                        source.step_type or case_type,
-                        None,
-                        concurrency,
-                        p,
-                        v2,
-                        v3,
-                        t,
-                        m2,
-                        m3,
-                    )
+                raw_row = RawActionRow(
+                    row_id,
+                    qualified_id,
+                    qualified_id,
+                    object_id,
+                    cells[12],
+                    member.local_axes.axis_id,
+                    station,
+                    elem_station,
+                    case,
+                    source.step_type or case_type,
+                    None,
+                    concurrency,
+                    p,
+                    v2,
+                    v3,
+                    t,
+                    m2,
+                    m3,
                 )
+                if side != StationSide.CONTINUOUS:
+                    raw_row = RawStationSideRow(**asdict(raw_row), station_side=side)
+                raw_rows.append(raw_row)
                 source_rows.append(
                     {
                         "source_row_id": row_id,
@@ -489,17 +591,25 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
                     }
                 )
         required = {
-            (member.object_id, case, station)
+            (member.object_id, case, station, side)
             for member in members.values()
             for case in member.required_combination_ids
             for station in member.required_stations_mm
+            for side in (
+                _PAIRED_SIDES
+                if (member.object_id, station) in side_pair_stations
+                else (StationSide.CONTINUOUS,)
+            )
         }
-        for object_id, case, station in sorted(required - declared_seen):
+        for object_id, case, station, side in sorted(required - declared_seen):
+            location = f"{object_id}/{case}/{station:g} mm"
+            if side != StationSide.CONTINUOUS:
+                location = f"{location}/{side.value}"
             issues.append(
                 _issue(
                     "IMPORT.REQUIRED_ROW_MISSING",
                     "The declared combination and station row is missing.",
-                    f"{object_id}/{case}/{station:g} mm",
+                    location,
                 )
             )
         stale = any(table.basis != request.current_basis for table in tables)
@@ -544,7 +654,7 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
             _OPERATION,
             inputs,
             (_issue("IMPORT.INVALID_TABLE_OR_BINDING", str(exc), "tables"),),
-            provenance=_PROVENANCE,
+            provenance=provenance,
         )
     if issues:
         return partial_result(
@@ -552,7 +662,7 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
             inputs,
             outputs,
             issues,
-            provenance=_PROVENANCE,
+            provenance=provenance,
             freshness=(
                 FreshnessState.STALE
                 if stale or different_capture
@@ -564,5 +674,5 @@ def import_etabs_paired_forces(request: EtabsPairedForcesRequest) -> OperationRe
         inputs,
         outputs,
         engineering=EngineeringState.NOT_EVALUATED,
-        provenance=_PROVENANCE,
+        provenance=provenance,
     )

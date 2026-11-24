@@ -1,0 +1,3 @@
+beam_id,story,b_mm,D_mm,tension_bar_diameter_mm,span_mm,cover_mm,fck_nmm2,fy_nmm2,mu_knm,vu_kn,stirrup_diameter_mm,stirrup_spacing_mm
+B-101,Level 01,300,500,20,6000,40,25,500,-180,120,8,150
+B-102,Level 01,300,450,16,5000,40,25,500,145,-95,8,175

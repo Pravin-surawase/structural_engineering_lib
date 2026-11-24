@@ -1,0 +1,21 @@
+TABLE:  Element Forces - Beams
+Story,Beam,Unique Name,Output Case,Case Type,Step Type,Station,P,V2,V3,T,M2,M3,Element,Elem Station
+,,,,,,mm,kN,kN,kN,kN-m,kN-m,kN-m,,mm
+L2,B1,101,ULS-G1,Combination,,200,0,70,0,0,0,-85,1001,200
+L2,B1,101,ULS-G1,Combination,,2500,0,14,0,0,0,118,1001,2500
+L2,B1,101,ULS-G1,Combination,,4800,0,-80,0,0,0,-75,1001,4800
+L2,B1,101,ULS-G2,Combination,,200,0,74,0,0,0,-91,1001,200
+L2,B1,101,ULS-G2,Combination,,2500,0,17,0,0,0,105,1001,2500
+L2,B1,101,ULS-G2,Combination,,4800,0,-82,0,0,0,-79,1001,4800
+L2,B1,101,SLS-G1,Combination,,200,0,48,0,0,0,-61,1001,200
+L2,B1,101,SLS-G1,Combination,,2500,0,7,0,0,0,81,1001,2500
+L2,B1,101,SLS-G1,Combination,,4800,0,-50,0,0,0,-52,1001,4800
+L2,B2,102,ULS-G1,Combination,,200,0,128,0,0,0,-238,1002,200
+L2,B2,102,ULS-G1,Combination,,2000,0,15,0,0,0,130,1002,2000
+L2,B2,102,ULS-G1,Combination,,3800,0,-83,0,0,0,-92,1002,3800
+L2,B2,102,ULS-G2,Combination,,200,0,94,0,0,0,-180,1002,200
+L2,B2,102,ULS-G2,Combination,,2000,0,21,0,0,0,138,1002,2000
+L2,B2,102,ULS-G2,Combination,,3800,0,-90,0,0,0,-98,1002,3800
+L2,B2,102,SLS-G1,Combination,,200,0,85,0,0,0,-143,1002,200
+L2,B2,102,SLS-G1,Combination,,2000,0,9,0,0,0,94,1002,2000
+L2,B2,102,SLS-G1,Combination,,3800,0,-55,0,0,0,-61,1002,3800

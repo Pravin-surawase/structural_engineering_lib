@@ -1,0 +1,95 @@
+{
+  "schema_version": "floor-etabs-snapshot-packet/v1",
+  "review_story": "L1",
+  "current_basis": {
+    "model_id": "P5-TRIAL-HALL",
+    "model_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "analysis_revision": "P5-SYNTHETIC-RUN",
+    "section_stiffness_connectivity_revision": "P5-SYNTHETIC-MODEL"
+  },
+  "geometry": {
+    "file": "connectivity-frame.csv",
+    "sha256": "93fb3481176dbaf73e9e1fb91a9889560c141c5af97202aca2e9eb8bba5f8fc1",
+    "capture_id": "P5-EXPORT-001",
+    "basis": {
+      "model_id": "P5-TRIAL-HALL",
+      "model_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "analysis_revision": "P5-SYNTHETIC-RUN",
+      "section_stiffness_connectivity_revision": "P5-SYNTHETIC-MODEL"
+    }
+  },
+  "forces": {
+    "file": "element-forces-frames.csv",
+    "sha256": "45aa836c480b983dd137f5433f99cfd7c7f9fc59ffb5818a3a203437d7cb44d7",
+    "capture_id": "P5-EXPORT-001",
+    "basis": {
+      "model_id": "P5-TRIAL-HALL",
+      "model_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "analysis_revision": "P5-SYNTHETIC-RUN",
+      "section_stiffness_connectivity_revision": "P5-SYNTHETIC-MODEL"
+    }
+  },
+  "model_definition": {
+    "file": "trial-hall-model.e2k",
+    "sha256": "ecca626b481fc210c9dad0cbd1f64fac607dcf65bc4c49d2101cb773fca2342b",
+    "capture_id": "P5-EXPORT-001",
+    "basis": {
+      "model_id": "P5-TRIAL-HALL",
+      "model_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "analysis_revision": "P5-SYNTHETIC-RUN",
+      "section_stiffness_connectivity_revision": "P5-SYNTHETIC-MODEL"
+    }
+  },
+  "project_export_identity": {
+    "project_id": "P5-TRIAL-HALL",
+    "export_id": "P5-EXPORT-001",
+    "source_edb_name": "trial-hall-model.edb",
+    "source_edb_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "exported_at_utc": "2026-08-23T12:00:00Z",
+    "etabs_version": "23.0.0 Trial"
+  },
+  "units": {
+    "coordinate_length": "m",
+    "station_length": "m",
+    "force": "kN",
+    "moment": "kN-m",
+    "section_dimension": "mm",
+    "material_stress": "N/mm2"
+  },
+  "local_axis_mapping": {
+    "moment_source_component": "M3",
+    "moment_destination": "mu_knm",
+    "shear_source_component": "V2",
+    "shear_destination": "vu_kn",
+    "extrema_operation": "ABSOLUTE_EXTREMA_WITH_SIGNED_CONCURRENT_VALUES",
+    "mapping_reference": "P5 synthetic axes review"
+  },
+  "result_identity": {
+    "kind": "LOAD_COMBINATION",
+    "name": "ULS-DL-LL",
+    "source_table_name": "Element Forces - Frames",
+    "envelope_basis": "INDEPENDENT_ABSOLUTE_EXTREMA_WITH_CONCURRENT_VALUES",
+    "selection_reference": "P5 synthetic export selection"
+  },
+  "defaults": {
+    "fck_mpa": 25,
+    "fy_mpa": 500,
+    "cover_mm": 40,
+    "min_bar_dia_mm": 12,
+    "max_bar_dia_mm": 32,
+    "stirrup_dia_mm": 8
+  },
+  "beam_request_basis": {
+    "stirrup_diameter_mm": 8,
+    "tension_bar_diameter_mm": 20
+  },
+  "approved_exclusions": [
+    {
+      "artifact_role": "geometry",
+      "source_row_number": 4,
+      "reason_code": "NON_BEAM_FRAME",
+      "reason": "Column is outside the two-component beam profile",
+      "approval_reference": "P5 synthetic fixture scope"
+    }
+  ]
+}

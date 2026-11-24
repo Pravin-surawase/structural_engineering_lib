@@ -63,19 +63,18 @@ def _design_direction(
             clause_ref="Cl. 34.2.3.1",
         )
 
-    # Steel percentage
-    pt = (Ast_mm2 / (width_mm * d_mm)) * 100.0
-
-    # IS 456 Cl 26.5.2.1: Minimum steel check
+    # Cl. 34.5.1 and 26.5.2.1 use the gross section for minimum steel.
     pt_min = 0.12 if fy >= 415 else 0.15
-    if pt < pt_min:
-        Ast_mm2 = pt_min * width_mm * overall_thickness_mm / 100.0
-        pt = (Ast_mm2 / (width_mm * d_mm)) * 100.0
+    minimum_Ast_mm2 = pt_min * width_mm * overall_thickness_mm / 100.0
+    if Ast_mm2 < minimum_Ast_mm2:
+        Ast_mm2 = minimum_Ast_mm2
         warnings.append(
             f"{direction_label}-direction: steel increased to minimum "
             f"{pt_min}% per Cl 26.5.2.1"
         )
 
+    # The one-way shear check uses the steel percentage on effective depth.
+    pt = (Ast_mm2 / (width_mm * d_mm)) * 100.0
     return Mu_kNm, Ast_mm2, pt, warnings
 
 
