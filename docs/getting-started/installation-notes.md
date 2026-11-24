@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-28
+last_updated: 2026-11-24
 doc_type: guide
 complexity: beginner
 tags: [installation, react, fastapi, python]
@@ -22,9 +22,20 @@ python3 -m pip install "structural-lib-is456==0.31.1"
 python3 -m structural_lib install-preflight
 ```
 
-The preflight
-prints the interpreter, installed version, package origin, and optional extras
-so an editable checkout cannot be mistaken for the published wheel.
+Check that preflight reports the intended interpreter and package version.
+For a wheel install, the package origin should be in that environment's
+`site-packages`. Add `--json` to inspect the execution mode and the
+boolean `optional_extras` values.
+
+Exit code `0` means preflight produced a report, even when optional
+dependencies are missing. Each extra reports whether every required Python
+module is discoverable. Run the intended export to verify it works with the
+installed versions and native libraries.
+[Runtime and optional dependencies](../reference/third-party-licenses.md#runtime-dependencies)
+
+The reported repair command uses the same interpreter and the reported
+package version. Run it in a POSIX shell on macOS or Linux, or in PowerShell
+on Windows.
 
 ## Run the current repository workbench
 
