@@ -1,5 +1,5 @@
 import { Settings } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { activeGlobalDestination, GLOBAL_DESTINATIONS } from '../../app/navigation';
 import { CREDITS_URL, PROJECT_OWNER } from '../../app/projectIdentity';
@@ -8,6 +8,7 @@ import { SettingsPanel } from './SettingsPanel';
 export function TopBar() {
   const { pathname } = useLocation();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const settingsTriggerRef = useRef<HTMLButtonElement>(null);
 
   if (pathname === '/') return null;
 
@@ -51,6 +52,7 @@ export function TopBar() {
           </a>
           <button
             type="button"
+            ref={settingsTriggerRef}
             aria-label="Settings"
             aria-haspopup="dialog"
             onClick={() => setIsSettingsOpen(true)}
@@ -60,7 +62,11 @@ export function TopBar() {
           </button>
         </div>
       </div>
-      <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onAfterClose={() => settingsTriggerRef.current?.focus()}
+      />
     </header>
   );
 }

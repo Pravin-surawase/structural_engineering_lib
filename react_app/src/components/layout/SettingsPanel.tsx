@@ -7,9 +7,10 @@ import { ProjectCredits } from './ProjectCredits';
 interface SettingsPanelProps {
   isOpen: boolean;
   onClose: () => void;
+  onAfterClose?: () => void;
 }
 
-export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
+export function SettingsPanel({ isOpen, onClose, onAfterClose }: SettingsPanelProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
+      onClose={onAfterClose}
       className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-full max-w-md border-l border-zinc-700 bg-zinc-950 p-0 text-white backdrop:bg-black/65"
     >
       {isOpen ? <div className="flex min-h-full flex-col">
