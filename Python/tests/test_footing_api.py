@@ -118,6 +118,37 @@ def test_review_benchmark_freezes_plan_structural_and_transfer_evidence():
     assert result.calculations_are_safe is True
 
 
+def test_gross_minimum_steel_allows_depth_selection_and_final_provided_shear():
+    result = design_concentric_isolated_footing_is456(
+        _detailed_benchmark_input(
+            service_axial_load_kN=450.0,
+            factored_axial_load_kN=837.0,
+            minimum_overall_thickness_mm=450.0,
+            maximum_overall_thickness_mm=450.0,
+            effective_depth_offset_L_mm=150.0,
+            effective_depth_offset_B_mm=150.0,
+        )
+    )
+
+    assert result.selected_overall_thickness_mm == 450.0
+    assert result.screening_pt_passed_to_one_way_shear_percent == pytest.approx(
+        {"L": 0.18, "B": 0.18}
+    )
+    assert result.depth_candidates[0].one_way_shear_utilization == pytest.approx(
+        0.31 / 0.311
+    )
+    assert (
+        result.status == result.detailing_status == result.calculation_status == "PASS"
+    )
+    assert result.one_way_shear_basis == "actual_provided_pt_final"
+    assert result.one_way_shear is not None and result.one_way_shear.is_safe
+    assert len(result.reinforcement_demands) == 2
+    for demand in result.reinforcement_demands:
+        assert demand.required_steel_area_mm2 == pytest.approx(810.0)
+        assert demand.provided_steel_area_mm2 is not None
+        assert demand.provided_steel_area_mm2 >= demand.required_steel_area_mm2
+
+
 def test_maintained_detailing_closes_square_benchmark_to_aggregate_pass():
     result = design_concentric_isolated_footing_is456(_detailed_benchmark_input())
 
