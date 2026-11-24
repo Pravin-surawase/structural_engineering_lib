@@ -2,10 +2,10 @@
 
 **Type:** Guide
 **Audience:** Developers
-**Status:** Draft
+**Status:** Active
 **Importance:** High
 **Created:** 2026-11-18
-**Last Updated:** 2026-11-18
+**Last Updated:** 2026-11-24
 **Abstract:** Patterns from actively maintained Python libraries and a reusable check for StructLib changes affecting users, AI assistants and maintainers.
 
 ---
@@ -39,11 +39,14 @@ activity in November before this check.
 ## Make the first use work from one page
 
 Start with a user task, such as checking a beam or sizing a supported footing
-from supplied inputs. The [Python quick start](../getting-started/python-quickstart.md)
-should lead to the verified public package, one runnable example, its expected
-result and where to go next. Signpost optional drawing, report and application
-paths when they become relevant. The
-[family cookbook](../cookbook/python/family-facades.md) covers further element cases.
+from supplied inputs. Confirm the public version on the
+[current release page](../getting-started/release-status.md), then run the
+beam example in the [Python quick start](../getting-started/python-quickstart.md)
+or the footing example in the
+[element workflow guide](../getting-started/element-workflow-guide.md).
+Signpost optional drawing, report and application paths when they become
+relevant. The [family cookbook](../cookbook/python/family-facades.md) covers
+further element cases.
 
 For each new or changed example, give the reader the tested version or source
 revision, required extras, complete input and expected outcome. Mark
@@ -82,8 +85,10 @@ revision and result.
   that affect existing code or files, record the affected entry point, the
   old and new behavior, and the smallest conversion example. The strict CSV
   span migration is an example of telling users which input to add and what
-  happens when it is missing.
-  [0.31.0 release notes](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.0)
+  happens when it is missing. The 0.31.1 slab correction identifies which
+  earlier results need to be rerun and which reports to refresh.
+  [CSV migration](../getting-started/release-status.md#upgrade-existing-generic-csv-files) ·
+  [Slab rerun guidance](../getting-started/release-status.md#rerun-affected-continuous-slab-checks)
 - **First contribution.** A human contributor should be able to find the
   owning module, reproduce a small issue and run one focused check from
   [CONTRIBUTING](../../CONTRIBUTING.md). Link the
@@ -117,10 +122,10 @@ impact**, and the **check that verified it**.
 
 ## Where to apply this first
 
-1. **Get the public first run aligned with the current release.** Follow the
-   existing sequencing for the [version and CSV guidance draft](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1125)
-   and the [element workflow guide](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1127).
-   After integration, repeat the published first run from the live entry page.
+1. **Keep the public first run aligned with the current release.** After a
+   release or a change to the first-use path, repeat the public install,
+   preflight and first example from the maintained entry pages. Record the
+   installed version and example outcome in the PR.
 2. **Pilot one documentation path for AI and automation.** Use the supported
    beam recipe and generated contract for one pinned release. Record whether
    an assistant can find the correct entry point and report the missing-input
@@ -128,7 +133,7 @@ impact**, and the **check that verified it**.
 3. **Simplify the first contribution.** Try a small documentation or Python
    fix from a clean checkout using only the contributor guide. Keep the
    focused setup and check that worked visible at the top.
-4. **Measure release work separately.** The
-   [proposed 0.31.1 S0–S5 plan](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1126)
-   records the timing baseline and candidate improvements. Use its timing
-   evidence when choosing changes to the release workflow.
+4. **Measure release work separately.** Use the
+   [0.31.1 release timing baseline](../planning/structlib-0311-patch-plan.md#release-timing-baseline-and-targets)
+   when choosing changes to the release workflow. Record verification,
+   approval wait, dispatch and publication execution separately.
