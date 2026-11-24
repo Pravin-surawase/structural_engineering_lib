@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-11-08 — 0.27.0 published; current-base serializer qualification accepted locally, with final integration owned by its milestone PR.
+**Updated:** 2026-11-24 — 0.31.1 published and verified. The next offline checks are listed under [Up Next](#up-next).
 
 ---
 
@@ -16,6 +16,13 @@
 
 ## Current Library Programme
 
+Use [Current Release](#current-release) for public package status and
+[Up Next](#up-next) for the Mac maintenance queue. The
+[session brief](planning/next-session-brief.md) records the open draft reviews
+and the installed ETABS access constraint.
+
+### Earlier programme milestones
+
 | ID | Task | Priority | Status | Exit condition |
 |---|---|---|---|---|
 | LIB-S0-S1 | Preserve finite FAIL/HOLD results and faithful smart input composition | P0 | Done: [PR #1032](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1032), main a3ea3f0d | [Source/evidence](verification/library-s0-s1-20261029.json); hosted checks and reviewed/merged tree identity on PR |
@@ -27,13 +34,11 @@
 | LIB-S6-20261029 | Release retained qualified v0.26.0 through TestPyPI, exact tag, PyPI and GitHub Release | P1 | Done. Published and verified | [Publication receipt](getting-started/releases.md#v0260-published-and-verified) |
 | LIB-0261 | Carry merged consumer fixes into 0.27.0 | P1 | Source fixes merged in PR #1045. No standalone release | [LIB-8](https://pravinsurawase.atlassian.net/browse/LIB-8) verifies the fixes in Goal 5 |
 | LIB-027 | Deliver the selected beam and column release | P1 | Done: 0.27.0 published and verified; all 18 profiles/451 tests per archive, public hashes and clean PyPI install pass. | [Publication receipt](getting-started/releases.md#v0270-published-and-verified) |
-| LIB-028 | Prepare the slab and footing candidate through S5 | P1 | Candidate work only on `codex/lib028-s0-s5` | [S0–S5 plan](planning/library-usability-improvement.md#structlib-0280-candidate-preparation), retained wheel and sdist, exact-head PR/Weekly checks, independent review |
+| LIB-028 | Qualify the slab and footing candidate through S5 | P1 | Done. 0.28.0 was published and verified. | [Publication receipt](getting-started/releases.md#v0280-published-and-verified) · [S0–S5 plan](planning/library-usability-improvement.md#structlib-0280-candidate-preparation) |
 
 The dated qualification and installed-host records below retain their own
-evidence and HOLDs. Their expired overnight instruction does not select current
-work or override the selected programme above. S5's milestone PR owns its
-review, check and merge status. S6 publication and public file identities are
-recorded in the release ledger and release assets.
+evidence and HOLDs. Each milestone PR owns its review, check and merge status.
+The release ledger and assets record publication and public file identities.
 
 ## Python Library Improvement — earlier delivery and qualification records
 
@@ -131,16 +136,22 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 ## Current Release
 
-| **Current public release** | Registry / ledger | [Latest verified release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/latest) and [release ledger](getting-started/releases.md) own publication status |
-| **Selected release** | v0.26.0 | S5 qualified; [S6 plan](planning/library-usability-improvement.md#s6-studied-release-plan--29-october-2026) and final authorization/registry readback own publication state |
-- **Release evidence:** [v0.25.0/LIB-2 and LIB-5 record](getting-started/releases.md) and [PR #1026](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1026) own the exact tag, package and public readback evidence. The S2 development wheel is a different, unpublished artifact.
-- **Strategy:** Complete the selected quality milestones and qualify the final artifact before publication.
-- **Focus:** S6 retained-artifact publication and exact public readback.
-- **Target:** Complete selected S6 on the unchanged qualified pair; preserve all later native/professional gates.
-- **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
-- **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
+**StructLib 0.31.1** is the current public package. Use the
+[current release guide](getting-started/release-status.md) for the install pin
+and affected continuous one-way slab reruns. The
+[publication ledger](getting-started/releases.md#v0311-published-and-verified)
+records the tested artifact hashes and public install receipt.
+
+See the [session brief](planning/next-session-brief.md#current-boundary) for
+development changes merged after this release. The
+[product vision](planning/democratization-vision.md) and
+[architecture roadmap](architecture/unified-architecture-v1.md) retain the
+longer-term direction.
 
 ### Release Roadmap
+
+Historical milestone labels are retained below. Use the release ledger for
+publication state.
 
 | Version | Focus | Status | Key Deliverables |
 |---------|-------|--------|------------------|
@@ -191,11 +202,10 @@ is an unaccepted proposal. It does not select a subsequent package release.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| LIB-SEMANTICS-OPT-001 | Integrate the qualified single-pass serializer | MAIN / Mac | Local qualification accepted: 16 workflows/633 records/230 exports/525 outcomes match, 494 checks pass per installed wheel, and 9018 broader tests pass. Fresh ordinary/T workflow reductions are 28.23%/13.53%. [Evidence](verification/library-serializer-optimization.json); milestone PR owns required hosted checks and integration. Unreleased; no new publication is selected. |
 
-The [current handoff](planning/next-session-brief.md) identifies the selected
-preparation scope. The dated notes below retain earlier lanes and installed-host
-evidence boundaries.
+The [current brief](planning/next-session-brief.md) identifies the next
+maintenance packet and open draft reviews. The dated notes below retain
+earlier lanes and installed-host evidence boundaries.
 
 **Historical development device — 26 September:** the owner was working on the Mac.
 Mac main was synchronized to GitHub `6b71d7cf` before
@@ -203,12 +213,12 @@ Mac main was synchronized to GitHub `6b71d7cf` before
 task branch. Preserve the Windows checkout/edit and all older worktrees;
 GitHub remains the shared history and each task branch has one writer device.
 
-**Temporary access constraint:** the owner has no ETABS access for the next few
-days; no return date is confirmed. The
-[current offline plan](planning/xll-product/etabs-design-workflow.md#temporary-etabs-access-hold--2026-09-26)
-holds fresh ETABS captures and installed force/station qualification. Next,
-prepare physical member/support intent and ULS/SLS roles against saved evidence
-and the existing review ledger. Preserve provisional states and all later gates.
+**26 September ETABS access note:** the
+[offline plan](planning/xll-product/etabs-design-workflow.md#temporary-etabs-access-hold--2026-09-26)
+recorded a hold on fresh captures and installed force/station qualification.
+It retained preparation of physical member/support intent and ULS/SLS roles
+against saved evidence. Use the [current brief](planning/next-session-brief.md#current-boundary)
+for the latest access state.
 
 `LIB-QUALITY-INTEGRATION-001` merged in [PR #997](https://github.com/Pravin-surawase/structural_engineering_lib/pull/997)
 at `b3ceb2c9` after required hosted run `35429312577` passed. Its accepted batch,
@@ -568,7 +578,13 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-MEMBER-EVIDENCE-001 | Define producer-bound station coverage and caller compatibility before a separate member-evidence repair | MAIN / Mac | bounded design packet | P1 | Separate follow-up, not active implementation: lab R01-A3/published-wheel replay reproduces deliberately relabelled S1-only evidence qualifying as S2. Preserve valid two-station batches; no normal member-workflow failure or repair is claimed. |
+| APP-01 | Replay batch interruption and polling through the application entry point. Compare completed results and terminal state with ordinary completion. | Mac maintenance | One offline reproduction | P1 | Ready for reproduction on current source. [Prior evidence](planning/structlib-0311-patch-plan.md#defer-or-validate-separately) |
+| SETUP-01 / SETUP-02 / DOC-02 | Replay partial extras, spaced interpreter paths, and the dependency reference on the public wheel before scoping a setup change. | Mac maintenance | One installed-wheel replay | P1 | Queued after APP-01. [Prior evidence](planning/structlib-0311-patch-plan.md#other-confirmed-issues-and-release-observations) |
+
+### Earlier delivery and installed-host queue records
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
 | ETABS-EXCEL-BEAM-W2-BASELINE | Freeze and implement the complete read-only beam/model topology, result-provenance, and independent-frame-analysis feasibility contract before any optimization or write-back | Main Agent | one local contract packet plus separate Windows acceptance | P1 | ✅ COMPLETE — PR #898 merged exact reviewed candidate `57f53d48...` as `f1873e7b...`, tree `bb20ba0c...`. Direct/REST/all seven Excel tables and 3,626,096 canonical bytes reconcile baseline `d4c28586...` with 3,502 stations while model identity/lock/units/selection remain exact. `HELD_NOT_SUPPORTED`, no-analysis/no-model-mutation, and professional-review holds remain. |
 | ETABS-W3-MASTER-PLAN-AUDIT | Freeze the dependency-ordered W3 data, audit, surrogate, optimization, ETABS-reanalysis, Excel and professional-evidence programme plus the guarded next-machine handoff | Main Agent | one planning/audit packet | P1 | ✅ ACCEPTED — PR #900 merged as `69399777b3ccdf9eb678ec567ab8a5c616959132`, tree `cc1f6528abce3c3a4532d8ad3c1a7b3dc852c71a`; owner authorized the bounded W3 campaign |
 | ETABS-EXCEL-BEAM-W3A-DEMAND-CONTRACT | Freeze versioned availability, load-pattern/case/combination, analysis-status/result-selection, same-row beam-action, scenario, envelope, governing-reference, paging and canonical-hash contracts before design expansion | Main Agent | one read-only contract packet; installed getter evidence separate | P1 | ✅ ACCEPTED — PR #901 merged unchanged as `b7351bb5...`, tree `b895008b...`; 34 focused W3A/W2 tests plus local and hosted gates passed; no ETABS/Excel/COM/design/solver/optimizer activity |
@@ -651,6 +667,12 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| LIB-0311 | Correct the continuous one-way slab per-metre calculation and publish 0.31.1 | Mac integration | Published and verified. [Release ledger](getting-started/releases.md#v0311-published-and-verified) |
+| FOOT-01 | Apply the gross-section footing minimum steel area | Mac integration | [#1133 merged](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1133) at `1ebae50f` after the 0.31.1 publication. |
+| FLOW04 / FLOOR-REVIEW | Admit bounded ETABS 21.0 pair intake and add local floor review | Mac integration | [#1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117) and [#1131](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1131) merged after saved-export and synthetic-fixture replay. |
+| LIB-DOC-GUIDES | Add the element workflow and contributor maintenance guides | Mac integration | [#1127](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1127) and [#1128](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1128) merged after replaying public 0.31.1 examples. |
+| LIB-SEMANTICS-OPT-001 | Integrate the qualified single-pass serializer | MAIN / Mac | [#1066](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1066) merged and shipped in [0.28.0](getting-started/releases.md#v0280-published-and-verified). [Qualification](verification/library-serializer-optimization.json) |
+| LIB-MEMBER-EVIDENCE-001 | Require source coverage for each claimed station | MAIN / Mac | [#1086](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1086) repaired the R01-A3 relabelling case in [0.29.2](getting-started/releases.md#v0292-published-and-verified). The regression preserves genuine two-station input. |
 | MAINT-MAC-2026-09-26 | Synchronize the Mac, preserve device-local work, repair default HTTP inventory and publish the retained Colima setup note | governance | COMPLETE ON MERGE — focused inventory/OpenAPI, docs/session/health, immutable candidate and required hosted checks gate this packet; dependency upgrades and installed ETABS work remain separate. |
 | WP10-05-PREP | Verify the next Excel-import plan against source and installed evidence | MAIN | PLANNED — [executable card](planning/xll-product/wp10-etabs-read-adapter.md#wp10-05-preparation-review-and-executable-plan--2026-09-05) covers byte-safe storage, freshness, transaction and real Excel gates; production handoff and multi-member prerequisites precede final qualification. No implementation started. |
 | WP10-04 | Normalize the retained ETABS capture offline with complete evidence and row conservation | MAIN | IMPLEMENTED — [receipt](verification/wp10-04-normalization-evidence.json); 97 model records and 13 actions, Python/.NET parity, no live application work. Delivery/merge facts belong to the task ledger and PR. WP10-05 is next. |
