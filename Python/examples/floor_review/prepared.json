@@ -1,0 +1,35 @@
+{
+  "schema_version": "cli-beam-design-input/v1",
+  "beams": [
+    {
+      "beam_id": "B-101",
+      "story": "Level 01",
+      "b_mm": 300,
+      "D_mm": 500,
+      "tension_bar_diameter_mm": 20,
+      "span_mm": 6000,
+      "clear_cover_mm": 40,
+      "fck_nmm2": 25,
+      "fy_nmm2": 500,
+      "mu_knm": -180,
+      "vu_kn": 120,
+      "stirrup_diameter_mm": 8,
+      "stirrup_spacing_mm": 150
+    },
+    {
+      "beam_id": "B-102",
+      "story": "Level 01",
+      "b_mm": 300,
+      "D_mm": 450,
+      "tension_bar_diameter_mm": 16,
+      "span_mm": 5000,
+      "clear_cover_mm": 40,
+      "fck_nmm2": 25,
+      "fy_nmm2": 500,
+      "mu_knm": 145,
+      "vu_kn": -95,
+      "stirrup_diameter_mm": 8,
+      "stirrup_spacing_mm": 175
+    }
+  ]
+}

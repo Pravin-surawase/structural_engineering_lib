@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-15
+last_updated: 2026-11-24
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -9,78 +9,43 @@ tags: []
 
 # Handoff Quick Start
 
-> Current Git/session boundary: start with `./run.sh session begin --task-id
-> <task> --agent <role>`, then use `scripts/python_runtime.sh --diagnose` or
-> `scripts/git_state.py --json --worktrees` only when the compact start reports
-> an unresolved lane question. The state authority is local-only;
-> remote freshness remains `NOT_CHECKED` unless separately established.
-
-Every durable task handoff uses a tracked machine-readable receipt built and
-validated by `scripts/git_handoff_receipt.py`. It records the
-`local_state_receipt_hash`, exact branch/head/upstream/base/worktree/tree/
-operation identity, hosted PR/review/check facts or explicit `UNKNOWN`,
-retention evidence, authorization, prohibited actions, and next permitted
-action. `NOT_APPLICABLE` requires a reason and is never a substitute for
-unknown. Task or transcript archive state is not Git retention evidence.
-The receipt must state `receipt_grants_authority: false`: it records external
-authority evidence but never grants authority. Authorization requires source
-provenance and exact task/branch/head/action binding, and cannot override holds
-recomputed from the remaining evidence.
-
-Reference the receipt in the newest session entry as `**Git handoff receipt:**
-<tracked-path>`, then run `scripts/session.py handoff --git-receipt
-<tracked-path>`. Session end validates schema, hash, exact-head contradictions,
-and the round trip. It recomputes required holds/status rather than trusting the
-serialized values; missing or invalid evidence is a hold.
-
-Goal: enable the next agent to resume in under 2 minutes.
-
----
+Use the [canonical Git workflow](../git-automation/git-workflow-single-source.md)
+to resume a task and choose the correct closeout. Git-state output describes
+the local checkout. Check the remote and GitHub separately when current hosted
+state matters.
 
 ## Resume (next agent)
-1. Run: `./scripts/agent_start.sh --quick` (or with `--agent governance` for governance work)
-2. Read:
-   - `docs/planning/next-session-brief.md` (what changed + blockers)
-   - `docs/TASKS.md` (active + up next)
-   - `.github/copilot-instructions.md` (CRITICAL - git workflow, layers, rules)
-3. Review recent work:
-   - **Jan 11 2026**: Session 13 - Folder Governance + Agent Onboarding
-   - Created unified `agent_start.sh` (replaces 4 commands with 1)
-   - Archived 4 redundant docs, consolidated agent-automation-system.md v1.1.0
-4. Release work remains separately authorized; use the maintained release-preflight workflow when in scope.
 
-### Quick output sample (agent_start.sh --quick)
+Start the task in its intended worktree.
+
+```bash
+./run.sh session begin --task-id <task> --agent <role>
 ```
-$ ./scripts/agent_start.sh --quick
-============================================================
-🚀 AGENT SESSION START
-============================================================
-  Version:  v0.16.0
-  Branch:   main
-  Date:     2026-01-11
-  Git:      Clean working tree
 
-📋 Active Tasks:
-  • v0.17.0 implementation (TASK-272, 273, 274, 275)
-
-📖 Read first: docs/handoff.md → docs/TASKS.md
-============================================================
-```
+Check the [session brief](../planning/next-session-brief.md) for the latest
+verified work and the [task board](../TASKS.md) for the queue. Use
+[AGENTS.md](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/AGENTS.md) for repository instructions. If the start reports a
+hold, inspect the source binding with `./scripts/python_runtime.sh --diagnose`
+and the local lane with `./scripts/python_runtime.sh scripts/git_state.py --json`.
 
 ### Release verify (clean venv)
-- Local wheel (pre-release): `./scripts/python_runtime.sh scripts/release.py verify --source wheel --wheel-dir Python/dist`
-- PyPI (post-release): `./scripts/python_runtime.sh scripts/release.py verify --version X.Y.Z --source pypi`
+
+Use the [release checklist](../planning/pre-release-checklist.md) for exact
+artifact qualification and the [release ledger](../getting-started/releases.md)
+for the public install receipt. Follow the release's own authorization and
+evidence gates.
 
 ## Handoff (ending)
 
-> **📋 Full workflow:** See [contributing/end-of-session-workflow.md](end-of-session-workflow.md) for comprehensive checklist
+For routine delivery, record the change and verification in the PR and close
+the task timer. Follow the [end-of-session guide](end-of-session-workflow.md)
+for the supported command and the audited integration path.
 
-**Quick steps (5 minutes):**
-1. Validate the tracked Git receipt and run `./run.sh session end --agent <role>`.
-2. Update `docs/planning/next-session-brief.md` with summary + blockers.
-3. Update `docs/TASKS.md` (move items to Done/Active).
-4. Document issues in `docs/contributing/session-issues.md` (if encountered).
-5. Inspect the exact local tree with `./scripts/python_runtime.sh scripts/git_state.py --json`.
+For unfinished work or a durable decision, record the task identity, head or
+artifact, verified outcome, blocker, and next permitted action in the
+existing handoff. For device, worktree, installed-artifact, or external
+authority transitions, build and validate the tracked receipt described in
+the [durable handoff workflow](../git-automation/git-workflow-single-source.md#durable-task-to-git-handoff).
 
 ## Debug Snapshot Checklist
 
@@ -98,9 +63,9 @@ When encountering persistent errors, collect this information for handoff:
    Reproduce the request and retain the browser console plus FastAPI terminal
    output. Streamlit is retired.
 
-3. **Check log files:**
-   - the versioned task-to-Git receipt (Git identity and holds)
-   - `logs/ci_monitor.log` (CI status)
+3. **Check the owning evidence:**
+   - the exact-head GitHub checks
+   - the versioned task-to-Git receipt when the handoff requires one
 
 4. **Run validators:**
    ```bash

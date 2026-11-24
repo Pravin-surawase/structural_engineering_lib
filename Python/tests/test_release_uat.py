@@ -17,8 +17,8 @@ def test_release_negative_matrix_and_public_examples_pass() -> None:
     assert receipt["professional_approval"] is False
     inventory = receipt["advertised_entry_points"]
     assert inventory["schema_version"] == "advertised-entry-point-inventory/v2"
-    assert inventory["entry_count"] == 28
-    assert inventory["cli_entry_count"] == 15
+    assert inventory["entry_count"] == 29
+    assert inventory["cli_entry_count"] == 16
     assert inventory["family_facade_entry_count"] == 13
     gravity = next(
         entry for entry in inventory["entries"] if entry["id"] == "cli.gravity-v1"
@@ -45,6 +45,7 @@ def test_release_negative_matrix_and_public_examples_pass() -> None:
         "capabilities",
         "gravity-v1",
         "excel-v1",
+        "floor-review",
         "beam-v1",
         "design",
         "bbs",

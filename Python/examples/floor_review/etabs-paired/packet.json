@@ -1,0 +1,328 @@
+{
+  "schema_version": "floor-etabs-paired-packet/v1",
+  "review_story": "L2",
+  "current_basis": {
+    "model_id": "SYNTHETIC-L2-GRAVITY",
+    "model_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "analysis_revision": "L2-RUN-014",
+    "section_stiffness_connectivity_revision": "L2-MODEL-010"
+  },
+  "etabs_release": "22.7.0",
+  "beam_table": {
+    "file": "beam-forces.csv",
+    "sha256": "fd81880a4f5a8c848566d249b1bc881fd8ac7d30c4884054f6228a6573f964d1",
+    "capture_id": "L2-CAPTURE-014",
+    "basis": {
+      "model_id": "SYNTHETIC-L2-GRAVITY",
+      "model_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "analysis_revision": "L2-RUN-014",
+      "section_stiffness_connectivity_revision": "L2-MODEL-010"
+    }
+  },
+  "column_table": {
+    "file": "column-forces.csv",
+    "sha256": "95722f607464d20a6095390984665aa5842abb116bb79e8f764b84b7f9501a82",
+    "capture_id": "L2-CAPTURE-014",
+    "basis": {
+      "model_id": "SYNTHETIC-L2-GRAVITY",
+      "model_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "analysis_revision": "L2-RUN-014",
+      "section_stiffness_connectivity_revision": "L2-MODEL-010"
+    }
+  },
+  "units": {
+    "force": "kN",
+    "moment": "kN-m",
+    "station": "mm"
+  },
+  "members": [
+    {
+      "member_kind": "beam",
+      "story": "L2",
+      "label": "B1",
+      "object_id": "101",
+      "analysis_element_id": "1001",
+      "i_mm": [
+        0,
+        0,
+        6000
+      ],
+      "j_mm": [
+        5000,
+        0,
+        6000
+      ],
+      "axis_id": "101-AXES",
+      "e1": [
+        1,
+        0,
+        0
+      ],
+      "e2": [
+        0,
+        0,
+        1
+      ],
+      "e3": [
+        0,
+        -1,
+        0
+      ],
+      "required_stations_mm": [
+        200,
+        2500,
+        4800
+      ],
+      "required_combination_ids": [
+        "ULS-G1",
+        "ULS-G2",
+        "SLS-G1"
+      ],
+      "section": {
+        "analysis_revision": "L2-RUN-014",
+        "reinforcement_revision": "L2-STEEL-003",
+        "source_reference": "Synthetic prismatic two-leg section inventory B1",
+        "width_mm": 300,
+        "depth_mm": 500,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "clear_cover_mm": 40,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 150,
+        "link_fy_nmm2": 415,
+        "bars": [
+          {
+            "bar_id": "top-1",
+            "face": "top",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 58,
+            "y_from_top_mm": 58
+          },
+          {
+            "bar_id": "top-2",
+            "face": "top",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 58
+          },
+          {
+            "bar_id": "top-3",
+            "face": "top",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 242,
+            "y_from_top_mm": 58
+          },
+          {
+            "bar_id": "bottom-1",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 58,
+            "y_from_top_mm": 442
+          },
+          {
+            "bar_id": "bottom-2",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 119,
+            "y_from_top_mm": 442
+          },
+          {
+            "bar_id": "bottom-3",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 181,
+            "y_from_top_mm": 442
+          },
+          {
+            "bar_id": "bottom-4",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 242,
+            "y_from_top_mm": 442
+          }
+        ]
+      }
+    },
+    {
+      "member_kind": "beam",
+      "story": "L2",
+      "label": "B2",
+      "object_id": "102",
+      "analysis_element_id": "1002",
+      "i_mm": [
+        9000,
+        0,
+        6000
+      ],
+      "j_mm": [
+        5000,
+        0,
+        6000
+      ],
+      "axis_id": "102-AXES",
+      "e1": [
+        -1,
+        0,
+        0
+      ],
+      "e2": [
+        0,
+        0,
+        1
+      ],
+      "e3": [
+        0,
+        1,
+        0
+      ],
+      "required_stations_mm": [
+        200,
+        2000,
+        3800
+      ],
+      "required_combination_ids": [
+        "ULS-G1",
+        "ULS-G2",
+        "SLS-G1"
+      ],
+      "section": {
+        "analysis_revision": "L2-RUN-014",
+        "reinforcement_revision": "L2-STEEL-003",
+        "source_reference": "Synthetic prismatic two-leg section inventory B2",
+        "width_mm": 300,
+        "depth_mm": 550,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "clear_cover_mm": 40,
+        "aggregate_size_mm": 20,
+        "link_diameter_mm": 8,
+        "link_spacing_mm": 150,
+        "link_fy_nmm2": 415,
+        "bars": [
+          {
+            "bar_id": "top-1",
+            "face": "top",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 58,
+            "y_from_top_mm": 58
+          },
+          {
+            "bar_id": "top-2",
+            "face": "top",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 150,
+            "y_from_top_mm": 58
+          },
+          {
+            "bar_id": "top-3",
+            "face": "top",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 242,
+            "y_from_top_mm": 58
+          },
+          {
+            "bar_id": "bottom-1",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 58,
+            "y_from_top_mm": 492
+          },
+          {
+            "bar_id": "bottom-2",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 119,
+            "y_from_top_mm": 492
+          },
+          {
+            "bar_id": "bottom-3",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 181,
+            "y_from_top_mm": 492
+          },
+          {
+            "bar_id": "bottom-4",
+            "face": "bottom",
+            "layer": 1,
+            "diameter_mm": 20,
+            "x_from_left_mm": 242,
+            "y_from_top_mm": 492
+          }
+        ]
+      }
+    },
+    {
+      "member_kind": "column",
+      "story": "L2",
+      "label": "C1",
+      "object_id": "201",
+      "analysis_element_id": "2001",
+      "i_mm": [
+        0,
+        0,
+        3000
+      ],
+      "j_mm": [
+        0,
+        0,
+        6000
+      ],
+      "axis_id": "201-AXES",
+      "e1": [
+        0,
+        0,
+        1
+      ],
+      "e2": [
+        1,
+        0,
+        0
+      ],
+      "e3": [
+        0,
+        1,
+        0
+      ],
+      "required_stations_mm": [
+        500
+      ],
+      "required_combination_ids": [
+        "ULS-G1",
+        "ULS-G2",
+        "SLS-G1"
+      ]
+    }
+  ],
+  "combinations": [
+    {
+      "combination_id": "ULS-G1",
+      "source_type": "Linear Add",
+      "design_use": "ultimate"
+    },
+    {
+      "combination_id": "ULS-G2",
+      "source_type": "Linear Add",
+      "design_use": "ultimate"
+    },
+    {
+      "combination_id": "SLS-G1",
+      "source_type": "Linear Add",
+      "design_use": "service"
+    }
+  ]
+}

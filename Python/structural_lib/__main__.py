@@ -32,6 +32,7 @@ import argparse
 import csv
 import importlib.util
 import json
+import shlex
 import sys
 from pathlib import Path
 from typing import cast
@@ -1283,24 +1284,40 @@ def cmd_capabilities(args: argparse.Namespace) -> int:
     return 0
 
 
+def _format_preflight_repair_command(
+    interpreter: str, version: str, *, powershell: bool
+) -> str:
+    argv = [
+        interpreter,
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        f"structural-lib-is456==={version}",
+    ]
+    if powershell:
+        return "& " + " ".join("'" + arg.replace("'", "''") + "'" for arg in argv)
+    return shlex.join(argv)
+
+
 def cmd_install_preflight(args: argparse.Namespace) -> int:
     """Report the exact interpreter, package origin/version, and optional extras."""
     import structural_lib
     from structural_lib.core.version import get_runtime_version_identity
 
     optional_modules = {
-        "dxf": "ezdxf",
-        "report": "jinja2",
-        "pdf": "weasyprint",
-        "render": "matplotlib",
-        "validation": "jsonschema",
+        "dxf": ("ezdxf",),
+        "report": ("jinja2",),
+        "pdf": ("reportlab", "weasyprint"),
+        "render": ("ezdxf", "matplotlib"),
+        "validation": ("jsonschema",),
     }
     origin = str(Path(structural_lib.__file__).resolve())
     version = structural_lib.__version__
     runtime_identity = get_runtime_version_identity(origin)
     optional_extras: dict[str, bool] = {
-        name: importlib.util.find_spec(module_name) is not None
-        for name, module_name in optional_modules.items()
+        name: all(importlib.util.find_spec(module) is not None for module in modules)
+        for name, modules in optional_modules.items()
     }
     report = {
         "interpreter": sys.executable,
@@ -1313,9 +1330,8 @@ def cmd_install_preflight(args: argparse.Namespace) -> int:
         "qualified_review_required": True,
         "professional_review_is_intermediate_programme_gate": False,
         "final_engineer_review_stage": "DEFERRED_UNTIL_INTEGRATED_LIBRARY",
-        "repair_command": (
-            f"{sys.executable} -m pip install --upgrade "
-            f'"structural-lib-is456==={version}"'
+        "repair_command": _format_preflight_repair_command(
+            sys.executable, version, powershell=sys.platform == "win32"
         ),
     }
     if args.as_json:
@@ -1332,6 +1348,27 @@ def cmd_install_preflight(args: argparse.Namespace) -> int:
         print(f"  {name}: {'installed' if available else 'not installed'}")
     print(f"Repair/install: {report['repair_command']}")
     return 0
+
+
+def cmd_floor_review(args: argparse.Namespace) -> int:
+    """Preview or evaluate a local floor packet and emit its JSON review package."""
+    from .services.floor_review import review_floor_v1
+
+    package = review_floor_v1(
+        args.input, profile=args.profile, evaluate=args.phase == "review"
+    )
+    content = json.dumps(package, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+    if args.output:
+        try:
+            # Exclusive creation prevents accidental replacement of a source artifact.
+            with Path(args.output).open("x", encoding="utf-8") as stream:
+                stream.write(content)
+        except OSError as exc:
+            _print_error(str(exc))
+            return 2
+    else:
+        sys.stdout.write(content)
+    return 0 if package["intake_status"] == "ACCEPTED" else 2
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -1443,6 +1480,21 @@ def _build_parser() -> argparse.ArgumentParser:
         "-o", "--output", help="Output file (if omitted, prints to stdout)"
     )
     excel_parser.set_defaults(func=cmd_excel_v1)
+
+    from .services.floor_review import FLOOR_REVIEW_PROFILES
+
+    floor_parser = subparsers.add_parser(
+        "floor-review", help="Preview or review one floor from local beam inputs"
+    )
+    floor_parser.add_argument("phase", choices=("preview", "review"))
+    floor_parser.add_argument(
+        "input", type=Path, help="Prepared beam file or ETABS packet manifest"
+    )
+    floor_parser.add_argument("--profile", required=True, choices=FLOOR_REVIEW_PROFILES)
+    floor_parser.add_argument(
+        "-o", "--output", help="New review JSON file (defaults to stdout)"
+    )
+    floor_parser.set_defaults(func=cmd_floor_review)
 
     # Design subcommand
     design_parser = subparsers.add_parser(
