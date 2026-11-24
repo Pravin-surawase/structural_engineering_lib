@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-17
+last_updated: 2026-11-24
 doc_type: evidence
 tags: [beam, column, etabs, import, verification]
 ---
@@ -59,10 +59,10 @@ location and identical object and element stations. The reference retains
 the near-zero beam axial force and minor-axis values from the export.
 Across the four beam rows their largest magnitudes are
 `1.94e-14 kip` for `P`, `5.20e-19 kip` for `V3` and
-`1.14e-15 kip-ft` for `M2`. The current exact-zero guard would hold
-these rows even after recognising the layout. Before design use, specify
-any numerical zero treatment, preserve all native values and test a
-material nonzero component separately. Keep the existing 22.7.0 controls.
+`1.14e-15 kip-ft` for `M2`. The bounded 21.0.0 intake admits residuals
+up to `1e-12` in these native columns and preserves the original signed
+values. A larger value holds the current snapshot. The 22.7.0 profile
+still requires exact zero for these components.
 
 The [intake replay](../cookbook/python/etabs-paired-forces.md#replay-the-altair-etabs-2100-export)
 checks missing and duplicate station rows, a changed capture identity,

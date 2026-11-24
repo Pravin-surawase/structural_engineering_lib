@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-11-17
+last_updated: 2026-11-24
 doc_type: guide
 tags: [etabs, import, beam, column]
 ---
@@ -103,9 +103,11 @@ withholds both normalized snapshots. Duplicate rows, mismatched units and
 invalid axes reject the intake. Beam axial or minor-axis actions and column
 uplift return HOLD with the signed actions preserved for diagnosis.
 
-This profile covers one object-to-element mapping per member and one row
-per declared station and combination. Member transformations, meshed
-station-side pairs, automatic combination generation, and downstream
-engineering qualification need their own evidence. The
+This profile covers one object-to-element mapping per member. Each
+declared station and combination requires one row, or two distinct rows
+for a declared 21.0.0 interior beam station-side pair. Member
+transformations, meshed station-side pairs, automatic combination
+generation, and downstream engineering qualification need their own
+evidence. The
 [ETABS source review](../../verification/library-029-flow04-etabs-source-review.md)
 records the evidence and limits of the matched native replay.
