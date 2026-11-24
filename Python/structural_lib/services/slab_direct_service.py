@@ -408,16 +408,74 @@ def _calculate(request: SlabDirectServiceInputV1) -> dict[str, Any]:
         }
 
     initial, initial_g = state(ec, m_total), state(ec, m_g)
-    _, at_finishes = stage(history.finishes)
-    long_term, at_assessment = stage(history.assessment)
     cracked = m_total > mcr
-    crack = _crack(request, m_total, m_g, initial, long_term, cracked)
+    immediate_total = deflection(m_total, initial)
+    immediate_sustained = deflection(m_g, initial_g)
+    actions = {
+        "assessment_moment_knm": m_total,
+        "sustained_moment_knm": m_g,
+        "assessment_support_shear_kn": total.support_shear_kn,
+        "sustained_support_shear_kn": sustained.support_shear_kn,
+    }
+    section_result = {
+        "gross_inertia_mm4": initial["igross_mm4"],
+        "cracking_moment_knm": mcr,
+        "main_steel_area_mm2": area,
+        "cracked_at_assessment": cracked,
+        "effective_depth_mm": d,
+        "main_bar_bottom_cover_mm": depth - d - section.main_bars[0].diameter_mm / 2,
+    }
     final_limit, finishes_limit = span / 250, min(span / 350, 20)
     check: dict[str, Any] = {
         "limit_final_mm": final_limit,
         "limit_after_finishes_mm": finishes_limit,
         "midspan_mm": span / 2,
     }
+
+    if m_g > mcr:
+        x_mm = initial_g["x_mm"]
+        sustained_section_modulus_mm3 = 0.5 * width * x_mm * (d - x_mm / 3)
+    else:
+        sustained_section_modulus_mm3 = initial_g["igross_mm4"] / (depth / 2)
+    initial_sustained_concrete_stress = m_g * 1e6 / sustained_section_modulus_mm3
+    creep_stress_limit = fck / 3
+    # The fck/3 boundary is inclusive. Cover only binary64 rounding in
+    # the supplied actions and section calculation.
+    creep_stress_tolerance = 8 * math.ulp(creep_stress_limit)
+    if initial_sustained_concrete_stress > creep_stress_limit + creep_stress_tolerance:
+        check.update(
+            status="HOLD",
+            method="creep_stress_domain_exceeded",
+            initial_total_mm=immediate_total,
+            initial_sustained_mm=immediate_sustained,
+            final_deflection_mm=None,
+            initial_sustained_concrete_stress_nmm2=initial_sustained_concrete_stress,
+            creep_stress_limit_nmm2=creep_stress_limit,
+            creep_stress_margin_nmm2=(
+                creep_stress_limit - initial_sustained_concrete_stress
+            ),
+        )
+        return {
+            "actions": {
+                **actions,
+                "total_action_row_id": total.action_row_id,
+                "sustained_action_row_id": sustained.action_row_id,
+                "analysis_revision": request.analysis_revision,
+                "reinforcement_revision": request.reinforcement_revision,
+            },
+            "section": section_result,
+            "deflection": check,
+            "crack": {
+                "status": "HOLD",
+                "method": "creep_stress_domain_exceeded",
+                "width_mm": None,
+                "crack_limit_mm": request.crack_width_limit_mm,
+            },
+        }
+
+    _, at_finishes = stage(history.finishes)
+    long_term, at_assessment = stage(history.assessment)
+    crack = _crack(request, m_total, m_g, initial, long_term, cracked)
     if (
         cracked
         and max(
@@ -454,9 +512,7 @@ def _calculate(request: SlabDirectServiceInputV1) -> dict[str, Any]:
                     },
                 )
     else:
-        initial_delta, initial_sustained = deflection(m_total, initial), deflection(
-            m_g, initial_g
-        )
+        initial_delta, initial_sustained = immediate_total, immediate_sustained
         finishes_total = (
             at_finishes["sustained_deflection_mm"]
             + at_finishes["shrinkage_deflection_mm"]
@@ -484,22 +540,8 @@ def _calculate(request: SlabDirectServiceInputV1) -> dict[str, Any]:
             after_finishes_mm=increment,
         )
     return {
-        "actions": {
-            "assessment_moment_knm": m_total,
-            "sustained_moment_knm": m_g,
-            "assessment_support_shear_kn": total.support_shear_kn,
-            "sustained_support_shear_kn": sustained.support_shear_kn,
-        },
-        "section": {
-            "gross_inertia_mm4": initial["igross_mm4"],
-            "cracking_moment_knm": mcr,
-            "main_steel_area_mm2": area,
-            "cracked_at_assessment": cracked,
-            "effective_depth_mm": d,
-            "main_bar_bottom_cover_mm": depth
-            - d
-            - section.main_bars[0].diameter_mm / 2,
-        },
+        "actions": actions,
+        "section": section_result,
         "deflection": check,
         "crack": crack,
     }

@@ -22,7 +22,7 @@ jobs:
   full-verification:
     name: Full Python, FastAPI, and React verification
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 50
     steps:
       - name: Checkout
         uses: actions/checkout@v7

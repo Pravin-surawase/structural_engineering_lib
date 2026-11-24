@@ -1082,6 +1082,8 @@ def run_etabs_sta_broker_v1(
     completed_at = started_at
     while time.monotonic() < deadline and status is None:
         remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            break
         try:
             message = messages.get(timeout=min(heartbeat_seconds, remaining))
         except queue.Empty:
@@ -1100,14 +1102,8 @@ def run_etabs_sta_broker_v1(
                     )
                 except Exception as fence_exc:
                     error += f" Fence failed: {type(fence_exc).__name__}: {fence_exc}"
-            if status is None and not worker.is_alive() and worker.exitcode is not None:
-                status = "ERROR"
-                error = f"Broker exited with code {worker.exitcode} without a result."
-                completed_at = datetime.now(UTC)
-                lease.fence(
-                    "RESTORATION_UNVERIFIED: BROKER_RESULT_UNAVAILABLE",
-                    observed_at_utc=completed_at,
-                )
+            # Worker exit can become visible before its queued terminal message.
+            # Keep receiving within the same deadline before declaring it missing.
             continue
         kind = message[0]
         if kind == "RETURNED":
@@ -1119,14 +1115,23 @@ def run_etabs_sta_broker_v1(
             error = str(message[1])
             completed_at = message[2]
     if status is None:
-        status = "TIMED_OUT"
         completed_at = datetime.now(UTC)
-        worker.terminate()
-        worker.join(timeout=2)
-        lease.fence(
-            "RESTORATION_UNVERIFIED: BROKER_DEADLINE_EXPIRED",
-            observed_at_utc=completed_at,
-        )
+        if not worker.is_alive() and worker.exitcode is not None:
+            status = "ERROR"
+            error = f"Broker exited with code {worker.exitcode} without a result."
+            worker.join(timeout=2)
+            lease.fence(
+                "RESTORATION_UNVERIFIED: BROKER_RESULT_UNAVAILABLE",
+                observed_at_utc=completed_at,
+            )
+        else:
+            status = "TIMED_OUT"
+            worker.terminate()
+            worker.join(timeout=2)
+            lease.fence(
+                "RESTORATION_UNVERIFIED: BROKER_DEADLINE_EXPIRED",
+                observed_at_utc=completed_at,
+            )
     else:
         worker.join(timeout=2)
         if worker.is_alive():

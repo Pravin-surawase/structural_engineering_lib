@@ -84,3 +84,57 @@ def test_invalid_lower_load_witness_keeps_deflection_on_hold():
     assert result.engineering_status.value == "HOLD"
     assert result.calculation["deflection"]["final_deflection_mm"] is None
     assert result.calculation["crack"]["width_mm"] is None
+
+
+def test_direct_slab_service_holds_only_creep_outputs_outside_fck_thirds_domain():
+    raw = deepcopy(CASES["cases"]["b01_service_history"]["request"])
+    raw["section"]["main_pitch_mm"] = 100
+    raw["section"]["main_bars"] = [
+        {
+            "bar_id": f"M{index}",
+            "x_from_left_mm": 50 + (index - 1) * 100,
+            "y_from_top_mm": 124,
+            "diameter_mm": 12,
+        }
+        for index in range(1, 11)
+    ]
+    raw["section"]["distribution"]["y_from_top_mm"] = 114
+
+    def check(total_udl, sustained_udl):
+        for name, udl in (("total", total_udl), ("sustained", sustained_udl)):
+            row = raw["service_loads"][name]
+            row["uniform_area_load_kn_per_m2"] = udl
+            row["midspan_moment_knm"] = 1.125 * udl
+            row["support_shear_kn"] = 1.5 * udl
+        return slab.check_direct_service(slab.load_direct_service(raw))
+
+    assert check(13, 13).engineering_status.value == "PASS"
+    equality_load = 13.398445424954934
+    just_below = check(equality_load - 0.0001, equality_load - 0.0001)
+    assert just_below.engineering_status.value == "PASS"
+    equality = check(equality_load, equality_load)
+    assert equality.engineering_status.value == "PASS"
+    mixed = check(14, 13)
+    assert mixed.engineering_status.value == "PASS"
+    assert mixed.calculation["deflection"]["at_assessment"][
+        "total_deflection_mm"
+    ] == pytest.approx(8.610239885330, abs=1e-6)
+
+    held = check(equality_load + 0.0001, equality_load + 0.0001)
+    assert held.engineering_status.value == "HOLD"
+    assert held.calculation["deflection"]["final_deflection_mm"] is None
+    assert held.calculation["crack"]["width_mm"] is None
+    assert held.calculation["deflection"]["initial_total_mm"] == pytest.approx(
+        5.019901133040, abs=1e-6
+    )
+    assert held.calculation["deflection"]["initial_sustained_concrete_stress_nmm2"] > (
+        20 / 3
+    )
+    assert held.calculation["actions"]["total_action_row_id"] == "B01-3000-total-MID"
+    assert held.calculation["actions"]["analysis_revision"] == "B01-3000-A1"
+
+    fourteen = check(14, 14)
+    assert fourteen.engineering_status.value == "HOLD"
+    assert fourteen.calculation["deflection"]["initial_total_mm"] == pytest.approx(
+        5.387290165530, abs=1e-6
+    )

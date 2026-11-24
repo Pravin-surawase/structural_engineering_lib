@@ -176,9 +176,9 @@ def test_invalid_source_depth_returns_no_importable_beams(client):
         "/api/v1/import/csv/text",
         params={
             "csv_text": (
-                "beam_id,b_mm,D_mm,d_mm,fck,fy,cover_mm,mu_knm,vu_kn\n"
-                "B1,300,500,470,25,500,40,100,70\n"
-                "B2,300,500,500,25,500,40,100,70\n"
+                "beam_id,b_mm,D_mm,d_mm,fck,fy,cover_mm,span_mm,mu_knm,vu_kn\n"
+                "B1,300,500,470,25,500,40,5000,100,70\n"
+                "B2,300,500,500,25,500,40,5000,100,70\n"
             ),
             "format_hint": "generic",
             "fck_mpa": 25,
@@ -190,3 +190,42 @@ def test_invalid_source_depth_returns_no_importable_beams(client):
     )
     assert response.status_code == 422
     assert "CSV row 3" in response.text
+
+
+@pytest.mark.parametrize(("force_id", "status"), [("101", 200), ("202", 422)])
+def test_etabs_dual_csv_checks_explicit_source_ids(client, force_id, status):
+    response = client.post(
+        "/api/v1/import/dual-csv",
+        params={"format_hint": "etabs"},
+        data={
+            "fck_mpa": 25,
+            "fy_mpa": 500,
+            "cover_mm": 40,
+            "stirrup_diameter_mm": 8,
+            "tension_bar_diameter_mm": 16,
+        },
+        files={
+            "geometry_file": (
+                "geometry.csv",
+                "Story,Label,UniqueName,ObjType,AnalSect,XI,YI,ZI,XJ,YJ,ZJ\n"
+                "Ground,B1,101,Beam,B300X500,0,0,0,5,0,0\n",
+                "text/csv",
+            ),
+            "forces_file": (
+                "forces.csv",
+                "Story,Label,UniqueName,Output Case,Station,M3,V2\n"
+                f"Ground,B1,{force_id},ULS,0,80,40\n",
+                "text/csv",
+            ),
+        },
+    )
+    assert response.status_code == status, response.text
+    if status == 200:
+        (beam,) = unwrap(response)["beams"]
+        assert (beam["source_id"], beam["mu_knm"], beam["vu_kn"]) == ("101", 80, 40)
+    else:
+        body = response.json()
+        assert body["data"] is None
+        (issue,) = body["error"]["details"]["issues"]
+        assert issue["code"] == "import.source_id_mismatch"
+        assert issue["path"] == "forces.rows[2].unique_name"

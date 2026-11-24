@@ -1,7 +1,7 @@
 # Docs Index (Start Here)
 
 Guides, references, evidence, and contributor material for the
-`structural-lib-is456` Python package and the React/FastAPI workbench.
+`structural-lib-is456` Python package. The React and FastAPI guides cover optional application workflows.
 
 ---
 
@@ -9,12 +9,13 @@ Guides, references, evidence, and contributor material for the
 
 | You want to… | Start with | Type | Description |
 |---|---|---|---|
-| **See the application** | [Product tour](getting-started/product-tour.md) | tour | Real import, 3D review, member inspection, and dashboard screens |
 | **Use the Python package** | [Python quick start](getting-started/python-quickstart.md) | tutorial | Install the package and run a first supported design |
 | **Install or diagnose the package** | [Installation notes](getting-started/installation-notes.md) | guide | Exact release pin, extras, and package-origin checks |
 | **Use the CLI** | [CLI cookbook](cookbook/cli-reference.md) | guide | Strict CSV/JSON input and design/export commands |
+| **Choose a Python API** | [API levels and entry points](reference/api-levels.md) | reference | Select a public entry point before integrating |
+| **See the application** | [Product tour](getting-started/product-tour.md) | tour | Real import, 3D review, member inspection, and dashboard screens |
 | **Understand the UI workflow** | [React UI user flow](guides/react-ui-user-flow.md) | guide | Import, design, review, dashboard, and export paths |
-| **Integrate an application** | [Platform guide](developers/platform-guide.md) | guide | Build on the Python and FastAPI interfaces |
+| **Build on the Python library** | [Platform guide](developers/platform-guide.md) | guide | Library contracts and optional application integration patterns |
 | **Inspect tool readiness** | [Beam tool manifest](reference/beam-tool-manifest.md) | reference | Catalogue-derived schema and review boundary without AI activation |
 | **Look up a function** | [API reference](reference/api.md) | reference | Public signatures, parameters, units, and results |
 | **Run a family recipe** | [Family facade cookbook](cookbook/python/family-facades.md) | guide | Copy-paste payloads for all 13 advertised journeys |
@@ -137,9 +138,10 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 
 ## For Developers (Building on the Platform)
 
-**Want to integrate this library into your own applications?** Start here:
+Choose a public entry point for your calculation. Add an application layer
+when your workflow needs it.
 
-1. **[Platform Guide](developers/platform-guide.md)** - Design your first beam in 15 minutes
+1. **[Platform Guide](developers/platform-guide.md)** - Library integration and a supported-case quickstart
 2. **[Integration Examples](developers/integration-examples.md)** - PDF reports, REST APIs, batch processing
 3. **[Extension Guide](developers/extension-guide.md)** - Add custom features without modifying core
 4. **[API Stability Policy](reference/api-stability.md)** - Versioning, breaking changes, migration guides

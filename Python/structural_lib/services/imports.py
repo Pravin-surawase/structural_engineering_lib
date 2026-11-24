@@ -159,7 +159,7 @@ _UNITS = {
 
 _CALCULATION_HEADER = re.compile(
     r"(?:moment|shear|axial|force|mu|vu|pu|width|depth|cover|fck|fy|"
-    r"span|length|diameter|load)",
+    r"span|length|diameter|load|torsion)|^(?:v3|m2|t)(?:\b|_)",
     re.IGNORECASE,
 )
 
@@ -408,6 +408,7 @@ def _required_fields(
                 "fck_mpa",
                 "fy_mpa",
                 "cover_mm",
+                "span_mm",
             }
         return {"beam_id"}
     if isinstance(adapter, GenericCSVAdapter):
@@ -433,23 +434,60 @@ def _read_rows(path: Path) -> tuple[bytes, list[str], list[list[str]]]:
     return raw, [value.strip() for value in parsed[0]], parsed[1:]
 
 
+def _source_member_id(values: dict[str, str]) -> str:
+    member = (values.get("beam_id") or values.get("label") or "").strip()
+    story = values.get("story", "").strip()
+    return f"{member}_{story}" if member and story else member
+
+
 def _source_record_id(
     role: Literal["geometry", "forces", "combined"],
     source_row_number: int,
     values: dict[str, str],
     adapter: InputAdapter,
 ) -> str:
-    member = (values.get("beam_id") or values.get("label") or "").strip()
-    story = values.get("story", "").strip()
-    if not member:
+    member_id = _source_member_id(values)
+    if not member_id:
         return f"{role}:row:{source_row_number}"
-    member_id = f"{member}_{story}" if story else member
     if role in {"geometry", "combined"} or isinstance(adapter, GenericCSVAdapter):
         return member_id
     case = values.get("case_id", "").strip()
     station = values.get("station", "").strip()
     suffix = ":".join(value for value in (case, station) if value)
     return f"{member_id}:{suffix}" if suffix else member_id
+
+
+def _etabs_member_identity(row: ImportRowLedgerV1) -> tuple[str, str]:
+    values = {
+        field.canonical_field: field.raw_value.strip()
+        for field in row.fields
+        if field.canonical_field is not None
+    }
+    return values.get("beam_id") or values.get("label", ""), values.get("story", "")
+
+
+def _etabs_station_identity(
+    row: ImportRowLedgerV1,
+) -> tuple[str, str, str, float] | None:
+    """Compare the same finite station consumed by the raw ETABS adapter."""
+    values = {
+        field.canonical_field: field.raw_value.strip()
+        for field in row.fields
+        if field.canonical_field is not None
+    }
+    station = next(
+        (
+            field.parsed_value
+            for field in row.fields
+            if field.canonical_field == "station"
+        ),
+        None,
+    )
+    member, story = _etabs_member_identity(row)
+    case = values.get("case_id", "")
+    if member and case and isinstance(station, float) and math.isfinite(station):
+        return member, story, case, station
+    return None
 
 
 def _artifact_ledger(
@@ -535,6 +573,31 @@ def _artifact_ledger(
         )
 
     available = {field for field in canonical if field is not None}
+    if (
+        role == "forces"
+        and isinstance(adapter, ETABSAdapter)
+        and adapter.classify_force_columns(
+            {
+                field: header
+                for field, header in zip(canonical, headers, strict=True)
+                if field
+            }
+        )
+        == "mixed"
+    ):
+        header_block_codes.add(ImportIssueCode.CONFLICTING_HEADER)
+        issues.append(
+            ImportIssueV1(
+                code=ImportIssueCode.CONFLICTING_HEADER,
+                path="forces.headers",
+                message=(
+                    "Conflicting ETABS force formats: raw station components and "
+                    "precomputed extrema must be supplied in separate artifacts. "
+                    f"Source headers: {headers}"
+                ),
+                artifact_role=role,
+            )
+        )
     required = _required_fields(adapter, role, available)
     for field in sorted(required - available):
         header_block_codes.add(ImportIssueCode.MISSING_REQUIRED_HEADER)
@@ -598,6 +661,11 @@ def _artifact_ledger(
                 elif stripped and canonical_field in _NUMERIC_FIELDS:
                     try:
                         number = float(stripped)
+                        if (
+                            isinstance(adapter, GenericCSVAdapter)
+                            and canonical_field == "span_mm"
+                        ):
+                            number *= adapter.span_scale_to_mm(header)
                     except ValueError:
                         row_codes.add(ImportIssueCode.MALFORMED_NUMBER)
                         action = ImportFieldAction.REJECTED
@@ -673,17 +741,48 @@ def _artifact_ledger(
             )
         )
 
-    identities: dict[str, list[int]] = defaultdict(list)
+    raw_etabs_forces = (
+        role == "forces"
+        and isinstance(adapter, ETABSAdapter)
+        and adapter.classify_force_columns(
+            {
+                field: header
+                for field, header in zip(canonical, headers, strict=True)
+                if field
+            }
+        )
+        == "raw"
+    )
+    identities: dict[str | tuple[str, str, str, float], list[int]] = defaultdict(list)
     for index, row in enumerate(rows):
         if row.exclusion_reason is None:
-            identities[row.source_record_id].append(index)
-    duplicate_indexes = {
-        index
-        for indexes in identities.values()
-        if len(indexes) > 1
-        for index in indexes
-    }
-    for index in sorted(duplicate_indexes):
+            identity = (
+                _etabs_station_identity(row) if raw_etabs_forces else None
+            ) or row.source_record_id
+            identities[identity].append(index)
+    duplicate_messages: dict[int, str] = {}
+    for identity, indexes in identities.items():
+        if len(indexes) < 2:
+            continue
+        if isinstance(identity, tuple):
+            payloads = {
+                tuple(
+                    field.parsed_value
+                    for field in rows[index].fields
+                    if field.canonical_field in {"m3", "v2", "p"}
+                )
+                for index in indexes
+            }
+            kind = "Ambiguous" if len(payloads) > 1 else "Duplicate"
+            message = (
+                f"{kind} ETABS force rows share member {identity[0]!r}, story {identity[1]!r}, "
+                f"exact output case {identity[2]!r} and numeric station {identity[3]!r}; "
+                "all colliding rows are blocked before force reduction"
+            )
+        else:
+            message = f"Duplicate source record identity {identity!r}"
+        duplicate_messages.update((index, message) for index in indexes)
+    for index, message in sorted(duplicate_messages.items()):
         row = rows[index]
         code_set = set(row.issue_codes) | {ImportIssueCode.DUPLICATE_RECORD_ID}
         rows[index] = row.model_copy(
@@ -696,12 +795,73 @@ def _artifact_ledger(
             ImportIssueV1(
                 code=ImportIssueCode.DUPLICATE_RECORD_ID,
                 path=f"{role}.rows[{row.source_row_number}].source_record_id",
-                message=f"Duplicate source record identity {row.source_record_id!r}",
+                message=message,
                 artifact_role=role,
                 source_row_number=row.source_row_number,
             )
         )
     return artifact, rows, issues
+
+
+def _check_etabs_source_ids(
+    geometry_rows: list[ImportRowLedgerV1],
+    force_rows: list[ImportRowLedgerV1],
+) -> list[ImportIssueV1]:
+    """Reject conflicting IDs on physical force rows before station reduction."""
+    geometry_by_id = {
+        row.source_record_id: row
+        for row in geometry_rows
+        if row.exclusion_reason is None
+    }
+
+    issues: list[ImportIssueV1] = []
+    for index, row in enumerate(force_rows):
+        values = {
+            field.canonical_field: field.parsed_value
+            for field in row.fields
+            if field.canonical_field is not None and isinstance(field.parsed_value, str)
+        }
+        member_id = _source_member_id(values)
+        force_id = values.get("unique_name")
+        geometry_row = geometry_by_id.get(member_id)
+        if geometry_row is None:
+            continue
+        geometry_id = next(
+            (
+                field.parsed_value
+                for field in geometry_row.fields
+                if field.canonical_field == "unique_name"
+            ),
+            None,
+        )
+        if force_id and geometry_id and force_id != geometry_id:
+            field_name = "unique_name"
+            message = (
+                f"Force source ID {force_id!r} conflicts with geometry "
+                f"source ID {geometry_id!r} for member {member_id!r}"
+            )
+        elif _etabs_member_identity(row) != _etabs_member_identity(geometry_row):
+            field_name = "beam_id"
+            message = (
+                f"Joined member ID {member_id!r} aliases different label/story pairs: "
+                f"forces {_etabs_member_identity(row)!r}, geometry {_etabs_member_identity(geometry_row)!r}"
+            )
+        else:
+            continue
+        code = ImportIssueCode.SOURCE_ID_MISMATCH
+        force_rows[index] = row.model_copy(
+            update={"status": ImportStatus.BLOCKED, "issue_codes": (code,)}
+        )
+        issues.append(
+            ImportIssueV1(
+                code=code,
+                path=f"forces.rows[{row.source_row_number}].{field_name}",
+                message=message,
+                artifact_role="forces",
+                source_row_number=row.source_row_number,
+            )
+        )
+    return issues
 
 
 def parse_single_csv_lossless(
@@ -898,8 +1058,10 @@ def parse_dual_csv_lossless(
         adapter=adapter,
         artifact_name=forces_artifact_name,
     )
-    rows = geometry_rows + force_rows
     issues = list(selection_issues) + geometry_issues + force_issues
+    if isinstance(adapter, ETABSAdapter) and not issues:
+        issues.extend(_check_etabs_source_ids(geometry_rows, force_rows))
+    rows = geometry_rows + force_rows
     batch: BeamBatchInput | None = None
     beams: list[BeamGeometry] = []
     forces: list[BeamForces] = []

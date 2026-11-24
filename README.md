@@ -6,11 +6,12 @@
 
 # StructLib
 
-**IS 456 reinforced-concrete design, from calculation to reviewable output.**
+**A Python library for reinforced-concrete design and checking under IS 456:2000.**
 
-An open-source Python library and visual workbench for bounded supported beam,
-torsion, column, slab, wall, staircase, deep-beam, flat-slab, and footing
-workflows under IS 456:2000.
+Supply geometry, materials, reinforcement and actions to the supported
+calculation. StructLib returns structured results for engineering scripts,
+notebooks and other tools. The CLI, FastAPI service and visual workbench are
+optional ways to use the same library.
 
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
 [![Release](https://img.shields.io/badge/status-normal%20release-2563eb)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/latest)
@@ -22,12 +23,9 @@ workflows under IS 456:2000.
 
 </div>
 
-![StructLib beam inspector showing a 3D building model, reinforcement view, utilization, and IS 456 checks](docs/images/product/beam-inspector.jpg)
-
 > [!IMPORTANT]
 > Target release classification (publication state is separate):
-> **v0.30.0 is a normal software release of the audited supported scope.**
-> The 0.30.0 candidate remains unpublished. v0.29.2 is the verified public release.
+> **v0.31.1 is a normal software release of the audited supported scope.**
 > This describes the version format and scope. Publication state and verified
 > artifact identities are recorded in the [release ledger](docs/getting-started/releases.md)
 > and matching registry/release assets. Support is case-qualified; complete IS 456 coverage
@@ -40,81 +38,33 @@ workflows under IS 456:2000.
 > the [current-release page](docs/getting-started/release-status.md) links its
 > append-only artifact and verification evidence.
 
-## One workflow, four useful surfaces
-
-StructLib connects calculation code to the work engineers and developers need
-around it: importing analysis data, running repeatable designs, inspecting the
-result, and producing usable deliverables.
-
-| Surface | Best for | What it provides |
-|---|---|---|
-| **Python package** | Engineering scripts and notebooks | Typed functions, explicit units, structured results |
-| **CLI** | Repeatable jobs and automation | Design → detail → BBS → DXF → report pipelines |
-| **FastAPI** | Application integration | REST, WebSocket, and streaming workflows |
-| **React workbench** | Visual review | CSV import, batch design, 3D inspection, dashboard, exports |
-
-### From model data to reviewable deliverables
-
-1. **Import** beam data from ETABS, SAFE, STAAD, or a generic CSV.
-2. **Design** individual members or a complete batch through the same Python core.
-3. **Review** geometry, reinforcement, governing utilization, and clause-linked checks.
-4. **Export** BBS, DXF, calculation reports, summaries, and project quantities.
-
-## See the real application
-
-These are unedited captures from the bundled 153-beam, six-story visualization
-and member-batch fixture running against the local FastAPI backend. The fixture
-does not claim whole-building load generation, analysis, load-path
-reconciliation, or professional approval.
-
-<table>
-  <tr>
-    <td width="50%">
-      <img src="docs/images/product/import-preview.jpg" alt="Import preview for 153 beams across six stories"><br>
-      <strong>Import with context.</strong> Confirm member count, stories,
-      dimensions, actions, materials, and 3D positions before design.
-    </td>
-    <td width="50%">
-      <img src="docs/images/product/building-editor.jpg" alt="Interactive 3D building editor with beam design table"><br>
-      <strong>Review the building visually.</strong> Filter by floor, select
-      members in 3D, and compare results in an engineering table.
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2">
-      <img src="docs/images/product/design-dashboard.jpg" alt="Design dashboard with pass rate, utilization, critical beams, materials, and story breakdown"><br>
-      <strong>Understand the batch.</strong> See pass/fail status, utilization,
-      critical members, material quantities, story summaries, and export actions.
-    </td>
-  </tr>
-</table>
-
-[Open the full product tour →](docs/getting-started/product-tour.md)
-
 ## Quick start
 
 ### Install the Python package
 
-**0.29.2 is published and verified** on
-[PyPI](https://pypi.org/project/structural-lib-is456/0.29.2/) and
-[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.29.2).
+**0.31.1 is published and verified** on
+[PyPI](https://pypi.org/project/structural-lib-is456/0.31.1/) and
+[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.1).
 Install the exact public version:
 
 ```bash
-python3 -m pip install "structural-lib-is456==0.29.2"
+python3 -m pip install "structural-lib-is456==0.31.1"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.29.2` uses the final PEP 440 version format; that format alone does not
-establish registry availability.
-The project's development-maturity classifier remains **Beta**. Pin the exact
-version for reproducible work. See the
-[release status and policy](docs/getting-started/release-status.md) before
-selecting a build.
+`0.31.1` is a final PEP 440 version. The project's development-maturity
+classifier remains **Beta**. Pin the exact version for reproducible work.
+See the [current release page](docs/getting-started/release-status.md) for
+publication evidence and the supported scope.
+
+This example supplies section dimensions in mm, strengths in N/mm², moments
+in kN·m and shear in kN. It evaluates one beam strength calculation.
 
 ```python
+import json
+
 from structural_lib.design.is456 import beam
 
 request = beam.load(
@@ -134,9 +84,34 @@ request = beam.load(
 )
 result = beam.design(request)
 
-print(result.engineering_status)
-print(result.to_dict())
+print(json.dumps(result.to_dict(), allow_nan=False, indent=2))
 ```
+
+The result reports a strength **PASS** and requires qualified engineering
+review. Serviceability, physical cage detailing and provided reinforcement
+are outside this example. Use the
+[beam calculation and status recipe](https://github.com/Pravin-surawase/structural_engineering_lib/blob/v0.31.1/docs/cookbook/python/beam-design.md)
+to inspect the result and run the failure and input-error controls.
+
+### Upgrade existing Generic CSV files
+
+Since 0.31.0, strict Generic CSV import requires a finite, positive span for every beam.
+Add a `span_mm` or `Span (mm)` column for millimetres, or a `Span_m` or
+`Span (m)` column for metres. For example, a 4.2 m beam uses `4200` in
+`span_mm` or `4.2` in `Span_m`. Missing, blank or invalid spans now block
+import. Earlier versions could assume a 5 m span when the column was absent.
+
+## Use StructLib in your own tools
+
+| Surface | Use |
+| --- | --- |
+| **Python** | Call typed functions with explicit units and consume structured results. |
+| **CLI** | Run repeatable input, design and export jobs. |
+| **FastAPI** | Connect applications over REST or streaming routes. |
+| **React workbench** | Inspect geometry and reinforcement and review supported batch results. |
+
+See the [API chooser](docs/reference/api-levels.md), [Python examples](Python/examples/README.md)
+and [product tour](docs/getting-started/product-tour.md) for the workflow you need.
 
 ### Need the shortest beam-to-BBS path?
 

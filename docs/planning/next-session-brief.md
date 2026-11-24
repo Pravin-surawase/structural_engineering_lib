@@ -12,8 +12,8 @@
 
 | Release | Current state |
 |---|---|
-| **Current** | [0.29.2 is published and verified](../getting-started/releases.md#v0292-published-and-verified). All 20 installed profiles, public archive hashes, and clean PyPI installation passed. |
-| **Next** | Continue the remaining 0.30.0 cases in the [beam and column delivery plan](beam-column-programme-delivery.md). |
+| **Current** | [0.30.0 is published and verified](../getting-started/releases.md#v0300-published-and-verified). All 20 installed profiles, six public archive downloads and the clean PyPI installation passed. |
+| **Next** | Rebind [draft FLOW04 #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117) to the released baseline. Carry matched signed actions into member design and checked outputs before qualifying PROJECT01 and PROJECT02. |
 
 ## Merged development work — qualified serializer integration
 
@@ -38,14 +38,13 @@ includes exact identities, test/measurement boundaries and all 30 timing pairs.
 merged the source update. The 0.28.0 release includes it with the later
 performance work listed in the changelog.
 
-## Separate correctness follow-up
+## Station evidence repair
 
-`LIB-MEMBER-EVIDENCE-001`: current published-wheel replay confirms a real S1-only
-shear result can be manually relabelled as S2 through public evidence construction,
-then aggregate as qualified. A genuine S1/S2 batch remains a valid single-result
-shape. Define producer-bound coverage, callers and compatibility before a separate
-repair. This does not establish a normal qualified-member journey failure, and
-no member-contract repair is included in the serializer optimization.
+[PR #1086](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1086)
+repaired `LIB-MEMBER-EVIDENCE-001` in 0.29.2. The published 0.30.0 wheel still
+rejects relabelled, missing-source and mismatched station evidence and accepts
+a genuine two-station batch. The serializer work and its measurements retain
+their original scope.
 
 ## Evidence and sequencing
 

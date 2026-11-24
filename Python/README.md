@@ -2,7 +2,7 @@
 
 IS 456 reinforced-concrete design library (Python package).
 
-**Version:** 0.30.0 (normal/final version format; publication state is in the release ledger)
+**Version:** 0.31.1 (normal/final version format; publication state is in the release ledger)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
@@ -12,7 +12,24 @@ IS 456 reinforced-concrete design library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.30.0
+## Corrections and intake migration in v0.31.0
+
+This release corrects edited beam-cage clearance, torsion receiver
+peak checks, the one-way slab creep limit, and the tension face shown in beam
+reports. Paired ETABS CSV import refuses conflicting explicit member IDs.
+Calculation packages that require cost evidence stay in draft when it is absent.
+
+Strict Generic CSV imports now require an explicit finite positive span:
+`span_mm` / `Span (mm)` accepts millimetres, and `Span_m` / `Span (m)` accepts
+metres. Missing or blank span blocks intake instead of creating a 5 m member;
+metre values normalize to mm in the ledger. This previously optional input is
+why the correction release uses a minor version. ETABS intake rejects mixed
+raw/precomputed force formats, equivalent-station collisions and cross-file
+label/story aliases before exposing a batch or snapshot design request.
+Unsupported `T`, `V3` and `M2` calculation columns reject at strict intake;
+the two-component profile does not silently discard those source actions.
+
+## Scope added in v0.30.0
 
 - Verify bounded rectangular, T and L reinforcement cutoffs and laps,
   varied links, variable-depth beams and a physical T-flange detail.
@@ -23,9 +40,11 @@ IS 456 reinforced-concrete design library (Python package).
 - Check regular interior and exterior ductile joints and the bounded
   PROJECT03 frame cut from one compatible, signed action revision.
 
-The 0.30.0 source is an unpublished candidate. Installed 0.29.2 remains the
-published baseline. The imported gravity and slender-column project cases
-need a matched native beam and column action export.
+StructLib 0.30.0 is published and verified on
+[PyPI](https://pypi.org/project/structural-lib-is456/0.30.0/) and
+[GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.30.0).
+The imported gravity and slender-column project cases remain on hold until
+matched native beam and column actions reach member design and checked outputs.
 
 ## Introduced in v0.29.2
 

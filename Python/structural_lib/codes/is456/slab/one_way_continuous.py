@@ -145,32 +145,33 @@ def _moment_action(
     action_id: str,
     location: str,
     coefficient: float,
-    line_load_kn_per_m: float,
+    factored_area_load_kn_per_m2: float,
     span_m: float,
-    strip_width_mm: float,
+    strip_width_m: float,
     d_mm: float,
     fck: float,
     fy: float,
 ) -> ContinuousOneWaySlabActionResult:
-    moment = coefficient * line_load_kn_per_m * span_m**2
-    limiting = rectangular_limiting_moment_knm(
-        b_mm=strip_width_mm, d_mm=d_mm, fck_n_per_mm2=fck, fy_n_per_mm2=fy
+    # A one-metre strip turns the area load into line load on the result basis.
+    moment_knm_per_m = coefficient * factored_area_load_kn_per_m2 * span_m**2
+    limit_knm_per_m = rectangular_limiting_moment_knm(
+        b_mm=1000.0, d_mm=d_mm, fck_n_per_mm2=fck, fy_n_per_mm2=fy
     )
-    if moment > limiting:
+    if moment_knm_per_m > limit_knm_per_m:
         raise _ContinuousSlabCapacityExceededError(
             slab_capacity_failure(
                 component="continuous_one_way_slab_flexure",
                 governing_region=action_id,
-                factored_moment_knm=moment,
-                limiting_moment_knm=limiting,
+                factored_moment_knm=moment_knm_per_m * strip_width_m,
+                limiting_moment_knm=limit_knm_per_m * strip_width_m,
                 clause_refs=("IS 456:2000 Cl. 24.1", "IS 456:2000 Cl. 38.1"),
                 source_refs=("IS 456:2000 Cl. 22.5",),
             )
         )
     ast, xu = calculate_ast_from_rectangular_stress_block(
-        b_mm=strip_width_mm,
+        b_mm=1000.0,
         d_mm=d_mm,
-        factored_moment_knm=moment,
+        factored_moment_knm=moment_knm_per_m,
         fck_n_per_mm2=fck,
         fy_n_per_mm2=fy,
     )
@@ -178,10 +179,10 @@ def _moment_action(
         action_id=action_id,
         location=location,
         coefficient=coefficient,
-        factored_moment_knm_per_m=moment,
+        factored_moment_knm_per_m=moment_knm_per_m,
         ast_required_mm2_per_m=ast,
         neutral_axis_depth_mm=xu,
-        limiting_moment_knm_per_m=limiting,
+        limiting_moment_knm_per_m=limit_knm_per_m,
     )
 
 
@@ -197,16 +198,16 @@ def design_continuous_one_way_slab_flexure(
         raise SlabContractError(
             "continuous one-way route requires Ly/Lx greater than 2"
         )
-    strip_width = design_input.geometry.strip_width_mm or 1000.0
-    line_load = design_input.factored_area_load_kn_per_m2 * strip_width / 1000.0
+    strip_width_m = (design_input.geometry.strip_width_mm or 1000.0) / 1000.0
+    area_load = design_input.factored_area_load_kn_per_m2
     span_m = design_input.geometry.short_effective_span_mm / 1000.0
     positive = _moment_action(
         action_id="continuous_positive_midspan",
         location="midspan_bottom",
         coefficient=design_input.coefficients.positive_midspan,
-        line_load_kn_per_m=line_load,
+        factored_area_load_kn_per_m2=area_load,
         span_m=span_m,
-        strip_width_mm=strip_width,
+        strip_width_m=strip_width_m,
         d_mm=design_input.d_mm,
         fck=design_input.fck_n_per_mm2,
         fy=design_input.fy_n_per_mm2,
@@ -215,20 +216,20 @@ def design_continuous_one_way_slab_flexure(
         action_id="continuous_negative_support",
         location="continuous_support_top",
         coefficient=design_input.coefficients.negative_support,
-        line_load_kn_per_m=line_load,
+        factored_area_load_kn_per_m2=area_load,
         span_m=span_m,
-        strip_width_mm=strip_width,
+        strip_width_m=strip_width_m,
         d_mm=design_input.d_mm,
         fck=design_input.fck_n_per_mm2,
         fy=design_input.fy_n_per_mm2,
     )
     return ContinuousOneWaySlabResult(
         input=design_input,
-        line_load_kn_per_m=line_load,
+        line_load_kn_per_m=area_load * strip_width_m,
         positive_midspan=positive,
         negative_support=negative,
         factored_shear_kn_per_m=(
-            design_input.coefficients.shear_support * line_load * span_m
+            design_input.coefficients.shear_support * area_load * span_m
         ),
         coefficient_correctness_verified_by_library=(
             design_input.coefficients.verified_by_library

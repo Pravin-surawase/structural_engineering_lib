@@ -31,8 +31,12 @@ Use stable **M0–M8 planning IDs**. The repository's
 [versioning policy](../guidelines/api-evolution-standard.md#2-semantic-versioning-semver)
 assigns bug fixes to patches and new features to minor releases, including 0.x.
 [StructLib 0.29.0](../getting-started/releases.md#v0290-published-and-verified)
-published the qualified cases from #1064. The remaining S0–S5 feature and
-project work is scheduled for 0.30.0. M0–M8 identify the delivery units.
+published the qualified cases from #1064.
+[StructLib 0.30.0](../getting-started/releases.md#v0300-published-and-verified)
+published the bounded detailing, serviceability, slab and joint cases in #1116.
+FLOW04 member integration and PROJECT01/02 qualification remain open. The
+[FLOW04 intake draft](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117)
+carries the matched source evidence. M0–M8 identify the delivery units.
 
 | ID | Deliverable | Dependency and closure rule |
 |---|---|---|

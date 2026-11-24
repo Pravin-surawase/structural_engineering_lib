@@ -1,18 +1,15 @@
 # Python Examples
 
-Runnable examples for `structural-lib-is456` 0.30.0. Get the example files from
-the source checkout that contains them and install the package in a virtual
-environment.
-
-These commands install the verified public release. The next section shows how
-to install a retained candidate wheel.
+Use a source tag that matches the installed package version. These commands
+pair the public 0.31.0 wheel with the released example files. Run the examples
+from the repository root so the interpreter resolves the installed package.
 
 ```bash
-git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
+git clone --branch v0.31.0 --single-branch https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python3 -m pip install "structural-lib-is456==0.29.2"
+python3 -m pip install "structural-lib-is456==0.31.1"
 python3 -m structural_lib install-preflight
 ```
 
@@ -39,11 +36,11 @@ reported `status`, `calculation_status`, `detailing_status`, `failed_checks`,
 `hold_reasons`, and `provenance` rather than treating a successful process exit
 as an engineering decision.
 
-To replay the scripts against a retained candidate wheel, install that wheel
-in a clean virtual environment.
+To replay a retained candidate, use its matching source snapshot and set
+`CANDIDATE_WHEEL` to the path of its retained wheel. Use a clean virtual environment.
 
 ```bash
-python3 -m pip install /path/to/structural_lib_is456-0.29.0-py3-none-any.whl
+python3 -m pip install "$CANDIDATE_WHEEL"
 python3 -m structural_lib install-preflight
 python3 -I Python/examples/slab_one_way_reference.py --case baseline
 python3 -I Python/examples/isolated_footing_reference.py --case baseline
@@ -116,13 +113,11 @@ offsets and rejects unresolved multilayer arrangements. Use
 WP06 paths and their bound WP07 package for physical multilayer geometry.
 
 `canonical_workflows.py` uses public request groups, a beam-to-BBS workflow,
-column and slab checks, structured errors and a JSON round-trip. The newly
-exposed group imports, slab builders, and JSON loaders require the current source build;
-they are not assumed to exist in the older published wheel.
+column and slab checks, structured errors and a JSON round-trip. Run it from the
+matching 0.31.0 checkout with the published wheel installed.
 
 ```bash
-python3 -m pip install -e ./Python
-python3 Python/examples/canonical_workflows.py
+python3 -I Python/examples/canonical_workflows.py
 ```
 
 `physical_member_workflow.py` connects the physical-beam operations: actual bars,
@@ -169,7 +164,7 @@ python3 Python/examples/analysis_snapshot_replay.py /path/to/snapshot.json
 | Example | What it demonstrates | Writes files? |
 |---|---|---|
 | `complete_member_workflow.py` | Single-layer and multilayer beams through checks, physical paths, BBS and HTML. [Member guide](../../docs/cookbook/python/ordinary-beam-member.md) | Yes, with `--output-dir` |
-| `canonical_workflows.py` | Typed canonical beam, column and slab journeys; current source build | No |
+| `canonical_workflows.py` | Typed canonical beam, column and slab journeys on the matching 0.31.0 wheel | No |
 | `beam_comparator_reference.py` | Installed-package section capacities for three supplied beam layouts. [Beam comparison guide](../../docs/cookbook/python/beam-comparator-reference.md) | No |
 | `torsion_station_reference.py` | Correct longitudinal-corner geometry for the torsion station check with passing/failing links and explicit full-member HOLD. [Torsion reference](../../docs/library/reference/wp02-shear-torsion.md#packet-d-corner-geometry-correction) | No |
 | `physical_torsion_member.py` | D2 physical torsion beam, signed support/crosshead transfer, cage, hooks, direct tension anchorage and bound draft outputs; D3 HOLD. [Guide](../../docs/cookbook/python/physical-torsion-member.md) | Yes, with `--output-dir` |
@@ -207,7 +202,7 @@ python3 examples/full_pipeline_synthetic.py \
   --output-dir ./output/demo_50
 ```
 
-Install `structural-lib-is456[dxf]==0.29.2` and omit `--skip-dxf` to generate
+Install `structural-lib-is456[dxf]==0.31.1` and omit `--skip-dxf` to generate
 drawings. `sample_beam_design.csv` is strict CLI input;
 `sample_building_beams.csv` is an educational fixture for
 `complete_beam_design.py` and includes output-like columns that the strict CLI

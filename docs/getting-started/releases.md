@@ -2063,8 +2063,154 @@ The patch integrates the Coding Lab repairs in [PR #1086](https://github.com/Pra
 
 ## v0.30.0 — Prepared candidate (unreleased; on hold)
 
-The candidate extends the beam, column, slab, serviceability and ductile
-frame workflows listed in the [delivery plan](../planning/beam-column-programme-delivery.md).
-S5 qualifies the exact wheel and source archive. The imported gravity and
-slender-column projects remain on HOLD pending the matched FLOW04 export.
-v0.29.2 remains the published release. This candidate is not tagged or published.
+The qualified software was integrated in [PR #1116](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1116).
+The [delivery plan](../planning/beam-column-programme-delivery.md) and
+[changelog](../../CHANGELOG.md)
+describe the complete candidate scope.
+
+- BEAM05 covers bounded rectangular, T and L multilayer cutoffs and laps,
+  varied link pitch, an interior-support haunch and a physical T-flange
+  cage. Checked reports, drawings and bar bending schedules share the
+  same reinforcement. The original lap cages without compression-bar
+  restraint evidence receive HOLD and withhold the checked drawing and
+  schedule.
+- COL07 covers mixed-bar, slender and circular laps, circular single-plane
+  shear and rectangular two-plane shear. The ordinary tied cage checks
+  corner bar positions, link engagement and clear spacing.
+- SL06 checks supplied B02 and B04 actions through both coefficient routes.
+  SERV02 and SERV03 extend direct beam and slab serviceability. The exact
+  archive replays include the regular-interior flat slab and its refusals.
+- FLOW03 rechecks an edited two-layer cage. DUCT01 and DUCT02 cover regular
+  interior and exterior joints in the bounded PROJECT03 frame. PROJECT03
+  provides design-review outputs and reconciles member and joint bar marks.
+
+Both archives passed all 20 installed profiles, including 971 beam and column
+tests, 25 slab and footing scenarios, and all 39 retained Coding Lab findings
+per archive. The exact wheel passed all 29 installed acceptance cases.
+The [retained artifact record](../verification/library-0300-release-artifacts.json)
+binds those results to the archive hashes and reviewed source.
+
+The imported PROJECT01 and PROJECT02 workflows remain on HOLD. The matched
+ETABS source evidence is in [draft PR #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117).
+Project qualification still requires carrying those actions through member
+design and checked outputs. PROJECT03 site insertion, temporary supports
+and boundary anchorage still require project evidence.
+v0.29.2 remains the published release.
+
+
+## v0.30.0 — Release authorized (2026-11-17)
+
+The owner authorized publication of the retained wheel and source archive
+after independent review, [PR Validation](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43950860538/job/133593527644) and
+[Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43951200197) passed on the same candidate.
+
+The [exact-candidate review](../verification/library-0300-exact-candidate-review.json)
+and [owner authorization](../verification/release-publication-authorization.json)
+record the source and archive identities in
+[PR #1118](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1118).
+TestPyPI verifies both archives before the production tag and upload.
+
+
+## v0.30.0 published and verified
+
+**2026-11-17 (Asia/Kolkata).** The annotated tag targets `2176154ec5d78f146ebdd6a47af98bc738d7b514`.
+Both archives were built at `24d657081027d69a058d3e1e0a321e3d3274349b` from Python tree
+`ee48d10cdeaee161163fc4890afc05ffeb1d042c`.
+[PyPI 0.30.0](https://pypi.org/project/structural-lib-is456/0.30.0/) · [GitHub Release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.30.0)
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.30.0-py3-none-any.whl` | `50779361e162f835ce86da79c3fbfbd33e794b0263d6dfd801de2c5ce9788611` | 1602804 |
+| `structural_lib_is456-0.30.0.tar.gz` | `40aebdb2dc97b63776a4810ae2763114c4aa3ca046cb82ad1b430c844538216d` | 1366442 |
+
+All 20 installed profiles and 29 exact-wheel acceptance cases passed. Each
+archive passed 971 beam and column tests, 25 slab and footing scenarios, and
+39 retained Coding Lab findings.
+[TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43957482648) · [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/43957873781)
+
+All six public archive downloads match the qualified hashes. A fresh PyPI
+installation imports 0.30.0 from its isolated environment. The public
+verification receipt SHA-256 is `de6c92b268fd4096bdc1308698b17d3ca95125c8746fd3e141ceb8d440208be9`.
+[Public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.30.0/public-install-verification.json) · [Artifact manifest](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.30.0/artifact-manifest.json)
+
+The matched FLOW04 source evidence remains in [draft PR #1117](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1117).
+PROJECT01 and PROJECT02 remain on HOLD pending member design and checked-output
+integration. PROJECT03 remains qualified for the bounded design-review workflow.
+
+## v0.31.0 — Prepared candidate (unreleased; qualification pending)
+
+This candidate combines the corrections prepared after v0.30.0 with strict
+ETABS force-format/station/member identity safeguards and Generic span fixes.
+Strict Generic input now requires explicit span instead of manufacturing 5 m
+geometry, so the documented pre-1.0 compatibility change uses a minor version.
+Existing CSVs must supply a finite positive span. No new eccentric-footing or
+snapshot-to-section caller API is included. The public baseline at preparation
+is v0.30.0; the earlier prepared 0.30.1 archives are retained historical evidence.
+
+The owner authorized completion of the fixes and the sensible release on
+18 November 2026. Publication remains conditional on exact replacement wheel
+and source-archive qualification, required hosted/cross-platform checks and
+review of the final results. The safeguarded A40 special replay remains NOT_RUN;
+its source fix and ordinary transport evidence are recorded separately.
+
+## v0.31.0 — Release authorized (2026-11-18)
+
+The owner authorized the completed corrections and the appropriate release.
+The required-span compatibility correction selects 0.31.0 under the pre-1.0
+minor-version policy. Independent exact-candidate review and the required PR
+and cross-platform Weekly checks passed on `07e1449aef93483c1da64e9b671c326019a48709`.
+
+The retained wheel and source archive passed all 20 installed profiles, with
+980 beam/column tests, 25 slab/footing scenarios and 56 focused intake controls
+per archive, plus three offline broker return/error/timeout controls per archive.
+Exact-wheel UAT passed 29 cases. The committed qualification and
+review records bind the exact archive hashes and unchanged Python tree.
+TestPyPI must verify this retained pair before production publication.
+
+A40 has source and ordinary transport evidence; its safeguarded special replay
+remains NOT_RUN. PROJECT01/02 remain HOLD, PROJECT03 retains site evidence
+requirements, and FLOW04 stays excluded. No new footing or caller API is
+included. Software qualification does not confer professional approval.
+
+
+## v0.31.1 — Prepared candidate (unreleased; on hold)
+
+This source candidate carries the continuous one-way slab strip-width correction. It is **not tagged or published**. The public package remains 0.31.0. S5 binds qualification to the reviewed source and exact wheel and sdist. Publication requires a separate owner decision. See the [slab rerun guide](../cookbook/python/slab-continuous-one-way.md#rerun-affected-0310-results) and [draft PR #1126](https://github.com/Pravin-surawase/structural_engineering_lib/pull/1126).
+
+
+## v0.31.1 — Release authorized (2026-11-22)
+
+The owner authorized the exact 0.31.1 wheel and source distribution after installed qualification, independent review and exact-head PR and Weekly checks. Use the retained pair from the continuous one-way slab correction. TestPyPI must return both retained hashes before the production tag and upload. Registry readback and a fresh public install will establish the publication result. The linked evidence records preparation and authorization.
+
+[Retained artifact record](../verification/library-0311-release-artifacts.json) · [Exact review](../verification/library-0311-exact-candidate-review.json) · [Owner authorization](../verification/release-publication-authorization.json)
+
+## v0.31.1 published and verified
+
+**22 November 2026 (Asia/Kolkata).** The annotated tag targets
+`3e1ce096868f764d2b830d11b7c8a211c29407b2`. Both archives were built at
+`29ee5e25c78c1eb8e80b0e253cbee072a2e9b08f` from Python tree
+`c378d67bcce8e403ab9cef86a6c773e057bfbcb8` and
+passed 20 installed profiles and 29 exact-wheel acceptance cases. The same
+archives were promoted from TestPyPI to PyPI and GitHub without rebuilding.
+[Retained artifact record](../verification/library-0311-release-artifacts.json) · [PyPI 0.31.1](https://pypi.org/project/structural-lib-is456/0.31.1/) · [GitHub Release](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.31.1)
+
+| Artifact | SHA-256 | Bytes |
+|---|---|---:|
+| `structural_lib_is456-0.31.1-py3-none-any.whl` | `fbff4a613ece32270647089b4080754869fae45a98081e9edc7a81de42b60ea4` | 1606194 |
+| `structural_lib_is456-0.31.1.tar.gz` | `dc4f57b4e7e23bc562634f94c7c2c8430fcf5bd335e7e5ccbc59ea341251c359` | 1366988 |
+
+Both registries and the GitHub downloads returned the qualified archive
+hashes. A fresh install from PyPI passed the slab replay at 500, 1,000 and
+2,000 mm. The deficient built-in cases returned `FAIL`, the supplied-coefficient
+steel-area checks were false, and all passing cookbook controls still returned
+`PASS`. The public receipt SHA-256 is
+`96867f5cb7a60973341e01ac79e41cf43e9d4284d93dff05975fa0d25b3256ed`.
+[Public verification receipt](https://github.com/Pravin-surawase/structural_engineering_lib/releases/download/v0.31.1/public-install-verification.json) · [Slab rerun guide](../cookbook/python/slab-continuous-one-way.md#rerun-affected-0310-results)
+
+TestPyPI finished at 16:17:50 UTC, both registry hashes matched at 16:17:56,
+and the production workflow started at 16:18:14. The handoff took 24 seconds
+from TestPyPI completion to production dispatch, compared with 4 minutes
+57 seconds for 0.31.0. The first install attempt preceded visibility on the
+PyPI install index. The retry passed, and verification finished at 16:21:45,
+1 minute 27 seconds after the production workflow completed.
+[TestPyPI workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/45042932125) · [Production workflow](https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/45043064772) · [0.31.0 timing baseline](../planning/structlib-0311-patch-plan.md#release-timing-baseline-and-targets)

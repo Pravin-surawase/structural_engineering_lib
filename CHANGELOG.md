@@ -4,7 +4,69 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.30.0] — Prepared candidate (unreleased; on hold)
+## [0.31.1] — 2026-11-22
+
+### Fixed
+
+- Use one consistent per-metre basis for continuous one-way slab moments,
+  steel demand and shear with built-in or supplied coefficients. Rerun saved
+  0.31.0 checks with a strip width other than 1,000 mm or an unconfirmed width.
+  A narrower strip could previously return a false `PASS`. See the
+  [continuous slab rerun guide](docs/cookbook/python/slab-continuous-one-way.md#rerun-affected-0310-results).
+
+## [0.31.0] — 2026-11-18
+
+### Changed
+
+- Strict Generic CSV imports require an explicit finite positive span. Add
+  `span_mm` / `Span (mm)`, or a supported metre alias such as `Span_m`, to
+  existing files. Missing or blank span no longer creates a 5 m member.
+  This input-contract correction uses a minor version under the pre-1.0 policy.
+  The low-level direct adapter retains a visualization placeholder only when
+  no span header is supplied; it is not source geometry for checked exports.
+
+### Fixed
+
+- Check edited beam cages over the admitted hoop placement tolerances. Withhold
+  checked drawings and schedules when the longitudinal bars clash with the hoop.
+- Check the torsion receiver's exact moment peak between point loads, including
+  cases where a station grid misses the governing demand.
+- Hold creep-dependent one-way slab results above the initial sustained
+  compression limit while retaining valid immediate displacement.
+- Show the checked tension face in beam calculation reports.
+- Reject paired ETABS CSV rows with conflicting explicit member IDs. Keep the
+  label and story fallback where a source ID is absent.
+- Keep calculation packages in draft with inactive approval when their profile
+  requires cost evidence and the evidence is missing.
+- Bind live beam WebSocket replies and cleanup to their originating connection.
+- Receive a supervised ETABS worker's terminal message within its existing
+  deadline before treating worker exit as a missing result and fencing the lease.
+  Preserve operation errors and successful payloads without retrying the operation.
+- Lead installation and examples with the published Python library and
+  document the optional DXF installation.
+- Reject ETABS force tables that combine raw station components with
+  precomputed extrema before creating a batch or snapshot design request.
+  Preserve raw signed actions and station provenance, precomputed envelope
+  behavior, and the blocked source rows with explicit header diagnostics.
+- Compare raw ETABS station identity by member, exact case and finite numeric
+  station. Block equivalent-spelling collisions before reducing forces while
+  retaining original rows, tokens and actions; keep distinct nearby stations.
+- Reject aliased ETABS label/story joins across geometry and force artifacts
+  while preserving public IDs. Require explicit spans for strict Generic CSV
+  intake, normalize metre spans to mm in its ledger, and reject malformed
+  supplied spans instead of creating a 5 m member.
+- Reject unsupported torsion and secondary bending/shear columns at strict
+  CSV intake instead of silently projecting them out of a design request.
+
+### Qualification scope
+
+- Retain PROJECT01 and PROJECT02 HOLD and PROJECT03 site-evidence requirements.
+  No eccentric-footing or new snapshot-to-section caller API is added.
+- The WebSocket ownership repair has source and ordinary transport evidence.
+  The safeguarded reconnect-during-in-flight replay remains NOT_RUN and is not
+  claimed as passed.
+
+## [0.30.0] — 2026-11-17
 
 ### Added
 
@@ -33,9 +95,9 @@ All notable changes to this project will be documented in this file.
 
 ### Qualification scope
 
-- PROJECT01 and PROJECT02 remain on HOLD pending a matched FLOW04 native
-  beam and column action export. PROJECT03 site insertion, temporary
-  supports and boundary anchorage require project evidence.
+- PROJECT01 and PROJECT02 remain on HOLD until matched FLOW04 actions are
+  carried through member design and checked outputs. PROJECT03 site
+  insertion, temporary supports and boundary anchorage require project evidence.
 
 ## [0.29.2] — 2026-11-15
 

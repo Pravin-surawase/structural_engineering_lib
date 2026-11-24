@@ -64,6 +64,88 @@ def _python_assignment(path: tuple[str, ...], value: Any) -> str:
     return f"{target} = {value!r}"
 
 
+_CONTINUOUS_SLAB_RERUN = """## Rerun affected 0.31.0 results
+
+Rerun continuous one-way slab checks from 0.31.0 that used a strip width
+other than 1,000 mm. Rerun any saved result whose submitted width you cannot
+confirm. This applies to built-in and supplied coefficients through Python or
+HTTP. Prioritize accepted results from narrower strips, where 0.31.0 could
+understate steel demand and report a false `PASS`.
+
+Use a build that includes the 0.31.1 correction. Resubmit the original loads,
+geometry, strip width, reinforcement and reviewed inputs. Review the new
+engineering verdict and the moment, required steel and shear values per metre.
+Refresh reports or exports that used the old results. The line load along the
+physical strip still scales with its width. Capacity-exceeded diagnostics give
+moments for that physical strip in kN·m.
+
+"""
+
+
+def _continuous_slab_width_example() -> str:
+    evidence = REPO_ROOT / "docs/verification/library-0311-s1-continuous-slab.json"
+    frozen = json.loads(evidence.read_text(encoding="utf-8"))
+    case = next(
+        case
+        for case in frozen["built_in"]["cases"]
+        if case["id"] == "SLAB-01-DEFICIENT"
+    )
+    widths = tuple(case["widths_mm"])
+    updates = []
+    for group, fields in case["request_overrides"].items():
+        arguments = "".join(
+            f"    {name}={value!r},\n" for name, value in fields.items()
+        )
+        updates.append(f'challenge["{group}"].update(\n{arguments})')
+    update_code = "\n".join(updates)
+    expected = case["expected_at_each_width"]
+    required = expected["positive_governing_steel_mm2_per_m"]
+    provided = expected["positive_provided_steel_mm2_per_m"]
+    status = expected["engineering_status"]
+    output = "\n".join(
+        f"{width} mm: {status}, {required:.3f} required, {provided:.3f} provided (mm²/m)"
+        for width in widths
+    )
+    positive_moment = expected["positive_moment_knm_per_m"]
+    negative_moment = expected["negative_moment_knm_per_m"]
+    shear = expected["shear_kn_per_m"]
+    return f"""## Corrected strip-width example
+
+Run this block after the passing recipe above, using source that includes the
+0.31.1 correction. The modified loads, section and positive bars produce a
+steel shortfall.
+
+```python
+challenge = json.loads(request_json)
+{update_code}
+
+for width_mm in {widths}:
+    challenge["geometry"]["strip_width_mm"] = width_mm
+    request = slab.load_continuous_one_way_json(json.dumps(challenge))
+    checked = slab.design_continuous_one_way(request)
+    steel = checked.calculation.positive_reinforcement
+    print(
+        f"{{width_mm}} mm: {{checked.engineering_status.value}}, "
+        f"{{steel.governing_required_mm2_per_m:.3f}} required, "
+        f"{{steel.provided_mm2_per_m:.3f}} provided (mm²/m)"
+    )
+```
+
+The corrected calculation prints the following output.
+
+```text
+{output}
+```
+
+At every width the positive moment is {positive_moment:g} kN·m/m, the negative moment
+magnitude is {negative_moment:.2f} kN·m/m and the end shear is {shear:g} kN/m.
+Use the 1,000 mm recipe above as the passing control. A completed `FAIL`
+means the input was evaluated and a check failed. See the
+[frozen slab cases](../../verification/library-0311-s1-continuous-slab.json).
+
+"""
+
+
 def _page(workflow: Any, recipe: Any) -> str:
     alias = workflow.module.rsplit(".", 1)[-1]
     payload = json.dumps(recipe.payload, indent=4, sort_keys=True, allow_nan=False)
@@ -134,10 +216,27 @@ This is valid intake and a completed calculation. It must not be represented as
 an exception, HTTP failure, or professional acceptance.
 
 """
+    last_updated = "2026-08-28"
+    rerun_note = ""
+    corrected_example = ""
+    replay_guidance = (
+        f"Replay this recipe with a local build of source package version `{PROJECT_VERSION}`.\n"
+        "Use the [release guide](../../getting-started/release-status.md) for the public\n"
+        "package. Results require qualified review."
+    )
+    if workflow.journey_id == "is456.slab.continuous-one-way/v1":
+        last_updated = "2026-11-18"
+        rerun_note = _CONTINUOUS_SLAB_RERUN
+        corrected_example = _continuous_slab_width_example()
+        replay_guidance = (
+            "Use the [Current Release page](../../getting-started/release-status.md) to\n"
+            "check public package availability. The strip-width example above was checked\n"
+            "on source with the correction. Results require qualified review."
+        )
     return f'''---
 owner: Main Agent
 status: active
-last_updated: 2026-08-28
+last_updated: {last_updated}
 doc_type: guide
 complexity: intermediate
 tags: [canonical-api, family-facades, lib-pro-012-r0]
@@ -154,7 +253,7 @@ This recipe constructs caller-supplied data and delegates to the maintained
 calculation owner. It does not infer loads, geometry, topology, soil data,
 evidence, review inputs, or professional acceptance.
 
-## Copy-paste recipe
+{rerun_note}## Copy-paste recipe
 
 ```python
 import json
@@ -181,7 +280,7 @@ paths. For a saved request, use
 `{alias}.{recipe.loader}_json(Path("request.json").read_bytes())` after importing
 `Path` from `pathlib`. Existing Python mappings use `{alias}.{recipe.loader}`.
 
-## Rejected-input example
+{corrected_example}## Rejected-input example
 
 ```python
 import copy
@@ -220,9 +319,7 @@ and group imports require its matching build rather than an older published whee
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-Replay this recipe with a local build of source package version `{PROJECT_VERSION}`.
-Use the [release guide](../../getting-started/release-status.md) for the public
-package. Results require qualified review.
+{replay_guidance}
 '''
 
 
